@@ -52,7 +52,7 @@ const PRODUCTS = [
   { id: "anturio-vermelho", nome: "Antúrio Vermelho", especie: "Anthurium andraeanum", categoria: "dentro", ambiente: "interno", pet: "toxic",
     descricao: "Espata lacada, folha larga e escura. Floresce quase o ano inteiro em luz indireta.", variantes: [{ label: "Médio", preco: 170 }, { label: "Grande", preco: 285 }], img: IMG("anturio-vermelho") },
   { id: "anturio-rosa", nome: "Antúrio Rosa", especie: "Anthurium andraeanum · tamanho único", categoria: "dentro", ambiente: "interno", pet: "toxic",
-    descricao: "Espata rosada e brilhante que dura semanas abertas, sobre folhagem verde-escura lustrosa. Floresce quase o ano todo em luz indireta.", preco: 185 },
+    descricao: "Espata rosada e brilhante que dura semanas abertas, sobre folhagem verde-escura lustrosa. Floresce quase o ano todo em luz indireta.", preco: 185, img: IMG("anturio-rosa") },
   { id: "maranta-pavao", nome: "Maranta Pavão", especie: "Calathea makoyana", categoria: "dentro", ambiente: "interno", pet: "safe",
     descricao: "Desenho de pena em cada folha, translúcido contra a luz. Pede umidade — gosta de banheiro claro.", preco: 220, img: IMG("maranta-pavao") },
   { id: "alocasia-polly", nome: "Alocásia Polly", especie: "Alocasia × amazonica", categoria: "dentro", ambiente: "interno", pet: "toxic",
