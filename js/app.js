@@ -16,7 +16,9 @@
   const waBase = () => `https://wa.me/${onlyDigits(CONFIG.whatsapp)}`;
 
   /* ---------- produtos: helpers ---------- */
-  const media = (p) => (p.img ? `<img src="${p.img}" alt="${p.nome}" loading="lazy">` : fotoEmBreve());
+  const fotos = (p) => (p.imgs && p.imgs.length ? p.imgs : p.img ? [p.img] : []);
+  const capa = (p) => fotos(p)[0] || null;
+  const media = (p) => (capa(p) ? `<img src="${capa(p)}" alt="${p.nome}" loading="lazy">` : fotoEmBreve());
   const temVariantes = (p) => Array.isArray(p.variantes) && p.variantes.length > 0;
   const menorPreco = (p) => (temVariantes(p) ? Math.min(...p.variantes.map((v) => v.preco)) : p.preco);
   const precoDaVariante = (p, label) => {
@@ -163,9 +165,19 @@
       ? `<div class="modal-price" id="modalPrice">${BRL(p.variantes[0].preco)}</div>`
       : `<div class="modal-price">${BRL(p.preco)}</div>`;
 
+    const gal = fotos(p);
+    const galeriaHTML = gal.length
+      ? `<img id="modalMainImg" src="${gal[0]}" alt="${p.nome}">
+         ${gal.length > 1
+           ? `<div class="modal-thumbs">${gal.map((src, i) =>
+               `<button class="mthumb ${i === 0 ? "active" : ""}" data-src="${src}">
+                  <img src="${src}" alt="${p.nome} — foto ${i + 1}" loading="lazy"></button>`).join("")}</div>`
+           : ""}`
+      : fotoEmBreve();
+
     $("#productModal").innerHTML = `
       <div class="modal-inner">
-        <div class="modal-media">${media(p)}</div>
+        <div class="modal-media">${galeriaHTML}</div>
         <div class="modal-info">
           <button class="modal-close" aria-label="Fechar">×</button>
           <span class="modal-cat">${catNome(p.categoria)}${p.raridade ? " · Raridade" : ""}</span>
@@ -447,7 +459,9 @@
       const dec = e.target.closest("[data-dec]");
       const rm = e.target.closest("[data-rm]");
       const vb = e.target.closest(".vbtn");
+      const mt = e.target.closest(".mthumb");
 
+      if (mt) { $("#modalMainImg").src = mt.dataset.src; $$(".mthumb").forEach((b) => b.classList.remove("active")); mt.classList.add("active"); return; }
       if (enc) { e.preventDefault(); encomendar(enc.dataset.encomenda); }
       else if (add) { addToCart(add.dataset.add, modalContext(add)); if ($("#productModal").classList.contains("open")) closeModal(); openCart(); }
       else if (vb) selectVariant(vb);

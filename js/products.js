@@ -48,7 +48,7 @@ const CATEGORIAS = [
 const PRODUCTS = [
   /* ---------- 01 · DENTRO DE CASA ---------- */
   { id: "arranjo-orquidea", nome: "Arranjo de Orquídea", especie: "Phalaenopsis com folhagens · composição única", categoria: "dentro", ambiente: "interno", pet: "safe",
-    descricao: "Orquídea combinada com folhagens sobre a mesma esfera. A raiz da orquídea e o musgo se entendem naturalmente, e cada arranjo é montado de forma única.", preco: 360, img: IMG("arranjo-orquidea") },
+    descricao: "Orquídea combinada com folhagens sobre a mesma esfera. A raiz da orquídea e o musgo se entendem naturalmente, e cada arranjo é montado de forma única.", preco: 360, imgs: [IMG("arranjo-orquidea"), IMG("arranjo-orquidea-2")] },
   { id: "anturio-vermelho", nome: "Antúrio Vermelho", especie: "Anthurium andraeanum", categoria: "dentro", ambiente: "interno", pet: "toxic",
     descricao: "Espata lacada, folha larga e escura. Floresce quase o ano inteiro em luz indireta.", variantes: [{ label: "Médio", preco: 170 }, { label: "Grande", preco: 285 }], img: IMG("anturio-vermelho") },
   { id: "anturio-rosa", nome: "Antúrio Rosa", especie: "Anthurium andraeanum · tamanho único", categoria: "dentro", ambiente: "interno", pet: "toxic",
