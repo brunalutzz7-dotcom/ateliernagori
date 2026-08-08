@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Atelier Nagori — Kokedamas artesanais</title>
-  <meta name="description" content="Kokedamas artesanais feitos à mão no Atelier Nagori. Plantas em esferas de musgo, entrega para todo o Brasil." />
+  <title>Atelier Nagori — Kokedamas e Bonsais artesanais</title>
+  <meta name="description" content="Kokedamas e bonsais artesanais feitos à mão no Atelier Nagori, em Curitiba. Plantas e árvores sobre esferas de musgo vivo, com envio para todo o Brasil." />
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -20,7 +20,7 @@
       <div class="splash-brand">
         <span class="splash-mark" aria-hidden="true">✿</span>
         <h1>Atelier Nagori</h1>
-        <p class="splash-sub">kokedamas artesanais · feitos à mão em Curitiba</p>
+        <p class="splash-sub">kokedamas e bonsais artesanais · feitos à mão em Curitiba</p>
       </div>
       <p class="splash-q">Como você prefere comprar?</p>
       <div class="splash-options">
@@ -50,7 +50,7 @@
         <span class="brand-mark" aria-hidden="true">✿</span>
         <span class="brand-text">
           <strong>Atelier Nagori</strong>
-          <em>kokedamas artesanais</em>
+          <em>kokedamas &amp; bonsais</em>
         </span>
       </a>
       <nav class="main-nav" aria-label="Navegação principal">
@@ -75,11 +75,11 @@
     <div class="container hero-inner">
       <div class="hero-text">
         <p class="eyebrow">名残 · nagori — a beleza do que permanece</p>
-        <h1>Pequenos jardins<br>que cabem na palma da mão</h1>
+        <h1>Kokedamas e bonsais<br>que carregam o tempo</h1>
         <p class="lead">
-          Kokedamas feitos à mão, um a um, unindo a arte japonesa do musgo à
-          delicadeza das plantas brasileiras. Escolha o seu e receba em casa,
-          em qualquer canto do país.
+          Plantas e árvores feitas à mão, uma a uma, sobre esferas de musgo vivo.
+          Da folhagem de mesa ao bonsai formado ao longo de anos — escolha a sua
+          e receba em casa, em qualquer canto do país.
         </p>
         <div class="hero-actions">
           <a href="#produtos" class="btn btn-primary">Ver a coleção</a>
@@ -107,7 +107,7 @@
     <div class="container">
       <div class="section-head">
         <h2>A coleção</h2>
-        <p>Cada peça é única. Selecione seus favoritos e monte seu pedido.</p>
+        <p>55 peças artesanais — folhagens, floridas e bonsais. Cada uma acompanha base inclusa. Filtre por categoria e monte seu pedido.</p>
       </div>
       <div class="filters" id="filters" role="tablist" aria-label="Filtrar por categoria"></div>
       <div class="product-grid" id="productGrid"></div>
@@ -122,15 +122,17 @@
         <p class="eyebrow">Sobre o ateliê</p>
         <h2>Musgo, terra e tempo</h2>
         <p>
-          <em>Nagori</em> é a palavra japonesa para aquilo que fica — o rastro
-          de beleza que uma estação deixa ao partir. É esse o espírito de cada
-          kokedama que criamos: plantas vivas envoltas em musgo, amarradas à mão
-          com paciência e cuidado.
+          <em>Nagori</em> é o que as ondas deixam na areia ao se retirarem —
+          o vestígio silencioso do que passou e permaneceu. É esse o espírito de
+          cada peça: nasce devagar, com as mãos, sem pressa de ficar pronta.
+          Uma esfera de musgo amarrada fio a fio; uma árvore que levou anos para
+          tomar forma.
         </p>
         <p>
-          Trabalhamos com substrato selecionado, musgo sphagnum e espécies
-          escolhidas pela resistência e beleza. Nada é produzido em série —
-          cada esfera nasce das nossas mãos, pronta para viver anos ao seu lado.
+          Nada aqui é feito em série. Toda peça acompanha uma base inclusa — em
+          madeira ou ferro preto, à sua escolha — e um manual de cuidados escrito
+          para o clima de onde você mora. Escolha a sua: ela vai durar mais do
+          que a estação.
         </p>
         <a href="#produtos" class="btn btn-primary">Quero o meu</a>
       </div>
@@ -202,7 +204,7 @@
     <div class="container footer-inner">
       <div class="footer-brand">
         <strong>Atelier Nagori</strong>
-        <span>Kokedamas artesanais · feitos à mão no Brasil</span>
+        <span>Kokedamas e bonsais · feitos à mão em Curitiba, PR</span>
       </div>
       <div class="footer-links">
         <a href="#produtos">Loja</a>
@@ -230,6 +232,12 @@
           <button class="btn btn-ghost btn-sm" id="cartShipCalc">Ver opções</button>
         </div>
         <div class="cart-ship-options" id="cartShipOptions"></div>
+      </div>
+
+      <!-- Escolha da base (inclusa, sem custo) -->
+      <div class="cart-base">
+        <label for="baseSelect">Base inclusa — escolha o modelo <small>(sem custo)</small></label>
+        <select id="baseSelect"></select>
       </div>
 
       <div class="cart-totals">
