@@ -52,7 +52,7 @@
   /* ---------- carrinho: estado ----------
      cada linha do carrinho: cart[key] = { q: quantidade, b: índice da base }
      assim cada peça tem a SUA própria base (ou a base dupla, à escolha).   */
-  const STORE_KEY = "nagori_cart_v4";
+  const STORE_KEY = "nagori_cart_v5";
   let cart = load();            // { cartKey: { q, b } }
   let selectedShip = null;      // { id, nome, preco }
   let shipCep = "";
