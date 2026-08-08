@@ -193,6 +193,18 @@
      ================================================================= */
   let modalVariant = null;
   let modalProductId = null;
+  let modalGallery = [];
+  let modalGalIdx = 0;
+
+  function showGalImage(i) {
+    const n = modalGallery.length;
+    if (!n) return;
+    modalGalIdx = (i + n) % n;
+    const img = $("#modalMainImg");
+    if (img) img.src = modalGallery[modalGalIdx];
+    if ($("#galIdx")) $("#galIdx").textContent = modalGalIdx + 1;
+    $$(".mthumb").forEach((b, j) => b.classList.toggle("active", j === modalGalIdx));
+  }
 
   function openModal(id) {
     const p = product(id);
@@ -218,11 +230,20 @@
       : `<div class="modal-price">${BRL(p.preco)}</div>`;
 
     const gal = fotos(p);
+    modalGallery = gal;
+    modalGalIdx = 0;
+    const multi = gal.length > 1;
     const galeriaHTML = gal.length
-      ? `<img id="modalMainImg" src="${gal[0]}" alt="${p.nome}">
-         ${gal.length > 1
+      ? `<div class="modal-gallery">
+           <img id="modalMainImg" src="${gal[0]}" alt="${p.nome}">
+           ${multi ? `
+             <button class="gal-nav gal-prev" data-gal="-1" aria-label="Foto anterior">‹</button>
+             <button class="gal-nav gal-next" data-gal="1" aria-label="Próxima foto">›</button>
+             <span class="gal-count"><b id="galIdx">1</b> / ${gal.length}</span>` : ""}
+         </div>
+         ${multi
            ? `<div class="modal-thumbs">${gal.map((src, i) =>
-               `<button class="mthumb ${i === 0 ? "active" : ""}" data-src="${src}">
+               `<button class="mthumb ${i === 0 ? "active" : ""}" data-thumb="${i}">
                   <img src="${src}" alt="${p.nome} — foto ${i + 1}" loading="lazy"></button>`).join("")}</div>`
            : ""}`
       : fotoEmBreve();
@@ -552,8 +573,10 @@
       const rm = e.target.closest("[data-rm]");
       const vb = e.target.closest(".vbtn");
       const mt = e.target.closest(".mthumb");
+      const gn = e.target.closest(".gal-nav");
 
-      if (mt) { $("#modalMainImg").src = mt.dataset.src; $$(".mthumb").forEach((b) => b.classList.remove("active")); mt.classList.add("active"); return; }
+      if (gn) { showGalImage(modalGalIdx + parseInt(gn.dataset.gal, 10)); return; }
+      if (mt) { showGalImage(parseInt(mt.dataset.thumb, 10)); return; }
       if (enc) { e.preventDefault(); encomendar(enc.dataset.encomenda); }
       else if (add) { addToCart(add.dataset.add, modalContext(add)); if ($("#productModal").classList.contains("open")) closeModal(); openCart(); }
       else if (vb) selectVariant(vb);
@@ -569,7 +592,25 @@
     $("#drawerOverlay").addEventListener("click", closeCart);
     $("#modalOverlay").addEventListener("click", (e) => { if (e.target === $("#modalOverlay")) closeModal(); });
     $("#cartEmptyBtn").addEventListener("click", () => { closeCart(); location.hash = "#produtos"; });
-    document.addEventListener("keydown", (e) => { if (e.key === "Escape") { closeCart(); closeModal(); } });
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") { closeCart(); closeModal(); }
+      if ($("#productModal").classList.contains("open") && modalGallery.length > 1) {
+        if (e.key === "ArrowRight") showGalImage(modalGalIdx + 1);
+        if (e.key === "ArrowLeft") showGalImage(modalGalIdx - 1);
+      }
+    });
+
+    // swipe entre fotos no celular
+    let touchX = null;
+    $("#productModal").addEventListener("touchstart", (e) => {
+      touchX = e.target.closest(".modal-gallery") ? e.changedTouches[0].clientX : null;
+    }, { passive: true });
+    $("#productModal").addEventListener("touchend", (e) => {
+      if (touchX === null || modalGallery.length < 2) return;
+      const dx = e.changedTouches[0].clientX - touchX;
+      if (Math.abs(dx) > 40) showGalImage(modalGalIdx + (dx < 0 ? 1 : -1));
+      touchX = null;
+    }, { passive: true });
 
     ["#freteCep", "#cartCep"].forEach((sel) => {
       const el = $(sel);
