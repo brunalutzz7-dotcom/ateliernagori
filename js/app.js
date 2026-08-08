@@ -45,15 +45,26 @@
   const product = (id) => PRODUCTS.find((p) => p.id === id);
   const catNome = (id) => (CATEGORIAS.find((c) => c.id === id) || {}).nome || id;
 
-  /* ---------- carrinho: estado ---------- */
-  const STORE_KEY = "nagori_cart_v2";
-  let cart = load();            // { cartKey: qty }
+  /* ---------- carrinho: estado ----------
+     cada linha do carrinho: cart[key] = { q: quantidade, b: índice da base }
+     assim cada peça tem a SUA própria base (ou a base dupla, à escolha).   */
+  const STORE_KEY = "nagori_cart_v3";
+  let cart = load();            // { cartKey: { q, b } }
   let selectedShip = null;      // { id, nome, preco }
   let shipCep = "";
-  let selectedBase = BASES[0];  // objeto { nome, preco, encomenda? }
-  const baseCusto = () => selectedBase.preco * Math.max(cartCount(), 0);
 
-  function load() { try { return JSON.parse(localStorage.getItem(STORE_KEY)) || {}; } catch { return {}; } }
+  function load() {
+    try {
+      const raw = JSON.parse(localStorage.getItem(STORE_KEY)) || {};
+      // saneia: garante formato { q, b }
+      Object.keys(raw).forEach((k) => {
+        if (typeof raw[k] === "number") raw[k] = { q: raw[k], b: 0 };
+        if (!raw[k] || typeof raw[k].q !== "number") delete raw[k];
+        else if (typeof raw[k].b !== "number" || !BASES[raw[k].b]) raw[k].b = 0;
+      });
+      return raw;
+    } catch { return {}; }
+  }
   function save() { localStorage.setItem(STORE_KEY, JSON.stringify(cart)); }
 
   // cartKey = id  ||  id + "|" + variantLabel
@@ -63,8 +74,10 @@
     return i === -1 ? { id: key, variant: null } : { id: key.slice(0, i), variant: key.slice(i + 1) };
   };
   const keyPreco = (key) => { const { id, variant } = parseKey(key); const p = product(id); return p ? precoDaVariante(p, variant) : 0; };
-  const cartCount = () => Object.values(cart).reduce((a, b) => a + b, 0);
-  const subtotal = () => Object.entries(cart).reduce((a, [k, q]) => a + keyPreco(k) * q, 0);
+  const baseOf = (key) => BASES[(cart[key] && cart[key].b) || 0] || BASES[0];
+  const cartCount = () => Object.values(cart).reduce((a, v) => a + v.q, 0);
+  const subtotal = () => Object.entries(cart).reduce((a, [k, v]) => a + keyPreco(k) * v.q, 0);
+  const baseCusto = () => Object.entries(cart).reduce((a, [k, v]) => a + baseOf(k).preco * v.q, 0);
 
   /* =================================================================
      CONFIG → DOM
@@ -84,16 +97,14 @@
     $$("[data-wa-link]").forEach((a) => (a.href = waBase()));
     $$("[data-origem]").forEach((el) => (el.textContent = CONFIG.origem.cidade));
     $$("[data-origem-uf]").forEach((el) => (el.textContent = `${CONFIG.origem.cidade}/${CONFIG.origem.uf}`));
+  }
 
-    // opções de base no carrinho
-    const sel = $("#baseSelect");
-    if (sel) {
-      sel.innerHTML = BASES.map((b, i) => {
-        const extra = b.preco > 0 ? ` (+${BRL(b.preco)} · encomenda)` : " (inclusa)";
-        return `<option value="${i}">${b.nome}${extra}</option>`;
-      }).join("");
-      selectedBase = BASES[0];
-    }
+  // <option>s de base (usado em cada item do carrinho)
+  function baseOptions(selIdx) {
+    return BASES.map((b, i) => {
+      const extra = b.preco > 0 ? ` (+${BRL(b.preco)} · encomenda)` : " (inclusa)";
+      return `<option value="${i}" ${i === selIdx ? "selected" : ""}>${b.nome}${extra}</option>`;
+    }).join("");
   }
 
   /* =================================================================
@@ -214,17 +225,22 @@
     if (!p) return;
     const v = variant !== undefined ? variant : (temVariantes(p) ? p.variantes[0].label : null);
     const key = makeKey(id, v);
-    cart[key] = (cart[key] || 0) + 1;
+    if (cart[key]) cart[key].q += 1;
+    else cart[key] = { q: 1, b: 0 };
     save();
     renderCart();
     toast(`${p.nome}${v ? " · " + v : ""} adicionado ✓`);
     bump();
   }
   function setQty(key, qty) {
+    if (!cart[key]) return;
     if (qty <= 0) delete cart[key];
-    else cart[key] = qty;
+    else cart[key].q = qty;
     save();
     renderCart();
+  }
+  function setBase(key, idx) {
+    if (cart[key]) { cart[key].b = idx; save(); renderCart(); }
   }
 
   function renderCart() {
@@ -233,26 +249,34 @@
     $("#cartCount").style.display = count ? "grid" : "none";
     $("#cartDrawer").classList.toggle("empty", count === 0);
 
-    $("#cartItems").innerHTML = Object.entries(cart).map(([key, q]) => {
+    $("#cartItems").innerHTML = Object.entries(cart).map(([key, v]) => {
       const { id, variant } = parseKey(key);
       const p = product(id);
       if (!p) return "";
       const unit = precoDaVariante(p, variant);
+      const base = baseOf(key);
+      const baseExtra = base.preco > 0
+        ? `<div class="ci-base-cost">+ ${BRL(base.preco)}${v.q > 1 ? " × " + v.q : ""} (base ${base.nome})</div>`
+        : "";
       return `
         <div class="cart-item">
           <div class="ci-media">${media(p)}</div>
-          <div>
+          <div class="ci-info">
             <h4>${p.nome}</h4>
             ${variant ? `<div class="ci-var">${variant}</div>` : ""}
             <div class="ci-price">${BRL(unit)}</div>
             <div class="qty">
               <button data-dec="${key}" aria-label="Diminuir">−</button>
-              <span>${q}</span>
+              <span>${v.q}</span>
               <button data-inc="${key}" aria-label="Aumentar">+</button>
             </div>
+            <label class="ci-base-label">Base desta peça
+              <select class="ci-base" data-base-key="${key}">${baseOptions(v.b)}</select>
+            </label>
+            ${baseExtra}
           </div>
           <div class="ci-right">
-            <div class="ci-line">${BRL(unit * q)}</div>
+            <div class="ci-line">${BRL(unit * v.q)}</div>
             <button class="ci-remove" data-rm="${key}">remover</button>
           </div>
         </div>`;
@@ -265,13 +289,13 @@
     const sub = subtotal();
     $("#sumSubtotal").textContent = BRL(sub);
 
-    // base especial (com custo) — por peça
-    const qtd = cartCount();
-    const base = selectedBase.preco * qtd;
+    // bases especiais (com custo) — somadas de todas as peças
+    const base = baseCusto();
     const lineBase = $("#lineBase");
-    if (base > 0 && qtd > 0) {
+    if (base > 0) {
       lineBase.hidden = false;
-      $("#labelBase").textContent = `Base — ${selectedBase.nome}${qtd > 1 ? " × " + qtd : ""}`;
+      const nEsp = Object.entries(cart).reduce((a, [k, v]) => a + (baseOf(k).preco > 0 ? v.q : 0), 0);
+      $("#labelBase").textContent = `Bases especiais${nEsp > 1 ? " (" + nEsp + ")" : ""}`;
       $("#sumBase").textContent = BRL(base);
     } else {
       lineBase.hidden = true;
@@ -370,15 +394,17 @@
      CHECKOUT — INFINITEPAY  /  WHATSAPP
      ================================================================= */
   function buildOrderItems() {
-    const items = Object.entries(cart).map(([key, q]) => {
+    const items = [];
+    Object.entries(cart).forEach(([key, v]) => {
       const { id, variant } = parseKey(key);
       const p = product(id);
-      const nome = `${p.nome}${variant ? " · " + variant : ""} (base: ${selectedBase.nome})`;
-      return { name: nome, price: Math.round(precoDaVariante(p, variant) * 100), quantity: q };
+      const base = baseOf(key);
+      const nome = `${p.nome}${variant ? " · " + variant : ""} (base: ${base.nome})`;
+      items.push({ name: nome, price: Math.round(precoDaVariante(p, variant) * 100), quantity: v.q });
+      // base especial desta peça (com custo) — uma por unidade
+      if (base.preco > 0)
+        items.push({ name: `Base especial — ${base.nome} p/ ${p.nome} (encomenda)`, price: Math.round(base.preco * 100), quantity: v.q });
     });
-    // base especial (com custo) — uma por peça
-    if (selectedBase.preco > 0 && cartCount() > 0)
-      items.push({ name: `Base especial — ${selectedBase.nome} (encomenda)`, price: Math.round(selectedBase.preco * 100), quantity: cartCount() });
     if (selectedShip && selectedShip.preco > 0)
       items.push({ name: `Frete — ${selectedShip.nome}`, price: Math.round(selectedShip.preco * 100), quantity: 1 });
     return items;
@@ -403,15 +429,16 @@
   function whatsappOrder() {
     if (cartCount() === 0) return;
     let msg = "*Novo pedido — Atelier Nagori* 🌿%0A%0A";
-    Object.entries(cart).forEach(([key, q]) => {
+    Object.entries(cart).forEach(([key, v]) => {
       const { id, variant } = parseKey(key);
       const p = product(id);
-      msg += `• ${q}× ${p.nome}${variant ? " (" + variant + ")" : ""} — ${BRL(precoDaVariante(p, variant) * q)}%0A`;
+      const base = baseOf(key);
+      msg += `• ${v.q}× ${p.nome}${variant ? " (" + variant + ")" : ""} — ${BRL(precoDaVariante(p, variant) * v.q)}%0A`;
+      msg += `   base: ${base.nome}${base.preco > 0 ? " (+" + BRL(base.preco) + (v.q > 1 ? " × " + v.q : "") + ", encomenda)" : " (inclusa)"}%0A`;
     });
     const base = baseCusto();
-    msg += `%0A*Base escolhida:* ${selectedBase.nome}${selectedBase.preco > 0 ? " (encomenda)" : " (inclusa)"}%0A`;
-    msg += `*Subtotal:* ${BRL(subtotal())}%0A`;
-    if (base > 0) msg += `*Base especial:* ${BRL(base)}%0A`;
+    msg += `%0A*Subtotal:* ${BRL(subtotal())}%0A`;
+    if (base > 0) msg += `*Bases especiais:* ${BRL(base)}%0A`;
     if (selectedShip) {
       msg += `*Frete (${selectedShip.nome}):* ${selectedShip.preco === 0 ? "Grátis" : BRL(selectedShip.preco)}%0A`;
       msg += `*Total:* ${BRL(subtotal() + base + selectedShip.preco)}%0A`;
@@ -522,9 +549,10 @@
       updateTotals();
     });
 
-    $("#baseSelect").addEventListener("change", (e) => {
-      selectedBase = BASES[parseInt(e.target.value, 10)] || BASES[0];
-      updateTotals();
+    // base escolhida por peça (dentro de cada item do carrinho)
+    $("#cartItems").addEventListener("change", (e) => {
+      const s = e.target.closest(".ci-base");
+      if (s) setBase(s.dataset.baseKey, parseInt(s.value, 10));
     });
     $("#checkoutBtn").addEventListener("click", checkout);
     $("#waOrderBtn").addEventListener("click", whatsappOrder);
