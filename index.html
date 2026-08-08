@@ -234,14 +234,16 @@
         <div class="cart-ship-options" id="cartShipOptions"></div>
       </div>
 
-      <!-- Escolha da base (inclusa, sem custo) -->
+      <!-- Escolha da base -->
       <div class="cart-base">
-        <label for="baseSelect">Base inclusa — escolha o modelo <small>(sem custo)</small></label>
+        <label for="baseSelect">Base — escolha o modelo</label>
         <select id="baseSelect"></select>
+        <small class="base-hint" id="baseHint">Bases de madeira e tripé de ferro são inclusas. Tronco e cubo de ferro são especiais (encomenda, com custo à parte).</small>
       </div>
 
       <div class="cart-totals">
         <div class="line"><span>Subtotal</span><span id="sumSubtotal">R$ 0,00</span></div>
+        <div class="line" id="lineBase" hidden><span id="labelBase">Base</span><span id="sumBase">—</span></div>
         <div class="line"><span>Frete</span><span id="sumFrete">—</span></div>
         <div class="line total"><span>Total</span><span id="sumTotal">R$ 0,00</span></div>
       </div>

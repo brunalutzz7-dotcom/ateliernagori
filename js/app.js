@@ -50,7 +50,8 @@
   let cart = load();            // { cartKey: qty }
   let selectedShip = null;      // { id, nome, preco }
   let shipCep = "";
-  let selectedBase = BASES[0];
+  let selectedBase = BASES[0];  // objeto { nome, preco, encomenda? }
+  const baseCusto = () => selectedBase.preco * Math.max(cartCount(), 0);
 
   function load() { try { return JSON.parse(localStorage.getItem(STORE_KEY)) || {}; } catch { return {}; } }
   function save() { localStorage.setItem(STORE_KEY, JSON.stringify(cart)); }
@@ -86,7 +87,13 @@
 
     // opções de base no carrinho
     const sel = $("#baseSelect");
-    if (sel) sel.innerHTML = BASES.map((b) => `<option>${b}</option>`).join("");
+    if (sel) {
+      sel.innerHTML = BASES.map((b, i) => {
+        const extra = b.preco > 0 ? ` (+${BRL(b.preco)} · encomenda)` : " (inclusa)";
+        return `<option value="${i}">${b.nome}${extra}</option>`;
+      }).join("");
+      selectedBase = BASES[0];
+    }
   }
 
   /* =================================================================
@@ -187,7 +194,7 @@
           <p class="modal-desc">${p.descricao}</p>
           ${variantesHTML}
           <div class="modal-tags">${chips(p)}</div>
-          <p class="modal-base">✔ Acompanha base inclusa (madeira ou ferro preto), à sua escolha no fim do pedido.</p>
+          <p class="modal-base">✔ Acompanha base inclusa (madeira ou tripé de ferro), à sua escolha no carrinho. Bases especiais — tronco ou cubo de ferro — são feitas sob encomenda e têm custo à parte.</p>
           ${cta}
         </div>
       </div>`;
@@ -257,9 +264,22 @@
   function updateTotals() {
     const sub = subtotal();
     $("#sumSubtotal").textContent = BRL(sub);
+
+    // base especial (com custo) — por peça
+    const qtd = cartCount();
+    const base = selectedBase.preco * qtd;
+    const lineBase = $("#lineBase");
+    if (base > 0 && qtd > 0) {
+      lineBase.hidden = false;
+      $("#labelBase").textContent = `Base — ${selectedBase.nome}${qtd > 1 ? " × " + qtd : ""}`;
+      $("#sumBase").textContent = BRL(base);
+    } else {
+      lineBase.hidden = true;
+    }
+
     const frete = selectedShip ? selectedShip.preco : null;
     $("#sumFrete").textContent = frete === null ? "—" : frete === 0 ? "Grátis" : BRL(frete);
-    $("#sumTotal").textContent = BRL(sub + (frete || 0));
+    $("#sumTotal").textContent = BRL(sub + base + (frete || 0));
   }
 
   function bump() {
@@ -353,9 +373,12 @@
     const items = Object.entries(cart).map(([key, q]) => {
       const { id, variant } = parseKey(key);
       const p = product(id);
-      const nome = `${p.nome}${variant ? " · " + variant : ""} (base: ${selectedBase})`;
+      const nome = `${p.nome}${variant ? " · " + variant : ""} (base: ${selectedBase.nome})`;
       return { name: nome, price: Math.round(precoDaVariante(p, variant) * 100), quantity: q };
     });
+    // base especial (com custo) — uma por peça
+    if (selectedBase.preco > 0 && cartCount() > 0)
+      items.push({ name: `Base especial — ${selectedBase.nome} (encomenda)`, price: Math.round(selectedBase.preco * 100), quantity: cartCount() });
     if (selectedShip && selectedShip.preco > 0)
       items.push({ name: `Frete — ${selectedShip.nome}`, price: Math.round(selectedShip.preco * 100), quantity: 1 });
     return items;
@@ -385,11 +408,13 @@
       const p = product(id);
       msg += `• ${q}× ${p.nome}${variant ? " (" + variant + ")" : ""} — ${BRL(precoDaVariante(p, variant) * q)}%0A`;
     });
-    msg += `%0A*Base escolhida:* ${selectedBase}%0A`;
+    const base = baseCusto();
+    msg += `%0A*Base escolhida:* ${selectedBase.nome}${selectedBase.preco > 0 ? " (encomenda)" : " (inclusa)"}%0A`;
     msg += `*Subtotal:* ${BRL(subtotal())}%0A`;
+    if (base > 0) msg += `*Base especial:* ${BRL(base)}%0A`;
     if (selectedShip) {
       msg += `*Frete (${selectedShip.nome}):* ${selectedShip.preco === 0 ? "Grátis" : BRL(selectedShip.preco)}%0A`;
-      msg += `*Total:* ${BRL(subtotal() + selectedShip.preco)}%0A`;
+      msg += `*Total:* ${BRL(subtotal() + base + selectedShip.preco)}%0A`;
     }
     if (shipCep) msg += `*CEP de entrega:* ${shipCep}%0A`;
     msg += `%0AGostaria de finalizar este pedido. 😊`;
@@ -497,7 +522,10 @@
       updateTotals();
     });
 
-    $("#baseSelect").addEventListener("change", (e) => { selectedBase = e.target.value; });
+    $("#baseSelect").addEventListener("change", (e) => {
+      selectedBase = BASES[parseInt(e.target.value, 10)] || BASES[0];
+      updateTotals();
+    });
     $("#checkoutBtn").addEventListener("click", checkout);
     $("#waOrderBtn").addEventListener("click", whatsappOrder);
     $("#contactForm").addEventListener("submit", submitContact);

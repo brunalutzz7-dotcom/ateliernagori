@@ -306,6 +306,7 @@ h2 { font-size: clamp(1.9rem, 4vw, 2.9rem); }
 .cart-base label { font-size: .85rem; font-weight: 500; display: block; margin-bottom: .4rem; }
 .cart-base label small { color: var(--ink-soft); font-weight: 400; }
 .cart-base select { width: 100%; padding: .6rem .8rem; border: 1px solid var(--line); border-radius: var(--radius-sm); background: #fff; font-family: var(--sans); font-size: .9rem; }
+.base-hint { display: block; margin-top: .45rem; font-size: .76rem; color: var(--ink-soft); line-height: 1.35; }
 .ci-var { font-size: .78rem; color: var(--terra-dk); margin-bottom: .1rem; }
 
 /* ---- Tela de entrada (splash) ---- */

@@ -169,15 +169,17 @@ const PRODUCTS = [
     descricao: "Sai em dois desenhos de folha: a fêmea, de folíolo largo e arredondado, e o macho, de folha recortada e fina. Tronco lenhoso e porte ereto — peça de canto e de entrada.", preco: 780, img: IMG("arvore-felicidade") },
 ];
 
-/* Bases inclusas (escolhidas no fechamento do pedido, sem custo) ------- */
+/* Bases — escolhidas no carrinho.
+   preco 0 = inclusa (vem com o pedido, sem custo).
+   preco > 0 = base especial, feita sob encomenda, com custo à parte.   */
 const BASES = [
-  "Madeira lisa",
-  "Madeira com aro",
-  "Madeira com aro duplo",
-  "Madeira com gancho",
-  "Tronco natural",
-  "Tronco alto",
-  "Cubo de ferro (baixo)",
-  "Cubo de ferro (alto)",
-  "Tripé de ferro (de chão)",
+  { nome: "Madeira lisa", preco: 0 },
+  { nome: "Madeira com aro", preco: 0 },
+  { nome: "Madeira com aro duplo", preco: 0 },
+  { nome: "Madeira com gancho", preco: 0 },
+  { nome: "Tripé de ferro (de chão)", preco: 0 },
+  { nome: "Tronco natural", preco: 120, encomenda: true },
+  { nome: "Tronco alto", preco: 100, encomenda: true },
+  { nome: "Cubo de ferro (baixo)", preco: 90, encomenda: true },
+  { nome: "Cubo de ferro (alto)", preco: 120, encomenda: true },
 ];
