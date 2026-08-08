@@ -62,7 +62,7 @@ const PRODUCTS = [
   { id: "maranta-white-fusion", nome: "Maranta White Fusion", especie: "Calathea 'White Fusion'", categoria: "dentro", ambiente: "interno", pet: "safe",
     descricao: "Manchas brancas irregulares que invadem o verde, cada folha com um desenho próprio. A mais delicada da família — pede umidade constante.", preco: 310, img: IMG("maranta-white-fusion") },
   { id: "asplenio", nome: "Asplênio", especie: "Asplenium nidus", categoria: "dentro", ambiente: "interno", pet: "safe",
-    descricao: "Folhas inteiras em roseta, brilhantes. Cresce como um ninho aberto sobre a esfera.", preco: 365 },
+    descricao: "Folhas inteiras em roseta, brilhantes. Cresce como um ninho aberto sobre a esfera.", preco: 365, img: IMG("asplenio") },
   { id: "maranta-cascavel", nome: "Maranta Cascavel", especie: "Goeppertia insignis", categoria: "dentro", ambiente: "interno", pet: "safe",
     descricao: "Folha estreita e ondulada, salpicada de manchas escuras alternadas — o nome vem do desenho, que lembra pele de cobra. O par montado junto fica especialmente bonito.", variantes: [{ label: "Peça única", preco: 145 }, { label: "O par", preco: 250 }], img: IMG("maranta-cascavel") },
   { id: "maranta-triostar", nome: "Maranta Triostar", especie: "Stromanthe sanguinea 'Triostar'", categoria: "dentro", ambiente: "interno", pet: "safe",
