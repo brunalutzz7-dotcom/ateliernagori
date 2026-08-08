@@ -72,7 +72,7 @@ const PRODUCTS = [
   { id: "ficus-lyrata", nome: "Fícus Lyrata", especie: "Ficus lyrata", categoria: "dentro", ambiente: "interno", pet: "toxic",
     descricao: "Folha grande em forma de lira, nervura marcada. Escolhe um lugar e não gosta de ser mudada dele.", preco: 230, img: IMG("ficus-lyrata") },
   { id: "ficus-tineke", nome: "Fícus Tineke", especie: "Ficus elastica 'Tineke'", categoria: "dentro", ambiente: "interno", pet: "toxic",
-    descricao: "Folha grossa mesclada em creme e verde, nervura central rosada. Cada folha abre com um desenho diferente da anterior.", preco: 230 },
+    descricao: "Folha grossa mesclada em creme e verde, nervura central rosada. Cada folha abre com um desenho diferente da anterior.", preco: 230, img: IMG("ficus-tineke") },
   { id: "ficus-ruby", nome: "Fícus Ruby", especie: "Ficus elastica 'Ruby'", categoria: "dentro", ambiente: "interno", pet: "toxic",
     descricao: "Variegação em rosa vivo sobre verde escuro, mais intensa nas folhas novas. Quanto mais luz recebe, mais forte fica o rosa.", preco: 230 },
   { id: "philodendron-birkin", nome: "Philodendron Birkin", especie: "Philodendron 'Birkin'", categoria: "dentro", ambiente: "interno", pet: "toxic",
