@@ -14,6 +14,35 @@
 </head>
 <body>
 
+  <!-- ================= TELA DE ENTRADA (splash) ================= -->
+  <div class="splash" id="splash">
+    <div class="splash-card">
+      <div class="splash-brand">
+        <span class="splash-mark" aria-hidden="true">✿</span>
+        <h1>Atelier Nagori</h1>
+        <p class="splash-sub">kokedamas artesanais · feitos à mão em Curitiba</p>
+      </div>
+      <p class="splash-q">Como você prefere comprar?</p>
+      <div class="splash-options">
+        <a class="splash-opt splash-wa" data-wa-link href="#" target="_blank" rel="noopener">
+          <span class="splash-ico" aria-hidden="true">
+            <svg viewBox="0 0 32 32" width="42" height="42" fill="#fff">
+              <path d="M16 3C9.4 3 4 8.4 4 15c0 2.1.6 4.1 1.6 5.9L4 29l8.3-1.6c1.7.9 3.6 1.4 5.7 1.4 6.6 0 12-5.4 12-12S22.6 3 16 3z" fill="#25D366"/>
+              <path d="M22.6 18.6c-.4-.2-2.1-1-2.4-1.2-.3-.1-.6-.2-.8.2-.2.4-.9 1.2-1.1 1.4-.2.2-.4.2-.8.1-.4-.2-1.5-.6-2.9-1.8-1.1-1-1.8-2.2-2-2.5-.2-.4 0-.5.2-.7.2-.2.4-.4.5-.7.2-.2.2-.4.4-.7.1-.2 0-.5 0-.7-.1-.2-.8-2-1.1-2.7-.3-.7-.6-.6-.8-.6h-.7c-.2 0-.6.1-.9.5-.3.4-1.2 1.2-1.2 2.9 0 1.7 1.2 3.4 1.4 3.6.2.2 2.5 3.8 6 5.3.8.4 1.5.6 2 .8.8.3 1.6.2 2.2.1.7-.1 2.1-.9 2.4-1.7.3-.8.3-1.5.2-1.7-.1-.1-.3-.2-.7-.4z" fill="#fff"/>
+            </svg>
+          </span>
+          <strong>Comprar pelo WhatsApp</strong>
+          <small>Fale direto comigo e faça seu pedido</small>
+        </a>
+        <button class="splash-opt splash-site" id="enterSite">
+          <span class="splash-ico splash-ico-leaf" aria-hidden="true">🪴</span>
+          <strong>Comprar no site</strong>
+          <small>Veja a loja e monte seu carrinho</small>
+        </button>
+      </div>
+    </div>
+  </div>
+
   <!-- ================= HEADER ================= -->
   <header class="site-header" id="top">
     <div class="container header-inner">
@@ -66,7 +95,7 @@
   <!-- ================= SELOS ================= -->
   <section class="badges">
     <div class="container badges-inner">
-      <div class="badge"><span>✿</span> Feito à mão em <strong>São Paulo</strong></div>
+      <div class="badge"><span>✿</span> Feito à mão em <strong data-origem>Curitiba</strong></div>
       <div class="badge"><span>❁</span> Entrega para <strong>todo o Brasil</strong></div>
       <div class="badge"><span>❀</span> Pagamento seguro via <strong>InfinitePay</strong></div>
       <div class="badge"><span>✽</span> Frete grátis acima de <strong id="freteGratisLabel">R$ 350</strong></div>
@@ -123,7 +152,7 @@
             <button class="btn btn-primary" id="freteCalc">Calcular</button>
           </div>
           <small id="freteLocal" class="frete-local"></small>
-          <p class="frete-note">Valores estimados para 1 kokedama saindo de São Paulo/SP. O valor final considera a quantidade do seu pedido no carrinho.</p>
+          <p class="frete-note">Valores estimados para 1 kokedama saindo de <span data-origem-uf>Curitiba/PR</span>. O valor final considera a quantidade do seu pedido no carrinho.</p>
         </div>
         <div class="frete-results" id="freteResults">
           <p class="frete-placeholder">Digite seu CEP para ver as opções de entrega.</p>

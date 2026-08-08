@@ -277,6 +277,41 @@ h2 { font-size: clamp(1.9rem, 4vw, 2.9rem); }
 .modal-care { background: var(--sand-lt); border-radius: var(--radius-sm); padding: .8rem 1rem; font-size: .86rem; color: var(--ink-soft); margin: 1rem 0 1.4rem; }
 .modal-care strong { color: var(--moss-deep); display: block; margin-bottom: .2rem; font-size: .78rem; text-transform: uppercase; letter-spacing: .05em; }
 
+/* ---- Tela de entrada (splash) ---- */
+.splash {
+  position: fixed; inset: 0; z-index: 100;
+  background:
+    radial-gradient(120% 80% at 50% 0%, #4e6b45 0%, #33472e 55%, #263821 100%);
+  display: grid; place-items: center; padding: 1.5rem;
+  transition: opacity .45s ease, visibility .45s ease;
+}
+.splash.hide { opacity: 0; visibility: hidden; }
+body.splash-open { overflow: hidden; }
+.splash-card {
+  width: min(560px, 100%); text-align: center; color: #f3efe4;
+  animation: splashIn .6s ease both;
+}
+@keyframes splashIn { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+.splash-mark { color: #cbe0b8; font-size: 2.4rem; display: block; }
+.splash-brand h1 { color: #fff; font-size: clamp(2.4rem, 7vw, 3.4rem); margin: .3rem 0 .2rem; }
+.splash-sub { color: #cbd7bd; font-size: .95rem; letter-spacing: .04em; margin: 0; }
+.splash-q { margin: 2.2rem 0 1.2rem; font-family: var(--serif); font-size: 1.5rem; color: #f3efe4; }
+.splash-options { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.splash-opt {
+  display: flex; flex-direction: column; align-items: center; gap: .5rem;
+  background: rgba(251, 249, 243, .06); border: 1px solid rgba(255,255,255,.18);
+  border-radius: var(--radius); padding: 1.7rem 1.2rem; cursor: pointer;
+  color: #f3efe4; font-family: var(--sans); transition: .22s ease; text-align: center;
+}
+.splash-opt:hover { transform: translateY(-3px); background: rgba(251, 249, 243, .12); border-color: rgba(255,255,255,.4); }
+.splash-opt strong { font-size: 1.05rem; }
+.splash-opt small { color: #c3d1b7; font-size: .82rem; line-height: 1.35; }
+.splash-ico { width: 62px; height: 62px; border-radius: 50%; display: grid; place-items: center; margin-bottom: .3rem; }
+.splash-wa .splash-ico { background: #128C7E; }
+.splash-ico-leaf { font-size: 2.2rem; background: rgba(203,224,184,.18); }
+.splash-skip { margin-top: 1.6rem; }
+.splash-skip button { background: none; border: none; color: #cbd7bd; font-size: .85rem; text-decoration: underline; cursor: pointer; }
+
 /* ---- Responsivo ---- */
 @media (max-width: 860px) {
   .main-nav { display: none; }
@@ -288,4 +323,5 @@ h2 { font-size: clamp(1.9rem, 4vw, 2.9rem); }
   .about-art { order: -1; }
   .modal-inner { grid-template-columns: 1fr; }
   .modal-media { max-height: 240px; overflow: hidden; }
+  .splash-options { grid-template-columns: 1fr; }
 }

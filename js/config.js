@@ -15,19 +15,21 @@ const CONFIG = {
      Basta o texto depois da barra (sem @ e sem https).
      Enquanto estiver "SEU_USUARIO_INFINITEPAY" o checkout mostra um
      aviso pedindo para configurar.                                    */
-  infinitePayHandle: "SEU_USUARIO_INFINITEPAY",
+  infinitePayHandle: "ateliernagori",
 
   /* -------------------------------------------------------------------
      2. CONTATO
      ------------------------------------------------------------------- */
   // WhatsApp no formato internacional, só números: 55 + DDD + número
-  whatsapp: "5511999999999",
-  // E-mail que recebe os formulários de contato
-  email: "contato@ateliernagori.com.br",
+  whatsapp: "5541992895505",
+  // E-mail que RECEBE os formulários de contato.
+  // Fica oculto dos clientes — usado só para a mensagem chegar até você.
+  email: "brunalutzz7@gmail.com",
+  emailVisivel: false, // não mostra o e-mail no site
   instagram: "ateliernagori",
 
   // Cidade de origem dos envios (afeta o cálculo de frete)
-  origem: { cidade: "São Paulo", uf: "SP" },
+  origem: { cidade: "Curitiba", uf: "PR" },
 
   /* -------------------------------------------------------------------
      3. FRETE NACIONAL
@@ -36,10 +38,11 @@ const CONFIG = {
      partir da origem. Os valores são um ponto de partida realista —
      ajuste conforme a sua negociação com cada transportadora.
 
-     Zonas (calculadas automaticamente pelo CEP de destino):
-       1 = mesmo estado de origem
-       2 = estados vizinhos / Sul e Sudeste
-       3 = Centro-Oeste e Bahia
+     Zonas (calculadas automaticamente pelo CEP de destino, a partir
+     de Curitiba/PR):
+       1 = Paraná e Santa Catarina (perto)
+       2 = São Paulo e Rio Grande do Sul
+       3 = Sudeste (RJ/MG/ES) e Centro-Oeste
        4 = Nordeste
        5 = Norte
      "extra" é o acréscimo por kokedama adicional no mesmo pacote.      */

@@ -34,16 +34,36 @@
   /* =================================================================
      CONFIG → DOM
      ================================================================= */
+  const waBase = () => `https://wa.me/${onlyDigits(CONFIG.whatsapp)}`;
+
   function applyConfig() {
     $("#year").textContent = new Date().getFullYear();
     $("#freteGratisLabel").textContent = BRL(CONFIG.freteGratisAcima);
-    const waBase = `https://wa.me/${onlyDigits(CONFIG.whatsapp)}`;
-    $("#waLink").href = waBase;
+
+    // contato
+    $("#waLink").href = waBase();
     $("#waLink").textContent = "WhatsApp";
-    $("#mailLink").href = `mailto:${CONFIG.email}`;
-    $("#mailLink").textContent = CONFIG.email;
     $("#igLink").href = `https://instagram.com/${CONFIG.instagram}`;
     $("#igLink").textContent = "@" + CONFIG.instagram;
+
+    // e-mail: só aparece se emailVisivel for true
+    const mail = $("#mailLink");
+    if (mail) {
+      if (CONFIG.emailVisivel) {
+        mail.href = `mailto:${CONFIG.email}`;
+        mail.textContent = CONFIG.email;
+      } else {
+        mail.closest("li")?.remove();
+      }
+    }
+
+    // tela de entrada (splash) → WhatsApp
+    $$("[data-wa-link]").forEach((a) => (a.href = waBase()));
+
+    // cidade de origem nos textos
+    const cidade = `${CONFIG.origem.cidade}/${CONFIG.origem.uf}`;
+    $$("[data-origem]").forEach((el) => (el.textContent = CONFIG.origem.cidade));
+    $$("[data-origem-uf]").forEach((el) => (el.textContent = cidade));
   }
 
   /* =================================================================
@@ -191,10 +211,19 @@
   /* =================================================================
      FRETE
      ================================================================= */
-  // zona 1..5 a partir do CEP (origem São Paulo/SP)
+  // zona 1..5 a partir do CEP (origem Curitiba/PR)
+  // 1º dígito do CEP → região do Brasil → distância até o Paraná
   function zoneFromCep(cep) {
     const d = onlyDigits(cep).charAt(0);
-    const map = { "0": 1, "1": 1, "2": 2, "3": 2, "8": 2, "4": 3, "7": 3, "9": 3, "5": 4, "6": 5 };
+    const map = {
+      "8": 1,             // PR / SC — pertinho
+      "0": 2, "1": 2,     // São Paulo
+      "9": 2,             // Rio Grande do Sul
+      "2": 3, "3": 3,     // RJ / ES / MG
+      "7": 3,             // Centro-Oeste (DF/GO/MT/MS/TO/RO)
+      "4": 4, "5": 4,     // Nordeste (BA/SE/PE/PB/RN/AL)
+      "6": 5,             // Norte (AM/PA/AC/RR/AP) e CE/PI/MA
+    };
     return map[d] || 3;
   }
 
@@ -411,6 +440,23 @@
   }
 
   /* =================================================================
+     TELA DE ENTRADA (splash)
+     ================================================================= */
+  function initSplash() {
+    const splash = $("#splash");
+    if (!splash) return;
+    document.body.classList.add("splash-open");
+    const enter = () => {
+      splash.classList.add("hide");
+      document.body.classList.remove("splash-open");
+      setTimeout(() => (splash.style.display = "none"), 500);
+    };
+    $("#enterSite").addEventListener("click", enter);
+    // ao clicar em "WhatsApp" o link abre em nova aba; some a tela depois
+    $(".splash-wa").addEventListener("click", () => setTimeout(enter, 400));
+  }
+
+  /* =================================================================
      EVENTOS
      ================================================================= */
   function bindEvents() {
@@ -472,6 +518,7 @@
      ================================================================= */
   document.addEventListener("DOMContentLoaded", () => {
     applyConfig();
+    initSplash();
     renderFilters();
     renderGrid();
     renderCart();
