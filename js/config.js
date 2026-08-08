@@ -46,7 +46,7 @@ const CONFIG = {
        4 = Nordeste
        5 = Norte
      "extra" é o acréscimo por kokedama adicional no mesmo pacote.      */
-  freteGratisAcima: 350, // pedidos acima deste valor (R$) ganham PAC grátis
+  freteGratisAcima: 900, // pedidos acima deste valor (R$) ganham PAC grátis
   transportadoras: [
     {
       id: "correios-pac",
