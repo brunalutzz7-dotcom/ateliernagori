@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Atelier Nagori — Kokedamas artesanais</title>
+  <meta name="description" content="Kokedamas artesanais feitos à mão no Atelier Nagori. Plantas em esferas de musgo, entrega para todo o Brasil." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='62' r='30' fill='%236b5a3e'/><path d='M50 40 Q40 10 50 2 Q60 10 50 40' fill='%234e7c4a'/></svg>" />
+</head>
+<body>
+
+  <!-- ================= HEADER ================= -->
+  <header class="site-header" id="top">
+    <div class="container header-inner">
+      <a href="#top" class="brand">
+        <span class="brand-mark" aria-hidden="true">✿</span>
+        <span class="brand-text">
+          <strong>Atelier Nagori</strong>
+          <em>kokedamas artesanais</em>
+        </span>
+      </a>
+      <nav class="main-nav" aria-label="Navegação principal">
+        <a href="#produtos">Loja</a>
+        <a href="#sobre">Sobre</a>
+        <a href="#frete">Frete</a>
+        <a href="#contato">Contato</a>
+      </nav>
+      <button class="cart-btn" id="cartBtn" aria-label="Abrir carrinho">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6">
+          <path d="M6 6h15l-1.5 9h-12z" stroke-linejoin="round"/>
+          <circle cx="9" cy="20" r="1.4"/><circle cx="18" cy="20" r="1.4"/>
+          <path d="M6 6 5 3H2" stroke-linecap="round"/>
+        </svg>
+        <span class="cart-count" id="cartCount">0</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- ================= HERO ================= -->
+  <section class="hero">
+    <div class="container hero-inner">
+      <div class="hero-text">
+        <p class="eyebrow">名残 · nagori — a beleza do que permanece</p>
+        <h1>Pequenos jardins<br>que cabem na palma da mão</h1>
+        <p class="lead">
+          Kokedamas feitos à mão, um a um, unindo a arte japonesa do musgo à
+          delicadeza das plantas brasileiras. Escolha o seu e receba em casa,
+          em qualquer canto do país.
+        </p>
+        <div class="hero-actions">
+          <a href="#produtos" class="btn btn-primary">Ver a coleção</a>
+          <a href="#sobre" class="btn btn-ghost">Nossa história</a>
+        </div>
+      </div>
+      <div class="hero-art" aria-hidden="true">
+        <div class="hero-orb"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= SELOS ================= -->
+  <section class="badges">
+    <div class="container badges-inner">
+      <div class="badge"><span>✿</span> Feito à mão em <strong>São Paulo</strong></div>
+      <div class="badge"><span>❁</span> Entrega para <strong>todo o Brasil</strong></div>
+      <div class="badge"><span>❀</span> Pagamento seguro via <strong>InfinitePay</strong></div>
+      <div class="badge"><span>✽</span> Frete grátis acima de <strong id="freteGratisLabel">R$ 350</strong></div>
+    </div>
+  </section>
+
+  <!-- ================= PRODUTOS ================= -->
+  <section class="section" id="produtos">
+    <div class="container">
+      <div class="section-head">
+        <h2>A coleção</h2>
+        <p>Cada peça é única. Selecione seus favoritos e monte seu pedido.</p>
+      </div>
+      <div class="filters" id="filters" role="tablist" aria-label="Filtrar por categoria"></div>
+      <div class="product-grid" id="productGrid"></div>
+    </div>
+  </section>
+
+  <!-- ================= SOBRE ================= -->
+  <section class="section section-alt" id="sobre">
+    <div class="container about-inner">
+      <div class="about-art" aria-hidden="true"><div class="about-orb"></div></div>
+      <div class="about-text">
+        <p class="eyebrow">Sobre o ateliê</p>
+        <h2>Musgo, terra e tempo</h2>
+        <p>
+          <em>Nagori</em> é a palavra japonesa para aquilo que fica — o rastro
+          de beleza que uma estação deixa ao partir. É esse o espírito de cada
+          kokedama que criamos: plantas vivas envoltas em musgo, amarradas à mão
+          com paciência e cuidado.
+        </p>
+        <p>
+          Trabalhamos com substrato selecionado, musgo sphagnum e espécies
+          escolhidas pela resistência e beleza. Nada é produzido em série —
+          cada esfera nasce das nossas mãos, pronta para viver anos ao seu lado.
+        </p>
+        <a href="#produtos" class="btn btn-primary">Quero o meu</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= FRETE ================= -->
+  <section class="section" id="frete">
+    <div class="container">
+      <div class="section-head">
+        <h2>Frete nacional</h2>
+        <p>Calcule o valor e o prazo para o seu CEP. Enviamos por diversas transportadoras — você escolhe a que preferir.</p>
+      </div>
+      <div class="frete-box">
+        <div class="frete-form">
+          <label for="freteCep">Seu CEP</label>
+          <div class="cep-row">
+            <input type="text" id="freteCep" inputmode="numeric" placeholder="00000-000" maxlength="9" />
+            <button class="btn btn-primary" id="freteCalc">Calcular</button>
+          </div>
+          <small id="freteLocal" class="frete-local"></small>
+          <p class="frete-note">Valores estimados para 1 kokedama saindo de São Paulo/SP. O valor final considera a quantidade do seu pedido no carrinho.</p>
+        </div>
+        <div class="frete-results" id="freteResults">
+          <p class="frete-placeholder">Digite seu CEP para ver as opções de entrega.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= CONTATO ================= -->
+  <section class="section section-alt" id="contato">
+    <div class="container contact-inner">
+      <div class="contact-text">
+        <p class="eyebrow">Fale com a gente</p>
+        <h2>Dúvidas, encomendas<br>e peças personalizadas</h2>
+        <p>Faz um kokedama especial de presente? Quer uma espécie que não está na loja? Escreva pra gente — respondemos com carinho.</p>
+        <ul class="contact-list">
+          <li><a id="waLink" href="#" target="_blank" rel="noopener">WhatsApp</a></li>
+          <li><a id="mailLink" href="#">E-mail</a></li>
+          <li><a id="igLink" href="#" target="_blank" rel="noopener">Instagram</a></li>
+        </ul>
+      </div>
+      <form class="contact-form" id="contactForm">
+        <div class="field">
+          <label for="cNome">Nome</label>
+          <input type="text" id="cNome" required />
+        </div>
+        <div class="field">
+          <label for="cEmail">E-mail</label>
+          <input type="email" id="cEmail" required />
+        </div>
+        <div class="field">
+          <label for="cTel">WhatsApp (opcional)</label>
+          <input type="tel" id="cTel" />
+        </div>
+        <div class="field">
+          <label for="cMsg">Mensagem</label>
+          <textarea id="cMsg" rows="4" required></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">Enviar mensagem</button>
+        <p class="form-hint" id="contactHint"></p>
+      </form>
+    </div>
+  </section>
+
+  <!-- ================= FOOTER ================= -->
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <strong>Atelier Nagori</strong>
+        <span>Kokedamas artesanais · feitos à mão no Brasil</span>
+      </div>
+      <div class="footer-links">
+        <a href="#produtos">Loja</a>
+        <a href="#frete">Frete</a>
+        <a href="#contato">Contato</a>
+      </div>
+    </div>
+    <p class="footer-copy">© <span id="year"></span> Atelier Nagori. Todos os direitos reservados.</p>
+  </footer>
+
+  <!-- ================= CARRINHO (drawer) ================= -->
+  <div class="drawer-overlay" id="drawerOverlay"></div>
+  <aside class="cart-drawer" id="cartDrawer" aria-label="Carrinho de compras" aria-hidden="true">
+    <div class="cart-head">
+      <h3>Seu carrinho</h3>
+      <button class="close-btn" id="cartClose" aria-label="Fechar">×</button>
+    </div>
+    <div class="cart-items" id="cartItems"></div>
+    <div class="cart-foot" id="cartFoot">
+      <!-- Cálculo de frete no carrinho -->
+      <div class="cart-ship">
+        <label for="cartCep">Calcular frete — CEP</label>
+        <div class="cep-row">
+          <input type="text" id="cartCep" inputmode="numeric" placeholder="00000-000" maxlength="9" />
+          <button class="btn btn-ghost btn-sm" id="cartShipCalc">Ver opções</button>
+        </div>
+        <div class="cart-ship-options" id="cartShipOptions"></div>
+      </div>
+
+      <div class="cart-totals">
+        <div class="line"><span>Subtotal</span><span id="sumSubtotal">R$ 0,00</span></div>
+        <div class="line"><span>Frete</span><span id="sumFrete">—</span></div>
+        <div class="line total"><span>Total</span><span id="sumTotal">R$ 0,00</span></div>
+      </div>
+
+      <button class="btn btn-primary btn-block" id="checkoutBtn">Finalizar compra</button>
+      <button class="btn btn-ghost btn-block btn-sm" id="waOrderBtn">Pedir pelo WhatsApp</button>
+      <p class="cart-secure">🔒 Pagamento processado com segurança pela InfinitePay (Pix, crédito e débito).</p>
+    </div>
+    <div class="cart-empty" id="cartEmpty">
+      <p>Seu carrinho está vazio.</p>
+      <button class="btn btn-primary" id="cartEmptyBtn">Ver a coleção</button>
+    </div>
+  </aside>
+
+  <!-- ================= TOAST ================= -->
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <!-- ================= MODAL PRODUTO ================= -->
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal" id="productModal" role="dialog" aria-modal="true"></div>
+  </div>
+
+  <script src="js/config.js"></script>
+  <script src="js/products.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
