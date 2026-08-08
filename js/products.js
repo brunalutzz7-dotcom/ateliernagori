@@ -54,7 +54,7 @@ const PRODUCTS = [
   { id: "anturio-rosa", nome: "Antúrio Rosa", especie: "Anthurium andraeanum · tamanho único", categoria: "dentro", ambiente: "interno", pet: "toxic",
     descricao: "Espata rosada e brilhante que dura semanas abertas, sobre folhagem verde-escura lustrosa. Floresce quase o ano todo em luz indireta.", preco: 185 },
   { id: "maranta-pavao", nome: "Maranta Pavão", especie: "Calathea makoyana", categoria: "dentro", ambiente: "interno", pet: "safe",
-    descricao: "Desenho de pena em cada folha, translúcido contra a luz. Pede umidade — gosta de banheiro claro.", preco: 220 },
+    descricao: "Desenho de pena em cada folha, translúcido contra a luz. Pede umidade — gosta de banheiro claro.", preco: 220, img: IMG("maranta-pavao") },
   { id: "alocasia-polly", nome: "Alocásia Polly", especie: "Alocasia × amazonica", categoria: "dentro", ambiente: "interno", pet: "toxic",
     descricao: "Folha em ponta de flecha, verde quase preto com nervura branca em relevo. Desenho gráfico, quase artificial de tão marcado.", preco: 235, img: IMG("alocasia-polly") },
   { id: "begonia-maculata", nome: "Begônia Maculata", especie: "Begonia maculata", categoria: "dentro", ambiente: "interno", pet: "toxic",
