@@ -22,9 +22,11 @@ const CONFIG = {
      ------------------------------------------------------------------- */
   // WhatsApp no formato internacional, só números: 55 + DDD + número
   whatsapp: "5541992895505",
-  // E-mail que RECEBE os formulários de contato.
-  // Fica oculto dos clientes — usado só para a mensagem chegar até você.
-  email: "brunalutzz7@gmail.com",
+  // E-mail de contato. Deixado VAZIO de propósito: como o site é estático,
+  // qualquer texto aqui ficaria visível no código para os clientes. Os
+  // contatos chegam até você pelo WhatsApp. Se um dia quiser exibir um
+  // e-mail público, preencha aqui e mude emailVisivel para true.
+  email: "",
   emailVisivel: false, // não mostra o e-mail no site
   instagram: "ateliernagori",
 
