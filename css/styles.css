@@ -303,7 +303,8 @@ h2 { font-size: clamp(1.9rem, 4vw, 2.9rem); }
 .splash {
   position: fixed; inset: 0; z-index: 100;
   background:
-    radial-gradient(120% 80% at 50% 0%, #4e6b45 0%, #33472e 55%, #263821 100%);
+    linear-gradient(rgba(28, 40, 24, .68), rgba(20, 30, 18, .82)),
+    url("../assets/hero/entrada.jpg") center / cover no-repeat;
   display: grid; place-items: center; padding: 1.5rem;
   transition: opacity .45s ease, visibility .45s ease;
 }
