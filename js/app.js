@@ -48,7 +48,7 @@
   /* ---------- carrinho: estado ----------
      cada linha do carrinho: cart[key] = { q: quantidade, b: índice da base }
      assim cada peça tem a SUA própria base (ou a base dupla, à escolha).   */
-  const STORE_KEY = "nagori_cart_v3";
+  const STORE_KEY = "nagori_cart_v4";
   let cart = load();            // { cartKey: { q, b } }
   let selectedShip = null;      // { id, nome, preco }
   let shipCep = "";
@@ -161,18 +161,27 @@
   function renderSuportes() {
     const box = $("#suporteGrid");
     if (!box) return;
-    box.innerHTML = BASES.map((b) => {
+    const seen = new Set();
+    box.innerHTML = BASES.filter((b) => {
+      if (b.grupo) { if (seen.has(b.grupo)) return false; seen.add(b.grupo); }
+      return true;
+    }).map((b) => {
+      const nome = b.grupo === "tripe" ? "Tripé de ferro (de chão)" : b.nome;
       const foot = b.preco > 0
         ? `<span class="sup-price">+ ${BRL(b.preco)} <small>encomenda</small></span>
            <button class="btn btn-primary btn-sm" data-add="${b.addId}">Adicionar</button>`
         : `<span class="sup-incl">✔ Inclusa com sua peça</span>`;
+      const sizeNote = b.grupo === "tripe"
+        ? `<p class="sup-note">Três alturas — Pequeno (30 cm), Médio (45 cm) e Grande (60 cm). Você escolhe no carrinho.</p>`
+        : "";
       return `
         <article class="suporte-card">
-          <div class="sup-media"><img src="assets/bases/${b.id}.jpg" alt="Suporte ${b.nome}" loading="lazy"></div>
+          <div class="sup-media"><img src="assets/bases/${b.imgId || b.id}.jpg" alt="Suporte ${nome}" loading="lazy"></div>
           <div class="sup-body">
-            <h3>${b.nome}</h3>
+            <h3>${nome}</h3>
             <p class="sup-specs">${b.specs}</p>
             <p class="sup-desc">${b.desc}</p>
+            ${sizeNote}
             <div class="sup-foot">${foot}</div>
           </div>
         </article>`;
