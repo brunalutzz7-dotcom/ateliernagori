@@ -70,7 +70,7 @@ const PRODUCTS = [
   { id: "peperomia-raindrop", nome: "Peperomia Raindrop", especie: "Peperomia polybotrya", categoria: "dentro", ambiente: "interno", pet: "safe",
     descricao: "Folha em gota, grossa e envernizada, sobre haste alta e ereta. Mais vertical e mais rara que a peperomia comum.", variantes: [{ label: "Peça única", preco: 145 }, { label: "O par", preco: 250 }], img: IMG("peperomia-raindrop") },
   { id: "ficus-lyrata", nome: "Fícus Lyrata", especie: "Ficus lyrata", categoria: "dentro", ambiente: "interno", pet: "toxic",
-    descricao: "Folha grande em forma de lira, nervura marcada. Escolhe um lugar e não gosta de ser mudada dele.", preco: 230 },
+    descricao: "Folha grande em forma de lira, nervura marcada. Escolhe um lugar e não gosta de ser mudada dele.", preco: 230, img: IMG("ficus-lyrata") },
   { id: "ficus-tineke", nome: "Fícus Tineke", especie: "Ficus elastica 'Tineke'", categoria: "dentro", ambiente: "interno", pet: "toxic",
     descricao: "Folha grossa mesclada em creme e verde, nervura central rosada. Cada folha abre com um desenho diferente da anterior.", preco: 230 },
   { id: "ficus-ruby", nome: "Fícus Ruby", especie: "Ficus elastica 'Ruby'", categoria: "dentro", ambiente: "interno", pet: "toxic",
