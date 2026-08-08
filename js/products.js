@@ -74,7 +74,7 @@ const PRODUCTS = [
   { id: "ficus-tineke", nome: "Fícus Tineke", especie: "Ficus elastica 'Tineke'", categoria: "dentro", ambiente: "interno", pet: "toxic",
     descricao: "Folha grossa mesclada em creme e verde, nervura central rosada. Cada folha abre com um desenho diferente da anterior.", preco: 230, img: IMG("ficus-tineke") },
   { id: "ficus-ruby", nome: "Fícus Ruby", especie: "Ficus elastica 'Ruby'", categoria: "dentro", ambiente: "interno", pet: "toxic",
-    descricao: "Variegação em rosa vivo sobre verde escuro, mais intensa nas folhas novas. Quanto mais luz recebe, mais forte fica o rosa.", preco: 230 },
+    descricao: "Variegação em rosa vivo sobre verde escuro, mais intensa nas folhas novas. Quanto mais luz recebe, mais forte fica o rosa.", preco: 230, img: IMG("ficus-ruby") },
   { id: "philodendron-birkin", nome: "Philodendron Birkin", especie: "Philodendron 'Birkin'", categoria: "dentro", ambiente: "interno", pet: "toxic",
     descricao: "Riscos brancos finos, nenhuma folha igual à outra. Compacta e discreta.", variantes: [{ label: "Pequeno", preco: 250 }, { label: "Médio", preco: 285 }] },
   { id: "monstera-adansonii", nome: "Monstera Adansonii", especie: "Monstera adansonii", categoria: "dentro", ambiente: "interno", pet: "toxic",
