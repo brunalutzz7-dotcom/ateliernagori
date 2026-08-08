@@ -4,6 +4,10 @@
 (function () {
   "use strict";
 
+  // O site sempre abre no topo (evita o navegador restaurar a rolagem anterior)
+  if ("scrollRestoration" in history) history.scrollRestoration = "manual";
+  window.scrollTo(0, 0);
+
   /* ---------- utilidades ---------- */
   const $ = (s, c = document) => c.querySelector(s);
   const $$ = (s, c = document) => [...c.querySelectorAll(s)];
@@ -552,6 +556,7 @@
     if (!splash) return;
     document.body.classList.add("splash-open");
     const enter = () => {
+      window.scrollTo(0, 0);
       splash.classList.add("hide");
       document.body.classList.remove("splash-open");
       setTimeout(() => (splash.style.display = "none"), 500);
