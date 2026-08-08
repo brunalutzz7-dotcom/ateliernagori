@@ -106,7 +106,7 @@ const PRODUCTS = [
   { id: "palmeira-fenix", nome: "Palmeira Fênix", especie: "Phoenix roebelenii", categoria: "ambos", ambiente: "ambos", pet: "safe",
     descricao: "Fronde fina e arqueada, folíolos estreitos em duas fileiras. Cresce devagar e mantém o porte pequeno por anos: a palmeira que cabe dentro de casa.", preco: 200, img: IMG("palmeira-fenix") },
   { id: "pacova", nome: "Pacová", especie: "Philodendron martianum", categoria: "ambos", ambiente: "ambos", pet: "toxic",
-    descricao: "Folha inteira e grossa sobre pecíolo inflado. Forma limpa, quase escultórica.", variantes: [{ label: "Médio", preco: 180 }, { label: "Grande", preco: 300 }] },
+    descricao: "Folha inteira e grossa sobre pecíolo inflado. Forma limpa, quase escultórica.", variantes: [{ label: "Médio", preco: 180 }, { label: "Grande", preco: 300 }], img: IMG("pacova") },
   { id: "pata-de-elefante", nome: "Pata de Elefante", especie: "Beaucarnea recurvata", categoria: "ambos", ambiente: "ambos", pet: "safe",
     descricao: "Base inchada que guarda água, folhas finas em cascata. Esquece a rega e ela não sente.", preco: 350, img: IMG("pata-de-elefante") },
 
