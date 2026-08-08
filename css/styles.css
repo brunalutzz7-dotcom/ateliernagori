@@ -94,9 +94,9 @@ h2 { font-size: clamp(1.9rem, 4vw, 2.9rem); }
 .hero-actions { display: flex; gap: .8rem; margin-top: 1.8rem; flex-wrap: wrap; }
 .hero-art { display: grid; place-items: center; }
 .hero-photo {
-  width: min(560px, 92vw); aspect-ratio: 4 / 3; object-fit: cover;
-  border-radius: 22px; box-shadow: var(--shadow-lg);
-  border: 6px solid #fff;
+  width: min(580px, 92vw); aspect-ratio: 3 / 2; object-fit: cover;
+  border-radius: 18px;
+  box-shadow: 0 26px 60px rgba(51, 71, 46, .22), 0 6px 16px rgba(51, 71, 46, .10);
 }
 
 /* ---- Selos ---- */
