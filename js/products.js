@@ -78,7 +78,7 @@ const PRODUCTS = [
   { id: "philodendron-birkin", nome: "Philodendron Birkin", especie: "Philodendron 'Birkin'", categoria: "dentro", ambiente: "interno", pet: "toxic",
     descricao: "Riscos brancos finos, nenhuma folha igual à outra. Compacta e discreta.", preco: 200, img: IMG("philodendron-birkin") },
   { id: "monstera-adansonii", nome: "Monstera Adansonii", especie: "Monstera adansonii", categoria: "dentro", ambiente: "interno", pet: "toxic",
-    descricao: "Folha vazada de furos irregulares. Trepa ou pende, conforme você deixar.", variantes: [{ label: "Peça única", preco: 175 }, { label: "Médio", preco: 230 }, { label: "Grande", preco: 285 }], img: IMG("monstera-adansonii") },
+    descricao: "Folha vazada de furos irregulares. Trepa ou pende, conforme você deixar.", preco: 175, img: IMG("monstera-adansonii") },
   { id: "aglaonema-vermelha", nome: "Aglaonema Vermelha", especie: "Aglaonema commutatum", categoria: "dentro", ambiente: "interno", pet: "toxic",
     descricao: "Nervura e pecíolo em vermelho vivo sobre folha verde. Cor sem depender de flor.", preco: 230, img: IMG("aglaonema-vermelha") },
   { id: "aglaonema-rosa", nome: "Aglaonema Rosa", especie: "Aglaonema sp.", categoria: "dentro", ambiente: "interno", pet: "toxic",
@@ -98,7 +98,7 @@ const PRODUCTS = [
 
   /* ---------- 02 · DENTRO OU FORA ---------- */
   { id: "costela-adao", nome: "Costela de Adão", especie: "Monstera deliciosa", categoria: "ambos", ambiente: "ambos", pet: "toxic",
-    descricao: "Folha recortada que ganha novos vãos a cada broto. Cresce rápido e pede espaço.", variantes: [{ label: "Médio", preco: 285 }, { label: "Grande", preco: 365 }], img: IMG("costela-adao") },
+    descricao: "Folha recortada que ganha novos vãos a cada broto. Cresce rápido e pede espaço.", preco: 285, img: IMG("costela-adao") },
   { id: "croton", nome: "Croton", especie: "Codiaeum variegatum", categoria: "ambos", ambiente: "ambos", pet: "toxic",
     descricao: "Folha coriácea listrada de verde, amarelo e vermelho, que ganha cor quanto mais luz recebe. Nenhuma folha repete a mistura da outra.", preco: 185, img: IMG("croton") },
   { id: "pachira-aquatica", nome: "Pachira Aquática", especie: "Pachira aquatica · árvore do dinheiro", categoria: "ambos", ambiente: "ambos", pet: "safe",
