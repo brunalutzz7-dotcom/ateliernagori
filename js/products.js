@@ -167,19 +167,38 @@ const PRODUCTS = [
     descricao: "Colunas de folha listrada, verticais e limpas, em escala de árvore. Resolve o vazio de um canto de sala sem pedir nada em troca.", preco: 780, img: IMG("pau-dagua-grande") },
   { id: "arvore-felicidade", nome: "Árvore da Felicidade", especie: "Polyscias sp. · fêmea e macho · 80 cm a 1 m", categoria: "grande", encomenda: true, ambiente: "interno", pet: "toxic",
     descricao: "Sai em dois desenhos de folha: a fêmea, de folíolo largo e arredondado, e o macho, de folha recortada e fina. Tronco lenhoso e porte ereto — peça de canto e de entrada.", preco: 780, img: IMG("arvore-felicidade") },
+
+  /* ---------- 07 · SUPORTES ESPECIAIS (compráveis à parte) ---------- */
+  { id: "suporte-tronco-natural", nome: "Tronco natural", especie: "Suporte especial · tronco 13 cm · altura 8,5 cm · aro 11 cm", categoria: "suporte", suporte: true,
+    descricao: "Tronco com casca, cada um diferente do outro. Combina com bonsai de casca rugosa, e o peso sustenta maxi kokedama.", preco: 120, img: "assets/bases/tronco-natural.jpg" },
+  { id: "suporte-tronco-alto", nome: "Tronco alto", especie: "Suporte especial · madeira clara · medidas variáveis", categoria: "suporte", suporte: true,
+    descricao: "Cilindro de madeira clara com haste fina. Eleva a esfera bem acima da superfície — a base mais vertical da linha.", preco: 100, img: "assets/bases/tronco-alto.jpg" },
+  { id: "suporte-cubo-ferro-baixo", nome: "Cubo de ferro · baixo", especie: "Suporte especial · ferro preto · aro interno", categoria: "suporte", suporte: true,
+    descricao: "Estrutura vazada com aro suspenso no centro. A esfera flutua dentro do quadro, na altura do olhar sentado.", preco: 90, img: "assets/bases/cubo-ferro-baixo.jpg" },
+  { id: "suporte-cubo-ferro-alto", nome: "Cubo de ferro · alto", especie: "Suporte especial · ferro preto · aro interno", categoria: "suporte", suporte: true,
+    descricao: "Mesmo desenho, mais alto e mais estreito. Para peça de folhagem longa, que precisa de espaço para cair.", preco: 120, img: "assets/bases/cubo-ferro-alto.jpg" },
 ];
 
 /* Bases — escolhidas no carrinho.
    preco 0 = inclusa (vem com o pedido, sem custo).
    preco > 0 = base especial, feita sob encomenda, com custo à parte.   */
 const BASES = [
-  { nome: "Madeira lisa", preco: 0 },
-  { nome: "Madeira com aro", preco: 0 },
-  { nome: "Madeira com aro duplo", preco: 0 },
-  { nome: "Madeira com gancho", preco: 0 },
-  { nome: "Tripé de ferro (de chão)", preco: 0 },
-  { nome: "Tronco natural", preco: 120, encomenda: true },
-  { nome: "Tronco alto", preco: 100, encomenda: true },
-  { nome: "Cubo de ferro (baixo)", preco: 90, encomenda: true },
-  { nome: "Cubo de ferro (alto)", preco: 120, encomenda: true },
+  { id: "madeira-lisa", nome: "Madeira lisa", preco: 0, specs: "15 × 15 cm",
+    desc: "Bloco de madeira com encaixe côncavo. A esfera assenta direto, sem haste — o apoio mais discreto de todos." },
+  { id: "madeira-aro", nome: "Madeira com aro", preco: 0, specs: "base 15×15 cm · aro 9 cm · altura 10 cm",
+    desc: "Aro de ferro preto sobre haste, em base de madeira. Levanta a esfera do móvel e deixa o musgo respirar por baixo." },
+  { id: "madeira-aro-duplo", nome: "Madeira com aro duplo", preco: 0, specs: "base 15×15 cm · dois aros em alturas diferentes",
+    desc: "Duas hastes na mesma base, em alturas distintas. Para montar duas peças pequenas juntas, em composição." },
+  { id: "madeira-gancho", nome: "Madeira com gancho", preco: 0, specs: "base 15×15 cm",
+    desc: "Haste alta curvada em gancho. A esfera fica suspensa e a folhagem cai livre — a escolha das pendentes." },
+  { id: "tripe-ferro", nome: "Tripé de ferro (de chão)", preco: 0, specs: "de chão · aro 18 cm · alturas 30, 45 e 60 cm",
+    desc: "Fica no chão, não sobre móvel. Para as peças de grande porte e as maxi kokedamas — levanta a árvore do piso." },
+  { id: "tronco-natural", nome: "Tronco natural", preco: 120, encomenda: true, specs: "tronco 13 cm · altura 8,5 cm · aro 11 cm",
+    desc: "Tronco com casca, cada um diferente do outro. Combina com bonsai de casca rugosa, e o peso sustenta maxi kokedama.", addId: "suporte-tronco-natural" },
+  { id: "tronco-alto", nome: "Tronco alto", preco: 100, encomenda: true, specs: "madeira clara · medidas variáveis",
+    desc: "Cilindro de madeira clara com haste fina. Eleva a esfera bem acima da superfície — a base mais vertical da linha.", addId: "suporte-tronco-alto" },
+  { id: "cubo-ferro-baixo", nome: "Cubo de ferro (baixo)", preco: 90, encomenda: true, specs: "ferro preto · aro interno",
+    desc: "Estrutura vazada com aro suspenso no centro. A esfera flutua dentro do quadro, na altura do olhar sentado.", addId: "suporte-cubo-ferro-baixo" },
+  { id: "cubo-ferro-alto", nome: "Cubo de ferro (alto)", preco: 120, encomenda: true, specs: "ferro preto · aro interno",
+    desc: "Mesmo desenho, mais alto e mais estreito. Para peça de folhagem longa, que precisa de espaço para cair.", addId: "suporte-cubo-ferro-alto" },
 ];

@@ -150,8 +150,33 @@
   }
 
   function renderGrid(cat = "todos") {
-    const list = cat === "todos" ? PRODUCTS : PRODUCTS.filter((p) => p.categoria === cat);
+    const base = PRODUCTS.filter((p) => !p.suporte);
+    const list = cat === "todos" ? base : base.filter((p) => p.categoria === cat);
     $("#productGrid").innerHTML = list.map(cardHTML).join("");
+  }
+
+  /* =================================================================
+     SUPORTES (bases)
+     ================================================================= */
+  function renderSuportes() {
+    const box = $("#suporteGrid");
+    if (!box) return;
+    box.innerHTML = BASES.map((b) => {
+      const foot = b.preco > 0
+        ? `<span class="sup-price">+ ${BRL(b.preco)} <small>encomenda</small></span>
+           <button class="btn btn-primary btn-sm" data-add="${b.addId}">Adicionar</button>`
+        : `<span class="sup-incl">✔ Inclusa com sua peça</span>`;
+      return `
+        <article class="suporte-card">
+          <div class="sup-media"><img src="assets/bases/${b.id}.jpg" alt="Suporte ${b.nome}" loading="lazy"></div>
+          <div class="sup-body">
+            <h3>${b.nome}</h3>
+            <p class="sup-specs">${b.specs}</p>
+            <p class="sup-desc">${b.desc}</p>
+            <div class="sup-foot">${foot}</div>
+          </div>
+        </article>`;
+    }).join("");
   }
 
   /* =================================================================
@@ -255,9 +280,14 @@
       if (!p) return "";
       const unit = precoDaVariante(p, variant);
       const base = baseOf(key);
-      const baseExtra = base.preco > 0
+      const baseExtra = !p.suporte && base.preco > 0
         ? `<div class="ci-base-cost">+ ${BRL(base.preco)}${v.q > 1 ? " × " + v.q : ""} (base ${base.nome})</div>`
         : "";
+      const baseSel = p.suporte
+        ? `<div class="ci-suporte">Suporte avulso · encomenda</div>`
+        : `<label class="ci-base-label">Base desta peça
+            <select class="ci-base" data-base-key="${key}">${baseOptions(v.b)}</select>
+          </label>`;
       return `
         <div class="cart-item">
           <div class="ci-media">${media(p)}</div>
@@ -270,9 +300,7 @@
               <span>${v.q}</span>
               <button data-inc="${key}" aria-label="Aumentar">+</button>
             </div>
-            <label class="ci-base-label">Base desta peça
-              <select class="ci-base" data-base-key="${key}">${baseOptions(v.b)}</select>
-            </label>
+            ${baseSel}
             ${baseExtra}
           </div>
           <div class="ci-right">
@@ -399,10 +427,12 @@
       const { id, variant } = parseKey(key);
       const p = product(id);
       const base = baseOf(key);
-      const nome = `${p.nome}${variant ? " · " + variant : ""} (base: ${base.nome})`;
+      const nome = p.suporte
+        ? `${p.nome} (suporte avulso · encomenda)`
+        : `${p.nome}${variant ? " · " + variant : ""} (base: ${base.nome})`;
       items.push({ name: nome, price: Math.round(precoDaVariante(p, variant) * 100), quantity: v.q });
       // base especial desta peça (com custo) — uma por unidade
-      if (base.preco > 0)
+      if (!p.suporte && base.preco > 0)
         items.push({ name: `Base especial — ${base.nome} p/ ${p.nome} (encomenda)`, price: Math.round(base.preco * 100), quantity: v.q });
     });
     if (selectedShip && selectedShip.preco > 0)
@@ -434,7 +464,8 @@
       const p = product(id);
       const base = baseOf(key);
       msg += `• ${v.q}× ${p.nome}${variant ? " (" + variant + ")" : ""} — ${BRL(precoDaVariante(p, variant) * v.q)}%0A`;
-      msg += `   base: ${base.nome}${base.preco > 0 ? " (+" + BRL(base.preco) + (v.q > 1 ? " × " + v.q : "") + ", encomenda)" : " (inclusa)"}%0A`;
+      if (p.suporte) msg += `   (suporte avulso · encomenda)%0A`;
+      else msg += `   base: ${base.nome}${base.preco > 0 ? " (+" + BRL(base.preco) + (v.q > 1 ? " × " + v.q : "") + ", encomenda)" : " (inclusa)"}%0A`;
     });
     const base = baseCusto();
     msg += `%0A*Subtotal:* ${BRL(subtotal())}%0A`;
@@ -580,6 +611,7 @@
     initSplash();
     renderFilters();
     renderGrid();
+    renderSuportes();
     renderCart();
     bindEvents();
   });

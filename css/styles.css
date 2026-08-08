@@ -152,6 +152,22 @@ h2 { font-size: clamp(1.9rem, 4vw, 2.9rem); }
 .card-price { font-family: var(--serif); font-size: 1.5rem; color: var(--moss-deep); line-height: 1.1; }
 .card-price small { display: block; font-size: .68rem; color: var(--ink-soft); font-family: var(--sans); letter-spacing: .03em; }
 
+/* ---- Suportes ---- */
+.suporte-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 1.4rem; }
+.suporte-card { background: var(--white); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; display: flex; flex-direction: column; transition: .25s ease; }
+.suporte-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
+.sup-media { background: var(--sand-lt); display: grid; place-items: center; }
+.sup-media img { width: 100%; aspect-ratio: 1; object-fit: contain; padding: 1.1rem; }
+.sup-body { padding: 0 1.2rem 1.3rem; display: flex; flex-direction: column; flex: 1; }
+.sup-body h3 { font-size: 1.2rem; margin-bottom: .15rem; }
+.sup-specs { font-family: var(--serif); font-style: italic; font-size: .9rem; color: var(--terra-dk); margin: 0 0 .6rem; }
+.sup-desc { font-size: .86rem; color: var(--ink-soft); flex: 1; margin: 0 0 1rem; }
+.sup-foot { display: flex; align-items: center; justify-content: space-between; gap: .6rem; flex-wrap: wrap; }
+.sup-price { font-family: var(--serif); font-size: 1.35rem; color: var(--moss-deep); }
+.sup-price small { display: block; font-family: var(--sans); font-size: .68rem; color: var(--terra); letter-spacing: .04em; text-transform: uppercase; }
+.sup-incl { font-size: .85rem; color: #4a6b3a; font-weight: 500; }
+.ci-suporte { margin-top: .5rem; font-size: .74rem; color: var(--terra-dk); }
+
 /* ---- Sobre / nossa história ---- */
 .sobre-intro { text-align: center; max-width: 62ch; margin: 0 auto 2.4rem; }
 .sobre-intro p { color: var(--ink-soft); }
