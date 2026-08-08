@@ -80,7 +80,7 @@ const PRODUCTS = [
   { id: "monstera-adansonii", nome: "Monstera Adansonii", especie: "Monstera adansonii", categoria: "dentro", ambiente: "interno", pet: "toxic",
     descricao: "Folha vazada de furos irregulares. Trepa ou pende, conforme você deixar.", variantes: [{ label: "Peça única", preco: 175 }, { label: "Médio", preco: 230 }, { label: "Grande", preco: 285 }] },
   { id: "aglaonema-vermelha", nome: "Aglaonema Vermelha", especie: "Aglaonema commutatum", categoria: "dentro", ambiente: "interno", pet: "toxic",
-    descricao: "Nervura e pecíolo em vermelho vivo sobre folha verde. Cor sem depender de flor.", preco: 230 },
+    descricao: "Nervura e pecíolo em vermelho vivo sobre folha verde. Cor sem depender de flor.", preco: 230, img: IMG("aglaonema-vermelha") },
   { id: "aglaonema-rosa", nome: "Aglaonema Rosa", especie: "Aglaonema sp.", categoria: "dentro", ambiente: "interno", pet: "toxic",
     descricao: "Folha salpicada de rosa e creme, como se tivesse sido pintada. Nenhuma repete o desenho da outra.", preco: 230 },
   { id: "aglaonema-branca", nome: "Aglaonema Branca", especie: "Aglaonema sp. · branca", categoria: "dentro", ambiente: "interno", pet: "toxic",
