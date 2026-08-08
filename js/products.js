@@ -76,7 +76,7 @@ const PRODUCTS = [
   { id: "ficus-ruby", nome: "Fícus Ruby", especie: "Ficus elastica 'Ruby'", categoria: "dentro", ambiente: "interno", pet: "toxic",
     descricao: "Variegação em rosa vivo sobre verde escuro, mais intensa nas folhas novas. Quanto mais luz recebe, mais forte fica o rosa.", preco: 230, img: IMG("ficus-ruby") },
   { id: "philodendron-birkin", nome: "Philodendron Birkin", especie: "Philodendron 'Birkin'", categoria: "dentro", ambiente: "interno", pet: "toxic",
-    descricao: "Riscos brancos finos, nenhuma folha igual à outra. Compacta e discreta.", variantes: [{ label: "Pequeno", preco: 250 }, { label: "Médio", preco: 285 }] },
+    descricao: "Riscos brancos finos, nenhuma folha igual à outra. Compacta e discreta.", variantes: [{ label: "Pequeno", preco: 250 }, { label: "Médio", preco: 285 }], img: IMG("philodendron-birkin") },
   { id: "monstera-adansonii", nome: "Monstera Adansonii", especie: "Monstera adansonii", categoria: "dentro", ambiente: "interno", pet: "toxic",
     descricao: "Folha vazada de furos irregulares. Trepa ou pende, conforme você deixar.", variantes: [{ label: "Peça única", preco: 175 }, { label: "Médio", preco: 230 }, { label: "Grande", preco: 285 }], img: IMG("monstera-adansonii") },
   { id: "aglaonema-vermelha", nome: "Aglaonema Vermelha", especie: "Aglaonema commutatum", categoria: "dentro", ambiente: "interno", pet: "toxic",
