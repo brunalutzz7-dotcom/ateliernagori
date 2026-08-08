@@ -138,7 +138,7 @@ const PRODUCTS = [
   { id: "bonsai-caliandra-4", nome: "Bonsai Caliandra Rosa · 4 anos", especie: "Calliandra brevipes · 40 a 50 cm", categoria: "bonsai", ambiente: "externo", pet: "toxic",
     descricao: "Flor em pompom rosado sobre folhagem fina que se fecha ao anoitecer. Nativa, floresce quase o ano inteiro.", preco: 600, img: IMG("bonsai-caliandra-4") },
   { id: "bonsai-sakura", nome: "Bonsai Sakura", especie: "Prunus serrulata · aprox. 20 cm", categoria: "bonsai", ambiente: "externo", pet: "toxic",
-    descricao: "A cerejeira japonesa em vinte centímetros. Floresce antes de folhar, e a flor dura poucos dias — é a imagem exata de nagori.", preco: 900 },
+    descricao: "A cerejeira japonesa em vinte centímetros. Floresce antes de folhar, e a flor dura poucos dias — é a imagem exata de nagori.", preco: 900, img: IMG("bonsai-sakura") },
   { id: "bonsai-cerejeira-rg-6", nome: "Bonsai Cerejeira-do-Rio-Grande · 6 anos", especie: "Eugenia involucrata · 30 a 40 cm", categoria: "bonsai", ambiente: "externo", pet: "toxic",
     descricao: "Nativa da mata atlântica, prima da jabuticabeira. Folha miúda e lustrosa, flor branca de estames finos, e fruta vermelho-escura de sabor doce.", preco: 800, img: IMG("bonsai-cerejeira-rg-6") },
   { id: "bonsai-cambui-8", nome: "Bonsai Cambuí · 8 anos", especie: "Myrciaria tenella · aprox. 20 cm", categoria: "bonsai", ambiente: "externo", pet: "safe",
