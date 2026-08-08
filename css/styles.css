@@ -93,18 +93,10 @@ h2 { font-size: clamp(1.9rem, 4vw, 2.9rem); }
 .hero-inner { display: grid; grid-template-columns: 1.1fr .9fr; align-items: center; gap: 2rem; padding: clamp(3rem, 8vw, 6rem) 0; }
 .hero-actions { display: flex; gap: .8rem; margin-top: 1.8rem; flex-wrap: wrap; }
 .hero-art { display: grid; place-items: center; }
-.hero-orb, .about-orb {
-  width: min(360px, 78vw); aspect-ratio: 1; border-radius: 50%;
-  background:
-    radial-gradient(circle at 42% 34%, #6fae62, #33472e 78%);
-  box-shadow: var(--shadow-lg), inset -20px -30px 60px rgba(0,0,0,.35);
-  position: relative;
-}
-.hero-orb::before, .about-orb::before {
-  content: ""; position: absolute; left: 50%; bottom: 62%; transform: translateX(-50%);
-  width: 8px; height: 42%;
-  background: linear-gradient(#5c8a4a, #3c6b34); border-radius: 6px;
-  box-shadow: 22px 8px 0 -1px #4e7c4a, -22px 6px 0 -1px #3c6b34, 40px 22px 0 -2px #5c8a4a, -40px 20px 0 -2px #3c6b34;
+.hero-photo {
+  width: min(420px, 84vw); aspect-ratio: 4 / 5; object-fit: cover;
+  border-radius: 22px; box-shadow: var(--shadow-lg);
+  border: 6px solid #fff;
 }
 
 /* ---- Selos ---- */
