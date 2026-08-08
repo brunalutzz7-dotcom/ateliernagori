@@ -94,7 +94,7 @@ h2 { font-size: clamp(1.9rem, 4vw, 2.9rem); }
 .hero-actions { display: flex; gap: .8rem; margin-top: 1.8rem; flex-wrap: wrap; }
 .hero-art { display: grid; place-items: center; }
 .hero-photo {
-  width: min(420px, 84vw); aspect-ratio: 4 / 5; object-fit: cover;
+  width: min(560px, 92vw); aspect-ratio: 4 / 3; object-fit: cover;
   border-radius: 22px; box-shadow: var(--shadow-lg);
   border: 6px solid #fff;
 }
