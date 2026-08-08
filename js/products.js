@@ -98,7 +98,7 @@ const PRODUCTS = [
 
   /* ---------- 02 · DENTRO OU FORA ---------- */
   { id: "costela-adao", nome: "Costela de Adão", especie: "Monstera deliciosa", categoria: "ambos", ambiente: "ambos", pet: "toxic",
-    descricao: "Folha recortada que ganha novos vãos a cada broto. Cresce rápido e pede espaço.", variantes: [{ label: "Médio", preco: 285 }, { label: "Grande", preco: 365 }] },
+    descricao: "Folha recortada que ganha novos vãos a cada broto. Cresce rápido e pede espaço.", variantes: [{ label: "Médio", preco: 285 }, { label: "Grande", preco: 365 }], img: IMG("costela-adao") },
   { id: "croton", nome: "Croton", especie: "Codiaeum variegatum", categoria: "ambos", ambiente: "ambos", pet: "toxic",
     descricao: "Folha coriácea listrada de verde, amarelo e vermelho, que ganha cor quanto mais luz recebe. Nenhuma folha repete a mistura da outra.", preco: 185, img: IMG("croton") },
   { id: "pachira-aquatica", nome: "Pachira Aquática", especie: "Pachira aquatica · árvore do dinheiro", categoria: "ambos", ambiente: "ambos", pet: "safe",
