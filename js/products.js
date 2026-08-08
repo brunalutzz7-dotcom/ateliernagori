@@ -100,7 +100,7 @@ const PRODUCTS = [
   { id: "costela-adao", nome: "Costela de Adão", especie: "Monstera deliciosa", categoria: "ambos", ambiente: "ambos", pet: "toxic",
     descricao: "Folha recortada que ganha novos vãos a cada broto. Cresce rápido e pede espaço.", variantes: [{ label: "Médio", preco: 285 }, { label: "Grande", preco: 365 }] },
   { id: "croton", nome: "Croton", especie: "Codiaeum variegatum", categoria: "ambos", ambiente: "ambos", pet: "toxic",
-    descricao: "Folha coriácea listrada de verde, amarelo e vermelho, que ganha cor quanto mais luz recebe. Nenhuma folha repete a mistura da outra.", preco: 185 },
+    descricao: "Folha coriácea listrada de verde, amarelo e vermelho, que ganha cor quanto mais luz recebe. Nenhuma folha repete a mistura da outra.", preco: 185, img: IMG("croton") },
   { id: "pachira-aquatica", nome: "Pachira Aquática", especie: "Pachira aquatica · árvore do dinheiro", categoria: "ambos", ambiente: "ambos", pet: "safe",
     descricao: "Tronco trançado à mão e folhas em leque no topo. Conhecida como árvore do dinheiro — dizem que atrai prosperidade, e é por isso que sai tanto como presente.", preco: 230, img: IMG("pachira-aquatica") },
   { id: "palmeira-fenix", nome: "Palmeira Fênix", especie: "Phoenix roebelenii", categoria: "ambos", ambiente: "ambos", pet: "safe",
