@@ -592,13 +592,25 @@
       else if (e.target.closest(".modal-close")) closeModal();
     });
 
+    // menu (celular)
+    const navToggle = $("#navToggle");
+    const mainNav = $("#mainNav");
+    const closeNav = () => { mainNav.classList.remove("open"); navToggle.setAttribute("aria-expanded", "false"); };
+    if (navToggle && mainNav) {
+      navToggle.addEventListener("click", () => {
+        const open = mainNav.classList.toggle("open");
+        navToggle.setAttribute("aria-expanded", open ? "true" : "false");
+      });
+      mainNav.addEventListener("click", (e) => { if (e.target.closest("a")) closeNav(); });
+    }
+
     $("#cartBtn").addEventListener("click", openCart);
     $("#cartClose").addEventListener("click", closeCart);
     $("#drawerOverlay").addEventListener("click", closeCart);
     $("#modalOverlay").addEventListener("click", (e) => { if (e.target === $("#modalOverlay")) closeModal(); });
     $("#cartEmptyBtn").addEventListener("click", () => { closeCart(); location.hash = "#produtos"; });
     document.addEventListener("keydown", (e) => {
-      if (e.key === "Escape") { closeCart(); closeModal(); }
+      if (e.key === "Escape") { closeCart(); closeModal(); closeNav(); }
       if ($("#productModal").classList.contains("open") && modalGallery.length > 1) {
         if (e.key === "ArrowRight") showGalImage(modalGalIdx + 1);
         if (e.key === "ArrowLeft") showGalImage(modalGalIdx - 1);
