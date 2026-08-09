@@ -79,6 +79,7 @@
   };
   const keyPreco = (key) => { const { id, variant } = parseKey(key); const p = product(id); return p ? precoDaVariante(p, variant) : 0; };
   const baseOf = (key) => BASES[(cart[key] && cart[key].b) || 0] || BASES[0];
+  const baseThumb = (b) => `assets/bases/${b.imgId || b.id}.jpg`;
   const cartCount = () => Object.values(cart).reduce((a, v) => a + v.q, 0);
   const subtotal = () => Object.entries(cart).reduce((a, [k, v]) => a + keyPreco(k) * v.q, 0);
   const baseCusto = () => Object.entries(cart).reduce((a, [k, v]) => a + baseOf(k).preco * v.q, 0);
@@ -319,9 +320,21 @@
         : "";
       const baseSel = p.suporte
         ? `<div class="ci-suporte">Suporte avulso · encomenda</div>`
-        : `<label class="ci-base-label">Base desta peça
-            <select class="ci-base" data-base-key="${key}">${baseOptions(v.b)}</select>
-          </label>`;
+        : `<div class="ci-basepick" data-bpkey="${key}">
+            <span class="bp-label">Base desta peça</span>
+            <button type="button" class="bp-current" data-bp-toggle>
+              <img src="${baseThumb(base)}" alt="">
+              <span class="bp-cur-name">${base.nome}${base.preco > 0 ? " · +" + BRL(base.preco) : ""}</span>
+              <span class="bp-chev" aria-hidden="true">▾</span>
+            </button>
+            <div class="bp-list">
+              ${BASES.map((b, i) => `
+                <button type="button" class="bp-opt${i === v.b ? " sel" : ""}" data-bp-opt="${i}">
+                  <img src="${baseThumb(b)}" alt="" loading="lazy">
+                  <span class="bp-opt-name">${b.nome}<small>${b.preco > 0 ? "+ " + BRL(b.preco) + " · encomenda" : "inclusa"}</small></span>
+                </button>`).join("")}
+            </div>
+          </div>`;
       return `
         <div class="cart-item">
           <div class="ci-media">${media(p)}</div>
@@ -647,10 +660,21 @@
       updateTotals();
     });
 
-    // base escolhida por peça (dentro de cada item do carrinho)
-    $("#cartItems").addEventListener("change", (e) => {
-      const s = e.target.closest(".ci-base");
-      if (s) setBase(s.dataset.baseKey, parseInt(s.value, 10));
+    // seletor de base com miniatura (por peça)
+    $("#cartItems").addEventListener("click", (e) => {
+      const tog = e.target.closest("[data-bp-toggle]");
+      const opt = e.target.closest("[data-bp-opt]");
+      if (tog) {
+        const pick = tog.closest(".ci-basepick");
+        const wasOpen = pick.classList.contains("open");
+        $$(".ci-basepick.open").forEach((p) => p.classList.remove("open"));
+        if (!wasOpen) pick.classList.add("open");
+        return;
+      }
+      if (opt) {
+        const pick = opt.closest(".ci-basepick");
+        setBase(pick.dataset.bpkey, parseInt(opt.dataset.bpOpt, 10));
+      }
     });
     $("#checkoutBtn").addEventListener("click", checkout);
     $("#waOrderBtn").addEventListener("click", whatsappOrder);
