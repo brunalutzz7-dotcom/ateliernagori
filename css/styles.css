@@ -352,6 +352,17 @@ h2 { font-size: clamp(1.9rem, 4vw, 2.9rem); }
 .ci-base-cost { font-size: .74rem; color: var(--terra-dk); margin-top: .25rem; }
 .base-hint { display: block; font-size: .76rem; color: var(--ink-soft); line-height: 1.35; margin: 0 0 1rem; }
 
+/* formulário de endereço no carrinho */
+.cart-address { display: flex; flex-direction: column; gap: .5rem; margin-bottom: 1rem; }
+.ca-title { font-size: .85rem; font-weight: 500; margin-bottom: .1rem; }
+.cart-address input { width: 100%; padding: .6rem .8rem; border: 1px solid var(--line); border-radius: var(--radius-sm); background: #fff; font-family: var(--sans); font-size: .9rem; }
+.cart-address input:focus { outline: 2px solid var(--moss); outline-offset: 1px; }
+.ca-row { display: flex; gap: .5rem; }
+.ca-row > input { flex: 1; min-width: 0; }
+.ca-num { max-width: 84px; flex: none !important; }
+.ca-uf { max-width: 62px; flex: none !important; text-transform: uppercase; }
+.ca-hint { font-size: .74rem; color: var(--ink-soft); line-height: 1.35; }
+
 /* ---- Tela de entrada (splash) ---- */
 .splash {
   position: fixed; inset: 0; z-index: 100;

@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/styles.css?v=10" />
+  <link rel="stylesheet" href="css/styles.css?v=11" />
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='62' r='30' fill='%236b5a3e'/><path d='M50 40 Q40 10 50 2 Q60 10 50 40' fill='%234e7c4a'/></svg>" />
 </head>
 <body>
@@ -253,6 +253,24 @@
         <div class="cart-ship-options" id="cartShipOptions"></div>
       </div>
 
+      <!-- Dados de entrega (para o pedido chegar completo no e-mail) -->
+      <div class="cart-address">
+        <label class="ca-title">Dados de entrega</label>
+        <input type="text" id="adNome" placeholder="Nome completo" autocomplete="name" />
+        <input type="tel" id="adTel" placeholder="WhatsApp / telefone" autocomplete="tel" />
+        <div class="ca-row">
+          <input type="text" id="adRua" placeholder="Rua / logradouro" autocomplete="address-line1" />
+          <input type="text" id="adNum" placeholder="Nº" class="ca-num" autocomplete="off" />
+        </div>
+        <input type="text" id="adCompl" placeholder="Complemento (opcional)" autocomplete="address-line2" />
+        <input type="text" id="adBairro" placeholder="Bairro" />
+        <div class="ca-row">
+          <input type="text" id="adCidade" placeholder="Cidade" autocomplete="address-level2" />
+          <input type="text" id="adUf" placeholder="UF" class="ca-uf" maxlength="2" autocomplete="address-level1" />
+        </div>
+        <small class="ca-hint">Preencha o CEP acima para calcular o frete — cidade e rua são preenchidas automaticamente.</small>
+      </div>
+
       <p class="base-hint">Cada peça tem sua própria base. Bases de madeira e tripé de ferro são inclusas; tronco e cubo de ferro são especiais (encomenda, com custo à parte). Para 2 peças juntas, escolha "Madeira com aro duplo" na base.</p>
 
       <div class="cart-totals">
@@ -281,8 +299,8 @@
     <div class="modal" id="productModal" role="dialog" aria-modal="true"></div>
   </div>
 
-  <script src="js/config.js?v=10"></script>
-  <script src="js/products.js?v=10"></script>
-  <script src="js/app.js?v=10"></script>
+  <script src="js/config.js?v=11"></script>
+  <script src="js/products.js?v=11"></script>
+  <script src="js/app.js?v=11"></script>
 </body>
 </html>

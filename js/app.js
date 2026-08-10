@@ -402,8 +402,16 @@
     try {
       const r = await fetch(`https://viacep.com.br/ws/${digits}/json/`);
       const j = await r.json();
-      return j.erro ? null : { cidade: j.localidade, uf: j.uf };
+      return j.erro ? null : { cidade: j.localidade, uf: j.uf, rua: j.logradouro, bairro: j.bairro };
     } catch { return null; }
+  }
+
+  // preenche os campos de endereço com o retorno do CEP (sem sobrescrever o que o cliente já digitou)
+  function fillAddress(loc) {
+    if (!loc) return;
+    const set = (id, val) => { const el = $(id); if (el && !el.value && val) el.value = val; };
+    set("#adCidade", loc.cidade); set("#adUf", loc.uf);
+    set("#adRua", loc.rua); set("#adBairro", loc.bairro);
   }
 
   function quotesForCep(cep, qty) {
@@ -450,7 +458,7 @@
     if (onlyDigits(cep).length !== 8) { toast("Digite um CEP válido (8 números)."); return; }
     shipCep = maskCep(cep);
     $("#cartShipOptions").innerHTML = `<p class="frete-placeholder">Calculando…</p>`;
-    await lookupCep(cep);
+    fillAddress(await lookupCep(cep));
     const q = Math.max(cartCount(), 1);
     const quotes = quotesForCep(cep, q);
     selectedShip = { id: quotes[0].id, nome: quotes[0].nome, preco: quotes[0].preco };
@@ -487,21 +495,87 @@
     return items;
   }
 
-  function checkout() {
+  /* ---------- endereço de entrega ---------- */
+  function endereco() {
+    return {
+      nome: $("#adNome").value.trim(),
+      tel: $("#adTel").value.trim(),
+      rua: $("#adRua").value.trim(),
+      num: $("#adNum").value.trim(),
+      compl: $("#adCompl").value.trim(),
+      bairro: $("#adBairro").value.trim(),
+      cidade: $("#adCidade").value.trim(),
+      uf: $("#adUf").value.trim().toUpperCase(),
+      cep: shipCep || maskCep($("#cartCep").value),
+    };
+  }
+  const enderecoValido = (e) => e.nome && e.tel && e.rua && e.num && e.bairro && e.cidade && e.uf && onlyDigits(e.cep).length === 8;
+  const enderecoLinha = (e) => `${e.rua}, ${e.num}${e.compl ? " - " + e.compl : ""} - ${e.bairro} - ${e.cidade}/${e.uf} - CEP ${e.cep}`;
+
+  function itensTexto() {
+    let t = "";
+    Object.entries(cart).forEach(([key, v]) => {
+      const { id, variant } = parseKey(key);
+      const p = product(id);
+      const base = baseOf(key);
+      t += `• ${v.q}x ${p.nome}${variant ? " (" + variant + ")" : ""} — ${BRL(precoDaVariante(p, variant) * v.q)}`;
+      t += p.suporte ? " [suporte avulso · encomenda]" : ` | base: ${base.nome}${base.preco > 0 ? " (+" + BRL(base.preco) + ", encomenda)" : ""}`;
+      t += "\n";
+    });
+    return t;
+  }
+  const totalPedido = () => subtotal() + baseCusto() + (selectedShip ? selectedShip.preco : 0);
+
+  // envia o pedido por e-mail (Web3Forms). Retorna true se enviou.
+  async function sendOrderEmail(e, pagamento) {
+    const key = CONFIG.web3formsKey;
+    if (!key) return false; // e-mail ainda não configurado
+    const payload = {
+      access_key: key,
+      subject: "🌿 Novo pedido — Atelier Nagori",
+      from_name: "Site Atelier Nagori",
+      Cliente: e.nome,
+      WhatsApp: e.tel,
+      Endereço: enderecoLinha(e),
+      Itens: itensTexto(),
+      Subtotal: BRL(subtotal()),
+      Bases_especiais: baseCusto() > 0 ? BRL(baseCusto()) : "—",
+      Frete: selectedShip ? (selectedShip.preco === 0 ? "Grátis" : BRL(selectedShip.preco)) + " · " + selectedShip.nome : "—",
+      Total: BRL(totalPedido()),
+      Pagamento: pagamento,
+    };
+    try {
+      const r = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify(payload),
+      });
+      const j = await r.json();
+      return !!j.success;
+    } catch { return false; }
+  }
+
+  async function checkout() {
     if (cartCount() === 0) return;
     if (!selectedShip) { toast("Calcule o frete pelo seu CEP antes de finalizar."); $("#cartCep").focus(); return; }
+    const e = endereco();
+    if (!enderecoValido(e)) { toast("Preencha seus dados de entrega para continuar."); $("#adNome").focus(); return; }
     const handle = CONFIG.infinitePayHandle;
     if (!handle || handle === "SEU_USUARIO_INFINITEPAY") {
-      alert("⚙️ O checkout do InfinitePay ainda não foi configurado (js/config.js). Você pode finalizar pelo WhatsApp.");
+      alert("⚙️ O checkout do InfinitePay ainda não foi configurado (js/config.js).");
       return;
     }
+    const btn = $("#checkoutBtn");
+    const prev = btn.textContent;
+    btn.disabled = true; btn.textContent = "Enviando pedido…";
+    await sendOrderEmail(e, "InfinitePay (cartão/Pix)");
+    btn.disabled = false; btn.textContent = prev;
+
     const items = buildOrderItems();
     const nsu = "NAGORI" + Date.now();
     const redirect = encodeURIComponent(window.location.origin + window.location.pathname);
     const url = `https://checkout.infinitepay.io/${encodeURIComponent(handle)}` +
       `?items=${encodeURIComponent(JSON.stringify(items))}&order_nsu=${nsu}&redirect_url=${redirect}`;
-    // avisa a Bruna no WhatsApp com o resumo (nova aba) e segue para o pagamento
-    window.open(orderWhatsappUrl("Acabei de finalizar este pedido e vou pagar pelo site (InfinitePay). 💳"), "_blank");
     window.location.href = url;
   }
 
@@ -523,13 +597,20 @@
       msg += `*Frete (${selectedShip.nome}):* ${selectedShip.preco === 0 ? "Grátis" : BRL(selectedShip.preco)}%0A`;
       msg += `*Total:* ${BRL(subtotal() + base + selectedShip.preco)}%0A`;
     }
-    if (shipCep) msg += `*CEP de entrega:* ${shipCep}%0A`;
+    const e = endereco();
+    if (e.nome) msg += `%0A*Cliente:* ${encodeURIComponent(e.nome)}%0A`;
+    if (e.tel) msg += `*WhatsApp:* ${encodeURIComponent(e.tel)}%0A`;
+    if (e.rua) msg += `*Endereço:* ${encodeURIComponent(enderecoLinha(e))}%0A`;
+    else if (shipCep) msg += `*CEP de entrega:* ${shipCep}%0A`;
     msg += `%0A${nota || "Gostaria de finalizar este pedido. 😊"}`;
     return `${waBase()}?text=${msg}`;
   }
 
   function whatsappOrder() {
     if (cartCount() === 0) return;
+    // dispara o e-mail também (sem travar a abertura do WhatsApp)
+    const e = endereco();
+    if (enderecoValido(e)) sendOrderEmail(e, "Pedido pelo WhatsApp");
     window.open(orderWhatsappUrl(), "_blank");
   }
 
@@ -657,6 +738,9 @@
     $("#freteCep").addEventListener("keydown", (e) => { if (e.key === "Enter") calcFreteSection(); });
     $("#cartShipCalc").addEventListener("click", calcCartShip);
     $("#cartCep").addEventListener("keydown", (e) => { if (e.key === "Enter") calcCartShip(); });
+    $("#cartCep").addEventListener("blur", async () => {
+      if (onlyDigits($("#cartCep").value).length === 8) fillAddress(await lookupCep($("#cartCep").value));
+    });
 
     $("#cartShipOptions").addEventListener("change", (e) => {
       const r = e.target.closest('input[name="ship"]');

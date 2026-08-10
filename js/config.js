@@ -28,6 +28,21 @@ const CONFIG = {
   // e-mail público, preencha aqui e mude emailVisivel para true.
   email: "",
   emailVisivel: false, // não mostra o e-mail no site
+
+  /* -------------------------------------------------------------------
+     E-MAIL AUTOMÁTICO DE PEDIDOS (Web3Forms)
+     -------------------------------------------------------------------
+     Quando o cliente finaliza um pedido, o site envia um e-mail com o
+     resumo (peças, endereço, valores) para o SEU e-mail — sem depender
+     de o cliente enviar nada.
+
+     Como ativar (1 minuto, grátis):
+       1. Acesse https://web3forms.com
+       2. Digite o seu e-mail (brunalutzz7@gmail.com) e clique em criar
+          a "Access Key" — ela chega no seu e-mail na hora.
+       3. Cole a chave aqui embaixo, entre as aspas.
+     Seu e-mail NÃO fica exposto no site — só esta chave.               */
+  web3formsKey: "",
   instagram: "ateliernagori",
 
   // Cidade de origem dos envios (afeta o cálculo de frete)
