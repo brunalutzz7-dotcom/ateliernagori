@@ -500,11 +500,13 @@
     const redirect = encodeURIComponent(window.location.origin + window.location.pathname);
     const url = `https://checkout.infinitepay.io/${encodeURIComponent(handle)}` +
       `?items=${encodeURIComponent(JSON.stringify(items))}&order_nsu=${nsu}&redirect_url=${redirect}`;
+    // avisa a Bruna no WhatsApp com o resumo (nova aba) e segue para o pagamento
+    window.open(orderWhatsappUrl("Acabei de finalizar este pedido e vou pagar pelo site (InfinitePay). 💳"), "_blank");
     window.location.href = url;
   }
 
-  function whatsappOrder() {
-    if (cartCount() === 0) return;
+  // monta a URL do WhatsApp com o resumo do pedido
+  function orderWhatsappUrl(nota) {
     let msg = "*Novo pedido — Atelier Nagori* 🌿%0A%0A";
     Object.entries(cart).forEach(([key, v]) => {
       const { id, variant } = parseKey(key);
@@ -522,8 +524,13 @@
       msg += `*Total:* ${BRL(subtotal() + base + selectedShip.preco)}%0A`;
     }
     if (shipCep) msg += `*CEP de entrega:* ${shipCep}%0A`;
-    msg += `%0AGostaria de finalizar este pedido. 😊`;
-    window.open(`${waBase()}?text=${msg}`, "_blank");
+    msg += `%0A${nota || "Gostaria de finalizar este pedido. 😊"}`;
+    return `${waBase()}?text=${msg}`;
+  }
+
+  function whatsappOrder() {
+    if (cartCount() === 0) return;
+    window.open(orderWhatsappUrl(), "_blank");
   }
 
   function encomendar(id) {
