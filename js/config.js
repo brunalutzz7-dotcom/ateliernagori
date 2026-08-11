@@ -42,7 +42,7 @@ const CONFIG = {
           a "Access Key" — ela chega no seu e-mail na hora.
        3. Cole a chave aqui embaixo, entre as aspas.
      Seu e-mail NÃO fica exposto no site — só esta chave.               */
-  web3formsKey: "",
+  web3formsKey: "621860d6-4a4c-46bd-9ec3-86e94933cb6c",
   instagram: "ateliernagori",
 
   // Cidade de origem dos envios (afeta o cálculo de frete)
