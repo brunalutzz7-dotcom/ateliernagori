@@ -418,10 +418,12 @@
     const i = zoneFromCep(cep) - 1;
     const sub = subtotal();
     const q = Math.max(qty, 1);
+    const acr = CONFIG.acrescimoFrete || 0;
     const list = CONFIG.transportadoras.map((t) => {
       let preco = t.base[i] + t.extra * (q - 1);
       let gratis = false;
       if (t.id === "correios-pac" && sub >= CONFIG.freteGratisAcima) { preco = 0; gratis = true; }
+      else preco += acr; // acréscimo por transportadora (embalagem/manuseio)
       return { id: t.id, nome: t.nome, obs: t.obs, preco, gratis, prazo: t.prazo[i] };
     });
     list.push({ id: "retirada", nome: "Retirada no ateliê", obs: "Grátis", preco: 0, gratis: true, prazo: "combinar" });

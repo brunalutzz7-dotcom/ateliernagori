@@ -64,6 +64,9 @@ const CONFIG = {
        5 = Norte
      "extra" é o acréscimo por kokedama adicional no mesmo pacote.      */
   freteGratisAcima: 900, // pedidos acima deste valor (R$) ganham PAC grátis
+  // Valor (R$) somado ao preço de CADA transportadora paga (ex.: embalagem/manuseio).
+  // Não se aplica à retirada no ateliê nem ao frete grátis.
+  acrescimoFrete: 10,
   transportadoras: [
     {
       id: "correios-pac",
