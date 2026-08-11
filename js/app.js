@@ -84,6 +84,21 @@
   const subtotal = () => Object.entries(cart).reduce((a, [k, v]) => a + keyPreco(k) * v.q, 0);
   const baseCusto = () => Object.entries(cart).reduce((a, [k, v]) => a + baseOf(k).preco * v.q, 0);
 
+  // Peso estimado (kg) de cada peça — usado no cálculo de frete.
+  // Se o produto tiver "peso" definido em products.js, usa ele; senão estima
+  // pela categoria (bonsais e raridades são mais pesados; grande porte bem mais).
+  const pesoDe = (p) => {
+    if (!p) return 1.8;
+    if (p.peso != null) return p.peso;
+    const porCat = { bonsai: 3.5, raridade: 3.5, grande: 6, arlivre: 2.5, suporte: 1.2 };
+    return porCat[p.categoria] || 1.8;
+  };
+  // Peso total do carrinho (kg), somando peça × quantidade.
+  const cartWeight = () => Object.entries(cart).reduce((a, [k, v]) => {
+    const { id } = parseKey(k);
+    return a + pesoDe(product(id)) * v.q;
+  }, 0);
+
   /* =================================================================
      CONFIG → DOM
      ================================================================= */
@@ -414,13 +429,17 @@
     set("#adRua", loc.rua); set("#adBairro", loc.bairro);
   }
 
-  function quotesForCep(cep, qty) {
+  // totalKg = peso total do carrinho (kg). O preço "base" cobre até "pesoBase"
+  // kg; cada kg extra (arredondado p/ cima) soma o "porKg" da transportadora.
+  function quotesForCep(cep, totalKg) {
     const i = zoneFromCep(cep) - 1;
     const sub = subtotal();
-    const q = Math.max(qty, 1);
     const acr = CONFIG.acrescimoFrete || 0;
+    const pesoBase = CONFIG.pesoBase || 2;
+    const kg = Math.max(totalKg || 0, 0.1);
+    const extraKg = Math.max(0, Math.ceil(kg - pesoBase));
     const list = CONFIG.transportadoras.map((t) => {
-      let preco = t.base[i] + t.extra * (q - 1);
+      let preco = t.base[i] + (t.porKg || 0) * extraKg;
       let gratis = false;
       if (t.id === "correios-pac" && sub >= CONFIG.freteGratisAcima) { preco = 0; gratis = true; }
       else preco += acr; // acréscimo por transportadora (embalagem/manuseio)
@@ -439,8 +458,10 @@
     $("#freteResults").innerHTML = `<p class="frete-placeholder">Calculando…</p>`;
     const loc = await lookupCep(cep);
     $("#freteLocal").textContent = loc ? `📍 ${loc.cidade} — ${loc.uf}` : "";
-    const q = Math.max(cartCount(), 1);
-    const quotes = quotesForCep(cep, q);
+    // Se houver carrinho, usa o peso real; senão estima uma peça média (1,8 kg).
+    const kg = cartCount() ? cartWeight() : 1.8;
+    const quotes = quotesForCep(cep, kg);
+    const q = cartCount();
     $("#freteResults").innerHTML = `
       <div class="ship-list">
         ${quotes.map((s) => `
@@ -452,7 +473,7 @@
             <span class="ship-price ${s.gratis ? "ship-free" : ""}">${s.preco === 0 ? "Grátis" : BRL(s.preco)}</span>
           </div>`).join("")}
       </div>
-      <p class="frete-note">Cálculo para ${q} ${q > 1 ? "peças" : "peça"} no carrinho.</p>`;
+      <p class="frete-note">${q ? `Cálculo para ${q} ${q > 1 ? "peças" : "peça"} (~${kg.toFixed(1).replace(".", ",")} kg) no carrinho.` : "Estimativa para uma peça média (~1,8 kg). Adicione itens ao carrinho para o cálculo exato."}</p>`;
   }
 
   async function calcCartShip() {
@@ -461,8 +482,7 @@
     shipCep = maskCep(cep);
     $("#cartShipOptions").innerHTML = `<p class="frete-placeholder">Calculando…</p>`;
     fillAddress(await lookupCep(cep));
-    const q = Math.max(cartCount(), 1);
-    const quotes = quotesForCep(cep, q);
+    const quotes = quotesForCep(cep, cartWeight());
     selectedShip = { id: quotes[0].id, nome: quotes[0].nome, preco: quotes[0].preco };
     $("#cartShipOptions").innerHTML = quotes.map((s, idx) => `
       <label class="ship-opt ${idx === 0 ? "selected" : ""}">

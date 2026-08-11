@@ -62,52 +62,55 @@ const CONFIG = {
        3 = Sudeste (RJ/MG/ES) e Centro-Oeste
        4 = Nordeste
        5 = Norte
-     "extra" é o acréscimo por kokedama adicional no mesmo pacote.      */
+     "base" cobre até "pesoBase" kg; cada kg extra soma o "porKg".      */
   freteGratisAcima: 900, // pedidos acima deste valor (R$) ganham PAC grátis
   // Valor (R$) somado ao preço de CADA transportadora paga (ex.: embalagem/manuseio).
   // Não se aplica à retirada no ateliê nem ao frete grátis.
   acrescimoFrete: 10,
+  // Peso (kg) já incluso no preço "base" de cada transportadora. Acima disso,
+  // soma-se o "porKg" de cada transportadora por quilo extra (arredondado p/ cima).
+  pesoBase: 2,
   transportadoras: [
     {
       id: "correios-pac",
       nome: "Correios — PAC",
       obs: "Econômico",
-      base: [22, 32, 42, 52, 62], extra: 8,
+      base: [22, 32, 42, 52, 62], porKg: 7,
       prazo: ["3-6", "5-9", "7-12", "9-15", "10-18"],
     },
     {
       id: "correios-sedex",
       nome: "Correios — SEDEX",
       obs: "Expresso",
-      base: [34, 48, 62, 78, 95], extra: 12,
+      base: [34, 48, 62, 78, 95], porKg: 11,
       prazo: ["1-2", "2-4", "3-5", "4-7", "5-9"],
     },
     {
       id: "jadlog-package",
       nome: "Jadlog — Package",
       obs: "Econômico",
-      base: [20, 28, 38, 48, 58], extra: 7,
+      base: [20, 28, 38, 48, 58], porKg: 6,
       prazo: ["3-6", "4-8", "6-10", "8-13", "9-16"],
     },
     {
       id: "jadlog-com",
       nome: "Jadlog — .Com",
       obs: "Expresso",
-      base: [30, 42, 55, 70, 85], extra: 10,
+      base: [30, 42, 55, 70, 85], porKg: 9,
       prazo: ["2-3", "3-5", "4-6", "5-8", "6-10"],
     },
     {
       id: "azul-cargo",
       nome: "Azul Cargo Express",
       obs: "Aéreo rápido",
-      base: [28, 40, 52, 60, 68], extra: 9,
+      base: [28, 40, 52, 60, 68], porKg: 8,
       prazo: ["1-3", "2-4", "2-5", "3-6", "3-7"],
     },
     {
       id: "loggi",
       nome: "Loggi",
       obs: "Expresso",
-      base: [25, 36, 48, 60, 72], extra: 8,
+      base: [25, 36, 48, 60, 72], porKg: 7,
       prazo: ["1-3", "2-4", "3-5", "4-7", "5-8"],
     },
   ],
