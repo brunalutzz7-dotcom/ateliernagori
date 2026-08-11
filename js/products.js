@@ -5,6 +5,10 @@
    Cada produto tem:
      nome, especie, categoria, ambiente, pet, descricao
      preco  → número único  OU  variantes: [{label, preco}]
+     peso   → peso estimado em kg p/ o frete (opcional). Sem ele, o site
+              estima pela categoria: folhagem ~1,8 · bonsai/raridade ~3,5 ·
+              ambiente externo ~2,5 · grande porte ~6 kg. Use este campo nas
+              folhagens maiores (fícus, asplênio etc.) p/ um frete mais justo.
      img    → caminho da foto  (quando não há foto, usa placeholder)
      encomenda: true → peça sob consulta (não vai ao carrinho)
      raridade: true → edição especial
@@ -47,7 +51,7 @@ const CATEGORIAS = [
 
 const PRODUCTS = [
   /* ---------- 01 · DENTRO DE CASA ---------- */
-  { id: "arranjo-orquidea", nome: "Arranjo de Orquídea", especie: "Phalaenopsis com folhagens · composição única", categoria: "dentro", ambiente: "interno", pet: "safe",
+  { id: "arranjo-orquidea", nome: "Arranjo de Orquídea", peso: 3, especie: "Phalaenopsis com folhagens · composição única", categoria: "dentro", ambiente: "interno", pet: "safe",
     descricao: "Orquídea combinada com folhagens sobre a mesma esfera. A raiz da orquídea e o musgo se entendem naturalmente, e cada arranjo é montado de forma única.", preco: 360, imgs: [IMG("arranjo-orquidea"), IMG("arranjo-orquidea-2")] },
   { id: "anturio-vermelho", nome: "Antúrio Vermelho", especie: "Anthurium andraeanum", categoria: "dentro", ambiente: "interno", pet: "toxic",
     descricao: "Espata lacada, folha larga e escura. Floresce quase o ano inteiro em luz indireta.", preco: 200, img: IMG("anturio-vermelho") },
@@ -55,13 +59,13 @@ const PRODUCTS = [
     descricao: "Espata rosada e brilhante que dura semanas abertas, sobre folhagem verde-escura lustrosa. Floresce quase o ano todo em luz indireta.", preco: 200, img: IMG("anturio-rosa") },
   { id: "maranta-pavao", nome: "Maranta Pavão", especie: "Calathea makoyana", categoria: "dentro", ambiente: "interno", pet: "safe",
     descricao: "Desenho de pena em cada folha, translúcido contra a luz. Pede umidade — gosta de banheiro claro.", preco: 150, img: IMG("maranta-pavao") },
-  { id: "alocasia-polly", nome: "Alocásia Polly", especie: "Alocasia × amazonica", categoria: "dentro", ambiente: "interno", pet: "toxic",
+  { id: "alocasia-polly", nome: "Alocásia Polly", peso: 3, especie: "Alocasia × amazonica", categoria: "dentro", ambiente: "interno", pet: "toxic",
     descricao: "Folha em ponta de flecha, verde quase preto com nervura branca em relevo. Desenho gráfico, quase artificial de tão marcado.", preco: 235, img: IMG("alocasia-polly") },
   { id: "begonia-maculata", nome: "Begônia Maculata", especie: "Begonia maculata", categoria: "dentro", ambiente: "interno", pet: "toxic",
     descricao: "Folha em asa com pontos prateados sobre verde escuro e verso vinho. Uma das folhagens mais fotografadas que existem.", preco: 310, img: IMG("begonia-maculata") },
   { id: "maranta-white-fusion", nome: "Maranta White Fusion", especie: "Calathea 'White Fusion'", categoria: "dentro", ambiente: "interno", pet: "safe",
     descricao: "Manchas brancas irregulares que invadem o verde, cada folha com um desenho próprio. A mais delicada da família — pede umidade constante.", preco: 250, img: IMG("maranta-white-fusion") },
-  { id: "asplenio", nome: "Asplênio", especie: "Asplenium nidus", categoria: "dentro", ambiente: "interno", pet: "safe",
+  { id: "asplenio", nome: "Asplênio", peso: 3, especie: "Asplenium nidus", categoria: "dentro", ambiente: "interno", pet: "safe",
     descricao: "Folhas inteiras em roseta, brilhantes. Cresce como um ninho aberto sobre a esfera.", preco: 365, img: IMG("asplenio") },
   { id: "maranta-cascavel", nome: "Maranta Cascavel", especie: "Goeppertia insignis", categoria: "dentro", ambiente: "interno", pet: "safe",
     descricao: "Folha estreita e ondulada, salpicada de manchas escuras alternadas — o nome vem do desenho, que lembra pele de cobra. O par montado junto fica especialmente bonito.", variantes: [{ label: "Peça única", preco: 145 }, { label: "O par", preco: 250 }], img: IMG("maranta-cascavel") },
@@ -69,11 +73,11 @@ const PRODUCTS = [
     descricao: "Verde, creme e rosa na mesma folha, com verso inteiramente magenta. Levanta as folhas à noite e as baixa pela manhã.", preco: 235, img: IMG("maranta-triostar") },
   { id: "peperomia-raindrop", nome: "Peperomia Raindrop", especie: "Peperomia polybotrya", categoria: "dentro", ambiente: "interno", pet: "safe",
     descricao: "Folha em gota, grossa e envernizada, sobre haste alta e ereta. Mais vertical e mais rara que a peperomia comum.", variantes: [{ label: "Peça única", preco: 145 }, { label: "O par", preco: 250 }], img: IMG("peperomia-raindrop") },
-  { id: "ficus-lyrata", nome: "Fícus Lyrata", especie: "Ficus lyrata", categoria: "dentro", ambiente: "interno", pet: "toxic",
+  { id: "ficus-lyrata", nome: "Fícus Lyrata", peso: 3, especie: "Ficus lyrata", categoria: "dentro", ambiente: "interno", pet: "toxic",
     descricao: "Folha grande em forma de lira, nervura marcada. Escolhe um lugar e não gosta de ser mudada dele.", preco: 270, img: IMG("ficus-lyrata") },
-  { id: "ficus-tineke", nome: "Fícus Tineke", especie: "Ficus elastica 'Tineke'", categoria: "dentro", ambiente: "interno", pet: "toxic",
+  { id: "ficus-tineke", nome: "Fícus Tineke", peso: 3, especie: "Ficus elastica 'Tineke'", categoria: "dentro", ambiente: "interno", pet: "toxic",
     descricao: "Folha grossa mesclada em creme e verde, nervura central rosada. Cada folha abre com um desenho diferente da anterior.", preco: 270, img: IMG("ficus-tineke") },
-  { id: "ficus-ruby", nome: "Fícus Ruby", especie: "Ficus elastica 'Ruby'", categoria: "dentro", ambiente: "interno", pet: "toxic",
+  { id: "ficus-ruby", nome: "Fícus Ruby", peso: 3, especie: "Ficus elastica 'Ruby'", categoria: "dentro", ambiente: "interno", pet: "toxic",
     descricao: "Variegação em rosa vivo sobre verde escuro, mais intensa nas folhas novas. Quanto mais luz recebe, mais forte fica o rosa.", preco: 270, img: IMG("ficus-ruby") },
   { id: "philodendron-birkin", nome: "Philodendron Birkin", especie: "Philodendron 'Birkin'", categoria: "dentro", ambiente: "interno", pet: "toxic",
     descricao: "Riscos brancos finos, nenhuma folha igual à outra. Compacta e discreta.", preco: 200, img: IMG("philodendron-birkin") },
@@ -87,7 +91,7 @@ const PRODUCTS = [
     descricao: "Folha larga de centro branco cremoso e borda verde. A mais clara da família — clareia canto de pouca luz sem pedir sol.", preco: 230, img: IMG("aglaonema-branca") },
   { id: "singonio", nome: "Singônio", especie: "Syngonium podophyllum", categoria: "dentro", ambiente: "interno", pet: "toxic",
     descricao: "Folha em ponta de flecha que muda de forma conforme a planta amadurece.", preco: 200, img: IMG("singonio") },
-  { id: "pau-dagua-60", nome: "Pau d'Água · 60 cm", especie: "Dracaena fragrans", categoria: "dentro", ambiente: "interno", pet: "toxic",
+  { id: "pau-dagua-60", nome: "Pau d'Água · 60 cm", peso: 3, especie: "Dracaena fragrans", categoria: "dentro", ambiente: "interno", pet: "toxic",
     descricao: "A mesma folha listrada da grande, em escala de mesa e estante. Aceita canto pouco iluminado e esquecimento de rega.", preco: 230, img: IMG("pau-dagua-60") },
   { id: "aspargo-melindre", nome: "Aspargo Melindre", especie: "Asparagus setaceus", categoria: "dentro", ambiente: "ambos", pet: "toxic",
     descricao: "Ramos horizontais em camadas finíssimas, quase gráficos. Parece desenho a nanquim.", preco: 200, img: IMG("aspargo-melindre") },
@@ -97,17 +101,17 @@ const PRODUCTS = [
     descricao: "Folha listrada em espinha de peixe, verde-claro sobre verde escuro, com o verso vinho. Fecha as folhas à noite e reabre pela manhã.", preco: 130, img: IMG("maranta-burle-marx") },
 
   /* ---------- 02 · DENTRO OU FORA ---------- */
-  { id: "costela-adao", nome: "Costela de Adão", especie: "Monstera deliciosa", categoria: "ambos", ambiente: "ambos", pet: "toxic",
+  { id: "costela-adao", nome: "Costela de Adão", peso: 3, especie: "Monstera deliciosa", categoria: "ambos", ambiente: "ambos", pet: "toxic",
     descricao: "Folha recortada que ganha novos vãos a cada broto. Cresce rápido e pede espaço.", preco: 285, img: IMG("costela-adao") },
   { id: "croton", nome: "Croton", especie: "Codiaeum variegatum", categoria: "ambos", ambiente: "ambos", pet: "toxic",
     descricao: "Folha coriácea listrada de verde, amarelo e vermelho, que ganha cor quanto mais luz recebe. Nenhuma folha repete a mistura da outra.", preco: 185, img: IMG("croton") },
-  { id: "pachira-aquatica", nome: "Pachira Aquática", especie: "Pachira aquatica · árvore do dinheiro", categoria: "ambos", ambiente: "ambos", pet: "safe",
+  { id: "pachira-aquatica", nome: "Pachira Aquática", peso: 3, especie: "Pachira aquatica · árvore do dinheiro", categoria: "ambos", ambiente: "ambos", pet: "safe",
     descricao: "Tronco trançado à mão e folhas em leque no topo. Conhecida como árvore do dinheiro — dizem que atrai prosperidade, e é por isso que sai tanto como presente.", preco: 170, img: IMG("pachira-aquatica") },
-  { id: "palmeira-fenix", nome: "Palmeira Fênix", especie: "Phoenix roebelenii", categoria: "ambos", ambiente: "ambos", pet: "safe",
+  { id: "palmeira-fenix", nome: "Palmeira Fênix", peso: 3, especie: "Phoenix roebelenii", categoria: "ambos", ambiente: "ambos", pet: "safe",
     descricao: "Fronde fina e arqueada, folíolos estreitos em duas fileiras. Cresce devagar e mantém o porte pequeno por anos: a palmeira que cabe dentro de casa.", preco: 200, img: IMG("palmeira-fenix") },
-  { id: "pacova", nome: "Pacová", especie: "Philodendron martianum", categoria: "ambos", ambiente: "ambos", pet: "toxic",
+  { id: "pacova", nome: "Pacová", peso: 3, especie: "Philodendron martianum", categoria: "ambos", ambiente: "ambos", pet: "toxic",
     descricao: "Folha inteira e grossa sobre pecíolo inflado. Forma limpa, quase escultórica.", preco: 200, img: IMG("pacova") },
-  { id: "pata-de-elefante", nome: "Pata de Elefante", especie: "Beaucarnea recurvata", categoria: "ambos", ambiente: "ambos", pet: "safe",
+  { id: "pata-de-elefante", nome: "Pata de Elefante", peso: 3, especie: "Beaucarnea recurvata", categoria: "ambos", ambiente: "ambos", pet: "safe",
     descricao: "Base inchada que guarda água, folhas finas em cascata. Esquece a rega e ela não sente.", preco: 350, img: IMG("pata-de-elefante") },
 
   /* ---------- 03 · AO AR LIVRE ---------- */
