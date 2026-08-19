@@ -155,6 +155,8 @@ const PRODUCTS = [
     descricao: "Folha pequena e coriácea, casca cortiçosa e clara. Aceita poda severa e mantém a forma por muito tempo.", preco: 800, img: IMG("bonsai-buxus-9") },
   { id: "bonsai-azaleia-4", nome: "Bonsai Azaleia · 4 anos", especie: "Rhododendron simsii · aprox. 80 cm", categoria: "bonsai", ambiente: "externo", pet: "toxic",
     descricao: "Tronco fino e alto, conduzido em espiral ao longo de quatro anos. Na primavera a copa desaparece sob a floração — é isso que a peça vem entregar.", preco: 450, img: IMG("bonsai-azaleia-4") },
+  { id: "bonsai-pinheirinho-tuia-3", nome: "Bonsai Pinheirinho Tuia · 3 anos", especie: "Thuja sp. · aprox. 25 cm · musgo vivo", categoria: "bonsai", ambiente: "externo", pet: "toxic",
+    descricao: "Conífera de folhagem macia verde-azulada, montada sobre esfera de musgo vivo. Três anos de formação num tronco esguio que já ramifica — o pinheirinho em miniatura, no ponto de começar a ganhar copa.", preco: 400, img: IMG("bonsai-pinheirinho-tuia-3") },
 
   /* ---------- 05 · RARIDADE ---------- */
   { id: "bonsai-jasmim-anao-6", nome: "Bonsai Jasmim Anão · 6 anos", especie: "Jasminum sp. · anão · aprox. 30 cm", categoria: "raridade", raridade: true, ambiente: "externo", pet: "toxic",
