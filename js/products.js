@@ -135,6 +135,8 @@ const PRODUCTS = [
     descricao: "A espécie mais reverenciada da tradição japonesa. Agulha rígida, casca em placas, silhueta construída agulha por agulha ao longo de catorze anos.", preco: 2500, img: IMG("bonsai-pinheiro-negro-14") },
   { id: "bonsai-shimpaku-16", nome: "Bonsai Shimpaku · 16 anos", especie: "Juniperus chinensis 'Shimpaku' · 30 a 40 cm", categoria: "bonsai", ambiente: "externo", pet: "toxic",
     descricao: "Junípero de folha escamosa e macia, madeira que aceita torção. O clássico dos jardins japoneses, em escala de mesa.", preco: 1500, img: IMG("bonsai-shimpaku-16") },
+  { id: "bonsai-shimpaku-5", nome: "Bonsai Shimpaku · 5 anos", especie: "Juniperus chinensis 'Shimpaku' · aprox. 30 cm", categoria: "bonsai", ambiente: "externo", pet: "toxic",
+    descricao: "Cinco anos de condução num tronco já curvado, de casca fina e folhagem escamosa verde-clara. O junípero clássico dos jardins japoneses, no ponto em que ainda se deixa moldar — para acompanhar a árvore ganhar forma.", preco: 600, img: IMG("bonsai-shimpaku-5") },
   { id: "bonsai-ligustro-15", nome: "Bonsai Ligustro · 15 anos", especie: "Ligustrum sinense · aprox. 50 cm", categoria: "bonsai", ambiente: "ambos", pet: "toxic",
     descricao: "Folhagem miúda e densa, tronco que engrossa rápido. Perdoa erro de rega — o bonsai mais generoso para quem está começando.", preco: 900, img: IMG("bonsai-ligustro-15") },
   { id: "bonsai-caliandra-9", nome: "Bonsai Caliandra Rosa · 9 anos", especie: "Calliandra brevipes · aprox. 50 cm", categoria: "bonsai", ambiente: "externo", pet: "toxic",
