@@ -45,7 +45,6 @@ const CATEGORIAS = [
   { id: "ambos",   nome: "Dentro ou fora", desc: "Versáteis: interior com boa luz ou varanda." },
   { id: "arlivre", nome: "Ao ar livre",    desc: "Peças que pedem sol e ar livre." },
   { id: "bonsai",  nome: "Bonsais",        desc: "Árvores formadas ao longo de anos sobre musgo vivo. O coração do ateliê." },
-  { id: "raridade",nome: "Raridades",      desc: "Edições especiais, fora da produção regular." },
   { id: "grande",  nome: "Grande porte",   desc: "Peças de chão para hall e pé-direito alto. Encomenda sob consulta." },
 ];
 
@@ -158,12 +157,12 @@ const PRODUCTS = [
   { id: "bonsai-pinheirinho-tuia-3", nome: "Bonsai Pinheirinho Tuia · 3 anos", especie: "Thuja sp. · aprox. 25 cm · musgo vivo", categoria: "bonsai", ambiente: "externo", pet: "toxic",
     descricao: "Conífera de folhagem macia verde-azulada, montada sobre esfera de musgo vivo. Três anos de formação num tronco esguio que já ramifica — o pinheirinho em miniatura, no ponto de começar a ganhar copa.", preco: 400, img: IMG("bonsai-pinheirinho-tuia-3") },
 
-  /* ---------- 05 · RARIDADE ---------- */
-  { id: "bonsai-jasmim-anao-6", nome: "Bonsai Jasmim Anão · 6 anos", especie: "Jasminum sp. · anão · aprox. 30 cm", categoria: "raridade", raridade: true, ambiente: "externo", pet: "toxic",
+  /* ---------- 05 · BONSAIS (antes raridades) ---------- */
+  { id: "bonsai-jasmim-anao-6", nome: "Bonsai Jasmim Anão · 6 anos", especie: "Jasminum sp. · anão · aprox. 30 cm", categoria: "bonsai", ambiente: "externo", pet: "toxic",
     descricao: "Seis anos de condução num tronco que já engrossou, criou casca e recebeu líquen. Floresce branco ao entardecer e perfuma um ambiente inteiro. Espécie difícil de encontrar já formada.", preco: 800, img: IMG("bonsai-jasmim-anao-6") },
-  { id: "bonsai-jasmim-anao-3", nome: "Bonsai Jasmim Anão · 3 anos", especie: "Jasminum sp. · anão", categoria: "raridade", raridade: true, ambiente: "externo", pet: "toxic",
+  { id: "bonsai-jasmim-anao-3", nome: "Bonsai Jasmim Anão · 3 anos", especie: "Jasminum sp. · anão", categoria: "bonsai", ambiente: "externo", pet: "toxic",
     descricao: "Tronco esguio e copa aberta, no ponto em que a árvore ainda aceita ser conduzida. Floresce branco ao entardecer. Para quem prefere participar da formação.", preco: 600, img: IMG("bonsai-jasmim-anao-3") },
-  { id: "bonsai-piteco-2", nome: "Bonsai Piteco · 2 anos", especie: "Pithecellobium tortum · aprox. 30 cm", categoria: "raridade", raridade: true, ambiente: "externo", pet: "toxic",
+  { id: "bonsai-piteco-2", nome: "Bonsai Piteco · 2 anos", especie: "Pithecellobium tortum · aprox. 30 cm", categoria: "bonsai", ambiente: "externo", pet: "toxic",
     descricao: "Folha composta de folíolos minúsculos que se fecham ao anoitecer. Tronco de casca clara e madeira dura. Espécie difícil de encontrar já formada.", preco: 700, img: IMG("bonsai-piteco-2") },
 
   /* ---------- 06 · GRANDE PORTE (encomenda) ---------- */
