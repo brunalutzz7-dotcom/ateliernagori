@@ -154,7 +154,7 @@ const PRODUCTS = [
   { id: "bonsai-buxus-9", nome: "Bonsai Buxus · 9 anos", especie: "Buxus harlandii · aprox. 20 cm", categoria: "bonsai", ambiente: "externo", pet: "toxic",
     descricao: "Folha pequena e coriácea, casca cortiçosa e clara. Aceita poda severa e mantém a forma por muito tempo.", preco: 800, img: IMG("bonsai-buxus-9") },
   { id: "bonsai-azaleia-4", nome: "Bonsai Azaleia · 4 anos", especie: "Rhododendron simsii · aprox. 80 cm", categoria: "bonsai", ambiente: "externo", pet: "toxic",
-    descricao: "Tronco fino e alto, conduzido em espiral ao longo de quatro anos. Na primavera a copa desaparece sob a floração — é isso que a peça vem entregar.", preco: 800, img: IMG("bonsai-azaleia-4") },
+    descricao: "Tronco fino e alto, conduzido em espiral ao longo de quatro anos. Na primavera a copa desaparece sob a floração — é isso que a peça vem entregar.", preco: 450, img: IMG("bonsai-azaleia-4") },
 
   /* ---------- 05 · RARIDADE ---------- */
   { id: "bonsai-jasmim-anao-6", nome: "Bonsai Jasmim Anão · 6 anos", especie: "Jasminum sp. · anão · aprox. 30 cm", categoria: "raridade", raridade: true, ambiente: "externo", pet: "toxic",
