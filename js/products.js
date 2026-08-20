@@ -167,13 +167,13 @@ const PRODUCTS = [
 
   /* ---------- 06 · GRANDE PORTE (encomenda) ---------- */
   { id: "oliveira-grande", nome: "Oliveira", especie: "Olea europaea · 1,60 m a 1,80 m", categoria: "grande", encomenda: true, ambiente: "externo", pet: "safe",
-    descricao: "Oliveira adulta sustentada por uma única esfera de musgo. Tronco e folha prateada em escala de árvore — peça de chão, para hall e canto de sala.", preco: 1300, img: IMG("oliveira-grande") },
+    descricao: "Oliveira adulta sustentada por uma única esfera de musgo. Tronco e folha prateada em escala de árvore — peça de chão, para hall e canto de sala.", preco: 2000, img: IMG("oliveira-grande") },
   { id: "jabuticabeira-grande", nome: "Jabuticabeira", especie: "Plinia cauliflora · 1,20 m a 1,60 m · frutificando", categoria: "grande", encomenda: true, ambiente: "externo", pet: "safe",
-    descricao: "Árvore em idade de produzir, suspensa ou apoiada. Muda o eixo de um hall inteiro — e dá fruta.", preco: 1300, img: IMG("jabuticabeira-grande") },
+    descricao: "Árvore em idade de produzir, suspensa ou apoiada. Muda o eixo de um hall inteiro — e dá fruta.", preco: 1500, img: IMG("jabuticabeira-grande") },
   { id: "pau-dagua-grande", nome: "Pau d'Água", especie: "Dracaena fragrans · 1,20 m a 1,50 m", categoria: "grande", encomenda: true, ambiente: "interno", pet: "toxic",
-    descricao: "Colunas de folha listrada, verticais e limpas, em escala de árvore. Resolve o vazio de um canto de sala sem pedir nada em troca.", preco: 780, img: IMG("pau-dagua-grande") },
+    descricao: "Colunas de folha listrada, verticais e limpas, em escala de árvore. Resolve o vazio de um canto de sala sem pedir nada em troca.", preco: 900, img: IMG("pau-dagua-grande") },
   { id: "arvore-felicidade", nome: "Árvore da Felicidade", especie: "Polyscias sp. · fêmea e macho · 80 cm a 1 m", categoria: "grande", encomenda: true, ambiente: "interno", pet: "toxic",
-    descricao: "Sai em dois desenhos de folha: a fêmea, de folíolo largo e arredondado, e o macho, de folha recortada e fina. Tronco lenhoso e porte ereto — peça de canto e de entrada.", preco: 780, img: IMG("arvore-felicidade") },
+    descricao: "Sai em dois desenhos de folha: a fêmea, de folíolo largo e arredondado, e o macho, de folha recortada e fina. Tronco lenhoso e porte ereto — peça de canto e de entrada.", preco: 1200, img: IMG("arvore-felicidade") },
 
   /* ---------- 07 · SUPORTES ESPECIAIS (compráveis à parte) ---------- */
   { id: "suporte-tronco-natural", nome: "Tronco natural", especie: "Suporte especial · tronco 13 cm · altura 8,5 cm · aro 11 cm", categoria: "suporte", suporte: true,
