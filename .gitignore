@@ -10,3 +10,6 @@ Thumbs.db
 # Dependências / logs (caso adicione ferramentas no futuro)
 node_modules/
 npm-debug.log*
+
+# Planilha interna de custos/margens — NÃO publicar (dados privados)
+Atelier_Nagori_Custos_e_Margens.xlsx
