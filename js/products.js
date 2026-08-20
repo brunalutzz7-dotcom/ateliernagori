@@ -160,8 +160,6 @@ const PRODUCTS = [
   /* ---------- 05 · BONSAIS (antes raridades) ---------- */
   { id: "bonsai-jasmim-anao-6", nome: "Bonsai Jasmim Anão · 6 anos", especie: "Jasminum sp. · anão · aprox. 30 cm", categoria: "bonsai", ambiente: "externo", pet: "toxic",
     descricao: "Seis anos de condução num tronco que já engrossou, criou casca e recebeu líquen. Floresce branco ao entardecer e perfuma um ambiente inteiro. Espécie difícil de encontrar já formada.", preco: 800, img: IMG("bonsai-jasmim-anao-6") },
-  { id: "bonsai-jasmim-anao-3", nome: "Bonsai Jasmim Anão · 3 anos", especie: "Jasminum sp. · anão", categoria: "bonsai", ambiente: "externo", pet: "toxic",
-    descricao: "Tronco esguio e copa aberta, no ponto em que a árvore ainda aceita ser conduzida. Floresce branco ao entardecer. Para quem prefere participar da formação.", preco: 600, img: IMG("bonsai-jasmim-anao-3") },
   { id: "bonsai-piteco-2", nome: "Bonsai Piteco · 2 anos", especie: "Pithecellobium tortum · aprox. 30 cm", categoria: "bonsai", ambiente: "externo", pet: "toxic",
     descricao: "Folha composta de folíolos minúsculos que se fecham ao anoitecer. Tronco de casca clara e madeira dura. Espécie difícil de encontrar já formada.", preco: 700, img: IMG("bonsai-piteco-2") },
 
