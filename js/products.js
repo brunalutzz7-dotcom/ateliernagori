@@ -51,13 +51,13 @@ const CATEGORIAS = [
 const PRODUCTS = [
   /* ---------- 01 · DENTRO DE CASA ---------- */
   { id: "arranjo-orquidea", nome: "Arranjo de Orquídea", peso: 3, especie: "Phalaenopsis com folhagens · composição única · também chamado tamandama", categoria: "dentro", ambiente: "interno", pet: "safe",
-    descricao: "Orquídea combinada com folhagens sobre a mesma esfera. A raiz da orquídea e o musgo se entendem naturalmente, e cada arranjo é montado de forma única.", preco: 360, imgs: [IMG("arranjo-orquidea"), IMG("arranjo-orquidea-2")] },
+    descricao: "Orquídea combinada com folhagens sobre a mesma esfera. A raiz da orquídea e o musgo se entendem naturalmente, e cada arranjo é montado de forma única.", preco: 450, imgs: [IMG("arranjo-orquidea"), IMG("arranjo-orquidea-2")] },
   { id: "anturio-vermelho", nome: "Antúrio Vermelho", especie: "Anthurium andraeanum", categoria: "dentro", ambiente: "interno", pet: "toxic",
     descricao: "Espata lacada, folha larga e escura. Floresce quase o ano inteiro em luz indireta.", preco: 200, img: IMG("anturio-vermelho") },
   { id: "anturio-rosa", nome: "Antúrio Rosa", especie: "Anthurium andraeanum · tamanho único", categoria: "dentro", ambiente: "interno", pet: "toxic",
     descricao: "Espata rosada e brilhante que dura semanas abertas, sobre folhagem verde-escura lustrosa. Floresce quase o ano todo em luz indireta.", preco: 200, img: IMG("anturio-rosa") },
   { id: "maranta-pavao", nome: "Maranta Pavão", especie: "Calathea makoyana", categoria: "dentro", ambiente: "interno", pet: "safe",
-    descricao: "Desenho de pena em cada folha, translúcido contra a luz. Pede umidade — gosta de banheiro claro.", preco: 150, img: IMG("maranta-pavao") },
+    descricao: "Desenho de pena em cada folha, translúcido contra a luz. Pede umidade — gosta de banheiro claro.", preco: 220, img: IMG("maranta-pavao") },
   { id: "alocasia-polly", nome: "Alocásia Polly", peso: 3, especie: "Alocasia × amazonica", categoria: "dentro", ambiente: "interno", pet: "toxic",
     descricao: "Folha em ponta de flecha, verde quase preto com nervura branca em relevo. Desenho gráfico, quase artificial de tão marcado.", preco: 235, img: IMG("alocasia-polly") },
   { id: "begonia-maculata", nome: "Begônia Maculata", especie: "Begonia maculata", categoria: "dentro", ambiente: "interno", pet: "toxic",
