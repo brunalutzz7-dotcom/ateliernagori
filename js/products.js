@@ -50,7 +50,7 @@ const CATEGORIAS = [
 
 const PRODUCTS = [
   /* ---------- 01 · DENTRO DE CASA ---------- */
-  { id: "arranjo-orquidea", nome: "Arranjo de Orquídea", peso: 3, especie: "Phalaenopsis com folhagens · composição única", categoria: "dentro", ambiente: "interno", pet: "safe",
+  { id: "arranjo-orquidea", nome: "Arranjo de Orquídea", peso: 3, especie: "Phalaenopsis com folhagens · composição única · também chamado tamandama", categoria: "dentro", ambiente: "interno", pet: "safe",
     descricao: "Orquídea combinada com folhagens sobre a mesma esfera. A raiz da orquídea e o musgo se entendem naturalmente, e cada arranjo é montado de forma única.", preco: 360, imgs: [IMG("arranjo-orquidea"), IMG("arranjo-orquidea-2")] },
   { id: "anturio-vermelho", nome: "Antúrio Vermelho", especie: "Anthurium andraeanum", categoria: "dentro", ambiente: "interno", pet: "toxic",
     descricao: "Espata lacada, folha larga e escura. Floresce quase o ano inteiro em luz indireta.", preco: 200, img: IMG("anturio-vermelho") },
