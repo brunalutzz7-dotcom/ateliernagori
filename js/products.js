@@ -120,8 +120,6 @@ const PRODUCTS = [
   /* ---------- 04 · BONSAIS ---------- */
   { id: "bonsai-oliveira-16", nome: "Bonsai Oliveira · 16 anos", especie: "Olea europaea · aprox. 40 cm", categoria: "bonsai", ambiente: "externo", pet: "safe",
     descricao: "Dezesseis anos de condução em um tronco que já carrega casca rugosa e curva definida. Folha prateada que troca de tom conforme a luz atravessa o dia.", preco: 2000, img: IMG("bonsai-oliveira-16") },
-  { id: "bonsai-oliveira-12", nome: "Bonsai Oliveira · 12 anos", especie: "Olea europaea · aprox. 30 cm", categoria: "bonsai", ambiente: "externo", pet: "safe",
-    descricao: "A mesma árvore, doze anos antes. Escala de mesa, estrutura já formada — e ainda com décadas de forma pela frente.", preco: 1300, img: IMG("bonsai-oliveira-12") },
   { id: "bonsai-jabuticabeira-12", nome: "Bonsai Jabuticabeira · 12 anos", especie: "Plinia cauliflora · aprox. 50 cm · frutificando", categoria: "bonsai", ambiente: "externo", pet: "safe",
     descricao: "Doze anos de formação, e já frutifica. A jabuticaba nasce colada ao tronco, como na árvore inteira — só que em meio metro de altura.", preco: 2000, img: IMG("bonsai-jabuticabeira-12") },
   { id: "bonsai-jabuticabeira-4", nome: "Bonsai Jabuticabeira · 4 anos", especie: "Plinia cauliflora · aprox. 40 cm", categoria: "bonsai", ambiente: "externo", pet: "safe",
