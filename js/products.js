@@ -88,6 +88,8 @@ const PRODUCTS = [
     descricao: "Folha salpicada de rosa e creme, como se tivesse sido pintada. Nenhuma repete o desenho da outra.", preco: 230, img: IMG("aglaonema-rosa") },
   { id: "aglaonema-branca", nome: "Aglaonema Branca", especie: "Aglaonema sp. · branca", categoria: "dentro", ambiente: "interno", pet: "toxic",
     descricao: "Folha larga de centro branco cremoso e borda verde. A mais clara da família — clareia canto de pouca luz sem pedir sol.", preco: 230, img: IMG("aglaonema-branca") },
+  { id: "aglaonema-tricolor", nome: "Aglaonema Tricolor", especie: "Aglaonema sp. · tamanho único", categoria: "dentro", ambiente: "interno", pet: "toxic",
+    descricao: "Verde escuro nas bordas e um miolo que mistura rosa e vermelho, cada folha com o desenho um pouco diferente. Cor viva o ano todo, sem depender de flor, em luz indireta.", preco: 230, img: IMG("aglaonema-tricolor") },
   { id: "singonio", nome: "Singônio", especie: "Syngonium podophyllum", categoria: "dentro", ambiente: "interno", pet: "toxic",
     descricao: "Folha em ponta de flecha que muda de forma conforme a planta amadurece.", preco: 200, img: IMG("singonio") },
   { id: "pau-dagua-60", nome: "Pau d'Água · 60 cm", peso: 3, especie: "Dracaena fragrans", categoria: "dentro", ambiente: "interno", pet: "toxic",
