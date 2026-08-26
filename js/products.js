@@ -205,6 +205,8 @@ const PRODUCTS = [
     descricao: "Dois aros de ferro preto ligados por uma haste reta, em dois níveis. Apoio simples e firme, ergue a esfera do móvel.", preco: 39, img: "assets/bases/ferro-dois-aros.jpg" },
   { id: "suporte-ferro-espiral", nome: "Ferro · espiral", especie: "Suporte · ferro preto", categoria: "suporte", suporte: true,
     descricao: "Uma única linha de ferro preto que sobe em espiral, do aro da base ao aro do topo. Movimento e leveza — a mais gráfica da linha.", preco: 39, img: "assets/bases/ferro-espiral.jpg" },
+  { id: "suporte-cumbuquinha", nome: "Cumbuquinha", especie: "Suporte · bambu", categoria: "suporte", suporte: true,
+    descricao: "Cumbuca de bambu torneado, com os veios naturais à mostra. A esfera assenta dentro dela — o apoio mais quentinho e orgânico da linha, perfeito para as kokedamas menores.", preco: 49, img: "assets/bases/cumbuquinha.jpg" },
   { id: "suporte-tronco-natural", nome: "Tronco natural", especie: "Suporte especial · tronco 13 cm · altura 8,5 cm · aro 11 cm", categoria: "suporte", suporte: true,
     descricao: "Tronco com casca, cada um diferente do outro. Combina com bonsai de casca rugosa, e o peso sustenta maxi kokedama.", preco: 150, img: "assets/bases/tronco-natural.jpg" },
   { id: "suporte-tronco-alto", nome: "Tronco alto", especie: "Suporte especial · madeira clara · medidas variáveis", categoria: "suporte", suporte: true,
