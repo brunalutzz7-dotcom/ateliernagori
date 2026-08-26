@@ -216,7 +216,7 @@ const PRODUCTS = [
   { id: "suporte-cubo-ferro-baixo", nome: "Cubo de ferro · baixo", especie: "Suporte especial · ferro preto · aro interno", categoria: "suporte", suporte: true,
     descricao: "Estrutura vazada com aro suspenso no centro. A esfera flutua dentro do quadro, na altura do olhar sentado.", preco: 75, imgs: ["assets/bases/cubo-ferro-baixo.jpg", "assets/bases/cubo-ferro-baixo-uso.jpg"] },
   { id: "suporte-cubo-ferro-alto", nome: "Cubo de ferro · alto", especie: "Suporte especial · ferro preto · aro interno", categoria: "suporte", suporte: true,
-    descricao: "Mesmo desenho, mais alto e mais estreito. Para peça de folhagem longa, que precisa de espaço para cair.", preco: 190, img: "assets/bases/cubo-ferro-alto.jpg" },
+    descricao: "Mesmo desenho, mais alto e mais estreito. Para peça de folhagem longa, que precisa de espaço para cair.", preco: 190, imgs: ["assets/bases/cubo-ferro-alto.jpg", "assets/bases/cubo-ferro-alto-uso.jpg"] },
 ];
 
 /* Bases — escolhidas no carrinho.
