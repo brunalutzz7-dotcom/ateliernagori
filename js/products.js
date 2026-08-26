@@ -180,7 +180,7 @@ const PRODUCTS = [
   { id: "suporte-madeira-lisa", nome: "Madeira lisa", especie: "Suporte · madeira · 15 × 15 cm", categoria: "suporte", suporte: true,
     descricao: "Bloco de madeira com encaixe côncavo. A esfera assenta direto, sem haste — o apoio mais discreto de todos.", preco: 50, img: "assets/bases/madeira-lisa.jpg" },
   { id: "suporte-madeira-aro", nome: "Madeira com aro", especie: "Suporte · madeira e ferro · base 15×15 cm · aro 9 cm · altura 10 cm", categoria: "suporte", suporte: true,
-    descricao: "Aro de ferro preto sobre haste, em base de madeira. Levanta a esfera do móvel e deixa o musgo respirar por baixo.", preco: 60, img: "assets/bases/madeira-aro.jpg" },
+    descricao: "Aro de ferro preto sobre haste, em base de madeira. Levanta a esfera do móvel e deixa o musgo respirar por baixo.", preco: 60, imgs: ["assets/bases/madeira-aro.jpg", "assets/bases/madeira-aro-uso.jpg"] },
   { id: "suporte-madeira-aro-duplo", nome: "Madeira com aro duplo", especie: "Suporte · madeira e ferro · dois aros em alturas diferentes", categoria: "suporte", suporte: true,
     descricao: "Duas hastes na mesma base, em alturas distintas. Para montar duas peças pequenas juntas, em composição.", preco: 85, img: "assets/bases/madeira-aro-duplo.jpg" },
   { id: "suporte-madeira-gancho", nome: "Madeira com gancho", especie: "Suporte · madeira e ferro · base 15×15 cm", categoria: "suporte", suporte: true,
