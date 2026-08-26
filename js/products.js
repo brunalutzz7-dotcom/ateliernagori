@@ -45,7 +45,7 @@ const CATEGORIAS = [
   { id: "ambos",   nome: "Dentro ou fora", desc: "Versáteis: interior com boa luz ou varanda." },
   { id: "arlivre", nome: "Ao ar livre",    desc: "Peças que pedem sol e ar livre." },
   { id: "bonsai",  nome: "Bonsais",        desc: "Árvores formadas ao longo de anos sobre musgo vivo. O coração do ateliê." },
-  { id: "grande",  nome: "Grande porte",   desc: "Peças de chão para hall e pé-direito alto. Encomenda sob consulta." },
+  { id: "grande",  nome: "Grande porte",   desc: "As maxi kokedamas — peças de chão para hall e pé-direito alto." },
   { id: "suporte", nome: "Suportes",       desc: "Bases para expor sua kokedama — madeira, tripés de ferro e peças especiais. Vendidas à parte." },
 ];
 
@@ -166,14 +166,14 @@ const PRODUCTS = [
   { id: "bonsai-piteco-2", nome: "Bonsai Piteco · 2 anos", especie: "Pithecellobium tortum · aprox. 30 cm", categoria: "bonsai", ambiente: "externo", pet: "toxic",
     descricao: "Folha composta de folíolos minúsculos que se fecham ao anoitecer. Tronco de casca clara e madeira dura. Espécie difícil de encontrar já formada.", preco: 700, img: IMG("bonsai-piteco-2") },
 
-  /* ---------- 06 · GRANDE PORTE (encomenda) ---------- */
-  { id: "oliveira-grande", nome: "Oliveira", especie: "Olea europaea · 1,60 m a 1,80 m", categoria: "grande", encomenda: true, ambiente: "externo", pet: "safe",
+  /* ---------- 06 · GRANDE PORTE (maxi kokedamas · em estoque) ---------- */
+  { id: "oliveira-grande", nome: "Oliveira", especie: "Olea europaea · 1,60 m a 1,80 m", categoria: "grande", ambiente: "externo", pet: "safe",
     descricao: "Oliveira adulta sustentada por uma única esfera de musgo. Tronco e folha prateada em escala de árvore — peça de chão, para hall e canto de sala.", preco: 2000, img: IMG("oliveira-grande") },
-  { id: "jabuticabeira-grande", nome: "Jabuticabeira", especie: "Plinia cauliflora · 1,20 m a 1,60 m · frutificando", categoria: "grande", encomenda: true, ambiente: "externo", pet: "safe",
+  { id: "jabuticabeira-grande", nome: "Jabuticabeira", especie: "Plinia cauliflora · 1,20 m a 1,60 m · frutificando", categoria: "grande", ambiente: "externo", pet: "safe",
     descricao: "Árvore em idade de produzir, suspensa ou apoiada. Muda o eixo de um hall inteiro — e dá fruta.", preco: 1500, img: IMG("jabuticabeira-grande") },
-  { id: "pau-dagua-grande", nome: "Pau d'Água", especie: "Dracaena fragrans · 1,20 m a 1,50 m", categoria: "grande", encomenda: true, ambiente: "interno", pet: "toxic",
+  { id: "pau-dagua-grande", nome: "Pau d'Água", especie: "Dracaena fragrans · 1,20 m a 1,50 m", categoria: "grande", ambiente: "interno", pet: "toxic",
     descricao: "Colunas de folha listrada, verticais e limpas, em escala de árvore. Resolve o vazio de um canto de sala sem pedir nada em troca.", preco: 900, img: IMG("pau-dagua-grande") },
-  { id: "arvore-felicidade", nome: "Árvore da Felicidade", especie: "Polyscias sp. · fêmea e macho · 80 cm a 1 m", categoria: "grande", encomenda: true, ambiente: "interno", pet: "toxic",
+  { id: "arvore-felicidade", nome: "Árvore da Felicidade", especie: "Polyscias sp. · fêmea e macho · 80 cm a 1 m", categoria: "grande", ambiente: "interno", pet: "toxic",
     descricao: "Sai em dois desenhos de folha: a fêmea, de folíolo largo e arredondado, e o macho, de folha recortada e fina. Tronco lenhoso e porte ereto — peça de canto e de entrada.", preco: 1200, img: IMG("arvore-felicidade") },
 
   /* ---------- 07 · SUPORTES (vendidos à parte, como as peças) ---------- */
