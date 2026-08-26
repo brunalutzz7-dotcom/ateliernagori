@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/styles.css?v=42" />
+  <link rel="stylesheet" href="css/styles.css?v=43" />
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='62' r='30' fill='%236b5a3e'/><path d='M50 40 Q40 10 50 2 Q60 10 50 40' fill='%234e7c4a'/></svg>" />
 </head>
 <body>
@@ -56,7 +56,7 @@
       <nav class="main-nav" id="mainNav" aria-label="Navegação principal">
         <a href="#produtos">Loja</a>
         <a href="#sobre">Sobre</a>
-        <a href="#suportes">Suportes</a>
+        <a href="#produtos" data-cat-link="suporte">Suportes</a>
         <a href="#frete">Frete</a>
         <a href="#contato">Contato</a>
       </nav>
@@ -111,7 +111,7 @@
     <div class="container">
       <div class="section-head">
         <h2>A coleção</h2>
-        <p>55 peças artesanais — folhagens, floridas e bonsais. Cada uma acompanha base inclusa. Filtre por categoria e monte seu pedido.</p>
+        <p>Peças artesanais — folhagens, floridas e bonsais. As bases são vendidas à parte, na categoria Suportes. Filtre por categoria e monte seu pedido.</p>
       </div>
       <div class="filters" id="filters" role="tablist" aria-label="Filtrar por categoria"></div>
       <div class="product-grid" id="productGrid"></div>
@@ -145,16 +145,6 @@
     </div>
   </section>
 
-  <!-- ================= SUPORTES ================= -->
-  <section class="section" id="suportes">
-    <div class="container">
-      <div class="section-head">
-        <h2>Suportes</h2>
-        <p>Toda peça vem com uma base inclusa, à sua escolha. A maioria das bases não tem custo; apenas o tronco e o cubo de ferro são especiais (encomenda) — e você também pode comprá-las à parte.</p>
-      </div>
-      <div class="suporte-grid" id="suporteGrid"></div>
-    </div>
-  </section>
 
   <!-- ================= FRETE ================= -->
   <section class="section section-alt" id="frete">
@@ -225,7 +215,7 @@
       </div>
       <div class="footer-links">
         <a href="#produtos">Loja</a>
-        <a href="#suportes">Suportes</a>
+        <a href="#produtos" data-cat-link="suporte">Suportes</a>
         <a href="#frete">Frete</a>
         <a href="#contato">Contato</a>
       </div>
@@ -271,7 +261,7 @@
         <small class="ca-hint">Preencha o CEP acima para calcular o frete — cidade e rua são preenchidas automaticamente.</small>
       </div>
 
-      <p class="base-hint">Cada peça tem sua própria base. Bases de madeira e tripé de ferro são inclusas; tronco e cubo de ferro são especiais (encomenda, com custo à parte). Para 2 peças juntas, escolha "Madeira com aro duplo" na base.</p>
+      <p class="base-hint">As bases são vendidas à parte — veja a categoria <a href="#produtos" data-cat-link="suporte">Suportes</a> e adicione a sua ao carrinho junto com a peça.</p>
 
       <div class="cart-totals">
         <div class="line"><span>Subtotal</span><span id="sumSubtotal">R$ 0,00</span></div>
@@ -299,8 +289,8 @@
     <div class="modal" id="productModal" role="dialog" aria-modal="true"></div>
   </div>
 
-  <script src="js/config.js?v=42"></script>
-  <script src="js/products.js?v=42"></script>
-  <script src="js/app.js?v=42"></script>
+  <script src="js/config.js?v=43"></script>
+  <script src="js/products.js?v=43"></script>
+  <script src="js/app.js?v=43"></script>
 </body>
 </html>

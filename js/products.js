@@ -46,6 +46,7 @@ const CATEGORIAS = [
   { id: "arlivre", nome: "Ao ar livre",    desc: "Peças que pedem sol e ar livre." },
   { id: "bonsai",  nome: "Bonsais",        desc: "Árvores formadas ao longo de anos sobre musgo vivo. O coração do ateliê." },
   { id: "grande",  nome: "Grande porte",   desc: "Peças de chão para hall e pé-direito alto. Encomenda sob consulta." },
+  { id: "suporte", nome: "Suportes",       desc: "Bases para expor sua kokedama — madeira, tripés de ferro e peças especiais. Vendidas à parte." },
 ];
 
 const PRODUCTS = [
@@ -175,15 +176,37 @@ const PRODUCTS = [
   { id: "arvore-felicidade", nome: "Árvore da Felicidade", especie: "Polyscias sp. · fêmea e macho · 80 cm a 1 m", categoria: "grande", encomenda: true, ambiente: "interno", pet: "toxic",
     descricao: "Sai em dois desenhos de folha: a fêmea, de folíolo largo e arredondado, e o macho, de folha recortada e fina. Tronco lenhoso e porte ereto — peça de canto e de entrada.", preco: 1200, img: IMG("arvore-felicidade") },
 
-  /* ---------- 07 · SUPORTES ESPECIAIS (compráveis à parte) ---------- */
+  /* ---------- 07 · SUPORTES (vendidos à parte, como as peças) ---------- */
+  { id: "suporte-madeira-lisa", nome: "Madeira lisa", especie: "Suporte · madeira · 15 × 15 cm", categoria: "suporte", suporte: true,
+    descricao: "Bloco de madeira com encaixe côncavo. A esfera assenta direto, sem haste — o apoio mais discreto de todos.", preco: 50, img: "assets/bases/madeira-lisa.jpg" },
+  { id: "suporte-madeira-aro", nome: "Madeira com aro", especie: "Suporte · madeira e ferro · base 15×15 cm · aro 9 cm · altura 10 cm", categoria: "suporte", suporte: true,
+    descricao: "Aro de ferro preto sobre haste, em base de madeira. Levanta a esfera do móvel e deixa o musgo respirar por baixo.", preco: 60, img: "assets/bases/madeira-aro.jpg" },
+  { id: "suporte-madeira-aro-duplo", nome: "Madeira com aro duplo", especie: "Suporte · madeira e ferro · dois aros em alturas diferentes", categoria: "suporte", suporte: true,
+    descricao: "Duas hastes na mesma base, em alturas distintas. Para montar duas peças pequenas juntas, em composição.", preco: 85, img: "assets/bases/madeira-aro-duplo.jpg" },
+  { id: "suporte-madeira-gancho", nome: "Madeira com gancho", especie: "Suporte · madeira e ferro · base 15×15 cm", categoria: "suporte", suporte: true,
+    descricao: "Haste alta curvada em gancho. A esfera fica suspensa e a folhagem cai livre — a escolha das pendentes.", preco: 65, img: "assets/bases/madeira-gancho.jpg" },
+  { id: "suporte-tripe-30", nome: "Tripé de ferro · 30 cm", especie: "Suporte de chão · ferro preto · aro 18 cm · altura 30 cm", categoria: "suporte", suporte: true,
+    descricao: "Fica no chão, não sobre móvel. Levanta a árvore do piso — feito para as peças de grande porte e as maxi kokedamas.", preco: 75, img: "assets/bases/tripe-ferro.jpg" },
+  { id: "suporte-tripe-45", nome: "Tripé de ferro · 45 cm", especie: "Suporte de chão · ferro preto · aro 18 cm · altura 45 cm", categoria: "suporte", suporte: true,
+    descricao: "A altura intermediária do tripé de chão. Ergue a esfera bem acima do piso, com presença de escultura.", preco: 85, img: "assets/bases/tripe-ferro.jpg" },
+  { id: "suporte-tripe-60", nome: "Tripé de ferro · 60 cm", especie: "Suporte de chão · ferro preto · aro 18 cm · altura 60 cm", categoria: "suporte", suporte: true,
+    descricao: "O tripé mais alto, para as maxi kokedamas e peças de grande porte ganharem destaque de canto de sala.", preco: 150, img: "assets/bases/tripe-ferro.jpg" },
+  { id: "suporte-ferro-aro-base", nome: "Ferro · aro sobre base quadrada", especie: "Suporte · ferro preto", categoria: "suporte", suporte: true,
+    descricao: "Aro de ferro preto suspenso sobre base quadrada. A esfera flutua acima do apoio, com ar de escultura.", preco: 39, img: "assets/bases/ferro-aro-base.jpg" },
+  { id: "suporte-ferro-esfera", nome: "Ferro · esfera de arame", especie: "Suporte · ferro preto", categoria: "suporte", suporte: true,
+    descricao: "Esfera de arame de ferro preto. A kokedama se aninha entre as linhas curvas, num desenho escultórico.", preco: 39, img: "assets/bases/ferro-esfera.jpg" },
+  { id: "suporte-ferro-cone", nome: "Ferro · cone", especie: "Suporte · ferro preto", categoria: "suporte", suporte: true,
+    descricao: "Estrutura cônica de ferro preto, mais larga na base. Apoio estável e geométrico, ergue a esfera do móvel.", preco: 39, img: "assets/bases/ferro-cone.jpg" },
+  { id: "suporte-ferro-tripe-v", nome: "Ferro · tripé pés em V", especie: "Suporte · ferro preto", categoria: "suporte", suporte: true,
+    descricao: "Tripé de ferro preto com pés finos em V e aro no topo. Leve e moderno, levanta a esfera do móvel.", preco: 39, img: "assets/bases/ferro-tripe-v.jpg" },
   { id: "suporte-tronco-natural", nome: "Tronco natural", especie: "Suporte especial · tronco 13 cm · altura 8,5 cm · aro 11 cm", categoria: "suporte", suporte: true,
-    descricao: "Tronco com casca, cada um diferente do outro. Combina com bonsai de casca rugosa, e o peso sustenta maxi kokedama.", preco: 120, img: "assets/bases/tronco-natural.jpg" },
+    descricao: "Tronco com casca, cada um diferente do outro. Combina com bonsai de casca rugosa, e o peso sustenta maxi kokedama.", preco: 150, img: "assets/bases/tronco-natural.jpg" },
   { id: "suporte-tronco-alto", nome: "Tronco alto", especie: "Suporte especial · madeira clara · medidas variáveis", categoria: "suporte", suporte: true,
-    descricao: "Cilindro de madeira clara com haste fina. Eleva a esfera bem acima da superfície — a base mais vertical da linha.", preco: 100, img: "assets/bases/tronco-alto.jpg" },
+    descricao: "Cilindro de madeira clara com haste fina. Eleva a esfera bem acima da superfície — a base mais vertical da linha.", preco: 120, img: "assets/bases/tronco-alto.jpg" },
   { id: "suporte-cubo-ferro-baixo", nome: "Cubo de ferro · baixo", especie: "Suporte especial · ferro preto · aro interno", categoria: "suporte", suporte: true,
-    descricao: "Estrutura vazada com aro suspenso no centro. A esfera flutua dentro do quadro, na altura do olhar sentado.", preco: 90, img: "assets/bases/cubo-ferro-baixo.jpg" },
+    descricao: "Estrutura vazada com aro suspenso no centro. A esfera flutua dentro do quadro, na altura do olhar sentado.", preco: 75, img: "assets/bases/cubo-ferro-baixo.jpg" },
   { id: "suporte-cubo-ferro-alto", nome: "Cubo de ferro · alto", especie: "Suporte especial · ferro preto · aro interno", categoria: "suporte", suporte: true,
-    descricao: "Mesmo desenho, mais alto e mais estreito. Para peça de folhagem longa, que precisa de espaço para cair.", preco: 120, img: "assets/bases/cubo-ferro-alto.jpg" },
+    descricao: "Mesmo desenho, mais alto e mais estreito. Para peça de folhagem longa, que precisa de espaço para cair.", preco: 190, img: "assets/bases/cubo-ferro-alto.jpg" },
 ];
 
 /* Bases — escolhidas no carrinho.

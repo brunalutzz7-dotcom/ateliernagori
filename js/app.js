@@ -41,6 +41,7 @@
       ? { txt: "Convive com pets", cls: "pet-safe", ico: "🐾" }
       : { txt: "Manter longe de pets", cls: "pet-toxic", ico: "⚠️" };
   const chips = (p) => {
+    if (p.suporte) return ""; // suportes não têm ambiente/pet
     const pet = petInfo(p.pet);
     return `<span class="tag tag-amb">${AMBIENTE[p.ambiente]}</span>
             <span class="tag ${pet.cls}">${pet.ico} ${pet.txt}</span>`;
@@ -170,42 +171,11 @@
   }
 
   function renderGrid(cat = "todos") {
-    const base = PRODUCTS.filter((p) => !p.suporte);
-    const list = cat === "todos" ? base : base.filter((p) => p.categoria === cat);
+    // "Todos" mostra as plantas; os suportes aparecem na própria categoria.
+    const list = cat === "todos"
+      ? PRODUCTS.filter((p) => p.categoria !== "suporte")
+      : PRODUCTS.filter((p) => p.categoria === cat);
     $("#productGrid").innerHTML = list.map(cardHTML).join("");
-  }
-
-  /* =================================================================
-     SUPORTES (bases)
-     ================================================================= */
-  function renderSuportes() {
-    const box = $("#suporteGrid");
-    if (!box) return;
-    const seen = new Set();
-    box.innerHTML = BASES.filter((b) => {
-      if (b.grupo) { if (seen.has(b.grupo)) return false; seen.add(b.grupo); }
-      return true;
-    }).map((b) => {
-      const nome = b.grupo === "tripe" ? "Tripé de ferro (de chão)" : b.nome;
-      const foot = b.preco > 0
-        ? `<span class="sup-price">+ ${BRL(b.preco)} <small>encomenda</small></span>
-           <button class="btn btn-primary btn-sm" data-add="${b.addId}">Adicionar</button>`
-        : `<span class="sup-incl">✔ Inclusa com sua peça</span>`;
-      const sizeNote = b.grupo === "tripe"
-        ? `<p class="sup-note">Três alturas — Pequeno (30 cm), Médio (45 cm) e Grande (60 cm). Você escolhe no carrinho.</p>`
-        : "";
-      return `
-        <article class="suporte-card">
-          <div class="sup-media"><img src="assets/bases/${b.imgId || b.id}.jpg" alt="Suporte ${nome}" loading="lazy"></div>
-          <div class="sup-body">
-            <h3>${nome}</h3>
-            <p class="sup-specs">${b.specs}</p>
-            <p class="sup-desc">${b.desc}</p>
-            ${sizeNote}
-            <div class="sup-foot">${foot}</div>
-          </div>
-        </article>`;
-    }).join("");
   }
 
   /* =================================================================
@@ -280,7 +250,7 @@
           <p class="modal-desc">${p.descricao}</p>
           ${variantesHTML}
           <div class="modal-tags">${chips(p)}</div>
-          <p class="modal-base">✔ Acompanha base inclusa (madeira ou tripé de ferro), à sua escolha no carrinho. Bases especiais — tronco ou cubo de ferro — são feitas sob encomenda e têm custo à parte.</p>
+          ${p.suporte ? "" : `<p class="modal-base">A base é vendida à parte — escolha a sua na categoria <a href="#produtos" data-cat-link="suporte">Suportes</a>.</p>`}
           ${cta}
         </div>
       </div>`;
@@ -329,41 +299,19 @@
       const p = product(id);
       if (!p) return "";
       const unit = precoDaVariante(p, variant);
-      const base = baseOf(key);
-      const baseExtra = !p.suporte && base.preco > 0
-        ? `<div class="ci-base-cost">+ ${BRL(base.preco)}${v.q > 1 ? " × " + v.q : ""} (base ${base.nome})</div>`
-        : "";
-      const baseSel = p.suporte
-        ? `<div class="ci-suporte">Suporte avulso · encomenda</div>`
-        : `<div class="ci-basepick" data-bpkey="${key}">
-            <span class="bp-label">Base desta peça</span>
-            <button type="button" class="bp-current" data-bp-toggle>
-              <img src="${baseThumb(base)}" alt="">
-              <span class="bp-cur-name">${base.nome}${base.preco > 0 ? " · +" + BRL(base.preco) : ""}</span>
-              <span class="bp-chev" aria-hidden="true">▾</span>
-            </button>
-            <div class="bp-list">
-              ${BASES.map((b, i) => `
-                <button type="button" class="bp-opt${i === v.b ? " sel" : ""}" data-bp-opt="${i}">
-                  <img src="${baseThumb(b)}" alt="" loading="lazy">
-                  <span class="bp-opt-name">${b.nome}<small>${b.preco > 0 ? "+ " + BRL(b.preco) + " · encomenda" : "inclusa"}</small></span>
-                </button>`).join("")}
-            </div>
-          </div>`;
       return `
         <div class="cart-item">
           <div class="ci-media">${media(p)}</div>
           <div class="ci-info">
             <h4>${p.nome}</h4>
             ${variant ? `<div class="ci-var">${variant}</div>` : ""}
+            ${p.suporte ? `<div class="ci-var">Suporte</div>` : ""}
             <div class="ci-price">${BRL(unit)}</div>
             <div class="qty">
               <button data-dec="${key}" aria-label="Diminuir">−</button>
               <span>${v.q}</span>
               <button data-inc="${key}" aria-label="Aumentar">+</button>
             </div>
-            ${baseSel}
-            ${baseExtra}
           </div>
           <div class="ci-right">
             <div class="ci-line">${BRL(unit * v.q)}</div>
@@ -379,21 +327,12 @@
     const sub = subtotal();
     $("#sumSubtotal").textContent = BRL(sub);
 
-    // bases especiais (com custo) — somadas de todas as peças
-    const base = baseCusto();
     const lineBase = $("#lineBase");
-    if (base > 0) {
-      lineBase.hidden = false;
-      const nEsp = Object.entries(cart).reduce((a, [k, v]) => a + (baseOf(k).preco > 0 ? v.q : 0), 0);
-      $("#labelBase").textContent = `Bases especiais${nEsp > 1 ? " (" + nEsp + ")" : ""}`;
-      $("#sumBase").textContent = BRL(base);
-    } else {
-      lineBase.hidden = true;
-    }
+    if (lineBase) lineBase.hidden = true; // bases agora são itens normais do carrinho
 
     const frete = selectedShip ? selectedShip.preco : null;
     $("#sumFrete").textContent = frete === null ? "—" : frete === 0 ? "Grátis" : BRL(frete);
-    $("#sumTotal").textContent = BRL(sub + base + (frete || 0));
+    $("#sumTotal").textContent = BRL(sub + (frete || 0));
   }
 
   function bump() {
@@ -503,14 +442,10 @@
     Object.entries(cart).forEach(([key, v]) => {
       const { id, variant } = parseKey(key);
       const p = product(id);
-      const base = baseOf(key);
       const nome = p.suporte
-        ? `${p.nome} (suporte avulso · encomenda)`
-        : `${p.nome}${variant ? " · " + variant : ""} (base: ${base.nome})`;
+        ? `${p.nome} (suporte)`
+        : `${p.nome}${variant ? " · " + variant : ""}`;
       items.push({ name: nome, price: Math.round(precoDaVariante(p, variant) * 100), quantity: v.q });
-      // base especial desta peça (com custo) — uma por unidade
-      if (!p.suporte && base.preco > 0)
-        items.push({ name: `Base especial — ${base.nome} p/ ${p.nome} (encomenda)`, price: Math.round(base.preco * 100), quantity: v.q });
     });
     if (selectedShip && selectedShip.preco > 0)
       items.push({ name: `Frete — ${selectedShip.nome}`, price: Math.round(selectedShip.preco * 100), quantity: 1 });
@@ -539,14 +474,12 @@
     Object.entries(cart).forEach(([key, v]) => {
       const { id, variant } = parseKey(key);
       const p = product(id);
-      const base = baseOf(key);
-      t += `• ${v.q}x ${p.nome}${variant ? " (" + variant + ")" : ""} — ${BRL(precoDaVariante(p, variant) * v.q)}`;
-      t += p.suporte ? " [suporte avulso · encomenda]" : ` | base: ${base.nome}${base.preco > 0 ? " (+" + BRL(base.preco) + ", encomenda)" : ""}`;
+      t += `• ${v.q}x ${p.nome}${variant ? " (" + variant + ")" : ""}${p.suporte ? " [suporte]" : ""} — ${BRL(precoDaVariante(p, variant) * v.q)}`;
       t += "\n";
     });
     return t;
   }
-  const totalPedido = () => subtotal() + baseCusto() + (selectedShip ? selectedShip.preco : 0);
+  const totalPedido = () => subtotal() + (selectedShip ? selectedShip.preco : 0);
 
   // envia o pedido por e-mail (Web3Forms). Retorna true se enviou.
   async function sendOrderEmail(e, pagamento) {
@@ -561,7 +494,6 @@
       Endereço: enderecoLinha(e),
       Itens: itensTexto(),
       Subtotal: BRL(subtotal()),
-      Bases_especiais: baseCusto() > 0 ? BRL(baseCusto()) : "—",
       Frete: selectedShip ? (selectedShip.preco === 0 ? "Grátis" : BRL(selectedShip.preco)) + " · " + selectedShip.nome : "—",
       Total: BRL(totalPedido()),
       Pagamento: pagamento,
@@ -607,17 +539,12 @@
     Object.entries(cart).forEach(([key, v]) => {
       const { id, variant } = parseKey(key);
       const p = product(id);
-      const base = baseOf(key);
-      msg += `• ${v.q}× ${p.nome}${variant ? " (" + variant + ")" : ""} — ${BRL(precoDaVariante(p, variant) * v.q)}%0A`;
-      if (p.suporte) msg += `   (suporte avulso · encomenda)%0A`;
-      else msg += `   base: ${base.nome}${base.preco > 0 ? " (+" + BRL(base.preco) + (v.q > 1 ? " × " + v.q : "") + ", encomenda)" : " (inclusa)"}%0A`;
+      msg += `• ${v.q}× ${p.nome}${variant ? " (" + variant + ")" : ""}${p.suporte ? " (suporte)" : ""} — ${BRL(precoDaVariante(p, variant) * v.q)}%0A`;
     });
-    const base = baseCusto();
     msg += `%0A*Subtotal:* ${BRL(subtotal())}%0A`;
-    if (base > 0) msg += `*Bases especiais:* ${BRL(base)}%0A`;
     if (selectedShip) {
       msg += `*Frete (${selectedShip.nome}):* ${selectedShip.preco === 0 ? "Grátis" : BRL(selectedShip.preco)}%0A`;
-      msg += `*Total:* ${BRL(subtotal() + base + selectedShip.preco)}%0A`;
+      msg += `*Total:* ${BRL(subtotal() + selectedShip.preco)}%0A`;
     }
     const e = endereco();
     if (e.nome) msg += `%0A*Cliente:* ${encodeURIComponent(e.nome)}%0A`;
@@ -773,21 +700,15 @@
       updateTotals();
     });
 
-    // seletor de base com miniatura (por peça)
-    $("#cartItems").addEventListener("click", (e) => {
-      const tog = e.target.closest("[data-bp-toggle]");
-      const opt = e.target.closest("[data-bp-opt]");
-      if (tog) {
-        const pick = tog.closest(".ci-basepick");
-        const wasOpen = pick.classList.contains("open");
-        $$(".ci-basepick.open").forEach((p) => p.classList.remove("open"));
-        if (!wasOpen) pick.classList.add("open");
-        return;
-      }
-      if (opt) {
-        const pick = opt.closest(".ci-basepick");
-        setBase(pick.dataset.bpkey, parseInt(opt.dataset.bpOpt, 10));
-      }
+    // link "Suportes" dentro do modal → ativa o filtro da categoria
+    document.addEventListener("click", (e) => {
+      const link = e.target.closest("[data-cat-link]");
+      if (!link) return;
+      e.preventDefault();
+      closeModal();
+      const chip = $(`.chip[data-cat="${link.dataset.catLink}"]`);
+      if (chip) chip.click();
+      $("#produtos").scrollIntoView({ behavior: "smooth" });
     });
     $("#checkoutBtn").addEventListener("click", checkout);
     $("#waOrderBtn").addEventListener("click", whatsappOrder);
@@ -815,7 +736,6 @@
     initSplash();
     renderFilters();
     renderGrid();
-    renderSuportes();
     renderCart();
     bindEvents();
   });
