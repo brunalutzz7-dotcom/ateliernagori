@@ -190,7 +190,7 @@ const PRODUCTS = [
   { id: "suporte-tripe-45", nome: "Tripé de ferro · 45 cm", especie: "Suporte de chão · ferro preto · aro 18 cm · altura 45 cm", categoria: "suporte", suporte: true,
     descricao: "A altura intermediária do tripé de chão. Ergue a esfera bem acima do piso, com presença de escultura.", preco: 85, imgs: ["assets/bases/tripe-ferro.jpg", "assets/bases/tripe-45-uso.jpg"] },
   { id: "suporte-tripe-60", nome: "Tripé de ferro · 60 cm", especie: "Suporte de chão · ferro preto · aro 18 cm · altura 60 cm", categoria: "suporte", suporte: true,
-    descricao: "O tripé mais alto, para as maxi kokedamas e peças de grande porte ganharem destaque de canto de sala.", preco: 150, imgs: ["assets/bases/tripe-ferro.jpg", "assets/bases/tripe-60-uso.jpg"] },
+    descricao: "O tripé mais alto, para as maxi kokedamas e peças de grande porte ganharem destaque de canto de sala.", preco: 150, imgs: ["assets/bases/tripe-60.jpg", "assets/bases/tripe-60-uso.jpg"] },
   { id: "suporte-ferro-aro-base", nome: "Ferro · aro sobre base quadrada", especie: "Suporte · ferro preto", categoria: "suporte", suporte: true,
     descricao: "Aro de ferro preto suspenso sobre base quadrada. A esfera flutua acima do apoio, com ar de escultura.", preco: 39, imgs: ["assets/bases/ferro-aro-base.jpg", "assets/bases/ferro-aro-base-uso.jpg"] },
   { id: "suporte-ferro-esfera", nome: "Ferro · esfera de arame", especie: "Suporte · ferro preto", categoria: "suporte", suporte: true,
