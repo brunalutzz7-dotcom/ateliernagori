@@ -631,6 +631,33 @@
   /* =================================================================
      EVENTOS
      ================================================================= */
+  // slideshow do topo — alterna a cada 10s ou ao clicar/usar as setas
+  function initHeroCarousel() {
+    const car = $("[data-hero-carousel]");
+    if (!car) return;
+    const track = car.querySelector(".hero-track");
+    const slides = car.querySelectorAll(".hero-slide");
+    const dots = car.querySelectorAll(".hero-dots i");
+    if (slides.length < 2) return;
+    let idx = 0, timer = null;
+    const go = (i) => {
+      idx = (i + slides.length) % slides.length;
+      track.style.transform = `translateX(-${idx * 100}%)`;
+      dots.forEach((d, j) => d.classList.toggle("on", j === idx));
+    };
+    const start = () => { stop(); timer = setInterval(() => go(idx + 1), 10000); };
+    const stop = () => { if (timer) clearInterval(timer); };
+    car.querySelector(".hero-next").addEventListener("click", (e) => { e.stopPropagation(); go(idx + 1); start(); });
+    car.querySelector(".hero-prev").addEventListener("click", (e) => { e.stopPropagation(); go(idx - 1); start(); });
+    dots.forEach((d, j) => d.addEventListener("click", (e) => { e.stopPropagation(); go(j); start(); }));
+    // clicar na imagem também passa para a próxima
+    car.addEventListener("click", (e) => {
+      if (e.target.closest(".hero-nav") || e.target.closest(".hero-dots")) return;
+      go(idx + 1); start();
+    });
+    start();
+  }
+
   function bindEvents() {
     document.addEventListener("click", (e) => {
       // setas do carrossel no card — trocam a foto sem abrir o modal
@@ -764,6 +791,7 @@
     renderFilters();
     renderGrid();
     renderCart();
+    initHeroCarousel();
     bindEvents();
   });
 })();

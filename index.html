@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/styles.css?v=63" />
+  <link rel="stylesheet" href="css/styles.css?v=64" />
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='62' r='30' fill='%236b5a3e'/><path d='M50 40 Q40 10 50 2 Q60 10 50 40' fill='%234e7c4a'/></svg>" />
 </head>
 <body>
@@ -91,7 +91,19 @@
         </div>
       </div>
       <div class="hero-art">
-        <img class="hero-photo" src="assets/hero/entrada.jpg" alt="Coleção de kokedamas e bonsais do Atelier Nagori" />
+        <div class="hero-carousel" data-hero-carousel>
+          <div class="hero-track">
+            <div class="hero-slide">
+              <img src="assets/hero/entrada.jpg" alt="Coleção de kokedamas e bonsais do Atelier Nagori" />
+            </div>
+            <div class="hero-slide portrait">
+              <img src="assets/sobre-pedido.jpg" alt="Assim o seu pedido chega até você — kokedama pronta em suporte, manual de cuidados e tag exclusiva Atelier Nagori, com embalagem segura." />
+            </div>
+          </div>
+          <button class="hero-nav hero-prev" aria-label="Imagem anterior">‹</button>
+          <button class="hero-nav hero-next" aria-label="Próxima imagem">›</button>
+          <span class="hero-dots"><i class="on"></i><i></i></span>
+        </div>
       </div>
     </div>
   </section>
@@ -133,11 +145,6 @@
           perfeito estado — pronta para encantar.
         </p>
       </div>
-
-      <figure class="sobre-fig">
-        <img src="assets/sobre-pedido.jpg"
-          alt="Assim o seu pedido chega até você — Atelier Nagori. Cada detalhe faz a diferença: escolha da planta, preparo com cuidado, embalagem segura e a peça chega pronta para encantar. Seu pedido inclui kokedama pronta em suporte, manual de cuidados e tag exclusiva Atelier Nagori. Embalagem segura, transporte protegido, feito à mão e enviado com carinho." />
-      </figure>
 
       <div class="sobre-cta">
         <a href="#produtos" class="btn btn-primary">Quero o meu</a>
@@ -289,8 +296,8 @@
     <div class="modal" id="productModal" role="dialog" aria-modal="true"></div>
   </div>
 
-  <script src="js/config.js?v=63"></script>
-  <script src="js/products.js?v=63"></script>
-  <script src="js/app.js?v=63"></script>
+  <script src="js/config.js?v=64"></script>
+  <script src="js/products.js?v=64"></script>
+  <script src="js/app.js?v=64"></script>
 </body>
 </html>
