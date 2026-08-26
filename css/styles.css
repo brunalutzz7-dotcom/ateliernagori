@@ -140,6 +140,31 @@ h2 { font-size: clamp(1.9rem, 4vw, 2.9rem); }
 .card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
 .card-media { position: relative; cursor: pointer; background: var(--sand-lt); }
 .card-media svg, .card-media img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; }
+
+/* carrossel de fotos no card (mais de uma foto) */
+.card-gal { position: relative; }
+.card-nav {
+  position: absolute; top: 50%; transform: translateY(-50%);
+  width: 32px; height: 32px; border-radius: 50%; border: none;
+  background: rgba(251, 249, 243, .9); color: var(--moss-deep);
+  font-size: 1.4rem; line-height: 1; cursor: pointer;
+  display: grid; place-items: center; box-shadow: var(--shadow);
+  opacity: .85; transition: .18s; z-index: 2;
+}
+.card-nav:hover { background: #fff; opacity: 1; transform: translateY(-50%) scale(1.08); }
+.card-prev { left: 8px; }
+.card-next { right: 8px; }
+.card-dots {
+  position: absolute; left: 0; right: 0; bottom: 8px; z-index: 2;
+  display: flex; gap: 5px; justify-content: center; pointer-events: none;
+}
+.card-dots i {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: rgba(255, 255, 255, .6); box-shadow: 0 0 2px rgba(0,0,0,.35);
+  transition: .18s;
+}
+.card-dots i.on { background: #fff; transform: scale(1.25); }
+@media (hover: none) { .card-nav { opacity: .95; } }
 .card-cat {
   position: absolute; top: .8rem; left: .8rem; background: rgba(251,249,243,.92);
   color: var(--moss-deep); font-size: .72rem; letter-spacing: .06em; text-transform: uppercase;

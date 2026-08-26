@@ -152,13 +152,26 @@
     return `<button class="btn btn-primary btn-sm" data-add="${p.id}">Adicionar</button>`;
   }
 
+  // mídia do card: carrossel com setas quando há mais de uma foto
+  function cardMedia(p) {
+    const gal = fotos(p);
+    if (gal.length <= 1) return media(p);
+    return `
+      <div class="card-gal" data-card-gal data-idx="0">
+        <img src="${gal[0]}" alt="${p.nome}" loading="lazy" data-card-img>
+        <button class="card-nav card-prev" data-card-nav="-1" aria-label="Foto anterior">‹</button>
+        <button class="card-nav card-next" data-card-nav="1" aria-label="Próxima foto">›</button>
+        <span class="card-dots">${gal.map((_, i) => `<i class="${i === 0 ? "on" : ""}"></i>`).join("")}</span>
+      </div>`;
+  }
+
   function cardHTML(p) {
     return `
     <article class="card">
       <div class="card-media" data-open="${p.id}">
         <span class="card-cat">${catNome(p.categoria)}</span>
         ${p.raridade ? `<span class="card-flag">Raridade</span>` : ""}
-        ${media(p)}
+        ${cardMedia(p)}
       </div>
       <div class="card-body">
         <h3>${p.nome}</h3>
@@ -620,6 +633,20 @@
      ================================================================= */
   function bindEvents() {
     document.addEventListener("click", (e) => {
+      // setas do carrossel no card — trocam a foto sem abrir o modal
+      const cn = e.target.closest("[data-card-nav]");
+      if (cn) {
+        e.preventDefault(); e.stopPropagation();
+        const wrap = cn.closest("[data-card-gal]");
+        const mediaEl = cn.closest("[data-open]");
+        const gal = fotos(product(mediaEl.dataset.open));
+        let i = (parseInt(wrap.dataset.idx, 10) || 0) + parseInt(cn.dataset.cardNav, 10);
+        i = (i + gal.length) % gal.length;
+        wrap.dataset.idx = i;
+        wrap.querySelector("[data-card-img]").src = gal[i];
+        wrap.querySelectorAll(".card-dots i").forEach((d, j) => d.classList.toggle("on", j === i));
+        return;
+      }
       const add = e.target.closest("[data-add]");
       const open = e.target.closest("[data-open]");
       const enc = e.target.closest("[data-encomenda]");
