@@ -188,7 +188,7 @@ const PRODUCTS = [
   { id: "suporte-tripe-30", nome: "Tripé de ferro · 30 cm", especie: "Suporte de chão · ferro preto · aro 18 cm · altura 30 cm", categoria: "suporte", suporte: true,
     descricao: "Fica no chão, não sobre móvel. Levanta a árvore do piso — feito para as peças de grande porte e as maxi kokedamas.", preco: 75, img: "assets/bases/tripe-ferro.jpg" },
   { id: "suporte-tripe-45", nome: "Tripé de ferro · 45 cm", especie: "Suporte de chão · ferro preto · aro 18 cm · altura 45 cm", categoria: "suporte", suporte: true,
-    descricao: "A altura intermediária do tripé de chão. Ergue a esfera bem acima do piso, com presença de escultura.", preco: 85, imgs: ["assets/bases/tripe-ferro.jpg", "assets/bases/tripe-45-uso.jpg"] },
+    descricao: "A altura intermediária do tripé de chão. Ergue a esfera bem acima do piso, com presença de escultura.", preco: 85, imgs: ["assets/bases/tripe-45.jpg", "assets/bases/tripe-45-uso.jpg"] },
   { id: "suporte-tripe-60", nome: "Tripé de ferro · 60 cm", especie: "Suporte de chão · ferro preto · aro 18 cm · altura 60 cm", categoria: "suporte", suporte: true,
     descricao: "O tripé mais alto, para as maxi kokedamas e peças de grande porte ganharem destaque de canto de sala.", preco: 150, imgs: ["assets/bases/tripe-60.jpg", "assets/bases/tripe-60-uso.jpg"] },
   { id: "suporte-ferro-aro-base", nome: "Ferro · aro sobre base quadrada", especie: "Suporte · ferro preto", categoria: "suporte", suporte: true,
