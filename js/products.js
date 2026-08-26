@@ -196,7 +196,7 @@ const PRODUCTS = [
   { id: "suporte-ferro-esfera", nome: "Ferro · esfera de arame", especie: "Suporte · ferro preto", categoria: "suporte", suporte: true,
     descricao: "Esfera de arame de ferro preto. A kokedama se aninha entre as linhas curvas, num desenho escultórico.", preco: 39, img: "assets/bases/ferro-esfera.jpg" },
   { id: "suporte-ferro-cone", nome: "Ferro · cone", especie: "Suporte · ferro preto", categoria: "suporte", suporte: true,
-    descricao: "Estrutura cônica de ferro preto, mais larga na base. Apoio estável e geométrico, ergue a esfera do móvel.", preco: 39, img: "assets/bases/ferro-cone.jpg" },
+    descricao: "Estrutura cônica de ferro preto, mais larga na base. Apoio estável e geométrico, ergue a esfera do móvel.", preco: 39, imgs: ["assets/bases/ferro-cone.jpg", "assets/bases/ferro-cone-uso.jpg"] },
   { id: "suporte-ferro-tripe-v", nome: "Ferro · tripé pés em V", especie: "Suporte · ferro preto", categoria: "suporte", suporte: true,
     descricao: "Tripé de ferro preto com pés finos em V e aro no topo. Leve e moderno, levanta a esfera do móvel.", preco: 39, img: "assets/bases/ferro-tripe-v.jpg" },
   { id: "suporte-ferro-cruzado", nome: "Ferro · aros cruzados", especie: "Suporte · ferro preto", categoria: "suporte", suporte: true,
