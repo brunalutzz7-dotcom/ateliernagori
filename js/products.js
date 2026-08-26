@@ -200,7 +200,7 @@ const PRODUCTS = [
   { id: "suporte-ferro-tripe-v", nome: "Ferro · tripé pés em V", especie: "Suporte · ferro preto", categoria: "suporte", suporte: true,
     descricao: "Tripé de ferro preto com pés finos em V e aro no topo. Leve e moderno, levanta a esfera do móvel.", preco: 39, img: "assets/bases/ferro-tripe-v.jpg" },
   { id: "suporte-ferro-cruzado", nome: "Ferro · aros cruzados", especie: "Suporte · ferro preto", categoria: "suporte", suporte: true,
-    descricao: "Dois aros de ferro preto unidos por hastes que se cruzam na cintura. A esfera assenta no aro de cima, num jogo de linhas que lembra escultura.", preco: 39, img: "assets/bases/ferro-cruzado.jpg" },
+    descricao: "Dois aros de ferro preto unidos por hastes que se cruzam na cintura. A esfera assenta no aro de cima, num jogo de linhas que lembra escultura.", preco: 39, imgs: ["assets/bases/ferro-cruzado.jpg", "assets/bases/ferro-cruzado-uso.jpg"] },
   { id: "suporte-ferro-dois-aros", nome: "Ferro · dois aros", especie: "Suporte · ferro preto", categoria: "suporte", suporte: true,
     descricao: "Dois aros de ferro preto ligados por uma haste reta, em dois níveis. Apoio simples e firme, ergue a esfera do móvel.", preco: 39, img: "assets/bases/ferro-dois-aros.jpg" },
   { id: "suporte-ferro-espiral", nome: "Ferro · espiral", especie: "Suporte · ferro preto", categoria: "suporte", suporte: true,
