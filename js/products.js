@@ -210,7 +210,7 @@ const PRODUCTS = [
   { id: "suporte-ceramica", nome: "Cumbuca de cerâmica", especie: "Suporte · cerâmica artesanal", categoria: "suporte", suporte: true,
     descricao: "Cerâmica esmaltada em branco pontilhado, com raios gravados na borda. Feita à mão, cada peça com pequenas variações — a esfera assenta dentro, num contraste bonito entre o musgo e o vidrado.", preco: 75, imgs: ["assets/bases/ceramica.jpg", "assets/bases/ceramica-uso.jpg"] },
   { id: "suporte-tronco-natural", nome: "Tronco natural", especie: "Suporte especial · tronco 13 cm · altura 8,5 cm · aro 11 cm", categoria: "suporte", suporte: true,
-    descricao: "Tronco com casca, cada um diferente do outro. Combina com bonsai de casca rugosa, e o peso sustenta maxi kokedama.", preco: 150, img: "assets/bases/tronco-natural.jpg" },
+    descricao: "Tronco com casca, cada um diferente do outro. Combina com bonsai de casca rugosa, e o peso sustenta maxi kokedama.", preco: 150, imgs: ["assets/bases/tronco-natural.jpg", "assets/bases/tronco-natural-uso.jpg"] },
   { id: "suporte-tronco-alto", nome: "Tronco alto", especie: "Suporte especial · madeira clara · medidas variáveis", categoria: "suporte", suporte: true,
     descricao: "Cilindro de madeira clara com haste fina. Eleva a esfera bem acima da superfície — a base mais vertical da linha.", preco: 120, img: "assets/bases/tronco-alto.jpg" },
   { id: "suporte-cubo-ferro-baixo", nome: "Cubo de ferro · baixo", especie: "Suporte especial · ferro preto · aro interno", categoria: "suporte", suporte: true,
