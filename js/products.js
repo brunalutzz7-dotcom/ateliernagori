@@ -214,7 +214,7 @@ const PRODUCTS = [
   { id: "suporte-tronco-alto", nome: "Tronco alto", especie: "Suporte especial · madeira clara · medidas variáveis", categoria: "suporte", suporte: true,
     descricao: "Cilindro de madeira clara com haste fina. Eleva a esfera bem acima da superfície — a base mais vertical da linha.", preco: 120, img: "assets/bases/tronco-alto.jpg" },
   { id: "suporte-cubo-ferro-baixo", nome: "Cubo de ferro · baixo", especie: "Suporte especial · ferro preto · aro interno", categoria: "suporte", suporte: true,
-    descricao: "Estrutura vazada com aro suspenso no centro. A esfera flutua dentro do quadro, na altura do olhar sentado.", preco: 75, img: "assets/bases/cubo-ferro-baixo.jpg" },
+    descricao: "Estrutura vazada com aro suspenso no centro. A esfera flutua dentro do quadro, na altura do olhar sentado.", preco: 75, imgs: ["assets/bases/cubo-ferro-baixo.jpg", "assets/bases/cubo-ferro-baixo-uso.jpg"] },
   { id: "suporte-cubo-ferro-alto", nome: "Cubo de ferro · alto", especie: "Suporte especial · ferro preto · aro interno", categoria: "suporte", suporte: true,
     descricao: "Mesmo desenho, mais alto e mais estreito. Para peça de folhagem longa, que precisa de espaço para cair.", preco: 190, img: "assets/bases/cubo-ferro-alto.jpg" },
 ];
