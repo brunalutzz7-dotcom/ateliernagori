@@ -62,7 +62,7 @@ const PRODUCTS = [
   { id: "alocasia-polly", nome: "Alocásia Polly", peso: 3, especie: "Alocasia × amazonica", categoria: "dentro", ambiente: "interno", pet: "toxic",
     descricao: "Folha em ponta de flecha, verde quase preto com nervura branca em relevo. Desenho gráfico, quase artificial de tão marcado.", preco: 215, img: IMG("alocasia-polly") },
   { id: "begonia-maculata", nome: "Begônia Maculata", especie: "Begonia maculata", categoria: "dentro", ambiente: "interno", pet: "toxic",
-    descricao: "Folha em asa com pontos prateados sobre verde escuro e verso vinho. Uma das folhagens mais fotografadas que existem.", preco: 290, img: IMG("begonia-maculata") },
+    descricao: "Folha em asa com pontos prateados sobre verde escuro e verso vinho. Uma das folhagens mais fotografadas que existem.", preco: 220, img: IMG("begonia-maculata") },
   { id: "maranta-white-fusion", nome: "Maranta White Fusion", especie: "Calathea 'White Fusion'", categoria: "dentro", ambiente: "interno", pet: "safe",
     descricao: "Manchas brancas irregulares que invadem o verde, cada folha com um desenho próprio. A mais delicada da família — pede umidade constante.", preco: 230, img: IMG("maranta-white-fusion") },
   { id: "asplenio", nome: "Asplênio", peso: 3, especie: "Asplenium nidus", categoria: "dentro", ambiente: "interno", pet: "safe",
