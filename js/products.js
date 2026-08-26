@@ -208,7 +208,7 @@ const PRODUCTS = [
   { id: "suporte-cumbuquinha", nome: "Cumbuquinha", especie: "Suporte · bambu", categoria: "suporte", suporte: true,
     descricao: "Cumbuca de bambu torneado, com os veios naturais à mostra. A esfera assenta dentro dela — o apoio mais quentinho e orgânico da linha, perfeito para as kokedamas menores.", preco: 49, img: "assets/bases/cumbuquinha.jpg" },
   { id: "suporte-ceramica", nome: "Cumbuca de cerâmica", especie: "Suporte · cerâmica artesanal", categoria: "suporte", suporte: true,
-    descricao: "Cerâmica esmaltada em branco pontilhado, com raios gravados na borda. Feita à mão, cada peça com pequenas variações — a esfera assenta dentro, num contraste bonito entre o musgo e o vidrado.", preco: 75, img: "assets/bases/ceramica.jpg" },
+    descricao: "Cerâmica esmaltada em branco pontilhado, com raios gravados na borda. Feita à mão, cada peça com pequenas variações — a esfera assenta dentro, num contraste bonito entre o musgo e o vidrado.", preco: 75, imgs: ["assets/bases/ceramica.jpg", "assets/bases/ceramica-uso.jpg"] },
   { id: "suporte-tronco-natural", nome: "Tronco natural", especie: "Suporte especial · tronco 13 cm · altura 8,5 cm · aro 11 cm", categoria: "suporte", suporte: true,
     descricao: "Tronco com casca, cada um diferente do outro. Combina com bonsai de casca rugosa, e o peso sustenta maxi kokedama.", preco: 150, img: "assets/bases/tronco-natural.jpg" },
   { id: "suporte-tronco-alto", nome: "Tronco alto", especie: "Suporte especial · madeira clara · medidas variáveis", categoria: "suporte", suporte: true,
