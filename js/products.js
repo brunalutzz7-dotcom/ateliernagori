@@ -124,7 +124,7 @@ const PRODUCTS = [
   { id: "bonsai-oliveira-16", nome: "Bonsai Oliveira · 16 anos", especie: "Olea europaea · aprox. 40 cm", categoria: "bonsai", ambiente: "externo", pet: "safe",
     descricao: "Dezesseis anos de condução em um tronco que já carrega casca rugosa e curva definida. Folha prateada que troca de tom conforme a luz atravessa o dia.", preco: 2000, img: IMG("bonsai-oliveira-16") },
   { id: "bonsai-jabuticabeira-12", nome: "Bonsai Jabuticabeira · 16 anos", especie: "Plinia cauliflora · aprox. 50 cm · frutificando", categoria: "bonsai", ambiente: "externo", pet: "safe",
-    descricao: "Dezesseis anos de formação, e já frutifica. A jabuticaba nasce colada ao tronco, como na árvore inteira — só que em meio metro de altura.", preco: 2000, imgs: [IMG("bonsai-jabuticabeira-12"), IMG("bonsai-jabuticabeira-12-2"), IMG("bonsai-jabuticabeira-12-3"), IMG("bonsai-jabuticabeira-12-4")] },
+    descricao: "Dezesseis anos de formação, e já frutifica. A jabuticaba nasce colada ao tronco, como na árvore inteira — só que em meio metro de altura.", preco: 2000, imgs: [IMG("bonsai-jabuticabeira-12-2"), IMG("bonsai-jabuticabeira-12-3"), IMG("bonsai-jabuticabeira-12-4")] },
   { id: "bonsai-jabuticabeira-4", nome: "Bonsai Jabuticabeira · 4 anos", especie: "Plinia cauliflora · aprox. 40 cm", categoria: "bonsai", ambiente: "externo", pet: "safe",
     descricao: "Casca lisa e clara, folhagem miúda, estrutura ainda em desenho. A peça de quem quer acompanhar a árvore desde cedo.", preco: 700, img: IMG("bonsai-jabuticabeira-4") },
   { id: "bonsai-amora-17", nome: "Bonsai Amora · 16 anos", especie: "Morus nigra · aprox. 50 cm", categoria: "bonsai", ambiente: "externo", pet: "safe",
