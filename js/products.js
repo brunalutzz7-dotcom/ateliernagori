@@ -206,7 +206,7 @@ const PRODUCTS = [
   { id: "suporte-ferro-espiral", nome: "Ferro · espiral", especie: "Suporte · ferro preto", categoria: "suporte", suporte: true,
     descricao: "Uma única linha de ferro preto que sobe em espiral, do aro da base ao aro do topo. Movimento e leveza — a mais gráfica da linha.", preco: 39, img: "assets/bases/ferro-espiral.jpg" },
   { id: "suporte-cumbuquinha", nome: "Cumbuquinha", especie: "Suporte · bambu", categoria: "suporte", suporte: true,
-    descricao: "Cumbuca de bambu torneado, com os veios naturais à mostra. A esfera assenta dentro dela — o apoio mais quentinho e orgânico da linha, perfeito para as kokedamas menores.", preco: 49, img: "assets/bases/cumbuquinha.jpg" },
+    descricao: "Cumbuca de bambu torneado, com os veios naturais à mostra. A esfera assenta dentro dela — o apoio mais quentinho e orgânico da linha, perfeito para as kokedamas menores.", preco: 49, imgs: ["assets/bases/cumbuquinha.jpg", "assets/bases/cumbuquinha-uso.jpg"] },
   { id: "suporte-ceramica", nome: "Cumbuca de cerâmica", especie: "Suporte · cerâmica artesanal", categoria: "suporte", suporte: true,
     descricao: "Cerâmica esmaltada em branco pontilhado, com raios gravados na borda. Feita à mão, cada peça com pequenas variações — a esfera assenta dentro, num contraste bonito entre o musgo e o vidrado.", preco: 75, imgs: ["assets/bases/ceramica.jpg", "assets/bases/ceramica-uso.jpg"] },
   { id: "suporte-tronco-natural", nome: "Tronco natural", especie: "Suporte especial · tronco 13 cm · altura 8,5 cm · aro 11 cm", categoria: "suporte", suporte: true,
