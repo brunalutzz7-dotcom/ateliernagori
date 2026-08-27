@@ -202,7 +202,7 @@ const PRODUCTS = [
   { id: "suporte-ferro-cruzado", nome: "Ferro · aros cruzados", especie: "Suporte · ferro preto", categoria: "suporte", suporte: true,
     descricao: "Dois aros de ferro preto unidos por hastes que se cruzam na cintura. A esfera assenta no aro de cima, num jogo de linhas que lembra escultura.", preco: 39, imgs: ["assets/bases/ferro-cruzado.jpg", "assets/bases/ferro-cruzado-uso.jpg"] },
   { id: "suporte-ferro-dois-aros", nome: "Ferro · dois aros", especie: "Suporte · ferro preto", categoria: "suporte", suporte: true,
-    descricao: "Dois aros de ferro preto ligados por uma haste reta, em dois níveis. Apoio simples e firme, ergue a esfera do móvel.", preco: 39, img: "assets/bases/ferro-dois-aros.jpg" },
+    descricao: "Dois aros de ferro preto ligados por uma haste reta, em dois níveis. Apoio simples e firme, ergue a esfera do móvel.", preco: 39, imgs: ["assets/bases/ferro-dois-aros.jpg", "assets/bases/ferro-dois-aros-uso.jpg"] },
   { id: "suporte-ferro-espiral", nome: "Ferro · espiral", especie: "Suporte · ferro preto", categoria: "suporte", suporte: true,
     descricao: "Uma única linha de ferro preto que sobe em espiral, do aro da base ao aro do topo. Movimento e leveza — a mais gráfica da linha.", preco: 39, img: "assets/bases/ferro-espiral.jpg" },
   { id: "suporte-cumbuquinha", nome: "Cumbuquinha", especie: "Suporte · bambu", categoria: "suporte", suporte: true,
