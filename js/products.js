@@ -184,7 +184,7 @@ const PRODUCTS = [
   { id: "suporte-madeira-aro-duplo", nome: "Madeira com aro duplo", especie: "Suporte · madeira e ferro · dois aros em alturas diferentes", categoria: "suporte", suporte: true,
     descricao: "Duas hastes na mesma base, em alturas distintas. Para montar duas peças pequenas juntas, em composição.", preco: 85, imgs: ["assets/bases/madeira-aro-duplo.jpg", "assets/bases/madeira-aro-duplo-uso.jpg"] },
   { id: "suporte-madeira-gancho", nome: "Madeira com gancho", especie: "Suporte · madeira e ferro · base 15×15 cm", categoria: "suporte", suporte: true,
-    descricao: "Haste alta curvada em gancho. A esfera fica suspensa e a folhagem cai livre — a escolha das pendentes.", preco: 65, img: "assets/bases/madeira-gancho.jpg" },
+    descricao: "Haste alta curvada em gancho. A esfera fica suspensa e a folhagem cai livre — a escolha das pendentes.", preco: 65, imgs: ["assets/bases/madeira-gancho.jpg", "assets/bases/madeira-gancho-uso.jpg"] },
   { id: "suporte-tripe-30", nome: "Tripé de ferro · 30 cm", especie: "Suporte de chão · ferro preto · aro 18 cm · altura 30 cm", categoria: "suporte", suporte: true,
     descricao: "Fica no chão, não sobre móvel. Levanta a árvore do piso — feito para as peças de grande porte e as maxi kokedamas.", preco: 75, img: "assets/bases/tripe-30.jpg" },
   { id: "suporte-tripe-45", nome: "Tripé de ferro · 45 cm", especie: "Suporte de chão · ferro preto · aro 18 cm · altura 45 cm", categoria: "suporte", suporte: true,
