@@ -198,7 +198,7 @@ const PRODUCTS = [
   { id: "suporte-ferro-cone", nome: "Ferro · cone", especie: "Suporte · ferro preto", categoria: "suporte", suporte: true,
     descricao: "Estrutura cônica de ferro preto, mais larga na base. Apoio estável e geométrico, ergue a esfera do móvel.", preco: 39, imgs: ["assets/bases/ferro-cone.jpg", "assets/bases/ferro-cone-uso.jpg"] },
   { id: "suporte-ferro-tripe-v", nome: "Ferro · tripé pés em V", especie: "Suporte · ferro preto", categoria: "suporte", suporte: true,
-    descricao: "Tripé de ferro preto com pés finos em V e aro no topo. Leve e moderno, levanta a esfera do móvel.", preco: 39, img: "assets/bases/ferro-tripe-v.jpg" },
+    descricao: "Tripé de ferro preto com pés finos em V e aro no topo. Leve e moderno, levanta a esfera do móvel.", preco: 39, imgs: ["assets/bases/ferro-tripe-v.jpg", "assets/bases/ferro-tripe-v-uso.jpg"] },
   { id: "suporte-ferro-cruzado", nome: "Ferro · aros cruzados", especie: "Suporte · ferro preto", categoria: "suporte", suporte: true,
     descricao: "Dois aros de ferro preto unidos por hastes que se cruzam na cintura. A esfera assenta no aro de cima, num jogo de linhas que lembra escultura.", preco: 39, imgs: ["assets/bases/ferro-cruzado.jpg", "assets/bases/ferro-cruzado-uso.jpg"] },
   { id: "suporte-ferro-dois-aros", nome: "Ferro · dois aros", especie: "Suporte · ferro preto", categoria: "suporte", suporte: true,
