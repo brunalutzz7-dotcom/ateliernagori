@@ -140,7 +140,7 @@ const PRODUCTS = [
   { id: "bonsai-ficus-6", nome: "Bonsai Fícus · 6 anos", especie: "Ficus microcarpa · aprox. 30 cm", categoria: "bonsai", ambiente: "interno", pet: "toxic",
     descricao: "Seis anos num fícus de raízes engrossadas que emergem da esfera como um pequeno tronco de várias pernas. Folha pequena, lustrosa e verde-escura, copa densa. O bonsai de interior mais generoso — aceita luz indireta e perdoa esquecimento.", preco: 550, img: IMG("bonsai-ficus-6") },
   { id: "bonsai-ligustro-15", nome: "Bonsai Ligustro · 15 anos", especie: "Ligustrum sinense · aprox. 50 cm", categoria: "bonsai", ambiente: "ambos", pet: "toxic",
-    descricao: "Folhagem miúda e densa, tronco que engrossa rápido. Perdoa erro de rega — o bonsai mais generoso para quem está começando.", preco: 900, img: IMG("bonsai-ligustro-15") },
+    descricao: "Folhagem miúda e densa, tronco que engrossa rápido. Perdoa erro de rega — o bonsai mais generoso para quem está começando.", preco: 900, imgs: [IMG("bonsai-ligustro-15-2"), IMG("bonsai-ligustro-15")] },
   { id: "bonsai-caliandra-9", nome: "Bonsai Caliandra Rosa · 9 anos", especie: "Calliandra brevipes · aprox. 50 cm", categoria: "bonsai", ambiente: "externo", pet: "toxic",
     descricao: "Tronco engrossado, casca rugosa e ramificação já aberta. Flor em pompom rosado quase o ano inteiro.", preco: 800, img: IMG("bonsai-caliandra-9") },
   { id: "bonsai-caliandra-4", nome: "Bonsai Caliandra Rosa · 4 anos", especie: "Calliandra brevipes · 40 a 50 cm", categoria: "bonsai", ambiente: "externo", pet: "toxic",
