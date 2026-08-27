@@ -204,7 +204,7 @@ const PRODUCTS = [
   { id: "suporte-ferro-dois-aros", nome: "Ferro · dois aros", especie: "Suporte · ferro preto", categoria: "suporte", suporte: true,
     descricao: "Dois aros de ferro preto ligados por uma haste reta, em dois níveis. Apoio simples e firme, ergue a esfera do móvel.", preco: 39, imgs: ["assets/bases/ferro-dois-aros.jpg", "assets/bases/ferro-dois-aros-uso.jpg"] },
   { id: "suporte-ferro-espiral", nome: "Ferro · espiral", especie: "Suporte · ferro preto", categoria: "suporte", suporte: true,
-    descricao: "Uma única linha de ferro preto que sobe em espiral, do aro da base ao aro do topo. Movimento e leveza — a mais gráfica da linha.", preco: 39, img: "assets/bases/ferro-espiral.jpg" },
+    descricao: "Uma única linha de ferro preto que sobe em espiral, do aro da base ao aro do topo. Movimento e leveza — a mais gráfica da linha.", preco: 39, imgs: ["assets/bases/ferro-espiral.jpg", "assets/bases/ferro-espiral-uso.jpg"] },
   { id: "suporte-cumbuquinha", nome: "Cumbuquinha", especie: "Suporte · bambu", categoria: "suporte", suporte: true,
     descricao: "Cumbuca de bambu torneado, com os veios naturais à mostra. A esfera assenta dentro dela — o apoio mais quentinho e orgânico da linha, perfeito para as kokedamas menores.", preco: 49, imgs: ["assets/bases/cumbuquinha.jpg", "assets/bases/cumbuquinha-uso.jpg"] },
   { id: "suporte-ceramica", nome: "Cumbuca de cerâmica", especie: "Suporte · cerâmica artesanal", categoria: "suporte", suporte: true,
