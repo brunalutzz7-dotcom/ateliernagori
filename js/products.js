@@ -182,7 +182,7 @@ const PRODUCTS = [
   { id: "suporte-madeira-aro", nome: "Madeira com aro", especie: "Suporte · madeira e ferro · base 15×15 cm · aro 9 cm · altura 10 cm", categoria: "suporte", suporte: true,
     descricao: "Aro de ferro preto sobre haste, em base de madeira. Levanta a esfera do móvel e deixa o musgo respirar por baixo.", preco: 60, imgs: ["assets/bases/madeira-aro.jpg", "assets/bases/madeira-aro-uso.jpg"] },
   { id: "suporte-madeira-aro-duplo", nome: "Madeira com aro duplo", especie: "Suporte · madeira e ferro · dois aros em alturas diferentes", categoria: "suporte", suporte: true,
-    descricao: "Duas hastes na mesma base, em alturas distintas. Para montar duas peças pequenas juntas, em composição.", preco: 85, img: "assets/bases/madeira-aro-duplo.jpg" },
+    descricao: "Duas hastes na mesma base, em alturas distintas. Para montar duas peças pequenas juntas, em composição.", preco: 85, imgs: ["assets/bases/madeira-aro-duplo.jpg", "assets/bases/madeira-aro-duplo-uso.jpg"] },
   { id: "suporte-madeira-gancho", nome: "Madeira com gancho", especie: "Suporte · madeira e ferro · base 15×15 cm", categoria: "suporte", suporte: true,
     descricao: "Haste alta curvada em gancho. A esfera fica suspensa e a folhagem cai livre — a escolha das pendentes.", preco: 65, img: "assets/bases/madeira-gancho.jpg" },
   { id: "suporte-tripe-30", nome: "Tripé de ferro · 30 cm", especie: "Suporte de chão · ferro preto · aro 18 cm · altura 30 cm", categoria: "suporte", suporte: true,
