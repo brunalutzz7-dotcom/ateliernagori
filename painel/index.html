@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Atelier Nagori · Painel</title>
+<meta name="robots" content="noindex, nofollow" />
+<style>
+  :root{
+    --moss:#3c6b34; --moss-deep:#33472e; --sand:#ede7d6; --sand-lt:#f7f3ea;
+    --terra:#b06a4f; --ink:#2c2c26; --muted:#6b6455; --line:#e0d8c6;
+    --ok:#3c6b34; --warn:#b06a4f; --card:#fff;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,sans-serif;
+       background:var(--sand-lt);color:var(--ink);-webkit-text-size-adjust:100%}
+  a{color:var(--moss)}
+  header.top{background:var(--moss-deep);color:#f3efe4;padding:14px 16px;
+       display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:5}
+  header.top b{font-weight:600;letter-spacing:.3px}
+  header.top .sair{background:none;border:1px solid rgba(255,255,255,.35);color:#f3efe4;
+       border-radius:8px;padding:5px 10px;font-size:.8rem}
+  .wrap{max-width:640px;margin:0 auto;padding:14px 14px 90px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:12px;
+       box-shadow:0 4px 14px rgba(51,71,46,.05)}
+  h2{font-size:1.02rem;margin:.2rem 0 .8rem;color:var(--moss-deep)}
+  label{display:block;font-size:.82rem;color:var(--muted);margin:10px 0 4px}
+  input,select,textarea,button{font-size:16px;font-family:inherit}
+  input,select,textarea{width:100%;padding:11px;border:1px solid var(--line);border-radius:10px;background:#fff}
+  .btn{background:var(--moss);color:#fff;border:none;border-radius:10px;padding:12px 14px;font-weight:600;width:100%;cursor:pointer}
+  .btn.sec{background:#fff;color:var(--moss);border:1px solid var(--moss)}
+  .btn.mini{width:auto;padding:7px 10px;font-weight:500;font-size:.85rem}
+  .row{display:flex;gap:8px;align-items:center}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .muted{color:var(--muted)} .small{font-size:.82rem}
+  .kpis{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .kpi{background:var(--sand);border-radius:12px;padding:12px}
+  .kpi .v{font-size:1.35rem;font-weight:700;color:var(--moss-deep)}
+  .kpi .l{font-size:.75rem;color:var(--muted)}
+  .item{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:10px 0;border-top:1px solid var(--line)}
+  .item:first-child{border-top:none}
+  .pill{font-size:.68rem;padding:2px 7px;border-radius:20px;background:var(--sand);color:var(--muted)}
+  .pill.site{background:#e4efdc;color:var(--moss)}
+  .pill.whatsapp{background:#dcf3e4;color:#1e7a44}
+  .pill.direto{background:#f0e4dc;color:var(--terra)}
+  .est{min-width:34px;text-align:center;font-weight:700}
+  .stepper button{width:34px;height:34px;border:1px solid var(--line);background:#fff;border-radius:8px;font-size:1.1rem}
+  nav.tabs{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid var(--line);
+       display:flex;z-index:6;padding-bottom:env(safe-area-inset-bottom)}
+  nav.tabs button{flex:1;background:none;border:none;padding:10px 4px 12px;color:var(--muted);font-size:.72rem;cursor:pointer}
+  nav.tabs button.on{color:var(--moss);font-weight:600}
+  nav.tabs button i{display:block;font-size:1.25rem;font-style:normal;margin-bottom:2px}
+  .hidden{display:none!important}
+  .center{min-height:100vh;display:grid;place-items:center;padding:24px}
+  .login{max-width:360px;width:100%}
+  .brandmark{text-align:center;color:var(--moss);font-size:2rem;margin-bottom:2px}
+  .toast{position:fixed;left:50%;bottom:76px;transform:translateX(-50%);background:var(--moss-deep);color:#fff;
+       padding:10px 16px;border-radius:24px;font-size:.85rem;opacity:0;transition:.25s;z-index:20;pointer-events:none;max-width:90%}
+  .toast.show{opacity:1}
+  .err{background:#fbe6df;color:#9c4630;border:1px solid #e9c4b6;border-radius:10px;padding:10px;font-size:.85rem;margin-top:10px}
+  .lucro{color:var(--moss);font-weight:600}
+  .lucro.neg{color:var(--terra)}
+  .search{margin-bottom:8px}
+  .cfgwarn{background:#fff6c4;border:1px solid #e6d98b;color:#7a6a1e;border-radius:10px;padding:12px;font-size:.85rem}
+</style>
+</head>
+<body>
+
+<!-- ============ CONFIG: cole aqui os 2 dados do seu Supabase ============ -->
+<script>
+  const SUPABASE_URL  = "COLE_AQUI_A_URL";       // ex.: https://xxxxx.supabase.co
+  const SUPABASE_ANON = "COLE_AQUI_A_ANON_KEY";  // chave "anon public"
+</script>
+
+<!-- Tela de login -->
+<div id="loginView" class="center">
+  <div class="login">
+    <div class="brandmark">✿</div>
+    <h2 style="text-align:center">Atelier Nagori · Painel</h2>
+    <div id="cfgWarn" class="cfgwarn hidden">⚙️ Faltam os dados do Supabase no arquivo (URL e chave). Cole no topo do painel e publique de novo.</div>
+    <form id="loginForm">
+      <label>E-mail</label>
+      <input type="email" id="email" autocomplete="username" required />
+      <label>Senha</label>
+      <input type="password" id="senha" autocomplete="current-password" required />
+      <div style="height:12px"></div>
+      <button class="btn" type="submit">Entrar</button>
+      <div id="loginErr" class="err hidden"></div>
+    </form>
+  </div>
+</div>
+
+<!-- App -->
+<div id="appView" class="hidden">
+  <header class="top">
+    <b>✿ Atelier Nagori</b>
+    <button class="sair" id="btnSair">Sair</button>
+  </header>
+  <div class="wrap">
+
+    <!-- PAINEL -->
+    <section id="tab-painel">
+      <div class="card">
+        <h2>Este mês</h2>
+        <div class="kpis">
+          <div class="kpi"><div class="v" id="kVendas">—</div><div class="l">Vendas (R$)</div></div>
+          <div class="kpi"><div class="v" id="kQtd">—</div><div class="l">Nº de vendas</div></div>
+          <div class="kpi"><div class="v lucro" id="kLucro">—</div><div class="l">Lucro estimado</div></div>
+          <div class="kpi"><div class="v" id="kEstoque">—</div><div class="l">Peças em estoque</div></div>
+        </div>
+      </div>
+      <div class="card">
+        <h2>Mais vendidas (mês)</h2>
+        <div id="topVendas" class="small muted">—</div>
+      </div>
+      <div class="card">
+        <h2>⚠️ Estoque baixo</h2>
+        <div id="estBaixo" class="small muted">—</div>
+      </div>
+    </section>
+
+    <!-- VENDAS -->
+    <section id="tab-vendas" class="hidden">
+      <div class="card">
+        <h2>Registrar venda</h2>
+        <form id="vendaForm">
+          <label>Peça</label>
+          <select id="vProduto" required></select>
+          <div class="grid2">
+            <div><label>Quantidade</label><input type="number" id="vQtd" value="1" min="1" /></div>
+            <div><label>Valor total (R$)</label><input type="number" id="vValor" step="0.01" min="0" /></div>
+          </div>
+          <label>Canal</label>
+          <select id="vCanal">
+            <option value="site">Site</option>
+            <option value="whatsapp">WhatsApp</option>
+            <option value="direto">Direto / pessoalmente</option>
+          </select>
+          <label>Observação (opcional)</label>
+          <input type="text" id="vObs" placeholder="cliente, base junto, etc." />
+          <div style="height:12px"></div>
+          <button class="btn" type="submit">Registrar venda</button>
+          <div id="vendaErr" class="err hidden"></div>
+        </form>
+      </div>
+      <div class="card">
+        <h2>Últimas vendas</h2>
+        <div id="listaVendas" class="small muted">—</div>
+      </div>
+    </section>
+
+    <!-- ESTOQUE -->
+    <section id="tab-estoque" class="hidden">
+      <div class="card">
+        <h2>Estoque e custos</h2>
+        <input class="search" id="buscaProd" placeholder="🔎 buscar peça..." />
+        <div id="listaProdutos"></div>
+      </div>
+    </section>
+
+  </div>
+
+  <nav class="tabs">
+    <button data-tab="painel" class="on"><i>📊</i>Painel</button>
+    <button data-tab="vendas"><i>🧾</i>Vendas</button>
+    <button data-tab="estoque"><i>📦</i>Estoque</button>
+  </nav>
+</div>
+
+<div id="toast" class="toast"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<script>
+const BRL = (n)=> (n==null||isNaN(n)) ? "—" : "R$ " + Number(n).toLocaleString("pt-BR",{minimumFractionDigits:2,maximumFractionDigits:2});
+const $ = (s)=>document.querySelector(s);
+const el = (id)=>document.getElementById(id);
+let sb=null, PRODUTOS=[], VENDAS=[];
+
+function toast(m){const t=el("toast");t.textContent=m;t.classList.add("show");setTimeout(()=>t.classList.remove("show"),2200);}
+function show(id){ ["painel","vendas","estoque"].forEach(t=>el("tab-"+t).classList.toggle("hidden",t!==id));
+  document.querySelectorAll("nav.tabs button").forEach(b=>b.classList.toggle("on",b.dataset.tab===id)); }
+
+// ---------- inicialização ----------
+if(!window.supabase || SUPABASE_URL.startsWith("COLE") || SUPABASE_ANON.startsWith("COLE")){
+  el("cfgWarn").classList.remove("hidden");
+} else {
+  sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+  sb.auth.getSession().then(({data})=>{ if(data.session) entrar(); });
+}
+
+el("loginForm").addEventListener("submit", async (e)=>{
+  e.preventDefault(); el("loginErr").classList.add("hidden");
+  if(!sb){ el("cfgWarn").classList.remove("hidden"); return; }
+  const {error} = await sb.auth.signInWithPassword({email:el("email").value.trim(), password:el("senha").value});
+  if(error){ el("loginErr").textContent = "Não consegui entrar: "+error.message; el("loginErr").classList.remove("hidden"); return; }
+  entrar();
+});
+el("btnSair").addEventListener("click", async ()=>{ await sb.auth.signOut(); location.reload(); });
+document.querySelectorAll("nav.tabs button").forEach(b=> b.addEventListener("click", ()=>show(b.dataset.tab)) );
+
+async function entrar(){
+  el("loginView").classList.add("hidden");
+  el("appView").classList.remove("hidden");
+  await carregar();
+}
+
+async function carregar(){
+  const [p,v] = await Promise.all([
+    sb.from("produtos").select("*").order("nome"),
+    sb.from("vendas").select("*").order("criado_em",{ascending:false}).limit(300),
+  ]);
+  if(p.error){ toast("Erro ao ler produtos"); return; }
+  PRODUTOS = p.data||[]; VENDAS = v.data||[];
+  renderProdutosSelect(); renderPainel(); renderVendas(); renderProdutos();
+}
+
+// ---------- PAINEL ----------
+function renderPainel(){
+  const now=new Date(), y=now.getFullYear(), m=now.getMonth();
+  const doMes = VENDAS.filter(x=>{const d=new Date(x.criado_em); return d.getFullYear()===y && d.getMonth()===m;});
+  const totalV = doMes.reduce((a,x)=>a+Number(x.valor||0),0);
+  const totalC = doMes.reduce((a,x)=>a+Number(x.custo||0),0);
+  el("kVendas").textContent = BRL(totalV);
+  el("kQtd").textContent = doMes.reduce((a,x)=>a+Number(x.quantidade||1),0);
+  const lucro = totalV-totalC; el("kLucro").textContent = BRL(lucro);
+  el("kLucro").classList.toggle("neg", lucro<0);
+  el("kEstoque").textContent = PRODUTOS.reduce((a,x)=>a+Number(x.estoque||0),0);
+  // top vendas
+  const cont={};
+  doMes.forEach(x=>{cont[x.produto_nome]=(cont[x.produto_nome]||0)+Number(x.quantidade||1);});
+  const top=Object.entries(cont).sort((a,b)=>b[1]-a[1]).slice(0,5);
+  el("topVendas").innerHTML = top.length? top.map(([n,q])=>`<div class="item"><span>${n}</span><b>${q}</b></div>`).join("") : "Nenhuma venda este mês ainda.";
+  // estoque baixo
+  const baixo=PRODUTOS.filter(p=>Number(p.estoque||0)<=1).sort((a,b)=>(a.estoque||0)-(b.estoque||0));
+  el("estBaixo").innerHTML = baixo.length? baixo.slice(0,20).map(p=>`<div class="item"><span>${p.nome}</span><b class="est" style="color:${(p.estoque||0)===0?'var(--terra)':'inherit'}">${p.estoque||0}</b></div>`).join("") : "Tudo com estoque ok. 🌿";
+}
+
+// ---------- VENDAS ----------
+function renderProdutosSelect(){
+  el("vProduto").innerHTML = PRODUTOS.map(p=>`<option value="${p.id}">${p.nome} — ${BRL(p.preco)}</option>`).join("");
+  atualizaValor();
+}
+function atualizaValor(){
+  const p=PRODUTOS.find(x=>x.id===el("vProduto").value); const q=Number(el("vQtd").value||1);
+  if(p) el("vValor").value = (Number(p.preco||0)*q).toFixed(2);
+}
+el("vProduto").addEventListener("change",atualizaValor);
+el("vQtd").addEventListener("input",atualizaValor);
+
+el("vendaForm").addEventListener("submit", async (e)=>{
+  e.preventDefault(); el("vendaErr").classList.add("hidden");
+  const p=PRODUTOS.find(x=>x.id===el("vProduto").value); if(!p) return;
+  const q=Math.max(1,Number(el("vQtd").value||1));
+  const valor=Number(el("vValor").value||0);
+  const custo=(p.custo!=null)? Number(p.custo)*q : null;
+  const {error}=await sb.from("vendas").insert({
+    produto_id:p.id, produto_nome:p.nome, quantidade:q, canal:el("vCanal").value,
+    valor, custo, obs:el("vObs").value.trim()||null
+  });
+  if(error){ el("vendaErr").textContent="Erro ao salvar: "+error.message; el("vendaErr").classList.remove("hidden"); return; }
+  // baixa estoque
+  const novo=Math.max(0,Number(p.estoque||0)-q);
+  await sb.from("produtos").update({estoque:novo}).eq("id",p.id);
+  el("vObs").value=""; el("vQtd").value="1";
+  toast("Venda registrada ✓");
+  await carregar(); show("painel");
+});
+
+function renderVendas(){
+  if(!VENDAS.length){ el("listaVendas").textContent="Nenhuma venda registrada ainda."; return; }
+  el("listaVendas").innerHTML = VENDAS.slice(0,40).map(v=>{
+    const d=new Date(v.criado_em).toLocaleDateString("pt-BR");
+    const lucro=(v.custo!=null)? Number(v.valor||0)-Number(v.custo||0) : null;
+    return `<div class="item">
+      <div><div>${v.quantidade>1?v.quantidade+"× ":""}${v.produto_nome||""}</div>
+        <div class="small muted">${d} · <span class="pill ${v.canal}">${v.canal}</span>${v.obs?" · "+v.obs:""}</div></div>
+      <div style="text-align:right">
+        <div>${BRL(v.valor)}</div>
+        ${lucro!=null?`<div class="small lucro ${lucro<0?'neg':''}">lucro ${BRL(lucro)}</div>`:`<div class="small muted">sem custo</div>`}
+        <button class="btn mini sec" style="margin-top:4px" onclick="excluirVenda(${v.id})">excluir</button>
+      </div></div>`;
+  }).join("");
+}
+async function excluirVenda(id){
+  if(!confirm("Excluir esta venda? O estoque volta a subir.")) return;
+  const v=VENDAS.find(x=>x.id===id);
+  const {error}=await sb.from("vendas").delete().eq("id",id);
+  if(error){ toast("Erro ao excluir"); return; }
+  if(v && v.produto_id){ const p=PRODUTOS.find(x=>x.id===v.produto_id);
+    if(p) await sb.from("produtos").update({estoque:Number(p.estoque||0)+Number(v.quantidade||1)}).eq("id",p.id); }
+  toast("Venda excluída"); await carregar();
+}
+
+// ---------- ESTOQUE ----------
+function renderProdutos(){
+  const q=(el("buscaProd").value||"").toLowerCase();
+  const lista=PRODUTOS.filter(p=>p.nome.toLowerCase().includes(q));
+  el("listaProdutos").innerHTML = lista.map(p=>`
+    <div class="item">
+      <div style="flex:1">
+        <div>${p.nome}</div>
+        <div class="small muted">${p.categoria||""} · venda ${BRL(p.preco)} · custo
+          <a href="#" onclick="editarCusto('${p.id}');return false">${p.custo!=null?BRL(p.custo):"definir"}</a></div>
+      </div>
+      <div class="row stepper">
+        <button onclick="ajustaEstoque('${p.id}',-1)">−</button>
+        <span class="est">${p.estoque||0}</span>
+        <button onclick="ajustaEstoque('${p.id}',1)">+</button>
+      </div>
+    </div>`).join("");
+}
+el("buscaProd").addEventListener("input",renderProdutos);
+async function ajustaEstoque(id,delta){
+  const p=PRODUTOS.find(x=>x.id===id); if(!p) return;
+  const novo=Math.max(0,Number(p.estoque||0)+delta); p.estoque=novo;
+  renderProdutos(); renderPainel();
+  const {error}=await sb.from("produtos").update({estoque:novo}).eq("id",id);
+  if(error) toast("Erro ao salvar estoque");
+}
+async function editarCusto(id){
+  const p=PRODUTOS.find(x=>x.id===id); if(!p) return;
+  const val=prompt(`Custo total por peça de "${p.nome}" (R$):`, p.custo!=null?p.custo:"");
+  if(val===null) return;
+  const num=Number(String(val).replace(",",".")); if(isNaN(num)){toast("Valor inválido");return;}
+  p.custo=num; renderProdutos();
+  const {error}=await sb.from("produtos").update({custo:num}).eq("id",id);
+  toast(error?"Erro ao salvar":"Custo salvo ✓");
+}
+</script>
+</body>
+</html>
