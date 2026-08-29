@@ -122,7 +122,7 @@ const PRODUCTS = [
   { id: "nandina", nome: "Nandina", especie: "Nandina domestica", categoria: "ambos", ambiente: "ambos", pet: "toxic",
     descricao: "Folhagem fina e ramificada que ganha tons avermelhados no frio. Rústica: vai bem dentro com boa luz ou na varanda.", preco: 190 },
   { id: "avenca", nome: "Avenca", especie: "Adiantum sp.", categoria: "dentro", ambiente: "interno", pet: "safe",
-    descricao: "Frondes delicadas de folíolos miúdos, verde vivo. Adora umidade — ótima em banheiro claro ou pertinho de outras plantas.", preco: 250 },
+    descricao: "Frondes delicadas de folíolos miúdos, verde vivo. Adora umidade — ótima em banheiro claro ou pertinho de outras plantas.", preco: 250, img: IMG("avenca") },
   { id: "mini-arvore-felicidade", nome: "Mini Árvore da Felicidade", especie: "Polyscias sp. · mini", categoria: "dentro", ambiente: "interno", pet: "toxic",
     descricao: "A árvore da felicidade em versão de mesa. Tronco lenhoso e folhagem recortada — dizem que atrai boas energias, e é por isso que sai tanto como presente.", preco: 230, img: IMG("mini-arvore-felicidade") },
   { id: "palmeira-fenix", nome: "Palmeira Fênix", peso: 3, especie: "Phoenix roebelenii", categoria: "ambos", ambiente: "ambos", pet: "safe",
