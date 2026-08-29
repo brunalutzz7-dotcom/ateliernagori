@@ -158,12 +158,23 @@
       </div>
     </section>
 
+    <!-- CUSTOS E MARGENS -->
+    <section id="tab-custos" class="hidden">
+      <div class="card">
+        <h2>Custos e margens</h2>
+        <p class="small muted" style="margin-top:-4px">Toque no preço ou no custo para editar. A margem recalcula sozinha.</p>
+        <input class="search" id="buscaCusto" placeholder="🔎 buscar peça..." />
+        <div id="listaCustos"></div>
+      </div>
+    </section>
+
   </div>
 
   <nav class="tabs">
     <button data-tab="painel" class="on"><i>📊</i>Painel</button>
     <button data-tab="vendas"><i>🧾</i>Vendas</button>
     <button data-tab="estoque"><i>📦</i>Estoque</button>
+    <button data-tab="custos"><i>💰</i>Custos</button>
   </nav>
 </div>
 
@@ -172,13 +183,14 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
 <script>
 const SEED_PRODUTOS = [{"id":"arranjo-orquidea","nome":"Arranjo de Orquídea","categoria":"Dentro de casa","preco":450},{"id":"philodendron-birkin","nome":"Philodendron Birkin","categoria":"Dentro de casa","preco":180},{"id":"alocasia-polly","nome":"Alocásia Polly","categoria":"Dentro de casa","preco":215},{"id":"singonio","nome":"Singônio","categoria":"Dentro de casa","preco":180},{"id":"aspargo-melindre","nome":"Aspargo Melindre","categoria":"Dentro de casa","preco":180},{"id":"aglaonema-vermelha","nome":"Aglaonema Vermelha","categoria":"Dentro de casa","preco":210},{"id":"aglaonema-rosa","nome":"Aglaonema Rosa","categoria":"Dentro de casa","preco":210},{"id":"aglaonema-branca","nome":"Aglaonema Branca","categoria":"Dentro de casa","preco":210},{"id":"aglaonema-tricolor","nome":"Aglaonema Tricolor","categoria":"Dentro de casa","preco":210},{"id":"croton","nome":"Croton","categoria":"Dentro ou fora","preco":165},{"id":"maranta-pavao","nome":"Maranta Pavão","categoria":"Dentro de casa","preco":200},{"id":"maranta-white-fusion","nome":"Maranta White Fusion","categoria":"Dentro de casa","preco":230},{"id":"maranta-cascavel","nome":"Maranta Cascavel","categoria":"Dentro de casa","preco":125},{"id":"maranta-triostar","nome":"Maranta Triostar","categoria":"Dentro de casa","preco":215},{"id":"maranta-burle-marx","nome":"Maranta Burle Marx","categoria":"Dentro de casa","preco":110},{"id":"pacova","nome":"Pacová","categoria":"Dentro ou fora","preco":180},{"id":"pata-de-elefante","nome":"Pata de Elefante","categoria":"Dentro ou fora","preco":330},{"id":"monstera-adansonii","nome":"Monstera Adansonii","categoria":"Dentro de casa","preco":155},{"id":"pachira-aquatica","nome":"Pachira Aquática","categoria":"Dentro ou fora","preco":150},{"id":"asplenio","nome":"Asplênio","categoria":"Dentro de casa","preco":345},{"id":"anturio-vermelho","nome":"Antúrio Vermelho","categoria":"Dentro de casa","preco":180},{"id":"anturio-rosa","nome":"Antúrio Rosa","categoria":"Dentro de casa","preco":180},{"id":"costela-adao","nome":"Costela de Adão","categoria":"Dentro ou fora","preco":265},{"id":"begonia-maculata","nome":"Begônia Maculata","categoria":"Dentro de casa","preco":220},{"id":"pau-dagua-60","nome":"Pau d'Água · 60 cm","categoria":"Dentro de casa","preco":210},{"id":"aspargo-alfinete","nome":"Aspargo Alfinete","categoria":"Dentro de casa","preco":70},{"id":"ficus-lyrata","nome":"Fícus Lyrata","categoria":"Dentro de casa","preco":250},{"id":"ficus-tineke","nome":"Fícus Tineke","categoria":"Dentro de casa","preco":250},{"id":"ficus-ruby","nome":"Fícus Ruby","categoria":"Dentro de casa","preco":250},{"id":"peperomia-raindrop","nome":"Peperomia Raindrop","categoria":"Dentro de casa","preco":125},{"id":"palmeira-fenix","nome":"Palmeira Fênix","categoria":"Dentro ou fora","preco":180},{"id":"aveloz-palito-fogo","nome":"Aveloz Palito de Fogo","categoria":"Ao ar livre","preco":230},{"id":"bonsai-ligustro-15","nome":"Bonsai Ligustro · 15 anos","categoria":"Bonsais","preco":900},{"id":"bonsai-serissa-8","nome":"Bonsai Serissa · 8 a 9 anos","categoria":"Bonsais","preco":800},{"id":"bonsai-ficus-6","nome":"Bonsai Fícus · 6 anos","categoria":"Bonsais","preco":550},{"id":"bonsai-jabuticabeira-12","nome":"Bonsai Jabuticabeira · 16 anos","categoria":"Bonsais","preco":2000},{"id":"bonsai-jabuticabeira-4","nome":"Bonsai Jabuticabeira · 4 anos","categoria":"Bonsais","preco":700},{"id":"bonsai-amora-17","nome":"Bonsai Amora · 16 anos","categoria":"Bonsais","preco":1400},{"id":"bonsai-amora-7","nome":"Bonsai Amora · 7 anos","categoria":"Bonsais","preco":700},{"id":"bonsai-oliveira-16","nome":"Bonsai Oliveira · 16 anos","categoria":"Bonsais","preco":2000},{"id":"bonsai-pinheiro-negro-14","nome":"Bonsai Pinheiro Negro · 14 anos","categoria":"Bonsais","preco":2500},{"id":"bonsai-shimpaku-16","nome":"Bonsai Shimpaku · 16 anos","categoria":"Bonsais","preco":1500},{"id":"bonsai-shimpaku-5","nome":"Bonsai Shimpaku · 4 anos","categoria":"Bonsais","preco":600},{"id":"bonsai-sakura","nome":"Bonsai Sakura","categoria":"Bonsais","preco":900},{"id":"bonsai-caliandra-9","nome":"Bonsai Caliandra Rosa · 9 anos","categoria":"Bonsais","preco":800},{"id":"bonsai-caliandra-4","nome":"Bonsai Caliandra Rosa · 4 anos","categoria":"Bonsais","preco":600},{"id":"bonsai-jasmim-anao-6","nome":"Bonsai Jasmim Anão · 6 anos","categoria":"Bonsais","preco":800},{"id":"bonsai-piteco-2","nome":"Bonsai Piteco · 2 anos","categoria":"Bonsais","preco":700},{"id":"bonsai-buxus-9","nome":"Bonsai Buxus · 9 anos","categoria":"Bonsais","preco":800},{"id":"bonsai-cerejeira-rg-6","nome":"Bonsai Cerejeira-do-Rio-Grande · 7 anos","categoria":"Bonsais","preco":800},{"id":"bonsai-cambui-8","nome":"Bonsai Cambuí · 8 anos","categoria":"Bonsais","preco":800},{"id":"bonsai-azaleia-4","nome":"Bonsai Azaleia · 4 anos","categoria":"Bonsais","preco":450},{"id":"bonsai-pinheirinho-tuia-3","nome":"Bonsai Pinheirinho Tuia · 3 anos","categoria":"Bonsais","preco":400},{"id":"oliveira-grande","nome":"Oliveira","categoria":"Grande porte","preco":2000},{"id":"jabuticabeira-grande","nome":"Jabuticabeira","categoria":"Grande porte","preco":1500},{"id":"pau-dagua-grande","nome":"Pau d'Água","categoria":"Grande porte","preco":900},{"id":"arvore-felicidade","nome":"Árvore da Felicidade","categoria":"Grande porte","preco":1200},{"id":"suporte-cubo-ferro-alto","nome":"Cubo de ferro · alto","categoria":"Suportes","preco":190},{"id":"suporte-tronco-natural","nome":"Tronco natural","categoria":"Suportes","preco":150},{"id":"suporte-tripe-60","nome":"Tripé de ferro · 60 cm","categoria":"Suportes","preco":150},{"id":"suporte-tronco-alto","nome":"Tronco alto","categoria":"Suportes","preco":120},{"id":"suporte-madeira-aro-duplo","nome":"Madeira com aro duplo","categoria":"Suportes","preco":85},{"id":"suporte-tripe-45","nome":"Tripé de ferro · 45 cm","categoria":"Suportes","preco":85},{"id":"suporte-cubo-ferro-baixo","nome":"Cubo de ferro · baixo","categoria":"Suportes","preco":75},{"id":"suporte-ceramica","nome":"Cumbuca de cerâmica","categoria":"Suportes","preco":75},{"id":"suporte-tripe-30","nome":"Tripé de ferro · 30 cm","categoria":"Suportes","preco":75},{"id":"suporte-madeira-gancho","nome":"Madeira com gancho","categoria":"Suportes","preco":65},{"id":"suporte-madeira-aro","nome":"Madeira com aro","categoria":"Suportes","preco":60},{"id":"suporte-madeira-lisa","nome":"Madeira lisa","categoria":"Suportes","preco":50},{"id":"suporte-cumbuquinha","nome":"Cumbuquinha","categoria":"Suportes","preco":49},{"id":"suporte-ferro-aro-base","nome":"Ferro · aro sobre base quadrada","categoria":"Suportes","preco":39},{"id":"suporte-ferro-esfera","nome":"Ferro · esfera de arame","categoria":"Suportes","preco":39},{"id":"suporte-ferro-cone","nome":"Ferro · cone","categoria":"Suportes","preco":39},{"id":"suporte-ferro-tripe-v","nome":"Ferro · tripé pés em V","categoria":"Suportes","preco":39},{"id":"suporte-ferro-cruzado","nome":"Ferro · aros cruzados","categoria":"Suportes","preco":39},{"id":"suporte-ferro-dois-aros","nome":"Ferro · dois aros","categoria":"Suportes","preco":39},{"id":"suporte-ferro-espiral","nome":"Ferro · espiral","categoria":"Suportes","preco":39}];
+const CUSTOS_TOTAIS = {"arranjo-orquidea":280,"philodendron-birkin":100,"aspargo-melindre":80,"aglaonema-vermelha":105,"aglaonema-rosa":111,"aglaonema-branca":95,"aglaonema-tricolor":154.9,"croton":73,"maranta-pavao":103,"maranta-triostar":83,"asplenio":170,"costela-adao":125,"begonia-maculata":57.4,"aveloz-palito-fogo":110,"bonsai-ligustro-15":465,"bonsai-serissa-8":315,"bonsai-ficus-6":355,"bonsai-jabuticabeira-12":1015,"bonsai-jabuticabeira-4":357.72,"bonsai-amora-17":907.72,"bonsai-amora-7":315,"bonsai-oliveira-16":957.72,"bonsai-pinheiro-negro-14":1307.72,"bonsai-shimpaku-16":807.72,"bonsai-shimpaku-5":345,"bonsai-sakura":445,"bonsai-caliandra-9":365,"bonsai-jasmim-anao-6":315,"bonsai-piteco-2":185,"bonsai-buxus-9":307.72,"bonsai-cerejeira-rg-6":327.72,"bonsai-cambui-8":447.72,"bonsai-azaleia-4":255,"bonsai-pinheirinho-tuia-3":185,"jabuticabeira-grande":758};
 const BRL = (n)=> (n==null||isNaN(n)) ? "—" : "R$ " + Number(n).toLocaleString("pt-BR",{minimumFractionDigits:2,maximumFractionDigits:2});
 const $ = (s)=>document.querySelector(s);
 const el = (id)=>document.getElementById(id);
 let sb=null, PRODUTOS=[], VENDAS=[];
 
 function toast(m){const t=el("toast");t.textContent=m;t.classList.add("show");setTimeout(()=>t.classList.remove("show"),2200);}
-function show(id){ ["painel","vendas","estoque"].forEach(t=>el("tab-"+t).classList.toggle("hidden",t!==id));
+function show(id){ ["painel","vendas","estoque","custos"].forEach(t=>el("tab-"+t).classList.toggle("hidden",t!==id));
   document.querySelectorAll("nav.tabs button").forEach(b=>b.classList.toggle("on",b.dataset.tab===id)); }
 
 // ---------- inicialização ----------
@@ -219,7 +231,13 @@ async function carregar(){
     const rp = await sb.from("produtos").select("*").order("nome");
     PRODUTOS = rp.data||[];
   }
-  renderProdutosSelect(); renderPainel(); renderVendas(); renderProdutos();
+  // preenche custos que já levantamos (só onde ainda está vazio)
+  const faltando = PRODUTOS.filter(p=>p.custo==null && CUSTOS_TOTAIS[p.id]!=null);
+  if(faltando.length){
+    faltando.forEach(p=>{ p.custo = CUSTOS_TOTAIS[p.id]; });
+    await Promise.all(faltando.map(p=>sb.from("produtos").update({custo:p.custo}).eq("id",p.id)));
+  }
+  renderProdutosSelect(); renderPainel(); renderVendas(); renderProdutos(); renderCustos();
 }
 
 // ---------- PAINEL ----------
@@ -334,6 +352,42 @@ async function editarCusto(id){
   const {error}=await sb.from("produtos").update({custo:num}).eq("id",id);
   toast(error?"Erro ao salvar":"Custo salvo ✓");
 }
+
+// ---------- CUSTOS E MARGENS ----------
+function corMargem(pct){ if(pct==null) return 'var(--muted)'; if(pct<0.4) return 'var(--terra)'; if(pct<0.6) return '#c79a3a'; return 'var(--moss)'; }
+function renderCustos(){
+  const q=(document.getElementById("buscaCusto").value||"").toLowerCase();
+  const lista=PRODUTOS.filter(p=>p.nome.toLowerCase().includes(q));
+  document.getElementById("listaCustos").innerHTML = lista.map(p=>{
+    const preco=Number(p.preco||0), custo=(p.custo!=null)?Number(p.custo):null;
+    const margR=(custo!=null)?preco-custo:null;
+    const margP=(custo!=null && preco>0)?margR/preco:null;
+    const pctTxt=(margP!=null)?(margP*100).toFixed(0)+"%":"—";
+    return `<div class="item">
+      <div style="flex:1">
+        <div>${p.nome}</div>
+        <div class="small muted">
+          venda <a href="#" onclick="editarPreco('${p.id}');return false">${BRL(preco)}</a>
+          · custo <a href="#" onclick="editarCusto('${p.id}');return false">${custo!=null?BRL(custo):"definir"}</a>
+        </div>
+      </div>
+      <div style="text-align:right;min-width:96px">
+        <div style="font-weight:700;color:${corMargem(margP)}">${pctTxt}</div>
+        <div class="small muted">${margR!=null?BRL(margR):""}</div>
+      </div></div>`;
+  }).join("");
+}
+document.getElementById("buscaCusto").addEventListener("input",renderCustos);
+async function editarPreco(id){
+  const p=PRODUTOS.find(x=>x.id===id); if(!p) return;
+  const val=prompt(`Preço de venda de "${p.nome}" (R$):`, p.preco!=null?p.preco:"");
+  if(val===null) return;
+  const num=Number(String(val).replace(",",".")); if(isNaN(num)){toast("Valor inválido");return;}
+  p.preco=num; renderCustos(); renderProdutos(); renderProdutosSelect();
+  const {error}=await sb.from("produtos").update({preco:num}).eq("id",id);
+  toast(error?"Erro ao salvar":"Preço salvo ✓");
+}
+
 </script>
 </body>
 </html>
