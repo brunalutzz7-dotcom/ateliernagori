@@ -118,7 +118,7 @@ const PRODUCTS = [
   { id: "aglaonema-cherry", nome: "Aglaonema Cherry", especie: "Aglaonema sp. · cherry", categoria: "dentro", ambiente: "interno", pet: "toxic",
     descricao: "Folha verde escura salpicada, com nervuras e pecíolo em rosa-cereja. Cor intensa o ano todo, sem depender de flor, em luz indireta.", preco: 230 },
   { id: "philodendro-pink", nome: "Philodendro Pink", especie: "Philodendron erubescens 'Pink Princess'", categoria: "dentro", ambiente: "interno", pet: "toxic",
-    descricao: "Folhas escuras com respingos rosa, cada uma com um desenho único. Quanto mais luz filtrada, mais o rosa aparece — uma das mais desejadas.", preco: 250 },
+    descricao: "Folhas escuras com respingos rosa, cada uma com um desenho único. Quanto mais luz filtrada, mais o rosa aparece — uma das mais desejadas.", preco: 250, img: IMG("philodendro-pink") },
   { id: "nandina", nome: "Nandina", especie: "Nandina domestica", categoria: "ambos", ambiente: "ambos", pet: "toxic",
     descricao: "Folhagem fina e ramificada que ganha tons avermelhados no frio. Rústica: vai bem dentro com boa luz ou na varanda.", preco: 190 },
   { id: "avenca", nome: "Avenca", especie: "Adiantum sp.", categoria: "dentro", ambiente: "interno", pet: "safe",
