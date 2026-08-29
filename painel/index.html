@@ -130,6 +130,9 @@
             <div><label>Quantidade</label><input type="number" id="vQtd" value="1" min="1" /></div>
             <div><label>Valor total (R$)</label><input type="number" id="vValor" step="0.01" min="0" /></div>
           </div>
+          <label style="display:flex;align-items:center;gap:8px;font-weight:400;margin:.3rem 0 .2rem;cursor:pointer">
+            <input type="checkbox" id="vPix" style="width:auto;margin:0" /> Pagamento no Pix <span class="small muted">(−5% no valor)</span>
+          </label>
           <label>Canal</label>
           <select id="vCanal">
             <option value="site">Site</option>
@@ -280,12 +283,17 @@ function renderProdutosSelect(){
   el("vProduto").innerHTML = PRODUTOS.map(p=>`<option value="${p.id}">${p.nome} — ${BRL(p.preco)}</option>`).join("");
   atualizaValor();
 }
+const PIX_DESC = 0.05; // 5% de desconto no Pix
 function atualizaValor(){
   const p=PRODUTOS.find(x=>x.id===el("vProduto").value); const q=Number(el("vQtd").value||1);
-  if(p) el("vValor").value = (Number(p.preco||0)*q).toFixed(2);
+  if(!p) return;
+  let v = Number(p.preco||0)*q;
+  if(el("vPix") && el("vPix").checked) v = v*(1-PIX_DESC);
+  el("vValor").value = v.toFixed(2);
 }
 el("vProduto").addEventListener("change",atualizaValor);
 el("vQtd").addEventListener("input",atualizaValor);
+el("vPix").addEventListener("change",atualizaValor);
 
 el("vendaForm").addEventListener("submit", async (e)=>{
   e.preventDefault(); el("vendaErr").classList.add("hidden");
@@ -293,15 +301,18 @@ el("vendaForm").addEventListener("submit", async (e)=>{
   const q=Math.max(1,Number(el("vQtd").value||1));
   const valor=Number(el("vValor").value||0);
   const custo=(p.custo!=null)? Number(p.custo)*q : null;
+  const pix=el("vPix").checked;
+  let obs=el("vObs").value.trim();
+  if(pix) obs = obs ? ("Pix −5% · "+obs) : "Pix −5%";
   const {error}=await sb.from("vendas").insert({
     produto_id:p.id, produto_nome:p.nome, quantidade:q, canal:el("vCanal").value,
-    valor, custo, obs:el("vObs").value.trim()||null
+    valor, custo, obs:obs||null
   });
   if(error){ el("vendaErr").textContent="Erro ao salvar: "+error.message; el("vendaErr").classList.remove("hidden"); return; }
   // baixa estoque
   const novo=Math.max(0,Number(p.estoque||0)-q);
   await sb.from("produtos").update({estoque:novo}).eq("id",p.id);
-  el("vObs").value=""; el("vQtd").value="1";
+  el("vObs").value=""; el("vQtd").value="1"; el("vPix").checked=false;
   toast("Venda registrada ✓");
   await carregar(); show("painel");
 });
