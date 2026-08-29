@@ -63,6 +63,10 @@ const CONFIG = {
        4 = Nordeste
        5 = Norte
      "base" cobre até "pesoBase" kg; cada kg extra soma o "porKg".      */
+  /* Desconto no Pix: porcentagem abatida do valor dos produtos (não do frete)
+     quando o cliente paga via Pix. 0.05 = 5%. Deixe 0 para desativar.       */
+  pixDesconto: 0.05,
+
   freteGratisAcima: 900, // pedidos acima deste valor (R$) ganham PAC grátis
   // Valor (R$) somado ao preço de CADA transportadora paga (ex.: embalagem/manuseio).
   // Não se aplica à retirada no ateliê nem ao frete grátis.

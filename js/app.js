@@ -346,6 +346,21 @@
     const frete = selectedShip ? selectedShip.preco : null;
     $("#sumFrete").textContent = frete === null ? "—" : frete === 0 ? "Grátis" : BRL(frete);
     $("#sumTotal").textContent = BRL(sub + (frete || 0));
+
+    // Total no Pix — 5% de desconto sobre os produtos (o frete não entra no desconto)
+    const linePix = $("#linePix");
+    if (linePix) {
+      const taxa = CONFIG.pixDesconto || 0;
+      if (taxa > 0 && sub > 0) {
+        const pixTotal = sub * (1 - taxa) + (frete || 0);
+        $("#sumPix").textContent = BRL(pixTotal);
+        const lbl = $("#pixLabel");
+        if (lbl) lbl.textContent = `(${(taxa * 100).toFixed(0).replace(".", ",")}% off)`;
+        linePix.hidden = false;
+      } else {
+        linePix.hidden = true;
+      }
+    }
   }
 
   function bump() {
@@ -493,6 +508,7 @@
     return t;
   }
   const totalPedido = () => subtotal() + (selectedShip ? selectedShip.preco : 0);
+  const pixTotal = () => subtotal() * (1 - (CONFIG.pixDesconto || 0)) + (selectedShip ? selectedShip.preco : 0);
 
   // envia o pedido por e-mail (Web3Forms). Retorna true se enviou.
   async function sendOrderEmail(e, pagamento) {
@@ -509,6 +525,7 @@
       Subtotal: BRL(subtotal()),
       Frete: selectedShip ? (selectedShip.preco === 0 ? "Grátis" : BRL(selectedShip.preco)) + " · " + selectedShip.nome : "—",
       Total: BRL(totalPedido()),
+      "Total no Pix": CONFIG.pixDesconto > 0 ? BRL(pixTotal()) + ` (${(CONFIG.pixDesconto * 100).toFixed(0)}% off nos produtos)` : "—",
       Pagamento: pagamento,
     };
     try {
@@ -558,6 +575,9 @@
     if (selectedShip) {
       msg += `*Frete (${selectedShip.nome}):* ${selectedShip.preco === 0 ? "Grátis" : BRL(selectedShip.preco)}%0A`;
       msg += `*Total:* ${BRL(subtotal() + selectedShip.preco)}%0A`;
+    }
+    if (CONFIG.pixDesconto > 0) {
+      msg += `*Total no Pix (${(CONFIG.pixDesconto * 100).toFixed(0)}%25 off):* ${BRL(pixTotal())}%0A`;
     }
     const e = endereco();
     if (e.nome) msg += `%0A*Cliente:* ${encodeURIComponent(e.nome)}%0A`;

@@ -328,6 +328,9 @@ h2 { font-size: clamp(1.9rem, 4vw, 2.9rem); }
 .cart-totals .line { display: flex; justify-content: space-between; padding: .3rem 0; font-size: .95rem; color: var(--ink-soft); }
 .cart-totals .line.total { font-size: 1.15rem; color: var(--ink); font-weight: 600; border-top: 1px solid var(--line); margin-top: .3rem; padding-top: .7rem; }
 .cart-totals .line.total span:last-child { font-family: var(--serif); font-size: 1.5rem; color: var(--moss-deep); }
+.cart-totals .line.pix { color: var(--moss-deep); font-weight: 600; border-top: 1px dashed var(--line); margin-top: .2rem; padding-top: .6rem; }
+.cart-totals .line.pix span:last-child { font-family: var(--serif); font-size: 1.15rem; }
+.cart-totals .line.pix small { font-weight: 500; opacity: .8; }
 .cart-secure { font-size: .76rem; color: var(--ink-soft); text-align: center; margin: .8rem 0 0; }
 .cart-empty { display: none; flex-direction: column; align-items: center; gap: 1rem; text-align: center; padding: 3rem 1.4rem; color: var(--ink-soft); }
 .cart-drawer.empty .cart-scroll { display: none; }

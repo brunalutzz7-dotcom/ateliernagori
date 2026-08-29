@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/styles.css?v=105" />
+  <link rel="stylesheet" href="css/styles.css?v=106" />
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='62' r='30' fill='%236b5a3e'/><path d='M50 40 Q40 10 50 2 Q60 10 50 40' fill='%234e7c4a'/></svg>" />
 </head>
 <body>
@@ -286,11 +286,12 @@
         <div class="line" id="lineBase" hidden><span id="labelBase">Bases especiais</span><span id="sumBase">—</span></div>
         <div class="line"><span>Frete</span><span id="sumFrete">—</span></div>
         <div class="line total"><span>Total</span><span id="sumTotal">R$ 0,00</span></div>
+        <div class="line pix" id="linePix" hidden><span>💚 No Pix <small id="pixLabel">(5% off)</small></span><span id="sumPix">R$ 0,00</span></div>
       </div>
 
       <button class="btn btn-primary btn-block" id="checkoutBtn">Finalizar compra</button>
       <button class="btn btn-ghost btn-block btn-sm" id="waOrderBtn">Pedir pelo WhatsApp</button>
-      <p class="cart-secure">🔒 Pagamento processado com segurança pela InfinitePay (Pix, crédito e débito).</p>
+      <p class="cart-secure">🔒 Pagamento processado com segurança pela InfinitePay (Pix, crédito e débito).<br>💚 5% de desconto pagando no Pix.</p>
     </div>
     </div>
     <div class="cart-empty" id="cartEmpty">
@@ -307,8 +308,8 @@
     <div class="modal" id="productModal" role="dialog" aria-modal="true"></div>
   </div>
 
-  <script src="js/config.js?v=105"></script>
-  <script src="js/products.js?v=105"></script>
-  <script src="js/app.js?v=105"></script>
+  <script src="js/config.js?v=106"></script>
+  <script src="js/products.js?v=106"></script>
+  <script src="js/app.js?v=106"></script>
 </body>
 </html>
