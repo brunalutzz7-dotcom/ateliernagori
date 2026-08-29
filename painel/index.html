@@ -138,10 +138,12 @@
             <input type="hidden" id="vProduto" />
             <div id="vSugestoes" class="sugestoes" hidden></div>
           </div>
-          <div class="grid2">
+          <div class="grid2" style="align-items:end">
             <div><label>Quantidade</label><input type="number" id="vQtd" value="1" min="1" /></div>
-            <div><label>Valor total (R$)</label><input type="number" id="vValor" step="0.01" min="0" /></div>
+            <div><label>&nbsp;</label><button type="button" id="vAdd" class="btn sec">+ Adicionar peça</button></div>
           </div>
+          <div id="vItens"></div>
+          <div id="vResumo"></div>
           <label style="display:flex;align-items:center;gap:8px;font-weight:400;margin:.3rem 0 .2rem;cursor:pointer">
             <input type="checkbox" id="vPix" style="width:auto;margin:0" /> Pagamento no Pix <span class="small muted">(−5% no valor)</span>
           </label>
@@ -295,8 +297,8 @@ function renderPainel(){
 }
 
 // ---------- VENDAS ----------
-// mantém o campo coerente se a lista mudar de preço/ordem (chamado após edições)
-function renderProdutosSelect(){ atualizaValor(); }
+// mantém os itens da venda coerentes se a lista mudar (chamado após edições/carregar)
+function renderProdutosSelect(){ if(typeof renderItensVenda==="function") renderItensVenda(); }
 
 // ---- Busca com autocompletar da peça ----
 const norm = (s)=> (s||"").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"");
@@ -323,7 +325,6 @@ function escolheProduto(id){
   el("vProduto").value=id;
   el("vBusca").value=p.nome;
   el("vSugestoes").hidden=true; el("vSugestoes").innerHTML=""; sugHi=-1;
-  atualizaValor();
 }
 el("vBusca").addEventListener("input",()=>{
   sugHi=-1;
@@ -344,37 +345,82 @@ el("vBusca").addEventListener("keydown",(e)=>{
 });
 
 const PIX_DESC = 0.05; // 5% de desconto no Pix
-function atualizaValor(){
-  const p=PRODUTOS.find(x=>x.id===el("vProduto").value); const q=Number(el("vQtd").value||1);
-  if(!p){ el("vValor").value=""; return; }
-  let v = Number(p.preco||0)*q;
-  if(el("vPix") && el("vPix").checked) v = v*(1-PIX_DESC);
-  el("vValor").value = v.toFixed(2);
-}
-el("vQtd").addEventListener("input",atualizaValor);
-el("vPix").addEventListener("change",atualizaValor);
 
-el("vendaForm").addEventListener("submit", async (e)=>{
-  e.preventDefault(); el("vendaErr").classList.add("hidden");
+// ---- Itens da venda (permite mais de uma peça na mesma venda) ----
+let itensVenda = []; // {id,nome,preco,custoUnit,qtd,valor}
+function addItemVenda(){
   const p=PRODUTOS.find(x=>x.id===el("vProduto").value);
   if(!p){ el("vendaErr").textContent="Escolha uma peça da lista (comece a digitar o nome)."; el("vendaErr").classList.remove("hidden"); el("vBusca").focus(); return; }
   const q=Math.max(1,Number(el("vQtd").value||1));
-  const valor=Number(el("vValor").value||0);
-  const custo=(p.custo!=null)? Number(p.custo)*q : null;
-  const pix=el("vPix").checked;
-  let obs=el("vObs").value.trim();
-  if(pix) obs = obs ? ("Pix −5% · "+obs) : "Pix −5%";
-  const {error}=await sb.from("vendas").insert({
-    produto_id:p.id, produto_nome:p.nome, quantidade:q, canal:el("vCanal").value,
-    valor, custo, obs:obs||null
+  const ja=itensVenda.find(it=>it.id===p.id);
+  if(ja){ ja.qtd+=q; ja.valor=ja.preco*ja.qtd; }
+  else itensVenda.push({id:p.id, nome:p.nome, preco:Number(p.preco||0), custoUnit:(p.custo!=null?Number(p.custo):null), qtd:q, valor:Number(p.preco||0)*q});
+  el("vBusca").value=""; el("vProduto").value=""; el("vQtd").value="1";
+  el("vendaErr").classList.add("hidden");
+  renderItensVenda(); el("vBusca").focus();
+}
+function removerItemVenda(i){ itensVenda.splice(i,1); renderItensVenda(); }
+function editarValorItem(i){
+  const it=itensVenda[i]; if(!it) return;
+  const val=prompt(`Valor cobrado por "${it.nome}" (${it.qtd}×):`, it.valor.toFixed(2));
+  if(val===null) return;
+  const n=Number(String(val).replace(",",".")); if(isNaN(n)){ toast("Valor inválido"); return; }
+  it.valor=n; renderItensVenda();
+}
+function totaisVenda(){
+  const total=itensVenda.reduce((a,it)=>a+Number(it.valor||0),0);
+  const pix = el("vPix").checked ? total*(1-PIX_DESC) : null;
+  return {total, pix};
+}
+function renderItensVenda(){
+  const cx=el("vItens");
+  if(!itensVenda.length){
+    cx.innerHTML=`<div class="small muted" style="padding:6px 0 2px">Nenhuma peça adicionada ainda.</div>`;
+    el("vResumo").innerHTML=""; return;
+  }
+  cx.innerHTML = itensVenda.map((it,i)=>`<div class="item">
+      <div style="flex:1"><div>${it.qtd>1?it.qtd+"× ":""}${it.nome}</div>
+        <div class="small muted"><a href="#" onclick="editarValorItem(${i});return false">${BRL(it.valor)}</a></div></div>
+      <button type="button" class="btn mini sec" onclick="removerItemVenda(${i})">remover</button>
+    </div>`).join("");
+  const {total,pix}=totaisVenda();
+  el("vResumo").innerHTML =
+    `<div class="item" style="font-weight:600"><span>Total</span><span>${BRL(total)}</span></div>`
+    + (pix!=null?`<div class="item" style="color:var(--moss);font-weight:600"><span>💚 No Pix (−5%)</span><span>${BRL(pix)}</span></div>`:"");
+}
+el("vAdd").addEventListener("click",addItemVenda);
+el("vPix").addEventListener("change",renderItensVenda);
+
+el("vendaForm").addEventListener("submit", async (e)=>{
+  e.preventDefault(); el("vendaErr").classList.add("hidden");
+  // se digitou uma peça e não clicou em "adicionar", adiciona automaticamente
+  if(el("vProduto").value && !itensVenda.some(it=>it.id===el("vProduto").value)) addItemVenda();
+  if(!itensVenda.length){ el("vendaErr").textContent="Adicione ao menos uma peça à venda."; el("vendaErr").classList.remove("hidden"); el("vBusca").focus(); return; }
+  const pix=el("vPix").checked, canal=el("vCanal").value, fator=pix?(1-PIX_DESC):1;
+  const obsBase=el("vObs").value.trim();
+  const rows=itensVenda.map(it=>{
+    let obs=obsBase;
+    if(pix) obs = obs ? ("Pix −5% · "+obs) : "Pix −5%";
+    return {
+      produto_id:it.id, produto_nome:it.nome, quantidade:it.qtd, canal,
+      valor:+(Number(it.valor||0)*fator).toFixed(2),
+      custo: it.custoUnit!=null ? +(it.custoUnit*it.qtd).toFixed(2) : null,
+      obs: obs||null
+    };
   });
+  const {error}=await sb.from("vendas").insert(rows);
   if(error){ el("vendaErr").textContent="Erro ao salvar: "+error.message; el("vendaErr").classList.remove("hidden"); return; }
-  // baixa estoque
-  const novo=Math.max(0,Number(p.estoque||0)-q);
-  await sb.from("produtos").update({estoque:novo}).eq("id",p.id);
+  // baixa estoque de cada peça
+  await Promise.all(itensVenda.map(it=>{
+    const p=PRODUTOS.find(x=>x.id===it.id);
+    const novo=Math.max(0,Number(p&&p.estoque||0)-it.qtd);
+    return sb.from("produtos").update({estoque:novo}).eq("id",it.id);
+  }));
+  itensVenda=[];
   el("vObs").value=""; el("vQtd").value="1"; el("vPix").checked=false;
-  el("vBusca").value=""; el("vProduto").value=""; el("vValor").value="";
-  toast("Venda registrada ✓");
+  el("vBusca").value=""; el("vProduto").value="";
+  renderItensVenda();
+  toast(rows.length>1?`Venda registrada (${rows.length} peças) ✓`:"Venda registrada ✓");
   await carregar(); show("painel");
 });
 
