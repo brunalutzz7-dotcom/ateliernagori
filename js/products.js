@@ -79,6 +79,8 @@ const PRODUCTS = [
     descricao: "Folha estreita e ondulada, salpicada de manchas escuras alternadas — o nome vem do desenho, que lembra pele de cobra. O par montado junto fica especialmente bonito.", variantes: [{ label: "Peça única", preco: 125 }, { label: "O par", preco: 230 }], img: IMG("maranta-cascavel") },
   { id: "maranta-triostar", nome: "Mini Maranta Triostar", especie: "Stromanthe sanguinea 'Triostar'", categoria: "dentro", ambiente: "interno", pet: "safe",
     descricao: "Verde, creme e rosa na mesma folha, com verso inteiramente magenta. Levanta as folhas à noite e as baixa pela manhã.", preco: 125, img: IMG("maranta-triostar") },
+  { id: "maranta-triostar-grande", nome: "Maranta Triostar", especie: "Stromanthe sanguinea 'Triostar'", categoria: "dentro", ambiente: "interno", pet: "safe",
+    descricao: "A Triostar em tamanho cheio: folhas longas pintadas de verde, creme e rosa, com o verso magenta vibrante. Uma folhagem de presença, das mais desejadas.", preco: 225, img: IMG("maranta-triostar-grande") },
   { id: "maranta-burle-marx", nome: "Mini Maranta Burle Marx", especie: "Ctenanthe burle-marxii · aprox. 25 cm", categoria: "dentro", ambiente: "interno", pet: "safe",
     descricao: "Folha listrada em espinha de peixe, verde-claro sobre verde escuro, com o verso vinho. Fecha as folhas à noite e reabre pela manhã.", preco: 110, img: IMG("maranta-burle-marx") },
   { id: "pacova", nome: "Pacová", peso: 3, especie: "Philodendron martianum", categoria: "ambos", ambiente: "ambos", pet: "toxic",
