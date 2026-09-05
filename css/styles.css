@@ -92,6 +92,12 @@ h2 { font-size: clamp(1.9rem, 4vw, 2.9rem); }
   display: grid; place-items: center; cursor: pointer; transition: .2s;
 }
 .cart-btn:hover { background: var(--sand); }
+.ig-btn {
+  background: var(--sand-lt); border: 1px solid var(--line);
+  color: var(--moss-deep); width: 44px; height: 44px; border-radius: 50%;
+  display: grid; place-items: center; cursor: pointer; transition: .2s;
+}
+.ig-btn:hover { background: var(--sand); color: var(--terra); }
 .cart-count {
   position: absolute; top: -6px; right: -6px; background: var(--terra); color: #fff;
   font-size: .72rem; font-weight: 600; min-width: 20px; height: 20px; padding: 0 5px;
