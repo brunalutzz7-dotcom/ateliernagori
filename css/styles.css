@@ -276,6 +276,19 @@ h2 { font-size: clamp(1.9rem, 4vw, 2.9rem); }
 .contact-list a:hover { color: var(--terra); }
 .contact-map { margin-top: 1.6rem; border-radius: 14px; overflow: hidden; border: 1px solid var(--line); }
 .contact-map iframe { width: 100%; height: 240px; border: 0; display: block; }
+.wa-float {
+  position: fixed; right: 18px; bottom: 18px; z-index: 45;
+  display: inline-flex; align-items: center; gap: .5rem;
+  background: #25D366; color: #fff; padding: 13px; border-radius: 999px;
+  box-shadow: 0 6px 20px rgba(0,0,0,.22); transition: transform .2s, background .2s;
+}
+.wa-float:hover { background: #1ebe5b; transform: translateY(-2px); }
+.wa-float svg { display: block; }
+.wa-float-txt { font-weight: 600; font-size: .95rem; padding-right: .3rem; }
+@media (max-width: 600px) {
+  .wa-float { right: 14px; bottom: 14px; padding: 14px; }
+  .wa-float-txt { display: none; }
+}
 .contact-form { background: var(--white); border: 1px solid var(--line); border-radius: var(--radius); padding: clamp(1.4rem, 3vw, 2.2rem); box-shadow: var(--shadow); }
 .field { margin-bottom: 1rem; }
 .field label { display: block; font-size: .9rem; font-weight: 500; margin-bottom: .4rem; }
