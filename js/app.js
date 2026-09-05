@@ -106,7 +106,8 @@
   function applyConfig() {
     $("#year").textContent = new Date().getFullYear();
     $("#freteGratisLabel").textContent = BRL(CONFIG.freteGratisAcima);
-    $("#waLink").href = waBase();
+    const waSite = `${waBase()}?text=${encodeURIComponent("Oi! Vim do site do Atelier Nagori 🌿")}`;
+    $("#waLink").href = waSite;
     $("#igLink").href = `https://instagram.com/${CONFIG.instagram}`;
     $("#igLink").textContent = "@" + CONFIG.instagram;
 
@@ -115,7 +116,7 @@
       if (CONFIG.emailVisivel) { mail.href = `mailto:${CONFIG.email}`; mail.textContent = CONFIG.email; }
       else mail.closest("li")?.remove();
     }
-    $$("[data-wa-link]").forEach((a) => (a.href = waBase()));
+    $$("[data-wa-link]").forEach((a) => (a.href = waSite));
     $$("[data-origem]").forEach((el) => (el.textContent = CONFIG.origem.cidade));
     $$("[data-origem-uf]").forEach((el) => (el.textContent = `${CONFIG.origem.cidade}/${CONFIG.origem.uf}`));
   }
