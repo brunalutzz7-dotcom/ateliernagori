@@ -120,7 +120,7 @@ const PRODUCTS = [
   { id: "mini-arvore-felicidade", nome: "Mini Árvore da Felicidade", especie: "Polyscias sp. · mini", categoria: "dentro", ambiente: "interno", pet: "toxic",
     descricao: "A árvore da felicidade em versão de mesa. Tronco lenhoso e folhagem recortada — dizem que atrai boas energias, e é por isso que sai tanto como presente.", preco: 230, img: IMG("mini-arvore-felicidade") },
   { id: "mini-jiboia", nome: "Mini Jiboia", especie: "Epipremnum aureum · mini", categoria: "dentro", ambiente: "ambos", pet: "toxic",
-    descricao: "A jiboia em versão pequena, de folhas coração. Resistente e fácil de cuidar — cresce em cascata conforme se acostuma com o cantinho.", preco: 110 },
+    descricao: "A jiboia em versão pequena, de folhas coração. Resistente e fácil de cuidar — cresce em cascata conforme se acostuma com o cantinho. Disponível em variações de cor (neon, marmorizada, jade e prateada); consulte a disponibilidade do momento.", preco: 110, imgs: [IMG("mini-jiboia"), IMG("mini-jiboia-2"), IMG("mini-jiboia-3"), IMG("mini-jiboia-4"), IMG("mini-jiboia-5")] },
   { id: "mini-costela-adao", nome: "Mini Costela de Adão", especie: "Monstera deliciosa · mini", categoria: "ambos", ambiente: "ambos", pet: "toxic",
     descricao: "A costela de Adão em tamanho de mesa, com os recortes que todo mundo ama já começando a aparecer.", preco: 150 },
   { id: "hera-estrelada", nome: "Hera Estrelada", especie: "Hedera helix", categoria: "ambos", ambiente: "ambos", pet: "toxic",
