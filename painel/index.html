@@ -490,7 +490,7 @@ async function editarCusto(id){
   const val=prompt(`Custo total por peça de "${p.nome}" (R$):`, p.custo!=null?p.custo:"");
   if(val===null) return;
   const num=Number(String(val).replace(",",".")); if(isNaN(num)){toast("Valor inválido");return;}
-  p.custo=num; renderProdutos();
+  p.custo=num; renderCustos(); renderProdutos(); renderPainel();
   const {error}=await sb.from("produtos").update({custo:num}).eq("id",id);
   toast(error?"Erro ao salvar":"Custo salvo ✓");
 }
@@ -507,11 +507,14 @@ function renderCustos(){
     const pctTxt=(margP!=null)?(margP*100).toFixed(0)+"%":"—";
     const d=CUSTOS_DETALHE[p.id];
     let breakdown="";
-    if(d){
-      if(d.material!=null){
-        breakdown=`<div class="small muted" style="margin-top:2px">material ${BRL(d.material)}</div>`;
-      }else{
-        breakdown=`<div class="small muted" style="margin-top:2px">planta ${BRL(d.planta)} · musgo ${BRL(d.insumo)} · mão de obra ${BRL(d.mao)}</div>`;
+    if(d && custo!=null){
+      const soma = d.material!=null ? d.material : (Number(d.planta||0)+Number(d.insumo||0)+Number(d.mao||0));
+      if(Math.abs(soma-custo)<0.02){ // só mostra o detalhamento quando bate com o custo atual
+        if(d.material!=null){
+          breakdown=`<div class="small muted" style="margin-top:2px">material ${BRL(d.material)}</div>`;
+        }else{
+          breakdown=`<div class="small muted" style="margin-top:2px">planta ${BRL(d.planta)} · musgo ${BRL(d.insumo)} · mão de obra ${BRL(d.mao)}</div>`;
+        }
       }
     }
     return `<div class="item">
