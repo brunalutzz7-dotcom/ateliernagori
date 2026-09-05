@@ -21,7 +21,7 @@ const CONFIG = {
      2. CONTATO
      ------------------------------------------------------------------- */
   // WhatsApp no formato internacional, só números: 55 + DDD + número
-  whatsapp: "5541992895505",
+  whatsapp: "5541987074284",
   // E-mail de contato. Deixado VAZIO de propósito: como o site é estático,
   // qualquer texto aqui ficaria visível no código para os clientes. Os
   // contatos chegam até você pelo WhatsApp. Se um dia quiser exibir um
