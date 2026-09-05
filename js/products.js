@@ -95,8 +95,6 @@ const PRODUCTS = [
     descricao: "Espata rosada e brilhante que dura semanas abertas, sobre folhagem verde-escura lustrosa. Floresce quase o ano todo em luz indireta.", preco: 180, img: IMG("anturio-rosa") },
   { id: "costela-adao", nome: "Costela de Adão", peso: 3, especie: "Monstera deliciosa", categoria: "ambos", ambiente: "ambos", pet: "toxic",
     descricao: "Folha recortada que ganha novos vãos a cada broto. Cresce rápido e pede espaço.", preco: 265, img: IMG("costela-adao") },
-  { id: "begonia-maculata", nome: "Begônia Maculata", especie: "Begonia maculata", categoria: "dentro", ambiente: "interno", pet: "toxic",
-    descricao: "Folha em asa com pontos prateados sobre verde escuro e verso vinho. Uma das folhagens mais fotografadas que existem.", preco: 220, img: IMG("begonia-maculata") },
   { id: "pau-dagua-60", nome: "Pau d'Água · 60 cm", peso: 3, especie: "Dracaena fragrans", categoria: "dentro", ambiente: "interno", pet: "toxic",
     descricao: "A mesma folha listrada da grande, em escala de mesa e estante. Aceita canto pouco iluminado e esquecimento de rega.", preco: 210, img: IMG("pau-dagua-60") },
   { id: "aspargo-alfinete", nome: "Aspargo Alfinete", especie: "Asparagus densiflorus 'Sprengeri'", categoria: "dentro", ambiente: "ambos", pet: "toxic",
@@ -107,8 +105,6 @@ const PRODUCTS = [
     descricao: "Folha grossa mesclada em creme e verde, nervura central rosada. Cada folha abre com um desenho diferente da anterior.", preco: 250, img: IMG("ficus-tineke") },
   { id: "ficus-ruby", nome: "Fícus Ruby", peso: 3, especie: "Ficus elastica 'Ruby'", categoria: "dentro", ambiente: "interno", pet: "toxic",
     descricao: "Variegação em rosa vivo sobre verde escuro, mais intensa nas folhas novas. Quanto mais luz recebe, mais forte fica o rosa.", preco: 250, img: IMG("ficus-ruby") },
-  { id: "peperomia-raindrop", nome: "Peperomia Raindrop", especie: "Peperomia polybotrya", categoria: "dentro", ambiente: "interno", pet: "safe",
-    descricao: "Folha em gota, grossa e envernizada, sobre haste alta e ereta. Mais vertical e mais rara que a peperomia comum.", variantes: [{ label: "Peça única", preco: 125 }, { label: "O par", preco: 230 }], img: IMG("peperomia-raindrop") },
 
   /* ---------- 01b · FOLHAGENS NOVAS (foto em breve) ---------- */
   { id: "jiboia-suspensa", nome: "Jiboia Suspensa", especie: "Epipremnum aureum · pendente", categoria: "dentro", ambiente: "interno", pet: "toxic",
@@ -143,8 +139,6 @@ const PRODUCTS = [
     descricao: "A flor de cera: folhas firmes e florzinhas em umbela, perfumadas, com aspecto de porcelana. Pendente e longeva.", preco: 210 },
   { id: "costela-adao-constellation", nome: "Costela de Adão Constellation", especie: "Monstera deliciosa 'Thai Constellation'", categoria: "ambos", ambiente: "ambos", pet: "toxic",
     descricao: "A variegada mais desejada: folhas grandes salpicadas de creme, cada uma um desenho único. Peça de colecionador.", preco: 650 },
-  { id: "palmeira-fenix", nome: "Palmeira Fênix", peso: 3, especie: "Phoenix roebelenii", categoria: "ambos", ambiente: "ambos", pet: "safe",
-    descricao: "Fronde fina e arqueada, folíolos estreitos em duas fileiras. Cresce devagar e mantém o porte pequeno por anos: a palmeira que cabe dentro de casa.", preco: 180, img: IMG("palmeira-fenix") },
   { id: "aveloz-palito-fogo", nome: "Aveloz Palito de Fogo", especie: "Euphorbia tirucalli 'Rosea'", categoria: "arlivre", ambiente: "externo", pet: "toxic",
     descricao: "Hastes cilíndricas sem folha, que passam de verde a laranja e coral conforme pegam sol. Escultura viva, e das que menos pedem água.", preco: 230, img: IMG("aveloz-palito-fogo") },
 
