@@ -136,7 +136,7 @@ const PRODUCTS = [
   { id: "samambaia-estrela-azul", nome: "Samambaia Estrela Azul", especie: "Phlebodium aureum 'Blue Star'", categoria: "dentro", ambiente: "ambos", pet: "safe",
     descricao: "Frondes largas em tom verde-azulado, bem diferentes da samambaia comum. Adora umidade e luz filtrada.", preco: 245 },
   { id: "singonio-estrelado", nome: "Singônio Estrelado", especie: "Syngonium podophyllum", categoria: "dentro", ambiente: "interno", pet: "toxic",
-    descricao: "Folhas recortadas em ponta de estrela, que mudam de forma conforme a planta cresce. Compacto e cheio.", preco: 190 },
+    descricao: "Folhas recortadas em ponta de estrela, que mudam de forma conforme a planta cresce. Compacto e cheio.", preco: 245 },
   { id: "waxflower", nome: "Waxflower", especie: "Hoya carnosa", categoria: "dentro", ambiente: "ambos", pet: "safe",
     descricao: "A flor de cera: folhas firmes e florzinhas em umbela, perfumadas, com aspecto de porcelana. Pendente e longeva.", preco: 210 },
   { id: "costela-adao-constellation", nome: "Costela de Adão Constellation", especie: "Monstera deliciosa 'Thai Constellation'", categoria: "ambos", ambiente: "ambos", pet: "toxic",
