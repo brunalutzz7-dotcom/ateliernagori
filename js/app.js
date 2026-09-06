@@ -199,6 +199,8 @@
   let modalProductId = null;
   let modalGallery = [];
   let modalGalIdx = 0;
+  let modalVarLabels = [];
+  let modalPaired = false; // true quando cada variedade tem a sua foto (variantes ↔ imgs)
 
   function showGalImage(i) {
     const n = modalGallery.length;
@@ -208,6 +210,13 @@
     if (img) img.src = modalGallery[modalGalIdx];
     if ($("#galIdx")) $("#galIdx").textContent = modalGalIdx + 1;
     $$(".mthumb").forEach((b, j) => b.classList.toggle("active", j === modalGalIdx));
+    if (modalPaired) {
+      modalVariant = modalVarLabels[modalGalIdx];
+      $$(".vbtn").forEach((b) => b.classList.toggle("active", b.dataset.v === modalVariant));
+      const cap = $("#galCaption"); if (cap) cap.textContent = modalVariant;
+      const pr = $("#modalPrice"), pp = product(modalProductId);
+      if (pr && pp) pr.textContent = BRL(precoDaVariante(pp, modalVariant));
+    }
   }
 
   function openModal(id) {
@@ -236,10 +245,13 @@
     const gal = fotos(p);
     modalGallery = gal;
     modalGalIdx = 0;
+    modalVarLabels = temVariantes(p) ? p.variantes.map((v) => v.label) : [];
+    modalPaired = modalVarLabels.length > 0 && modalVarLabels.length === gal.length;
     const multi = gal.length > 1;
     const galeriaHTML = gal.length
       ? `<div class="modal-gallery">
            <img id="modalMainImg" src="${gal[0]}" alt="${p.nome}">
+           ${modalPaired ? `<span class="gal-caption" id="galCaption">${modalVarLabels[0]}</span>` : ""}
            ${multi ? `
              <button class="gal-nav gal-prev" data-gal="-1" aria-label="Foto anterior">‹</button>
              <button class="gal-nav gal-next" data-gal="1" aria-label="Próxima foto">›</button>
@@ -797,6 +809,10 @@
   }
   function selectVariant(btn) {
     const p = product(modalProductId);
+    if (modalPaired) {
+      const idx = modalVarLabels.indexOf(btn.dataset.v);
+      if (idx >= 0) { showGalImage(idx); return; } // move a galeria p/ a foto da variedade
+    }
     modalVariant = btn.dataset.v;
     $$(".vbtn").forEach((b) => b.classList.remove("active"));
     btn.classList.add("active");
