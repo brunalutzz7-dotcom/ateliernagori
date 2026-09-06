@@ -120,7 +120,7 @@ const PRODUCTS = [
   { id: "avenca", nome: "Avenca", especie: "Adiantum sp.", categoria: "dentro", ambiente: "interno", pet: "safe",
     descricao: "Frondes delicadas de folíolos miúdos, verde vivo. Adora umidade — ótima em banheiro claro ou pertinho de outras plantas.", preco: 180, img: IMG("avenca") },
   { id: "mini-arvore-felicidade", nome: "Mini Árvore da Felicidade", especie: "Polyscias sp. · mini", categoria: "dentro", ambiente: "interno", pet: "toxic",
-    descricao: "A árvore da felicidade em versão de mesa. Tronco lenhoso e folhagem recortada — dizem que atrai boas energias, e é por isso que sai tanto como presente.", preco: 230, img: IMG("mini-arvore-felicidade") },
+    descricao: "A árvore da felicidade em versão de mesa. Tronco lenhoso e folhagem recortada — dizem que atrai boas energias, e é por isso que sai tanto como presente.", preco: 260, img: IMG("mini-arvore-felicidade") },
   { id: "mini-jiboia", nome: "Mini Jiboia", especie: "Epipremnum aureum · mini", categoria: "dentro", ambiente: "ambos", pet: "toxic",
     descricao: "A jiboia em versão pequena, de folhas coração. Resistente e fácil de cuidar — cresce em cascata conforme se acostuma com o cantinho. Disponível em variações de cor (neon, marmorizada, jade e prateada); consulte a disponibilidade do momento.", preco: 110, imgs: [IMG("mini-jiboia"), IMG("mini-jiboia-2"), IMG("mini-jiboia-3"), IMG("mini-jiboia-4"), IMG("mini-jiboia-5")] },
   { id: "mini-costela-adao", nome: "Mini Costela de Adão", especie: "Monstera deliciosa · mini", categoria: "ambos", ambiente: "ambos", pet: "toxic",
