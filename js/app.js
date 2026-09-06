@@ -184,12 +184,29 @@
     </article>`;
   }
 
+  // agrupa as categorias em seções maiores para os separadores do catálogo
+  function secaoDe(cat) {
+    if (cat === "bonsai") return "Bonsais";
+    if (cat === "grande") return "Grande porte";
+    if (cat === "suporte") return "Suportes";
+    return "Folhagens"; // dentro / ambos / arlivre
+  }
   function renderGrid(cat = "todos") {
     // "Todos" mostra as plantas; os suportes aparecem na própria categoria.
     const list = cat === "todos"
       ? PRODUCTS.filter((p) => p.categoria !== "suporte")
       : PRODUCTS.filter((p) => p.categoria === cat);
-    $("#productGrid").innerHTML = list.map(cardHTML).join("");
+    if (cat === "todos") {
+      let html = "", secao = null;
+      list.forEach((p) => {
+        const s = secaoDe(p.categoria);
+        if (s !== secao) { html += `<h2 class="grid-section">${s}</h2>`; secao = s; }
+        html += cardHTML(p);
+      });
+      $("#productGrid").innerHTML = html;
+    } else {
+      $("#productGrid").innerHTML = list.map(cardHTML).join("");
+    }
   }
 
   /* =================================================================
