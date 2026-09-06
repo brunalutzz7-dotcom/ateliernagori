@@ -134,7 +134,7 @@ const PRODUCTS = [
   { id: "anturio-coracao", nome: "Antúrio Coração", especie: "Anthurium andraeanum", categoria: "dentro", ambiente: "interno", pet: "toxic",
     descricao: "Espatas em forma de coração, brilhantes e duradouras. Floresce quase o ano todo em luz indireta.", preco: 185 },
   { id: "samambaia-estrela-azul", nome: "Samambaia Estrela Azul", especie: "Phlebodium aureum 'Blue Star'", categoria: "dentro", ambiente: "ambos", pet: "safe",
-    descricao: "Frondes largas em tom verde-azulado, bem diferentes da samambaia comum. Adora umidade e luz filtrada.", preco: 180 },
+    descricao: "Frondes largas em tom verde-azulado, bem diferentes da samambaia comum. Adora umidade e luz filtrada.", preco: 245 },
   { id: "singonio-estrelado", nome: "Singônio Estrelado", especie: "Syngonium podophyllum", categoria: "dentro", ambiente: "interno", pet: "toxic",
     descricao: "Folhas recortadas em ponta de estrela, que mudam de forma conforme a planta cresce. Compacto e cheio.", preco: 190 },
   { id: "waxflower", nome: "Waxflower", especie: "Hoya carnosa", categoria: "dentro", ambiente: "ambos", pet: "safe",
