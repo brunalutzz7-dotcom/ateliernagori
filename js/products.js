@@ -91,12 +91,8 @@ const PRODUCTS = [
     descricao: "A variegada mais desejada: folhas grandes salpicadas de creme, cada uma um desenho único. Peça de colecionador.", preco: 650 },
   { id: "pau-dagua-60", nome: "Pau d'Água · 60 cm", peso: 3, especie: "Dracaena fragrans", categoria: "dentro", ambiente: "interno", pet: "toxic",
     descricao: "A mesma folha listrada da grande, em escala de mesa e estante. Aceita canto pouco iluminado e esquecimento de rega.", preco: 210, img: IMG("pau-dagua-60") },
-  { id: "ficus-lyrata", nome: "Fícus Lyrata", peso: 3, especie: "Ficus lyrata", categoria: "dentro", ambiente: "interno", pet: "toxic",
-    descricao: "Folha grande em forma de lira, nervura marcada. Escolhe um lugar e não gosta de ser mudada dele.", preco: 250, img: IMG("ficus-lyrata") },
-  { id: "ficus-tineke", nome: "Fícus Tineke", peso: 3, especie: "Ficus elastica 'Tineke'", categoria: "dentro", ambiente: "interno", pet: "toxic",
-    descricao: "Folha grossa mesclada em creme e verde, nervura central rosada. Cada folha abre com um desenho diferente da anterior.", preco: 250, img: IMG("ficus-tineke") },
-  { id: "ficus-ruby", nome: "Fícus Ruby", peso: 3, especie: "Ficus elastica 'Ruby'", categoria: "dentro", ambiente: "interno", pet: "toxic",
-    descricao: "Variegação em rosa vivo sobre verde escuro, mais intensa nas folhas novas. Quanto mais luz recebe, mais forte fica o rosa.", preco: 250, img: IMG("ficus-ruby") },
+  { id: "ficus", nome: "Fícus", peso: 3, especie: "Ficus sp.", categoria: "dentro", ambiente: "interno", pet: "toxic",
+    descricao: "Fícus nas suas variedades mais bonitas — da folha-de-lira (Lyrata) às borrachas variegadas Tineke e Ruby. Escolha a variedade abaixo (sujeito à disponibilidade do momento).", variantes: [{ label: "Lyrata", preco: 250 }, { label: "Tineke", preco: 250 }, { label: "Ruby", preco: 250 }], imgs: [IMG("ficus-lyrata"), IMG("ficus-tineke"), IMG("ficus-ruby")] },
 
   /* ---------- 01b · FOLHAGENS NOVAS (foto em breve) ---------- */
   { id: "jiboia-suspensa", nome: "Jiboia Suspensa", especie: "Epipremnum aureum · pendente", categoria: "dentro", ambiente: "interno", pet: "toxic",
