@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pedido recebido — Atelier Nagori</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css?v=129" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='62' r='30' fill='%236b5a3e'/><path d='M50 40 Q40 10 50 2 Q60 10 50 40' fill='%234e7c4a'/></svg>" />
+  <style>
+    .ty-wrap { min-height: 100vh; display: grid; place-items: center; padding: 2rem 1.2rem; text-align: center; }
+    .ty-card { max-width: 540px; }
+    .ty-mark { font-size: 3rem; color: var(--moss, #3c6b34); }
+    .ty-card h1 { font-family: "Cormorant Garamond", Georgia, serif; font-size: 2.4rem; margin: .4rem 0 .2rem; color: var(--ink, #2c2c26); }
+    .ty-card .eyebrow { letter-spacing: .18em; text-transform: uppercase; font-size: .72rem; color: var(--moss-deep, #33472e); }
+    .ty-card p { color: var(--ink-soft, #6b6455); line-height: 1.6; margin: .8rem 0; }
+    .ty-actions { display: flex; gap: .8rem; justify-content: center; flex-wrap: wrap; margin-top: 1.6rem; }
+    .ty-actions .btn { text-decoration: none; }
+  </style>
+</head>
+<body>
+  <main class="ty-wrap">
+    <div class="ty-card">
+      <div class="ty-mark" aria-hidden="true">✿</div>
+      <p class="eyebrow">Atelier Nagori</p>
+      <h1>Pedido recebido!</h1>
+      <p>Muito obrigada pela sua compra. 🌿 Já recebemos o seu pedido e em breve entramos em contato para combinar os detalhes da entrega.</p>
+      <p>Qualquer dúvida, fale com a gente no WhatsApp — vai ser um prazer te ajudar.</p>
+      <div class="ty-actions">
+        <a class="btn btn-primary" href="index.html">Voltar à loja</a>
+        <a class="btn btn-ghost" href="https://wa.me/5541987074284?text=Ol%C3%A1!%20Acabei%20de%20fazer%20um%20pedido%20no%20site%20%F0%9F%8C%BF" target="_blank" rel="noopener">Falar no WhatsApp</a>
+      </div>
+    </div>
+  </main>
+  <script>
+    // pedido concluído — limpa o carrinho
+    try { localStorage.removeItem("nagori_cart_v5"); } catch (e) {}
+  </script>
+</body>
+</html>

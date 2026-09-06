@@ -570,7 +570,9 @@
 
     const items = buildOrderItems();
     const nsu = "NAGORI" + Date.now();
-    const redirect = encodeURIComponent(window.location.origin + window.location.pathname);
+    // volta para a página de agradecimento (usada também na conversão do Google Ads)
+    const base = window.location.href.replace(/[^/]*$/, "");
+    const redirect = encodeURIComponent(base + "obrigado.html");
     const url = `https://checkout.infinitepay.io/${encodeURIComponent(handle)}` +
       `?items=${encodeURIComponent(JSON.stringify(items))}&order_nsu=${nsu}&redirect_url=${redirect}`;
     window.location.href = url;
