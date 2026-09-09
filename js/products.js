@@ -74,7 +74,7 @@ const PRODUCTS = [
   { id: "jiboia-suspensa", nome: "Jiboia Suspensa", especie: "Epipremnum aureum · pendente", categoria: "dentro", ambiente: "interno", pet: "toxic",
     descricao: "Folhas em coração, variegadas de verde e creme, que caem livres da esfera. Perfeita para prateleira alta ou suporte de gancho." , preco: 250, img: IMG("jiboia-suspensa") },
   { id: "hera-estrelada", nome: "Hera Estrelada", especie: "Hedera helix", categoria: "ambos", ambiente: "ambos", pet: "toxic",
-    descricao: "Folhas recortadas em estrela que descem em cascata. Linda em suporte alto ou pendente, deixando as pontas caírem.", preco: 160 },
+    descricao: "Folhas recortadas em estrela que descem em cascata. Linda em suporte alto ou pendente, deixando as pontas caírem.", preco: 160, img: IMG("hera-estrelada") },
   { id: "monstera-adansonii", nome: "Monstera Adansonii", especie: "Monstera adansonii", categoria: "dentro", ambiente: "interno", pet: "toxic",
     descricao: "Folha vazada de furos irregulares. Trepa ou pende, conforme você deixar.", preco: 175, img: IMG("monstera-adansonii") },
   { id: "costela-adao", nome: "Costela de Adão", peso: 3, especie: "Monstera deliciosa", categoria: "ambos", ambiente: "ambos", pet: "toxic",
