@@ -284,7 +284,16 @@ async function carregar(){
   }
   // ordena os produtos na mesma ordem do site (definida em SEED_PRODUTOS)
   ordenaProdutos();
-  // preenche custos que já levantamos (só onde ainda está vazio)
+  // custo = soma do detalhamento (planta+musgo+mão de obra+adubo, ou material).
+  // Mantém o custo gravado igual às partes, pra as vendas usarem o valor certo.
+  const somaDetalhe = (id)=>{ const d=CUSTOS_DETALHE[id]; if(!d) return null;
+    return d.material!=null ? Number(d.material) : Number(d.planta||0)+Number(d.insumo||0)+Number(d.mao||0)+Number(d.adubo||0); };
+  const ajustar = PRODUTOS.filter(p=>{ const s=somaDetalhe(p.id); return s!=null && Number(p.custo)!==s; });
+  if(ajustar.length){
+    ajustar.forEach(p=>{ p.custo = somaDetalhe(p.id); });
+    await Promise.all(ajustar.map(p=>sb.from("produtos").update({custo:p.custo}).eq("id",p.id)));
+  }
+  // produtos sem detalhamento: preenche pelo total conhecido, só onde está vazio
   const faltando = PRODUTOS.filter(p=>p.custo==null && CUSTOS_TOTAIS[p.id]!=null);
   if(faltando.length){
     faltando.forEach(p=>{ p.custo = CUSTOS_TOTAIS[p.id]; });
@@ -519,22 +528,23 @@ function renderCustos(){
   const q=(document.getElementById("buscaCusto").value||"").toLowerCase();
   const lista=PRODUTOS.filter(p=>p.nome.toLowerCase().includes(q));
   document.getElementById("listaCustos").innerHTML = lista.map(p=>{
-    const preco=Number(p.preco||0), custo=(p.custo!=null)?Number(p.custo):null;
+    const preco=Number(p.preco||0);
+    const d=CUSTOS_DETALHE[p.id];
+    // quando temos o detalhamento, o custo é a soma das partes (fonte da verdade)
+    let somaDet=null, breakdown="";
+    if(d){
+      if(d.material!=null){
+        somaDet=Number(d.material);
+        breakdown=`<div class="small muted" style="margin-top:3px">material ${BRL(d.material)}</div>`;
+      }else{
+        somaDet=Number(d.planta||0)+Number(d.insumo||0)+Number(d.mao||0)+Number(d.adubo||0);
+        breakdown=`<div class="small muted" style="margin-top:3px">🌱 planta ${BRL(d.planta)} · 🧵 musgo ${BRL(d.insumo)} · ✋ mão de obra ${BRL(d.mao)} · 🌿 adubo ${BRL(d.adubo)}</div>`;
+      }
+    }
+    const custo = (somaDet!=null) ? somaDet : (p.custo!=null?Number(p.custo):null);
     const margR=(custo!=null)?preco-custo:null;
     const margP=(custo!=null && preco>0)?margR/preco:null;
     const pctTxt=(margP!=null)?(margP*100).toFixed(0)+"%":"—";
-    const d=CUSTOS_DETALHE[p.id];
-    let breakdown="";
-    if(d && custo!=null){
-      const soma = d.material!=null ? d.material : (Number(d.planta||0)+Number(d.insumo||0)+Number(d.mao||0)+Number(d.adubo||0));
-      if(Math.abs(soma-custo)<0.02){ // só mostra o detalhamento quando bate com o custo atual
-        if(d.material!=null){
-          breakdown=`<div class="small muted" style="margin-top:2px">material ${BRL(d.material)}</div>`;
-        }else{
-          breakdown=`<div class="small muted" style="margin-top:2px">planta ${BRL(d.planta)} · musgo ${BRL(d.insumo)} · mão de obra ${BRL(d.mao)} · adubo ${BRL(d.adubo)}</div>`;
-        }
-      }
-    }
     return `<div class="item">
       <div style="flex:1">
         <div>${p.nome}</div>
