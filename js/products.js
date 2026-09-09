@@ -74,7 +74,7 @@ const PRODUCTS = [
   { id: "jiboia-suspensa", nome: "Jiboia Suspensa", especie: "Epipremnum aureum · pendente", categoria: "dentro", ambiente: "interno", pet: "toxic",
     descricao: "Folhas em coração, variegadas de verde e creme, que caem livres da esfera. Perfeita para prateleira alta ou suporte de gancho." , preco: 250, img: IMG("jiboia-suspensa") },
   { id: "hera-estrelada", nome: "Hera Estrelada", especie: "Hedera helix", categoria: "ambos", ambiente: "ambos", pet: "toxic",
-    descricao: "Folhas recortadas em estrela que descem em cascata. Linda em suporte alto ou pendente, deixando as pontas caírem.", preco: 165, img: IMG("hera-estrelada") },
+    descricao: "Folhas recortadas em estrela que descem em cascata. Linda em suporte alto ou pendente, deixando as pontas caírem.", preco: 175, img: IMG("hera-estrelada") },
   { id: "monstera-adansonii", nome: "Monstera Adansonii", especie: "Monstera adansonii", categoria: "dentro", ambiente: "interno", pet: "toxic",
     descricao: "Folha vazada de furos irregulares. Trepa ou pende, conforme você deixar.", preco: 175, img: IMG("monstera-adansonii") },
   { id: "costela-adao", nome: "Costela de Adão", peso: 3, especie: "Monstera deliciosa", categoria: "ambos", ambiente: "ambos", pet: "toxic",
@@ -89,6 +89,8 @@ const PRODUCTS = [
     descricao: "Folha inteira e grossa sobre pecíolo inflado. Forma limpa, quase escultórica.", preco: 250, img: IMG("pacova") },
   { id: "pachira-aquatica", nome: "Pachira Aquática", peso: 3, especie: "Pachira aquatica · árvore do dinheiro", categoria: "ambos", ambiente: "ambos", pet: "safe",
     descricao: "Tronco trançado à mão e folhas em leque no topo. Conhecida como árvore do dinheiro — dizem que atrai prosperidade, e é por isso que sai tanto como presente.", preco: 165, img: IMG("pachira-aquatica") },
+  { id: "mini-arvore-felicidade", nome: "Árvore da Felicidade", especie: "Polyscias sp.", categoria: "dentro", ambiente: "interno", pet: "toxic",
+    descricao: "Árvore da felicidade em tamanho médio. Tronco lenhoso e folhagem recortada — dizem que atrai boas energias, e é por isso que sai tanto como presente.", preco: 260, img: IMG("mini-arvore-felicidade") },
   { id: "ficus", nome: "Fícus", peso: 3, especie: "Ficus sp.", categoria: "dentro", ambiente: "interno", pet: "toxic",
     descricao: "Fícus nas suas variedades mais bonitas — da folha-de-lira (Lyrata) às borrachas variegadas Tineke e Ruby. Escolha a variedade abaixo (sujeito à disponibilidade do momento).", variantes: [{ label: "Lyrata", preco: 250 }, { label: "Tineke", preco: 250 }, { label: "Ruby", preco: 250 }], imgs: [IMG("ficus-lyrata"), IMG("ficus-tineke"), IMG("ficus-ruby")] },
 
@@ -131,8 +133,6 @@ const PRODUCTS = [
     descricao: "A costela de Adão em tamanho de mesa, com os recortes que todo mundo ama já começando a aparecer.", preco: 160, img: IMG("mini-costela-adao") },
   { id: "aspargo-alfinete", nome: "Mini Aspargo Alfinete", especie: "Asparagus densiflorus 'Sprengeri'", categoria: "dentro", ambiente: "ambos", pet: "toxic",
     descricao: "Hastes arqueadas cobertas de folículos finos como agulhas, verde vivo. Mais volumoso e rústico que o melindre.", preco: 70, img: IMG("aspargo-alfinete") },
-  { id: "mini-arvore-felicidade", nome: "Mini Árvore da Felicidade", especie: "Polyscias sp. · mini", categoria: "dentro", ambiente: "interno", pet: "toxic",
-    descricao: "A árvore da felicidade em versão de mesa. Tronco lenhoso e folhagem recortada — dizem que atrai boas energias, e é por isso que sai tanto como presente.", preco: 260, img: IMG("mini-arvore-felicidade") },
   /* ---------- 04 · BONSAIS ---------- */
   { id: "bonsai-ligustro-15", nome: "Bonsai Ligustro · 15 anos", especie: "Ligustrum sinense · aprox. 50 cm", categoria: "bonsai", ambiente: "ambos", pet: "toxic",
     descricao: "Folhagem miúda e densa, tronco que engrossa rápido. Perdoa erro de rega — o bonsai mais generoso para quem está começando.", preco: 900, imgs: [IMG("bonsai-ligustro-15-2"), IMG("bonsai-ligustro-15")] },
