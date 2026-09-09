@@ -108,7 +108,7 @@ const PRODUCTS = [
   { id: "samambaia-estrela-azul", nome: "Samambaia Estrela Azul", especie: "Phlebodium aureum 'Blue Star'", categoria: "dentro", ambiente: "ambos", pet: "safe",
     descricao: "Frondes largas em tom verde-azulado, bem diferentes da samambaia comum. Adora umidade e luz filtrada.", preco: 245 },
   { id: "jade", nome: "Jade", especie: "Crassula ovata", categoria: "ambos", ambiente: "ambos", pet: "toxic",
-    descricao: "Suculenta de folhas gordinhas e brilhantes. Símbolo de prosperidade, quase não pede água — só bastante luz.", preco: 150 },
+    descricao: "Suculenta de folhas gordinhas e brilhantes. Símbolo de prosperidade, quase não pede água — só bastante luz.", preco: 150, img: IMG("jade") },
   { id: "croton", nome: "Croton", especie: "Codiaeum variegatum", categoria: "ambos", ambiente: "ambos", pet: "toxic",
     descricao: "Folha coriácea listrada de verde, amarelo e vermelho, que ganha cor quanto mais luz recebe. Nenhuma folha repete a mistura da outra.", preco: 165, img: IMG("croton") },
   { id: "nandina", nome: "Nandina", especie: "Nandina domestica", categoria: "ambos", ambiente: "ambos", pet: "toxic",
