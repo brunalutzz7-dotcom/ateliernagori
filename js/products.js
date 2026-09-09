@@ -70,7 +70,7 @@ const PRODUCTS = [
   { id: "philodendro-pink", nome: "Philodendro Pink", especie: "Philodendron erubescens 'Pink Princess'", categoria: "dentro", ambiente: "interno", pet: "toxic",
     descricao: "Folhas escuras com respingos rosa, cada uma com um desenho único. Quanto mais luz filtrada, mais o rosa aparece — uma das mais desejadas.", preco: 250, img: IMG("philodendro-pink") },
   { id: "jiboia-suspensa", nome: "Jiboia Suspensa", especie: "Epipremnum aureum · pendente", categoria: "dentro", ambiente: "interno", pet: "toxic",
-    descricao: "Folhas em coração, variegadas de verde e creme, que caem livres da esfera. Perfeita para prateleira alta ou suporte de gancho." , preco: 230 },
+    descricao: "Folhas em coração, variegadas de verde e creme, que caem livres da esfera. Perfeita para prateleira alta ou suporte de gancho." , preco: 250, img: IMG("jiboia-suspensa") },
   { id: "hera-estrelada", nome: "Hera Estrelada", especie: "Hedera helix", categoria: "ambos", ambiente: "ambos", pet: "toxic",
     descricao: "Folhas recortadas em estrela que descem em cascata. Linda em suporte alto ou pendente, deixando as pontas caírem.", preco: 160 },
   { id: "monstera-adansonii", nome: "Monstera Adansonii", especie: "Monstera adansonii", categoria: "dentro", ambiente: "interno", pet: "toxic",
