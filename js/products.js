@@ -108,7 +108,7 @@ const PRODUCTS = [
   { id: "avenca", nome: "Avenca", especie: "Adiantum sp.", categoria: "dentro", ambiente: "interno", pet: "safe",
     descricao: "Frondes delicadas de folíolos miúdos, verde vivo. Adora umidade — ótima em banheiro claro ou pertinho de outras plantas.", preco: 180, img: IMG("avenca") },
   { id: "samambaia-estrela-azul", nome: "Samambaia Estrela Azul", especie: "Phlebodium aureum 'Blue Star'", categoria: "dentro", ambiente: "ambos", pet: "safe",
-    descricao: "Frondes largas em tom verde-azulado, bem diferentes da samambaia comum. Adora umidade e luz filtrada.", preco: 245 },
+    descricao: "Frondes largas em tom verde-azulado, bem diferentes da samambaia comum. Adora umidade e luz filtrada.", preco: 250, img: IMG("samambaia-estrela-azul") },
   { id: "jade", nome: "Jade", especie: "Crassula ovata", categoria: "ambos", ambiente: "ambos", pet: "toxic",
     descricao: "Suculenta de folhas gordinhas e brilhantes. Símbolo de prosperidade, quase não pede água — só bastante luz.", preco: 150, img: IMG("jade") },
   { id: "croton", nome: "Croton", especie: "Codiaeum variegatum", categoria: "ambos", ambiente: "ambos", pet: "toxic",
