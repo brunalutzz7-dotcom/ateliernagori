@@ -51,8 +51,8 @@ const CATEGORIAS = [
 
 const PRODUCTS = [
   /* ---------- 01 · FOLHAGENS ---------- */
-  { id: "arranjo-orquidea", nome: "Arranjo de Orquídea", peso: 3, especie: "Phalaenopsis com folhagens · composição única · também chamado tamandama", categoria: "dentro", ambiente: "interno", pet: "safe",
-    descricao: "Orquídea combinada com folhagens sobre a mesma esfera. A raiz da orquídea e o musgo se entendem naturalmente, e cada arranjo é montado de forma única.", preco: 189, imgs: [IMG("arranjo-orquidea"), IMG("arranjo-orquidea-2")] },
+  { id: "arranjo-orquidea", nome: "Tamandama Orquídea", peso: 3, especie: "Phalaenopsis com folhagens · composição única", categoria: "dentro", ambiente: "interno", pet: "safe",
+    descricao: "Orquídea combinada com folhagens sobre a mesma esfera. A raiz da orquídea e o musgo se entendem naturalmente, e cada arranjo é montado de forma única.", preco: 450, imgs: [IMG("arranjo-orquidea"), IMG("arranjo-orquidea-2")] },
   { id: "aglaonema", nome: "Aglaonema", especie: "Aglaonema sp.", categoria: "dentro", ambiente: "interno", pet: "toxic",
     descricao: "Folhagem de cores vivas o ano todo, sem depender de flor — do vermelho ao rosa, branco e tricolor. Escolha a variedade abaixo (sujeito à disponibilidade do momento).", variantes: [{ label: "Vermelha", preco: 230 }, { label: "Rosa", preco: 230 }, { label: "Lima", preco: 230 }, { label: "Branca", preco: 230 }, { label: "Tricolor", preco: 230 }, { label: "Cherry", preco: 230 }], imgs: [IMG("aglaonema-vermelha"), IMG("aglaonema-branca-rosada"), IMG("aglaonema-rosa"), IMG("aglaonema-branca"), IMG("aglaonema-tricolor"), IMG("aglaonema-cherry")] },
   { id: "maranta-pavao", nome: "Maranta Pavão", especie: "Calathea makoyana", categoria: "dentro", ambiente: "interno", pet: "safe",
