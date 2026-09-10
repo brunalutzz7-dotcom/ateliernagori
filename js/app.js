@@ -23,6 +23,14 @@
   const fotos = (p) => (p.imgs && p.imgs.length ? p.imgs : p.img ? [p.img] : []);
   const capa = (p) => fotos(p)[0] || null;
   const media = (p) => (capa(p) ? `<img src="${capa(p)}" alt="${p.nome}" loading="lazy">` : fotoEmBreve());
+  // Fallback global: qualquer foto que não carregar (arquivo ainda não enviado) vira o placeholder "foto em breve".
+  const FOTO_PH = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' letter-spacing='2' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E";
+  document.addEventListener("error", (e) => {
+    const t = e.target;
+    if (t && t.tagName === "IMG" && !t.dataset.phSet && t.src.indexOf("data:") !== 0) {
+      t.dataset.phSet = "1"; t.src = FOTO_PH;
+    }
+  }, true);
   const temVariantes = (p) => Array.isArray(p.variantes) && p.variantes.length > 0;
   const menorPreco = (p) => (temVariantes(p) ? Math.min(...p.variantes.map((v) => v.preco)) : p.preco);
   const precoDaVariante = (p, label) => {

@@ -92,7 +92,7 @@ const PRODUCTS = [
   { id: "mini-arvore-felicidade", nome: "Árvore da Felicidade", especie: "Polyscias sp.", categoria: "dentro", ambiente: "interno", pet: "toxic",
     descricao: "Árvore da felicidade em tamanho médio. Tronco lenhoso e folhagem recortada — dizem que atrai boas energias, e é por isso que sai tanto como presente.", preco: 260, img: IMG("mini-arvore-felicidade") },
   { id: "ficus", nome: "Fícus", peso: 3, especie: "Ficus sp.", categoria: "dentro", ambiente: "interno", pet: "toxic",
-    descricao: "Fícus nas suas variedades mais bonitas — da folha-de-lira (Lyrata) às borrachas variegadas Tineke e Ruby. Escolha a variedade abaixo (sujeito à disponibilidade do momento).", variantes: [{ label: "Lyrata", preco: 350 }, { label: "Tineke", preco: 350 }, { label: "Ruby", preco: 350 }], imgs: [IMG("ficus-lyrata"), IMG("ficus-tineke"), IMG("ficus-ruby")] },
+    descricao: "Fícus nas suas variedades mais bonitas — da folha-de-lira (Lyrata) às borrachas variegadas Burgundy, Shivereana, Tineke e Ruby. Escolha a variedade abaixo (sujeito à disponibilidade do momento).", variantes: [{ label: "Lyrata", preco: 350 }, { label: "Elástica Burgundy", preco: 350 }, { label: "Elástica Shivereana", preco: 350 }, { label: "Elástica Tineke", preco: 350 }, { label: "Elástica Ruby", preco: 350 }], imgs: [IMG("ficus-lyrata"), IMG("ficus-burgundy"), IMG("ficus-shivereana"), IMG("ficus-tineke"), IMG("ficus-ruby")] },
 
   /* ---------- 01b · FOLHAGENS NOVAS (foto em breve) ---------- */
   { id: "asplenio", nome: "Asplênio", peso: 3, especie: "Asplenium nidus", categoria: "dentro", ambiente: "interno", pet: "safe",
