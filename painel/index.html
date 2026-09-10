@@ -38,6 +38,7 @@
   .kpi .v{font-size:1.35rem;font-weight:700;color:var(--moss-deep)}
   .kpi .l{font-size:.75rem;color:var(--muted)}
   .item{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:10px 0;border-top:1px solid var(--line)}
+  .thumb{width:42px;height:42px;border-radius:9px;object-fit:cover;flex:none;background:#ece7da;border:1px solid var(--line)}
   .item:first-child{border-top:none}
   .pill{font-size:.68rem;padding:2px 7px;border-radius:20px;background:var(--sand);color:var(--muted)}
   .pill.site{background:#e4efdc;color:var(--moss)}
@@ -478,11 +479,16 @@ async function excluirVenda(id){
 }
 
 // ---------- ESTOQUE ----------
+// Miniatura da peça (foto do site). Peças sem foto caem no placeholder de folha.
+const THUMB_PH="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 42 42'%3E%3Crect width='42' height='42' fill='%23ece7da'/%3E%3Cpath d='M21 9c6.5 4.2 8.5 12.5 0 25-8.5-12.5-6.5-20.8 0-25z' fill='%239bad86'/%3E%3Cpath d='M21 12v20' stroke='%237c8e68' stroke-width='1.4'/%3E%3C/svg%3E";
+function fotoDe(id){ return (id&&id.indexOf('suporte-')===0) ? '../assets/bases/'+id.slice(8)+'.jpg' : '../assets/produtos/'+id+'.jpg'; }
+function thumb(p){ return `<img class="thumb" loading="lazy" src="${fotoDe(p.id)}" alt="" onerror="this.onerror=null;this.src=THUMB_PH">`; }
 function renderProdutos(){
   const q=(el("buscaProd").value||"").toLowerCase();
   const lista=PRODUTOS.filter(p=>p.nome.toLowerCase().includes(q));
   el("listaProdutos").innerHTML = lista.map(p=>`
     <div class="item">
+      ${thumb(p)}
       <div style="flex:1">
         <div>${p.nome}</div>
         <div class="small muted">${p.categoria||""} · venda ${BRL(p.preco)} · custo
@@ -586,6 +592,7 @@ function renderCustos(){
     const margP=(custo!=null && preco>0)?margR/preco:null;
     const pctTxt=(margP!=null)?(margP*100).toFixed(0)+"%":"—";
     return `<div class="item">
+      ${thumb(p)}
       <div style="flex:1">
         <div>${p.nome}</div>
         <div class="small muted">
