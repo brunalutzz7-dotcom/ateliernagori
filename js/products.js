@@ -63,7 +63,7 @@ const PRODUCTS = [
     descricao: "A Triostar em tamanho cheio: folhas longas pintadas de verde, creme e rosa, com o verso magenta vibrante. Uma folhagem de presença, das mais desejadas.", preco: 225, img: IMG("maranta-triostar-grande") },
   { id: "maranta-cascavel-grande", nome: "Maranta Cascavel", especie: "Goeppertia lancifolia", categoria: "dentro", ambiente: "interno", pet: "safe",
     descricao: "Folhas longas e onduladas com o desenho de manchas escuras que lembra pele de cobra, e o verso vinho. Tamanho cheio, cheia de folhas — uma das marantas mais marcantes.", preco: 225, img: IMG("maranta-cascavel-grande") },
-  { id: "singonio", nome: "Singônio", especie: "Syngonium podophyllum", categoria: "dentro", ambiente: "interno", pet: "toxic",
+  { id: "singonio", nome: "Singônio Rosa", especie: "Syngonium podophyllum", categoria: "dentro", ambiente: "interno", pet: "toxic",
     descricao: "Folha em ponta de flecha que muda de forma conforme a planta amadurece.", preco: 200, img: IMG("singonio") },
   { id: "singonio-estrelado", nome: "Singônio Estrelado", especie: "Syngonium podophyllum", categoria: "dentro", ambiente: "interno", pet: "toxic",
     descricao: "Folhas recortadas em ponta de estrela, que mudam de forma conforme a planta cresce. Compacto e cheio.", preco: 245 },
