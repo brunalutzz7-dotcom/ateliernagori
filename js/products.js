@@ -210,8 +210,6 @@ const PRODUCTS = [
     descricao: "Aro de ferro preto sobre haste, em base de madeira. Levanta a esfera do móvel e deixa o musgo respirar por baixo.", preco: 60, imgs: ["assets/bases/madeira-aro.jpg", "assets/bases/madeira-aro-uso.jpg"] },
   { id: "suporte-madeira-lisa", nome: "Madeira lisa", especie: "Suporte · madeira · 15 × 15 cm", categoria: "suporte", suporte: true,
     descricao: "Bloco de madeira com encaixe côncavo. A esfera assenta direto, sem haste — o apoio mais discreto de todos.", preco: 50, imgs: ["assets/bases/madeira-lisa.jpg", "assets/bases/madeira-lisa-uso.jpg"] },
-  { id: "suporte-cumbuquinha", nome: "Cumbuquinha", especie: "Suporte · bambu", categoria: "suporte", suporte: true,
-    descricao: "Cumbuca de bambu torneado, com os veios naturais à mostra. A esfera assenta dentro dela — o apoio mais quentinho e orgânico da linha, perfeito para as kokedamas menores.", preco: 49, imgs: ["assets/bases/cumbuquinha.jpg", "assets/bases/cumbuquinha-uso.jpg"] },
   { id: "suporte-ferro-aro-base", nome: "Ferro · aro sobre base quadrada", especie: "Suporte · ferro preto", categoria: "suporte", suporte: true,
     descricao: "Aro de ferro preto suspenso sobre base quadrada. A esfera flutua acima do apoio, com ar de escultura.", preco: 39, imgs: ["assets/bases/ferro-aro-base.jpg", "assets/bases/ferro-aro-base-uso.jpg"] },
   { id: "suporte-ferro-esfera", nome: "Ferro · esfera de arame", especie: "Suporte · ferro preto", categoria: "suporte", suporte: true,
