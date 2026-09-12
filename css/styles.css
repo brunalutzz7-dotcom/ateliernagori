@@ -213,7 +213,8 @@ h2 { font-size: clamp(1.9rem, 4vw, 2.9rem); }
 .card-body { padding: 1.1rem 1.2rem 1.3rem; display: flex; flex-direction: column; flex: 1; }
 .card-body h3 { font-size: 1.24rem; margin-bottom: .15rem; line-height: 1.15; }
 .card-especie { font-family: var(--serif); font-style: italic; font-size: .92rem; color: var(--terra-dk); margin: 0 0 .6rem; }
-.card-desc { font-size: .88rem; color: var(--ink-soft); flex: 1; margin: 0 0 .8rem; }
+.card-desc { font-size: .88rem; color: var(--ink-soft); flex: 1; margin: 0 0 .6rem; }
+.card-mean { font-size: .82rem; color: var(--moss); font-style: italic; line-height: 1.4; margin: 0 0 .8rem; }
 .card-tags { display: flex; flex-wrap: wrap; gap: .35rem; margin-bottom: 1rem; }
 .tag { font-size: .68rem; padding: .2rem .55rem; border-radius: 999px; border: 1px solid var(--line); color: var(--ink-soft); white-space: nowrap; }
 .tag-amb { background: var(--sand-lt); }
@@ -397,6 +398,8 @@ h2 { font-size: clamp(1.9rem, 4vw, 2.9rem); }
 .modal-especie { font-family: var(--serif); font-style: italic; color: var(--terra-dk); margin: 0 0 .5rem; }
 .modal-info .modal-price { font-family: var(--serif); font-size: 2rem; color: var(--moss-deep); margin: .3rem 0 .8rem; }
 .modal-desc { color: var(--ink-soft); font-size: .95rem; }
+.modal-mean { font-size: .92rem; color: var(--ink-soft); line-height: 1.5; margin: .7rem 0 0; padding: .6rem .8rem; background: rgba(92, 138, 74, .08); border-left: 3px solid var(--moss); border-radius: 6px; }
+.modal-mean span { display: block; font-size: .72rem; letter-spacing: .06em; text-transform: uppercase; color: var(--moss); font-weight: 600; margin-bottom: .2rem; }
 .modal-variants { display: flex; flex-wrap: wrap; gap: .5rem; margin: 1rem 0; }
 .vbtn { display: flex; flex-direction: column; align-items: flex-start; gap: .1rem; border: 1px solid var(--line); background: var(--sand-lt); border-radius: var(--radius-sm); padding: .5rem .9rem; cursor: pointer; transition: .18s; }
 .vbtn span { font-size: .82rem; color: var(--ink-soft); }

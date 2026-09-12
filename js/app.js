@@ -186,6 +186,7 @@
         <h3>${p.nome}</h3>
         <p class="card-especie">${p.especie}</p>
         <p class="card-desc">${p.descricao}</p>
+        ${p.significado ? `<p class="card-mean">✿ ${p.significado}</p>` : ""}
         <div class="card-tags">${chips(p)}</div>
         <div class="card-foot">${precoCard(p)}${botaoCard(p)}</div>
       </div>
@@ -299,6 +300,7 @@
           <p class="modal-especie">${p.especie}</p>
           ${precoView}
           <p class="modal-desc">${p.descricao}</p>
+          ${p.significado ? `<p class="modal-mean"><span>✿ Significado</span> ${p.significado}</p>` : ""}
           ${variantesHTML}
           <div class="modal-tags">${chips(p)}</div>
           ${p.suporte ? "" : `<p class="modal-base">A base é vendida à parte — escolha a sua na categoria <a href="#produtos" data-cat-link="suporte">Suportes</a>.</p>`}
