@@ -3,22 +3,24 @@
    Paleta natural: musgo, areia, terracota, off-white.
    ===================================================================== */
 :root {
-  --moss:      #47613f;
-  --moss-deep: #33472e;
-  --sand:      #eae3d4;
-  --sand-lt:   #f7f4ec;
-  --cream:     #fbf9f3;
-  --ink:       #2c2a24;
-  --ink-soft:  #6a6558;
-  --terra:     #b56a4a;
-  --terra-dk:  #9a5238;
-  --line:      #ded6c4;
+  /* Paleta minimalista monocromática quente (inspiração The Coffee):
+     as fotos das plantas trazem toda a cor; a interface fica neutra. */
+  --moss:      #26241d;  /* carvão quente — botões, chips ativos */
+  --moss-deep: #1a1712;  /* quase-preto — títulos, preços, rodapé, selos */
+  --sand:      #e7e3d9;
+  --sand-lt:   #f0ede5;
+  --cream:     #f6f4ee;  /* papel off-white */
+  --ink:       #1d1b16;
+  --ink-soft:  #79756b;
+  --terra:     #8c8678;  /* taupe neutro (antes terracota) */
+  --terra-dk:  #6b6659;
+  --line:      #e4e1d7;
   --white:     #ffffff;
 
-  --radius:    16px;
-  --radius-sm: 10px;
-  --shadow:    0 10px 30px rgba(51, 71, 46, .10);
-  --shadow-lg: 0 20px 50px rgba(51, 71, 46, .18);
+  --radius:    6px;
+  --radius-sm: 4px;
+  --shadow:    0 1px 2px rgba(30, 28, 22, .05);
+  --shadow-lg: 0 10px 34px rgba(30, 28, 22, .10);
   --serif: "Cormorant Garamond", Georgia, serif;
   --sans:  "Inter", system-ui, -apple-system, sans-serif;
 }
@@ -105,7 +107,7 @@ h2 { font-size: clamp(1.9rem, 4vw, 2.9rem); }
 }
 
 /* ---- Hero ---- */
-.hero { background: linear-gradient(160deg, var(--sand-lt), var(--sand)); overflow: hidden; }
+.hero { background: var(--cream); overflow: hidden; border-bottom: 1px solid var(--line); }
 .hero-inner { display: grid; grid-template-columns: 1fr 1.12fr; align-items: center; gap: clamp(1.5rem, 4vw, 3.2rem); padding: clamp(3rem, 8vw, 6rem) 0; }
 .hero h1 { font-size: clamp(2.1rem, 4.4vw, 3.4rem); }
 .hero-actions { display: flex; gap: .8rem; margin-top: 1.8rem; flex-wrap: wrap; }
@@ -165,8 +167,8 @@ h2 { font-size: clamp(1.9rem, 4vw, 2.9rem); }
 
 /* ---- Grid de produtos ---- */
 .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 1.6rem; }
-.product-grid .grid-section { grid-column: 1 / -1; font-family: var(--serif, "Cormorant Garamond", Georgia, serif); font-size: 1.7rem; color: var(--moss-deep); margin: 1.8rem 0 .1rem; padding-bottom: .5rem; border-bottom: 1px solid var(--line); display: flex; align-items: center; gap: .5rem; }
-.product-grid .grid-section::before { content: "❧"; color: var(--moss); font-size: 1.1rem; }
+.product-grid .grid-section { grid-column: 1 / -1; font-family: var(--sans); font-size: .8rem; font-weight: 600; text-transform: uppercase; letter-spacing: .24em; color: var(--ink-soft); margin: 2.6rem 0 .4rem; padding-bottom: .9rem; border-bottom: 1px solid var(--line); display: flex; align-items: center; gap: .5rem; }
+.product-grid .grid-section::before { content: none; }
 .product-grid .grid-section:first-child { margin-top: 0; }
 .card {
   background: var(--white); border: 1px solid var(--line); border-radius: var(--radius);
@@ -503,3 +505,54 @@ body.splash-open { overflow: hidden; }
   .modal-gallery { flex: none; height: 56vh; max-height: 440px; }
   .splash-options { grid-template-columns: 1fr; }
 }
+
+/* =====================================================================
+   PASSAGEM MINIMALISTA (inspiração The Coffee) — refinamentos finais
+   Paleta monocromática, planos, tipografia com respiro.
+   ===================================================================== */
+body { letter-spacing: .004em; }
+.eyebrow { color: var(--ink-soft); letter-spacing: .28em; }
+.brand-mark { color: var(--ink); }
+
+/* Botões e controles: cantos discretos, hover calmo */
+.btn { border-radius: 4px; letter-spacing: .02em; }
+.btn-primary { background: var(--ink); }
+.btn-primary:hover { background: #000; transform: none; }
+.btn-ghost:hover { background: transparent; border-color: var(--ink); }
+.chip { border-radius: 4px; }
+.chip.active { background: var(--ink); border-color: var(--ink); }
+.cart-btn, .ig-btn, .nav-toggle { border-radius: 4px; background: transparent; }
+.cart-btn:hover, .ig-btn:hover { background: var(--sand-lt); }
+.ig-btn:hover { color: var(--ink); }
+.cart-count { background: var(--ink); }
+
+/* Header e hero planos */
+.site-header { background: rgba(246, 244, 238, .9); }
+.hero-carousel { border-radius: 6px; box-shadow: none; border: 1px solid var(--line); }
+
+/* Selos: barra escura discreta, texto neutro */
+.badges { background: var(--ink); }
+.badge span { color: #b7b2a5; }
+.badge strong { color: #fff; }
+
+/* Cards planos, elevação sutil */
+.card:hover, .suporte-card:hover { transform: translateY(-2px); box-shadow: 0 6px 22px rgba(30, 28, 22, .08); }
+.card-cat { background: rgba(255, 255, 255, .94); color: var(--ink); border-radius: 3px; }
+.card-flag { background: var(--ink); border-radius: 3px; }
+
+/* Selo pet: neutro (mantém só a leitura de seguro/tóxico bem discreta) */
+.pet-safe { background: var(--sand-lt); color: var(--ink); border-color: var(--line); }
+.pet-toxic { background: var(--sand-lt); color: var(--ink-soft); border-color: var(--line); }
+.sup-incl { color: var(--ink); }
+
+/* Modal minimal */
+.modal-mean { background: var(--sand-lt); border-left: 2px solid var(--ink); }
+.modal-mean span { color: var(--ink); }
+
+/* Rodapé preto quente */
+.site-footer { background: var(--ink); }
+
+/* Splash: acentos neutros no lugar dos verdes */
+.splash-mark, .splash-ico-leaf { color: #d8d3c6; }
+.splash-sub, .splash-opt small { color: #cbc6ba; }
+.splash-ico-leaf { background: rgba(255, 255, 255, .12); }
