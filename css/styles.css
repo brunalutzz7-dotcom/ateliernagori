@@ -556,3 +556,35 @@ body { letter-spacing: .004em; }
 .splash-mark, .splash-ico-leaf { color: #d8d3c6; }
 .splash-sub, .splash-opt small { color: #cbc6ba; }
 .splash-ico-leaf { background: rgba(255, 255, 255, .12); }
+
+/* =====================================================================
+   VITRINE EM FILEIRAS (carrossel por categoria na visão "Todos")
+   ===================================================================== */
+.product-grid.as-rows { display: block; }
+.cat-row { margin-bottom: 3rem; }
+.cat-row:last-child { margin-bottom: .5rem; }
+.cat-row-head { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; border-bottom: 1px solid var(--line); padding-bottom: .9rem; margin-bottom: 1.4rem; }
+.cat-row-title { font-family: var(--sans); font-size: .8rem; font-weight: 600; text-transform: uppercase; letter-spacing: .24em; color: var(--ink-soft); margin: 0; }
+.cat-row-all { font-size: .78rem; letter-spacing: .03em; color: var(--ink-soft); white-space: nowrap; transition: color .2s; }
+.cat-row-all:hover { color: var(--ink); }
+
+.carousel { position: relative; }
+.carousel-track {
+  display: flex; gap: 1.4rem; overflow-x: auto; scroll-snap-type: x proximity;
+  scroll-behavior: smooth; padding: .2rem .1rem 1rem; -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.carousel-track::-webkit-scrollbar { display: none; }
+.carousel-track > .card { flex: 0 0 clamp(210px, 46vw, 248px); scroll-snap-align: start; }
+
+.carousel-nav {
+  position: absolute; top: 33%; transform: translateY(-50%);
+  width: 42px; height: 42px; border-radius: 50%; border: 1px solid var(--line);
+  background: rgba(255,255,255,.96); color: var(--ink); cursor: pointer;
+  display: grid; place-items: center; font-size: 1.4rem; line-height: 1;
+  box-shadow: var(--shadow); z-index: 3; transition: .18s;
+}
+.carousel-nav:hover { background: #fff; box-shadow: var(--shadow-lg); }
+.carousel-prev { left: -10px; }
+.carousel-next { right: -10px; }
+@media (hover: none) { .carousel-nav { display: none; } }  /* celular: swipe */

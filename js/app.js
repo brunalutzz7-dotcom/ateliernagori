@@ -200,21 +200,35 @@
     if (cat === "suporte") return "Suportes";
     return "Folhagens"; // dentro / ambos / arlivre
   }
+  const CAROSSEL_LIMITE = 10; // quantas peças mostrar em cada fileira antes de "Ver todos"
   function renderGrid(cat = "todos") {
-    // "Todos" mostra as plantas; os suportes aparecem na própria categoria.
-    const list = cat === "todos"
-      ? PRODUCTS.filter((p) => p.categoria !== "suporte")
-      : PRODUCTS.filter((p) => p.categoria === cat);
+    const grid = $("#productGrid");
     if (cat === "todos") {
-      let html = "", secao = null;
-      list.forEach((p) => {
-        const s = secaoDe(p.categoria);
-        if (s !== secao) { html += `<h2 class="grid-section">${s}</h2>`; secao = s; }
-        html += cardHTML(p);
+      // vitrine: uma fileira horizontal (carrossel) por categoria — encurta a página
+      grid.classList.add("as-rows");
+      let html = "";
+      CATEGORIAS.forEach((c) => {
+        if (c.id === "suporte") return; // suportes só na própria aba
+        const items = PRODUCTS.filter((p) => p.categoria === c.id);
+        if (!items.length) return;
+        const shown = items.slice(0, CAROSSEL_LIMITE);
+        const verTodos = items.length > shown.length
+          ? `<a href="#produtos" class="cat-row-all" data-cat-link="${c.id}">Ver todos (${items.length}) →</a>` : "";
+        html += `<section class="cat-row">
+          <div class="cat-row-head"><h2 class="cat-row-title">${c.nome}</h2>${verTodos}</div>
+          <div class="carousel">
+            <button class="carousel-nav carousel-prev" data-caro="-1" aria-label="Ver anteriores">‹</button>
+            <div class="carousel-track">${shown.map(cardHTML).join("")}</div>
+            <button class="carousel-nav carousel-next" data-caro="1" aria-label="Ver mais">›</button>
+          </div>
+        </section>`;
       });
-      $("#productGrid").innerHTML = html;
+      grid.innerHTML = html;
     } else {
-      $("#productGrid").innerHTML = list.map(cardHTML).join("");
+      // aba de uma categoria: grade vertical completa (navegação a fundo)
+      grid.classList.remove("as-rows");
+      const list = PRODUCTS.filter((p) => p.categoria === cat);
+      grid.innerHTML = list.map(cardHTML).join("");
     }
   }
 
@@ -825,6 +839,15 @@
       const chip = $(`.chip[data-cat="${link.dataset.catLink}"]`);
       if (chip) chip.click();
       $("#produtos").scrollIntoView({ behavior: "smooth" });
+    });
+
+    // setas dos carrosséis por categoria (desktop; no celular usa o swipe)
+    document.addEventListener("click", (e) => {
+      const nav = e.target.closest(".carousel-nav");
+      if (!nav) return;
+      const track = nav.parentElement.querySelector(".carousel-track");
+      if (!track) return;
+      track.scrollBy({ left: track.clientWidth * 0.85 * Number(nav.dataset.caro), behavior: "smooth" });
     });
     $("#checkoutBtn").addEventListener("click", checkout);
     $("#waOrderBtn").addEventListener("click", whatsappOrder);
