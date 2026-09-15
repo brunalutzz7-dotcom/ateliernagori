@@ -558,33 +558,43 @@ body { letter-spacing: .004em; }
 .splash-ico-leaf { background: rgba(255, 255, 255, .12); }
 
 /* =====================================================================
-   VITRINE EM FILEIRAS (carrossel por categoria na visão "Todos")
+   CARROSSEL CENTRAL DESTACADO (visão da loja)
+   Uma peça grande em foco no centro; vizinhas espiando dos lados.
    ===================================================================== */
-.product-grid.as-rows { display: block; }
-.cat-row { margin-bottom: 3rem; }
-.cat-row:last-child { margin-bottom: .5rem; }
-.cat-row-head { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; border-bottom: 1px solid var(--line); padding-bottom: .9rem; margin-bottom: 1.4rem; }
-.cat-row-title { font-family: var(--sans); font-size: .8rem; font-weight: 600; text-transform: uppercase; letter-spacing: .24em; color: var(--ink-soft); margin: 0; }
-.cat-row-all { font-size: .78rem; letter-spacing: .03em; color: var(--ink-soft); white-space: nowrap; transition: color .2s; }
-.cat-row-all:hover { color: var(--ink); }
-
-.carousel { position: relative; }
-.carousel-track {
-  display: flex; gap: 1.4rem; overflow-x: auto; scroll-snap-type: x proximity;
-  scroll-behavior: smooth; padding: .2rem .1rem 1rem; -webkit-overflow-scrolling: touch;
-  scrollbar-width: none;
+.product-grid.as-showcase { display: block; }
+.carousel.showcase { position: relative; }
+.carousel .carousel-track {
+  display: flex; gap: 1.6rem; overflow-x: auto;
+  scroll-snap-type: x mandatory; scroll-behavior: smooth;
+  padding: .5rem calc(50% - 190px) 1.4rem;   /* respiro lateral p/ centralizar a 1ª e a última */
+  -webkit-overflow-scrolling: touch; scrollbar-width: none;
 }
-.carousel-track::-webkit-scrollbar { display: none; }
-.carousel-track > .card { flex: 0 0 clamp(210px, 46vw, 248px); scroll-snap-align: start; }
+.carousel .carousel-track::-webkit-scrollbar { display: none; }
+.carousel .carousel-track > .card {
+  flex: 0 0 clamp(280px, 78vw, 360px); scroll-snap-align: center;
+  opacity: .5; transform: scale(.93);
+  transition: opacity .35s ease, transform .35s ease;
+}
+/* a peça central fica em foco; as vizinhas recuam suavemente */
+.carousel .carousel-track > .card.is-active { opacity: 1; transform: scale(1); }
 
 .carousel-nav {
-  position: absolute; top: 33%; transform: translateY(-50%);
-  width: 42px; height: 42px; border-radius: 50%; border: 1px solid var(--line);
+  position: absolute; top: 38%; transform: translateY(-50%);
+  width: 46px; height: 46px; border-radius: 50%; border: 1px solid var(--line);
   background: rgba(255,255,255,.96); color: var(--ink); cursor: pointer;
-  display: grid; place-items: center; font-size: 1.4rem; line-height: 1;
+  display: grid; place-items: center; font-size: 1.5rem; line-height: 1;
   box-shadow: var(--shadow); z-index: 3; transition: .18s;
 }
 .carousel-nav:hover { background: #fff; box-shadow: var(--shadow-lg); }
-.carousel-prev { left: -10px; }
-.carousel-next { right: -10px; }
-@media (hover: none) { .carousel-nav { display: none; } }  /* celular: swipe */
+.carousel-prev { left: max(6px, calc(50% - 360px)); }
+.carousel-next { right: max(6px, calc(50% - 360px)); }
+.showcase-count {
+  text-align: center; font-size: .82rem; letter-spacing: .12em;
+  color: var(--ink-soft); margin-top: .3rem;
+}
+.showcase-count b { color: var(--ink); font-weight: 600; }
+@media (max-width: 860px) {
+  .carousel .carousel-track { padding: .5rem calc(50% - 150px) 1.2rem; }
+  .carousel .carousel-track > .card { flex: 0 0 82vw; }
+  .carousel-nav { display: none; }   /* celular: swipe */
+}

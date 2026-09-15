@@ -200,35 +200,36 @@
     if (cat === "suporte") return "Suportes";
     return "Folhagens"; // dentro / ambos / arlivre
   }
-  const CAROSSEL_LIMITE = 10; // quantas peças mostrar em cada fileira antes de "Ver todos"
   function renderGrid(cat = "todos") {
     const grid = $("#productGrid");
-    if (cat === "todos") {
-      // vitrine: uma fileira horizontal (carrossel) por categoria — encurta a página
-      grid.classList.add("as-rows");
-      let html = "";
-      CATEGORIAS.forEach((c) => {
-        if (c.id === "suporte") return; // suportes só na própria aba
-        const items = PRODUCTS.filter((p) => p.categoria === c.id);
-        if (!items.length) return;
-        const shown = items.slice(0, CAROSSEL_LIMITE);
-        const verTodos = items.length > shown.length
-          ? `<a href="#produtos" class="cat-row-all" data-cat-link="${c.id}">Ver todos (${items.length}) →</a>` : "";
-        html += `<section class="cat-row">
-          <div class="cat-row-head"><h2 class="cat-row-title">${c.nome}</h2>${verTodos}</div>
-          <div class="carousel">
-            <button class="carousel-nav carousel-prev" data-caro="-1" aria-label="Ver anteriores">‹</button>
-            <div class="carousel-track">${shown.map(cardHTML).join("")}</div>
-            <button class="carousel-nav carousel-next" data-caro="1" aria-label="Ver mais">›</button>
-          </div>
-        </section>`;
-      });
-      grid.innerHTML = html;
-    } else {
-      // aba de uma categoria: grade vertical completa (navegação a fundo)
-      grid.classList.remove("as-rows");
-      const list = PRODUCTS.filter((p) => p.categoria === cat);
-      grid.innerHTML = list.map(cardHTML).join("");
+    const list = cat === "todos"
+      ? PRODUCTS.filter((p) => p.categoria !== "suporte")
+      : PRODUCTS.filter((p) => p.categoria === cat);
+    // Carrossel central destacado: peça grande em foco, vizinhas espiando dos lados.
+    grid.classList.add("as-showcase");
+    grid.innerHTML = `<div class="carousel showcase">
+      <button class="carousel-nav carousel-prev" data-caro="-1" aria-label="Anterior">‹</button>
+      <div class="carousel-track" id="showcaseTrack">${list.map(cardHTML).join("")}</div>
+      <button class="carousel-nav carousel-next" data-caro="1" aria-label="Próxima">›</button>
+      <div class="showcase-count"><b id="showcaseIdx">1</b> / ${list.length}</div>
+    </div>`;
+    // destaca a peça central e atualiza o contador conforme desliza
+    const track = $("#showcaseTrack");
+    if (track) {
+      const cards = [...track.children];
+      const marcarCentro = () => {
+        const mid = track.scrollLeft + track.clientWidth / 2;
+        let best = 0, bestD = Infinity;
+        cards.forEach((el, i) => {
+          const c = el.offsetLeft + el.offsetWidth / 2;
+          const d = Math.abs(c - mid);
+          if (d < bestD) { bestD = d; best = i; }
+        });
+        cards.forEach((el, i) => el.classList.toggle("is-active", i === best));
+        const idx = $("#showcaseIdx"); if (idx) idx.textContent = best + 1;
+      };
+      track.addEventListener("scroll", marcarCentro, { passive: true });
+      requestAnimationFrame(marcarCentro);
     }
   }
 
@@ -847,7 +848,9 @@
       if (!nav) return;
       const track = nav.parentElement.querySelector(".carousel-track");
       if (!track) return;
-      track.scrollBy({ left: track.clientWidth * 0.85 * Number(nav.dataset.caro), behavior: "smooth" });
+      const card = track.querySelector(".card");
+      const step = card ? card.offsetWidth + 26 : track.clientWidth * 0.85; // ~uma peça
+      track.scrollBy({ left: step * Number(nav.dataset.caro), behavior: "smooth" });
     });
     $("#checkoutBtn").addEventListener("click", checkout);
     $("#waOrderBtn").addEventListener("click", whatsappOrder);
