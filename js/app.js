@@ -201,35 +201,20 @@
     return "Folhagens"; // dentro / ambos / arlivre
   }
   function renderGrid(cat = "todos") {
-    const grid = $("#productGrid");
+    // "Todos" mostra as plantas; os suportes aparecem na própria categoria.
     const list = cat === "todos"
       ? PRODUCTS.filter((p) => p.categoria !== "suporte")
       : PRODUCTS.filter((p) => p.categoria === cat);
-    // Carrossel central destacado: peça grande em foco, vizinhas espiando dos lados.
-    grid.classList.add("as-showcase");
-    grid.innerHTML = `<div class="carousel showcase">
-      <button class="carousel-nav carousel-prev" data-caro="-1" aria-label="Anterior">‹</button>
-      <div class="carousel-track" id="showcaseTrack">${list.map(cardHTML).join("")}</div>
-      <button class="carousel-nav carousel-next" data-caro="1" aria-label="Próxima">›</button>
-      <div class="showcase-count"><b id="showcaseIdx">1</b> / ${list.length}</div>
-    </div>`;
-    // destaca a peça central e atualiza o contador conforme desliza
-    const track = $("#showcaseTrack");
-    if (track) {
-      const cards = [...track.children];
-      const marcarCentro = () => {
-        const mid = track.scrollLeft + track.clientWidth / 2;
-        let best = 0, bestD = Infinity;
-        cards.forEach((el, i) => {
-          const c = el.offsetLeft + el.offsetWidth / 2;
-          const d = Math.abs(c - mid);
-          if (d < bestD) { bestD = d; best = i; }
-        });
-        cards.forEach((el, i) => el.classList.toggle("is-active", i === best));
-        const idx = $("#showcaseIdx"); if (idx) idx.textContent = best + 1;
-      };
-      track.addEventListener("scroll", marcarCentro, { passive: true });
-      requestAnimationFrame(marcarCentro);
+    if (cat === "todos") {
+      let html = "", secao = null;
+      list.forEach((p) => {
+        const s = secaoDe(p.categoria);
+        if (s !== secao) { html += `<h2 class="grid-section">${s}</h2>`; secao = s; }
+        html += cardHTML(p);
+      });
+      $("#productGrid").innerHTML = html;
+    } else {
+      $("#productGrid").innerHTML = list.map(cardHTML).join("");
     }
   }
 
@@ -840,17 +825,6 @@
       const chip = $(`.chip[data-cat="${link.dataset.catLink}"]`);
       if (chip) chip.click();
       $("#produtos").scrollIntoView({ behavior: "smooth" });
-    });
-
-    // setas dos carrosséis por categoria (desktop; no celular usa o swipe)
-    document.addEventListener("click", (e) => {
-      const nav = e.target.closest(".carousel-nav");
-      if (!nav) return;
-      const track = nav.parentElement.querySelector(".carousel-track");
-      if (!track) return;
-      const card = track.querySelector(".card");
-      const step = card ? card.offsetWidth + 26 : track.clientWidth * 0.85; // ~uma peça
-      track.scrollBy({ left: step * Number(nav.dataset.caro), behavior: "smooth" });
     });
     $("#checkoutBtn").addEventListener("click", checkout);
     $("#waOrderBtn").addEventListener("click", whatsappOrder);
