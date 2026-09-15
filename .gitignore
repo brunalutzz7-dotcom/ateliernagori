@@ -13,3 +13,6 @@ npm-debug.log*
 
 # Planilha interna de custos/margens — NÃO publicar (dados privados)
 Atelier_Nagori_Custos_e_Margens.xlsx
+
+# Catálogos PDF gerados (entregues via WhatsApp, não versionar)
+catalogo/*.pdf
