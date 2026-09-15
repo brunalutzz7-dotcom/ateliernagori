@@ -117,10 +117,6 @@ const PRODUCTS = [
     descricao: "Suculenta de folhas gordinhas e brilhantes. Símbolo de prosperidade, quase não pede água — só bastante luz.", significado: "A planta jade é o clássico amuleto de prosperidade e amizade — dizem que atrai dinheiro e boa sorte.", preco: 190, img: IMG("jade") },
   { id: "croton", nome: "Croton", especie: "Codiaeum variegatum", categoria: "ambos", ambiente: "ambos", pet: "toxic",
     descricao: "Folha coriácea listrada de verde, amarelo e vermelho, que ganha cor quanto mais luz recebe. Nenhuma folha repete a mistura da outra.", significado: "Croton simboliza energia, transformação e alegria — muda de cor com a luz, como a vida em movimento.", preco: 190, img: IMG("croton") },
-  { id: "rosa-do-deserto", nome: "Mini Rosa do Deserto", especie: "Adenium obesum · porte pequeno", categoria: "arlivre", ambiente: "externo", pet: "toxic",
-    descricao: "Rosa do deserto em tamanho pequeno, de caudex já esculpido e floradas do rosa ao vermelho. Ama sol pleno — uma joia para varanda ensolarada.", significado: "A rosa do deserto simboliza resistência e a beleza que floresce contra tudo — prosperidade que dura.", preco: 190 },
-  { id: "rosa-do-deserto-grande", nome: "Rosa do Deserto Grande", especie: "Adenium obesum · porte grande", categoria: "arlivre", ambiente: "externo", pet: "toxic",
-    descricao: "Rosa do deserto em porte grande, de caudex desenvolvido e floradas intensas, do rosa ao vermelho. Ama sol pleno — uma joia de varanda ensolarada.", significado: "A rosa do deserto simboliza resistência e a beleza que floresce contra tudo — prosperidade que dura.", preco: 250 },
   /* ---------- 04 · BONSAIS ---------- */
   { id: "bonsai-ligustro-15", nome: "Bonsai Ligustro · 15 anos", especie: "Ligustrum sinense · aprox. 50 cm", categoria: "bonsai", ambiente: "ambos", pet: "toxic",
     descricao: "Folhagem miúda e densa, tronco que engrossa rápido. Perdoa erro de rega — o bonsai mais generoso para quem está começando.", significado: "Bonsai de ligustro: símbolo de proteção e vida longa, cultivado para trazer harmonia ao lar.", preco: 950, imgs: [IMG("bonsai-ligustro-15-2"), IMG("bonsai-ligustro-15")] },
