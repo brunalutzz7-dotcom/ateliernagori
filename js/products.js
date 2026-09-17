@@ -92,7 +92,7 @@ const PRODUCTS = [
   { id: "costela-adao", nome: "Costela de Adão", peso: 3, especie: "Monstera deliciosa", categoria: "ambos", ambiente: "ambos", pet: "toxic",
     descricao: "Folha recortada que ganha novos vãos a cada broto. Cresce rápido e pede espaço.", significado: "Símbolo de longevidade e prosperidade — as folhas que se abrem representam crescimento e boas oportunidades.", preco: 325, img: IMG("costela-adao") },
   { id: "costela-adao-constellation", nome: "Costela de Adão Constellation", especie: "Monstera deliciosa 'Thai Constellation'", categoria: "ambos", ambiente: "ambos", pet: "toxic",
-    descricao: "A variegada mais desejada: folhas grandes salpicadas de creme, cada uma um desenho único. Peça de colecionador.", significado: "Símbolo de longevidade e prosperidade — cada nova folha aberta representa crescimento e boas oportunidades.", preco: 650 },
+    descricao: "A variegada mais desejada: folhas grandes salpicadas de creme, cada uma um desenho único. Peça de colecionador.", significado: "Símbolo de longevidade e prosperidade — cada nova folha aberta representa crescimento e boas oportunidades.", preco: 650, img: IMG("costela-adao-constellation") },
   { id: "mini-costela-adao", nome: "Mini Costela de Adão", especie: "Monstera deliciosa · mini", categoria: "ambos", ambiente: "ambos", pet: "toxic",
     descricao: "A costela de Adão em tamanho de mesa, com os recortes que todo mundo ama já começando a aparecer.", significado: "Símbolo de longevidade e prosperidade — cada nova folha aberta representa crescimento e boas oportunidades.", preco: 170, img: IMG("mini-costela-adao") },
   { id: "alocasia-polly", nome: "Alocásia Polly", peso: 3, especie: "Alocasia × amazonica", categoria: "dentro", ambiente: "interno", pet: "toxic",
