@@ -78,7 +78,7 @@ const PRODUCTS = [
   { id: "singonio", nome: "Singônio Rosa", especie: "Syngonium podophyllum", categoria: "dentro", ambiente: "interno", pet: "toxic",
     descricao: "Folha em ponta de flecha que muda de forma conforme a planta amadurece.", significado: "Símbolo de renovação e crescimento — dizem que atrai energia positiva para os novos começos.", preco: 200, img: IMG("singonio") },
   { id: "singonio-estrelado", nome: "Singônio Estrelado", especie: "Syngonium podophyllum", categoria: "dentro", ambiente: "interno", pet: "toxic",
-    descricao: "Folhas recortadas em ponta de estrela, que mudam de forma conforme a planta cresce. Compacto e cheio.", significado: "Símbolo de renovação e de novos ciclos — atrai energia positiva e leveza para a casa.", preco: 245 },
+    descricao: "Folhas recortadas em ponta de estrela, que mudam de forma conforme a planta cresce. Compacto e cheio.", significado: "Símbolo de renovação e de novos ciclos — atrai energia positiva e leveza para a casa.", preco: 245, img: IMG("singonio-estrelado") },
   { id: "philodendron-birkin", nome: "Philodendron Birkin", especie: "Philodendron 'Birkin'", categoria: "dentro", ambiente: "interno", pet: "toxic",
     descricao: "Riscos brancos finos, nenhuma folha igual à outra. Compacta e discreta.", significado: "Seu nome vem do grego 'amor às árvores' — símbolo de amor que cresce, saúde e abundância.", preco: 250, img: IMG("philodendron-birkin") },
   { id: "jiboia-suspensa", nome: "Jiboia Suspensa", especie: "Epipremnum aureum · pendente", categoria: "dentro", ambiente: "interno", pet: "toxic",
