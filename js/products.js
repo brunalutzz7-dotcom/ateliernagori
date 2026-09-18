@@ -38,7 +38,7 @@ function fotoEmBreve() {
 }
 
 /* Versão das fotos: incremente ao trocar qualquer imagem para o navegador buscar a nova (evita cache). */
-const ASSET_V = "183";
+const ASSET_V = "184";
 const IMG = (id) => `assets/produtos/${id}.jpg?v=${ASSET_V}`;
 
 /* Categorias (seções do catálogo) ------------------------------------- */
@@ -90,7 +90,7 @@ const PRODUCTS = [
   { id: "monstera-adansonii", nome: "Monstera Adansonii", especie: "Monstera adansonii", categoria: "dentro", ambiente: "interno", pet: "toxic",
     descricao: "Folha vazada de furos irregulares. Trepa ou pende, conforme você deixar.", significado: "Símbolo de longevidade e respeito — no oriente representa vida longa e prosperidade duradoura.", preco: 175, img: IMG("monstera-adansonii") },
   { id: "costela-adao", nome: "Costela de Adão", peso: 3, especie: "Monstera deliciosa", categoria: "ambos", ambiente: "ambos", pet: "toxic",
-    descricao: "Folha recortada que ganha novos vãos a cada broto. Cresce rápido e pede espaço.", significado: "Símbolo de longevidade e prosperidade — as folhas que se abrem representam crescimento e boas oportunidades.", preco: 325, img: IMG("costela-adao") },
+    descricao: "Folha recortada que ganha novos vãos a cada broto. Cresce rápido e pede espaço.", significado: "Símbolo de longevidade e prosperidade — as folhas que se abrem representam crescimento e boas oportunidades.", preco: 450, img: IMG("costela-adao") },
   { id: "costela-adao-constellation", nome: "Costela de Adão Constellation", especie: "Monstera deliciosa 'Thai Constellation'", categoria: "ambos", ambiente: "ambos", pet: "toxic",
     descricao: "A variegada mais desejada: folhas grandes salpicadas de creme, cada uma um desenho único. Peça de colecionador.", significado: "Símbolo de longevidade e prosperidade — cada nova folha aberta representa crescimento e boas oportunidades.", preco: 650, img: IMG("costela-adao-constellation") },
   { id: "mini-costela-adao", nome: "Mini Costela de Adão", especie: "Monstera deliciosa · mini", categoria: "ambos", ambiente: "ambos", pet: "toxic",
