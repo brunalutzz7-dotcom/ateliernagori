@@ -176,6 +176,24 @@
       </div>
     </section>
 
+    <!-- GRÁFICOS -->
+    <section id="tab-graficos" class="hidden">
+      <div class="card">
+        <h2>Vendas — últimos 7 dias</h2>
+        <div class="kpis" id="gResumo"></div>
+        <div id="gVendas"></div>
+      </div>
+      <div class="card">
+        <h2>Custo das peças vendidas — 7 dias</h2>
+        <p class="small muted" style="margin-top:-4px">Quanto você reinvestiu no que foi vendido — pra planejar as compras.</p>
+        <div id="gCusto"></div>
+      </div>
+      <div class="card">
+        <h2>Vendidas na semana (pra repor)</h2>
+        <div id="gRepor" class="small muted">—</div>
+      </div>
+    </section>
+
     <!-- CUSTOS E MARGENS -->
     <section id="tab-custos" class="hidden">
       <div class="card">
@@ -190,6 +208,7 @@
 
   <nav class="tabs">
     <button data-tab="painel" class="on"><i>📊</i>Painel</button>
+    <button data-tab="graficos"><i>📈</i>Gráficos</button>
     <button data-tab="vendas"><i>🧾</i>Vendas</button>
     <button data-tab="estoque"><i>📦</i>Estoque</button>
     <button data-tab="custos"><i>💰</i>Custos</button>
@@ -213,8 +232,9 @@ const el = (id)=>document.getElementById(id);
 let sb=null, PRODUTOS=[], VENDAS=[];
 
 function toast(m){const t=el("toast");t.textContent=m;t.classList.add("show");setTimeout(()=>t.classList.remove("show"),2200);}
-function show(id){ ["painel","vendas","estoque","custos"].forEach(t=>el("tab-"+t).classList.toggle("hidden",t!==id));
-  document.querySelectorAll("nav.tabs button").forEach(b=>b.classList.toggle("on",b.dataset.tab===id)); }
+function show(id){ ["painel","graficos","vendas","estoque","custos"].forEach(t=>el("tab-"+t).classList.toggle("hidden",t!==id));
+  document.querySelectorAll("nav.tabs button").forEach(b=>b.classList.toggle("on",b.dataset.tab===id));
+  if(id==="graficos") renderGraficos(); }
 
 // ---------- inicialização ----------
 if(!window.supabase || SUPABASE_URL.startsWith("COLE") || SUPABASE_ANON.startsWith("COLE")){
@@ -301,7 +321,7 @@ async function carregar(){
     faltando.forEach(p=>{ p.custo = CUSTOS_TOTAIS[p.id]; });
     await Promise.all(faltando.map(p=>sb.from("produtos").update({custo:p.custo}).eq("id",p.id)));
   }
-  renderProdutosSelect(); renderPainel(); renderVendas(); renderProdutos(); renderCustos();
+  renderProdutosSelect(); renderPainel(); renderVendas(); renderProdutos(); renderCustos(); renderGraficos();
 }
 
 // ---------- PAINEL ----------
@@ -323,6 +343,57 @@ function renderPainel(){
   // estoque baixo
   const baixo=PRODUTOS.filter(p=>Number(p.estoque||0)<=1).sort((a,b)=>(a.estoque||0)-(b.estoque||0));
   el("estBaixo").innerHTML = baixo.length? baixo.slice(0,20).map(p=>`<div class="item"><span>${p.nome}</span><b class="est" style="color:${(p.estoque||0)===0?'var(--terra)':'inherit'}">${p.estoque||0}</b></div>`).join("") : "Tudo com estoque ok. 🌿";
+}
+
+// ---------- GRÁFICOS ----------
+const BRLc = n => { n=Number(n||0); if(n>=1000){ const s=n/1000; return "R$"+(s>=10||s%1===0?Math.round(s):s.toFixed(1).replace(".",","))+"k"; } return "R$"+Math.round(n); };
+function svgBars(items, cor){
+  const W=720,H=280,padT=30,padB=54,padL=8,padR=8;
+  const max=Math.max(1,...items.map(d=>d.value));
+  const step=(W-padL-padR)/items.length, bw=step*0.6;
+  let s="";
+  items.forEach((d,i)=>{
+    const x=padL+step*i+(step-bw)/2;
+    const h=(d.value/max)*(H-padT-padB), y=H-padB-h;
+    s+=`<rect x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${bw.toFixed(1)}" height="${Math.max(0,h).toFixed(1)}" rx="4" fill="${cor}"/>`;
+    if(d.value>0) s+=`<text x="${(x+bw/2).toFixed(1)}" y="${(y-7).toFixed(1)}" text-anchor="middle" font-size="15" font-weight="700" fill="#33472e">${d.top}</text>`;
+    s+=`<text x="${(x+bw/2).toFixed(1)}" y="${H-padB+20}" text-anchor="middle" font-size="14" fill="#6a6558">${d.label}</text>`;
+    if(d.sub) s+=`<text x="${(x+bw/2).toFixed(1)}" y="${H-padB+38}" text-anchor="middle" font-size="12" fill="#a99f88">${d.sub}</text>`;
+  });
+  s+=`<line x1="${padL}" y1="${H-padB}" x2="${W-padR}" y2="${H-padB}" stroke="#ded6c4"/>`;
+  return `<svg viewBox="0 0 ${W} ${H}" width="100%" style="display:block;overflow:visible">${s}</svg>`;
+}
+function renderGraficos(){
+  if(!el("gVendas")) return;
+  const hoje=new Date(); hoje.setHours(0,0,0,0);
+  const wd=["Dom","Seg","Ter","Qua","Qui","Sex","Sáb"];
+  const dias=[]; for(let i=6;i>=0;i--){ const d=new Date(hoje); d.setDate(d.getDate()-i); dias.push(d); }
+  const key=d=>d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate();
+  const B={}; dias.forEach(d=>B[key(d)]={valor:0,custo:0,qtd:0});
+  const repor={}; let nV=0;
+  VENDAS.forEach(v=>{
+    const d=new Date(v.criado_em); d.setHours(0,0,0,0); const k=key(d);
+    if(!B[k]) return;
+    B[k].valor+=Number(v.valor||0); B[k].custo+=Number(v.custo||0); B[k].qtd+=Number(v.quantidade||1); nV++;
+    const nm=v.produto_nome||"—"; repor[nm]=repor[nm]||{qtd:0,custo:0}; repor[nm].qtd+=Number(v.quantidade||1); repor[nm].custo+=Number(v.custo||0);
+  });
+  const arr=dias.map(d=>({label:wd[d.getDay()], data:d.getDate()+"/"+(d.getMonth()+1), ...B[key(d)]}));
+  const totV=arr.reduce((a,x)=>a+x.valor,0), totC=arr.reduce((a,x)=>a+x.custo,0), totQ=arr.reduce((a,x)=>a+x.qtd,0);
+  el("gResumo").innerHTML =
+    `<div class="kpi"><div class="v">${BRL(totV)}</div><div class="l">Vendas (semana)</div></div>`+
+    `<div class="kpi"><div class="v">${nV}</div><div class="l">Nº de vendas</div></div>`+
+    `<div class="kpi"><div class="v">${totQ}</div><div class="l">Peças vendidas</div></div>`;
+  el("gVendas").innerHTML = totV>0
+    ? svgBars(arr.map(x=>({label:x.label, sub:x.data+(x.qtd?" · "+x.qtd+"pç":""), value:x.valor, top:x.valor?BRLc(x.valor):""})), "#47613f")
+    : `<p class="small muted">Nenhuma venda nos últimos 7 dias.</p>`;
+  el("gCusto").innerHTML =
+    `<div class="small muted" style="margin-bottom:6px">Custo total da semana: <b>${BRL(totC)}</b> · Lucro: <b>${BRL(totV-totC)}</b></div>`+
+    (totC>0 ? svgBars(arr.map(x=>({label:x.label, sub:x.data, value:x.custo, top:x.custo?BRLc(x.custo):""})), "#b5895f")
+            : `<p class="small muted">Sem custo de peças vendidas nos últimos 7 dias.</p>`);
+  const rep=Object.entries(repor).sort((a,b)=>b[1].qtd-a[1].qtd);
+  el("gRepor").innerHTML = rep.length
+    ? rep.map(([nm,o])=>`<div class="item"><span>${o.qtd}× ${nm}</span><b>${BRL(o.custo)}</b></div>`).join("")
+    : "Nada vendido na semana.";
 }
 
 // ---------- VENDAS ----------
