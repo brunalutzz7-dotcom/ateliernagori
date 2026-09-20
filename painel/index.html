@@ -52,6 +52,9 @@
   nav.tabs button.on{color:var(--moss);font-weight:600}
   nav.tabs button i{display:block;font-size:1.25rem;font-style:normal;margin-bottom:2px}
   .hidden{display:none!important}
+  .gper{display:flex;gap:8px;margin-bottom:12px}
+  .gper button{flex:1;padding:9px;border:1px solid var(--line);background:#fff;border-radius:10px;cursor:pointer;font-size:.9rem;color:var(--muted)}
+  .gper button.on{background:var(--moss);color:#fff;border-color:var(--moss);font-weight:600}
   .center{min-height:100vh;display:grid;place-items:center;padding:24px}
   .login{max-width:360px;width:100%}
   .brandmark{text-align:center;color:var(--moss);font-size:2rem;margin-bottom:2px}
@@ -178,18 +181,26 @@
 
     <!-- GRÁFICOS -->
     <section id="tab-graficos" class="hidden">
+      <div class="gper">
+        <button data-per="7d" class="on">7 dias</button>
+        <button data-per="mes">Este mês</button>
+      </div>
       <div class="card">
-        <h2>Vendas — últimos 7 dias</h2>
+        <h2 id="gTit1">Vendas — últimos 7 dias</h2>
         <div class="kpis" id="gResumo"></div>
         <div id="gVendas"></div>
       </div>
       <div class="card">
-        <h2>Custo das peças vendidas — 7 dias</h2>
+        <h2 id="gTit2">Custo das peças vendidas — últimos 7 dias</h2>
         <p class="small muted" style="margin-top:-4px">Quanto você reinvestiu no que foi vendido — pra planejar as compras.</p>
         <div id="gCusto"></div>
       </div>
       <div class="card">
-        <h2>Vendidas na semana (pra repor)</h2>
+        <h2>Peças mais vendidas</h2>
+        <div id="gTop" class="small muted">—</div>
+      </div>
+      <div class="card">
+        <h2 id="gTit3">Vendidas na semana (pra repor)</h2>
         <div id="gRepor" class="small muted">—</div>
       </div>
     </section>
@@ -253,6 +264,11 @@ el("loginForm").addEventListener("submit", async (e)=>{
 });
 el("btnSair").addEventListener("click", async ()=>{ await sb.auth.signOut(); location.reload(); });
 document.querySelectorAll("nav.tabs button").forEach(b=> b.addEventListener("click", ()=>show(b.dataset.tab)) );
+document.querySelectorAll(".gper button").forEach(b=> b.addEventListener("click", ()=>{
+  gPeriodo=b.dataset.per;
+  document.querySelectorAll(".gper button").forEach(x=>x.classList.toggle("on",x===b));
+  renderGraficos();
+}) );
 
 async function entrar(){
   el("loginView").classList.add("hidden");
@@ -363,37 +379,80 @@ function svgBars(items, cor){
   s+=`<line x1="${padL}" y1="${H-padB}" x2="${W-padR}" y2="${H-padB}" stroke="#ded6c4"/>`;
   return `<svg viewBox="0 0 ${W} ${H}" width="100%" style="display:block;overflow:visible">${s}</svg>`;
 }
+let gPeriodo="7d";
+const gtrunc=s=>{s=String(s||"");return s.length>26?s.slice(0,25)+"…":s;};
+const gesc=s=>String(s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+function svgBarsH(items, cor){
+  const W=720, rowH=42, padL=8, padR=8, padT=8;
+  const H=padT+items.length*rowH;
+  const max=Math.max(1,...items.map(d=>d.value));
+  let s="";
+  items.forEach((d,i)=>{
+    const y=padT+i*rowH, fullW=W-padL-padR, barY=y+18, barH=15;
+    const w=Math.max(3,(d.value/max)*fullW);
+    s+=`<text x="${padL}" y="${y+13}" font-size="14" fill="#2c2a24">${gesc(gtrunc(d.label))}</text>`;
+    s+=`<text x="${W-padR}" y="${y+13}" text-anchor="end" font-size="14" font-weight="700" fill="#33472e">${d.right}</text>`;
+    s+=`<rect x="${padL}" y="${barY}" width="${fullW}" height="${barH}" rx="4" fill="#f0ede5"/>`;
+    s+=`<rect x="${padL}" y="${barY}" width="${w.toFixed(1)}" height="${barH}" rx="4" fill="${cor}"/>`;
+  });
+  return `<svg viewBox="0 0 ${W} ${H}" width="100%" style="display:block">${s}</svg>`;
+}
 function renderGraficos(){
   if(!el("gVendas")) return;
-  const hoje=new Date(); hoje.setHours(0,0,0,0);
-  const wd=["Dom","Seg","Ter","Qua","Qui","Sex","Sáb"];
-  const dias=[]; for(let i=6;i>=0;i--){ const d=new Date(hoje); d.setDate(d.getDate()-i); dias.push(d); }
-  const key=d=>d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate();
-  const B={}; dias.forEach(d=>B[key(d)]={valor:0,custo:0,qtd:0});
-  const repor={}; let nV=0;
+  const now=new Date();
+  let buckets, inPeriod, idxOf, titSuf, perNome;
+  if(gPeriodo==="mes"){
+    const y=now.getFullYear(), m=now.getMonth();
+    const nW=Math.ceil(now.getDate()/7);
+    buckets=[]; for(let w=0;w<nW;w++) buckets.push({label:"Sem "+(w+1), sub:"", valor:0,custo:0,qtd:0});
+    inPeriod=d=> d.getFullYear()===y && d.getMonth()===m;
+    idxOf=d=> Math.floor((d.getDate()-1)/7);
+    titSuf="este mês"; perNome="mês";
+  }else{
+    const hoje=new Date(now); hoje.setHours(0,0,0,0);
+    const wd=["Dom","Seg","Ter","Qua","Qui","Sex","Sáb"];
+    const dias=[]; for(let i=6;i>=0;i--){ const d=new Date(hoje); d.setDate(d.getDate()-i); dias.push(d); }
+    const kf=d=>{d=new Date(d);d.setHours(0,0,0,0);return d.getTime();};
+    const keys=dias.map(kf);
+    buckets=dias.map(d=>({label:wd[d.getDay()], sub:d.getDate()+"/"+(d.getMonth()+1), valor:0,custo:0,qtd:0}));
+    inPeriod=d=> keys.includes(kf(d));
+    idxOf=d=> keys.indexOf(kf(d));
+    titSuf="últimos 7 dias"; perNome="semana";
+  }
+  let nV=0, totV=0, totC=0, totQ=0; const repor={}, porProd={};
   VENDAS.forEach(v=>{
-    const d=new Date(v.criado_em); d.setHours(0,0,0,0); const k=key(d);
-    if(!B[k]) return;
-    B[k].valor+=Number(v.valor||0); B[k].custo+=Number(v.custo||0); B[k].qtd+=Number(v.quantidade||1); nV++;
-    const nm=v.produto_nome||"—"; repor[nm]=repor[nm]||{qtd:0,custo:0}; repor[nm].qtd+=Number(v.quantidade||1); repor[nm].custo+=Number(v.custo||0);
+    const d=new Date(v.criado_em); if(!inPeriod(d)) return;
+    const i=idxOf(d); if(i<0||i>=buckets.length) return;
+    const val=Number(v.valor||0), cst=Number(v.custo||0), q=Number(v.quantidade||1);
+    buckets[i].valor+=val; buckets[i].custo+=cst; buckets[i].qtd+=q;
+    totV+=val; totC+=cst; totQ+=q; nV++;
+    const nm=v.produto_nome||"—";
+    repor[nm]=repor[nm]||{qtd:0,custo:0}; repor[nm].qtd+=q; repor[nm].custo+=cst;
+    porProd[nm]=porProd[nm]||{qtd:0}; porProd[nm].qtd+=q;
   });
-  const arr=dias.map(d=>({label:wd[d.getDay()], data:d.getDate()+"/"+(d.getMonth()+1), ...B[key(d)]}));
-  const totV=arr.reduce((a,x)=>a+x.valor,0), totC=arr.reduce((a,x)=>a+x.custo,0), totQ=arr.reduce((a,x)=>a+x.qtd,0);
+  el("gTit1").textContent="Vendas — "+titSuf;
+  el("gTit2").textContent="Custo das peças vendidas — "+titSuf;
+  el("gTit3").textContent="Vendidas ("+(gPeriodo==="mes"?"no mês":"na semana")+") — pra repor";
+  const subDe=x=>{const q=x.qtd?x.qtd+"pç":""; return x.sub?(q?x.sub+" · "+q:x.sub):q;};
   el("gResumo").innerHTML =
-    `<div class="kpi"><div class="v">${BRL(totV)}</div><div class="l">Vendas (semana)</div></div>`+
+    `<div class="kpi"><div class="v">${BRL(totV)}</div><div class="l">Vendas (${perNome})</div></div>`+
     `<div class="kpi"><div class="v">${nV}</div><div class="l">Nº de vendas</div></div>`+
     `<div class="kpi"><div class="v">${totQ}</div><div class="l">Peças vendidas</div></div>`;
   el("gVendas").innerHTML = totV>0
-    ? svgBars(arr.map(x=>({label:x.label, sub:x.data+(x.qtd?" · "+x.qtd+"pç":""), value:x.valor, top:x.valor?BRLc(x.valor):""})), "#47613f")
-    : `<p class="small muted">Nenhuma venda nos últimos 7 dias.</p>`;
+    ? svgBars(buckets.map(x=>({label:x.label, sub:subDe(x), value:x.valor, top:x.valor?BRLc(x.valor):""})), "#47613f")
+    : `<p class="small muted">Nenhuma venda no período.</p>`;
   el("gCusto").innerHTML =
-    `<div class="small muted" style="margin-bottom:6px">Custo total da semana: <b>${BRL(totC)}</b> · Lucro: <b>${BRL(totV-totC)}</b></div>`+
-    (totC>0 ? svgBars(arr.map(x=>({label:x.label, sub:x.data, value:x.custo, top:x.custo?BRLc(x.custo):""})), "#b5895f")
-            : `<p class="small muted">Sem custo de peças vendidas nos últimos 7 dias.</p>`);
+    `<div class="small muted" style="margin-bottom:6px">Custo total (${perNome}): <b>${BRL(totC)}</b> · Lucro: <b>${BRL(totV-totC)}</b></div>`+
+    (totC>0 ? svgBars(buckets.map(x=>({label:x.label, sub:x.sub||(x.qtd?x.qtd+"pç":""), value:x.custo, top:x.custo?BRLc(x.custo):""})), "#b5895f")
+            : `<p class="small muted">Sem custo de peças vendidas no período.</p>`);
+  const top=Object.entries(porProd).sort((a,b)=>b[1].qtd-a[1].qtd).slice(0,8);
+  el("gTop").innerHTML = top.length
+    ? svgBarsH(top.map(([nm,o])=>({label:nm, value:o.qtd, right:o.qtd+"×"})), "#47613f")
+    : "Nada vendido no período.";
   const rep=Object.entries(repor).sort((a,b)=>b[1].qtd-a[1].qtd);
   el("gRepor").innerHTML = rep.length
     ? rep.map(([nm,o])=>`<div class="item"><span>${o.qtd}× ${nm}</span><b>${BRL(o.custo)}</b></div>`).join("")
-    : "Nada vendido na semana.";
+    : "Nada vendido no período.";
 }
 
 // ---------- VENDAS ----------
