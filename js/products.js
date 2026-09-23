@@ -38,7 +38,7 @@ function fotoEmBreve() {
 }
 
 /* Versão das fotos: incremente ao trocar qualquer imagem para o navegador buscar a nova (evita cache). */
-const ASSET_V = "187";
+const ASSET_V = "188";
 const IMG = (id) => `assets/produtos/${id}.jpg?v=${ASSET_V}`;
 
 /* Categorias (seções do catálogo) ------------------------------------- */
@@ -54,7 +54,7 @@ const CATEGORIAS = [
 const PRODUCTS = [
   /* ---------- 01 · FOLHAGENS ---------- */
   { id: "arranjo-orquidea", nome: "Tamandama Orquídea", peso: 3, especie: "Phalaenopsis com folhagens · composição única", categoria: "dentro", ambiente: "interno", pet: "safe",
-    descricao: "Orquídea combinada com folhagens sobre a mesma esfera. A raiz da orquídea e o musgo se entendem naturalmente, e cada arranjo é montado de forma única.", significado: "A orquídea simboliza beleza rara, elegância e um amor que floresce com paciência.", preco: 450, imgs: [IMG("arranjo-orquidea"), IMG("arranjo-orquidea-2")] },
+    descricao: "Orquídea combinada com folhagens sobre a mesma esfera. A raiz da orquídea e o musgo se entendem naturalmente, e cada arranjo é montado de forma única.", significado: "A orquídea simboliza beleza rara, elegância e um amor que floresce com paciência.", preco: 450, imgs: [IMG("arranjo-orquidea"), IMG("arranjo-orquidea-2"), IMG("arranjo-orquidea-3"), IMG("arranjo-orquidea-4"), IMG("arranjo-orquidea-5")] },
   { id: "orquidea-pipoca", nome: "Orquídea Pipoca", especie: "Orquídea · folhagem escura · flores brancas em cacho", categoria: "dentro", ambiente: "interno", pet: "safe",
     descricao: "Folhagem escura e aveludada de onde sobe uma haste alta coberta de florzinhas brancas miúdas, como pipoca estourada. Delicada e encantadora, floresce em luz indireta.", significado: "A orquídea simboliza beleza rara, elegância e um amor delicado que floresce com o tempo.", preco: 175, img: IMG("orquidea-pipoca") },
   { id: "aglaonema-cherry", nome: "Aglaonema Cherry", especie: "Aglaonema commutatum 'Cherry'", categoria: "dentro", ambiente: "interno", pet: "toxic",
