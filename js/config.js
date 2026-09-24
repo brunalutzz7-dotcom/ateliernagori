@@ -38,7 +38,7 @@ const CONFIG = {
 
      Como ativar (1 minuto, grátis):
        1. Acesse https://web3forms.com
-       2. Digite o seu e-mail (brunalutzz7@gmail.com) e clique em criar
+       2. Digite o seu e-mail e clique em criar
           a "Access Key" — ela chega no seu e-mail na hora.
        3. Cole a chave aqui embaixo, entre as aspas.
      Seu e-mail NÃO fica exposto no site — só esta chave.               */
