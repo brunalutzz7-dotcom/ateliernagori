@@ -38,7 +38,7 @@ function fotoEmBreve() {
 }
 
 /* Versão das fotos: incremente ao trocar qualquer imagem para o navegador buscar a nova (evita cache). */
-const ASSET_V = "189";
+const ASSET_V = "190";
 const IMG = (id) => `assets/produtos/${id}.jpg?v=${ASSET_V}`;
 
 /* Categorias (seções do catálogo) ------------------------------------- */
@@ -54,7 +54,7 @@ const CATEGORIAS = [
 const PRODUCTS = [
   /* ---------- 01 · FOLHAGENS ---------- */
   { id: "arranjo-orquidea", nome: "Tamandama Orquídea", peso: 3, especie: "Phalaenopsis com folhagens · composição única", categoria: "dentro", ambiente: "interno", pet: "safe",
-    descricao: "Uma orquídea de porte menor combinada com folhagens delicadas sobre a mesma esfera de musgo vivo. A raiz da orquídea e o musgo se entendem naturalmente, e cada arranjo é montado de forma única.", significado: "A orquídea simboliza beleza rara, elegância e um amor que floresce com paciência.", preco: 480, imgs: [IMG("arranjo-orquidea"), IMG("arranjo-orquidea-2"), IMG("arranjo-orquidea-3"), IMG("arranjo-orquidea-4"), IMG("arranjo-orquidea-5")] },
+    descricao: "Uma orquídea de porte menor combinada com folhagens delicadas sobre a mesma esfera de musgo vivo. A raiz da orquídea e o musgo se entendem naturalmente, e cada arranjo é montado de forma única.", significado: "A orquídea simboliza beleza rara, elegância e um amor que floresce com paciência.", preco: 480, imgs: [IMG("arranjo-orquidea"), IMG("arranjo-orquidea-2")] },
   { id: "maxi-tamandama", nome: "Maxi Tamandama Orquídea", peso: 4, especie: "Phalaenopsis de grande porte com folhagens · composição única", categoria: "dentro", ambiente: "interno", pet: "safe",
     descricao: "A versão grande do nosso Tamandama: uma orquídea de maior porte — cerca de 30 cm mais alta — combinada com folhagens generosas sobre a mesma esfera de musgo vivo. Uma peça imponente, que leva mais tempo e mais cuidado para montar. Cada arranjo é único.", significado: "A orquídea simboliza beleza rara, elegância e um amor que floresce com paciência.", preco: 580, imgs: [IMG("maxi-tamandama"), IMG("maxi-tamandama-2"), IMG("maxi-tamandama-3")] },
   { id: "orquidea-pipoca", nome: "Orquídea Pipoca", especie: "Orquídea · folhagem escura · flores brancas em cacho", categoria: "dentro", ambiente: "interno", pet: "safe",
