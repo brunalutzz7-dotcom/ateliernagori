@@ -22,11 +22,22 @@ function precoTxt(p) {
   return BRL(p.preco);
 }
 
+function allImgs(p) {
+  return p.imgs && p.imgs.length ? p.imgs : (p.img ? [p.img] : []);
+}
+
 function card(p) {
   const varLine = temVar(p)
     ? `<div class="c-var">Variedades: ${p.variantes.map((v) => esc(v.label)).join(" · ")}</div>` : "";
+  const imgs = allImgs(p);
+  const main = imgs[0] || "";
+  const rest = imgs.slice(1);
+  const mainImg = `<div class="c-main"><img src="/${main}" onerror="this.onerror=null;this.src='${PH}'"></div>`;
+  const thumbs = rest.length
+    ? `<div class="c-thumbs">${rest.map((s) => `<img src="/${s}" onerror="this.onerror=null;this.src='${PH}'">`).join("")}</div>`
+    : "";
   return `<article class="c">
-    <div class="c-img"><img src="/${capa(p)}" onerror="this.onerror=null;this.src='${PH}'"></div>
+    <div class="c-img">${mainImg}${thumbs}</div>
     <div class="c-b">
       <h3>${esc(p.nome)}</h3>
       ${p.especie ? `<p class="c-esp">${esc(p.especie)}</p>` : ""}
@@ -63,8 +74,11 @@ function pagina({ titulo, sub, itens, secoes }) {
   .sec { font-size: 9pt; letter-spacing: .22em; text-transform: uppercase; color: #8c8678; border-bottom: 1px solid #e4e1d7; padding-bottom: 2mm; margin: 8mm 0 5mm; break-after: avoid; }
   .grid { display: flex; flex-direction: column; gap: 6mm; }
   .c { break-inside: avoid; border: 1px solid #e8e5dc; border-radius: 3mm; overflow: hidden; display: flex; gap: 5mm; padding: 4mm; }
-  .c-img { flex: 0 0 56mm; background: #f0ede5; border-radius: 2mm; display: flex; align-items: center; justify-content: center; overflow: hidden; }
-  .c-img img { width: 100%; height: 76mm; object-fit: contain; display: block; }   /* foto inteira, sem corte */
+  .c-img { flex: 0 0 58mm; display: flex; flex-direction: column; gap: 2mm; }
+  .c-main { background: #f0ede5; border-radius: 2mm; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+  .c-main img { width: 100%; height: 66mm; object-fit: contain; display: block; }   /* foto inteira, sem corte */
+  .c-thumbs { display: flex; flex-wrap: wrap; gap: 2mm; }
+  .c-thumbs img { flex: 0 0 auto; width: 17.5mm; height: 23mm; object-fit: cover; background: #f0ede5; border-radius: 1.5mm; display: block; }   /* todas as fotos/cores da peça */
   .c-b { flex: 1; padding: 1mm 1mm 1mm 0; display: flex; flex-direction: column; }
   .c-b h3 { font-family: Georgia, serif; font-weight: 500; font-size: 13.5pt; margin: 0 0 1mm; color: #1a1712; }
   .c-esp { font-family: Georgia, serif; font-style: italic; font-size: 9.5pt; color: #6b6659; margin: 0 0 2mm; }

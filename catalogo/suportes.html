@@ -20,8 +20,11 @@
   .sec { font-size: 9pt; letter-spacing: .22em; text-transform: uppercase; color: #8c8678; border-bottom: 1px solid #e4e1d7; padding-bottom: 2mm; margin: 8mm 0 5mm; break-after: avoid; }
   .grid { display: flex; flex-direction: column; gap: 6mm; }
   .c { break-inside: avoid; border: 1px solid #e8e5dc; border-radius: 3mm; overflow: hidden; display: flex; gap: 5mm; padding: 4mm; }
-  .c-img { flex: 0 0 56mm; background: #f0ede5; border-radius: 2mm; display: flex; align-items: center; justify-content: center; overflow: hidden; }
-  .c-img img { width: 100%; height: 76mm; object-fit: contain; display: block; }   /* foto inteira, sem corte */
+  .c-img { flex: 0 0 58mm; display: flex; flex-direction: column; gap: 2mm; }
+  .c-main { background: #f0ede5; border-radius: 2mm; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+  .c-main img { width: 100%; height: 66mm; object-fit: contain; display: block; }   /* foto inteira, sem corte */
+  .c-thumbs { display: flex; flex-wrap: wrap; gap: 2mm; }
+  .c-thumbs img { flex: 0 0 auto; width: 17.5mm; height: 23mm; object-fit: cover; background: #f0ede5; border-radius: 1.5mm; display: block; }   /* todas as fotos/cores da peça */
   .c-b { flex: 1; padding: 1mm 1mm 1mm 0; display: flex; flex-direction: column; }
   .c-b h3 { font-family: Georgia, serif; font-weight: 500; font-size: 13.5pt; margin: 0 0 1mm; color: #1a1712; }
   .c-esp { font-family: Georgia, serif; font-style: italic; font-size: 9.5pt; color: #6b6659; margin: 0 0 2mm; }
@@ -46,7 +49,7 @@
   </section>
   <div class="page-head"><span class="t serif">Suportes</span><span class="n">Atelier Nagori · 名残</span></div>
   <div class="grid"><article class="c">
-    <div class="c-img"><img src="/assets/bases/cubo-ferro-alto.jpg" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div>
+    <div class="c-img"><div class="c-main"><img src="/assets/bases/cubo-ferro-alto.jpg" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div><div class="c-thumbs"><img src="/assets/bases/cubo-ferro-alto-uso.jpg" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div></div>
     <div class="c-b">
       <h3>Cubo de ferro · alto</h3>
       <p class="c-esp">Suporte especial · ferro preto · aro interno</p>
@@ -55,7 +58,7 @@
       <div class="c-price">R$ 190,00</div>
     </div>
   </article><article class="c">
-    <div class="c-img"><img src="/assets/bases/tronco-natural.jpg" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div>
+    <div class="c-img"><div class="c-main"><img src="/assets/bases/tronco-natural.jpg" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div><div class="c-thumbs"><img src="/assets/bases/tronco-natural-uso.jpg" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div></div>
     <div class="c-b">
       <h3>Tronco natural</h3>
       <p class="c-esp">Suporte especial · tronco 13 cm · altura 8,5 cm · aro 11 cm</p>
@@ -64,7 +67,7 @@
       <div class="c-price">R$ 150,00</div>
     </div>
   </article><article class="c">
-    <div class="c-img"><img src="/assets/bases/tripe-60.jpg" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div>
+    <div class="c-img"><div class="c-main"><img src="/assets/bases/tripe-60.jpg" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div><div class="c-thumbs"><img src="/assets/bases/tripe-60-uso.jpg" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div></div>
     <div class="c-b">
       <h3>Tripé de ferro · 60 cm</h3>
       <p class="c-esp">Suporte de chão · ferro preto · aro 18 cm · altura 60 cm</p>
@@ -73,7 +76,7 @@
       <div class="c-price">R$ 150,00</div>
     </div>
   </article><article class="c">
-    <div class="c-img"><img src="/assets/bases/tronco-alto-uso.jpg" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div>
+    <div class="c-img"><div class="c-main"><img src="/assets/bases/tronco-alto-uso.jpg" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div></div>
     <div class="c-b">
       <h3>Tronco alto</h3>
       <p class="c-esp">Suporte especial · madeira clara · medidas variáveis</p>
@@ -82,7 +85,7 @@
       <div class="c-price">R$ 120,00</div>
     </div>
   </article><article class="c">
-    <div class="c-img"><img src="/assets/bases/madeira-aro-duplo.jpg" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div>
+    <div class="c-img"><div class="c-main"><img src="/assets/bases/madeira-aro-duplo.jpg" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div><div class="c-thumbs"><img src="/assets/bases/madeira-aro-duplo-uso.jpg" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div></div>
     <div class="c-b">
       <h3>Madeira com aro duplo</h3>
       <p class="c-esp">Suporte · madeira e ferro · dois aros em alturas diferentes</p>
@@ -91,7 +94,7 @@
       <div class="c-price">R$ 85,00</div>
     </div>
   </article><article class="c">
-    <div class="c-img"><img src="/assets/bases/tripe-45.jpg" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div>
+    <div class="c-img"><div class="c-main"><img src="/assets/bases/tripe-45.jpg" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div><div class="c-thumbs"><img src="/assets/bases/tripe-45-uso.jpg" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div></div>
     <div class="c-b">
       <h3>Tripé de ferro · 45 cm</h3>
       <p class="c-esp">Suporte de chão · ferro preto · aro 18 cm · altura 45 cm</p>
@@ -100,7 +103,7 @@
       <div class="c-price">R$ 85,00</div>
     </div>
   </article><article class="c">
-    <div class="c-img"><img src="/assets/bases/cubo-ferro-baixo.jpg" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div>
+    <div class="c-img"><div class="c-main"><img src="/assets/bases/cubo-ferro-baixo.jpg" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div><div class="c-thumbs"><img src="/assets/bases/cubo-ferro-baixo-uso.jpg" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div></div>
     <div class="c-b">
       <h3>Cubo de ferro · baixo</h3>
       <p class="c-esp">Suporte especial · ferro preto · aro interno</p>
@@ -109,7 +112,7 @@
       <div class="c-price">R$ 90,00</div>
     </div>
   </article><article class="c">
-    <div class="c-img"><img src="/assets/bases/ceramica.jpg" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div>
+    <div class="c-img"><div class="c-main"><img src="/assets/bases/ceramica.jpg" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div><div class="c-thumbs"><img src="/assets/bases/ceramica-uso.jpg" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div></div>
     <div class="c-b">
       <h3>Cumbuca de cerâmica</h3>
       <p class="c-esp">Suporte · cerâmica artesanal</p>
@@ -118,7 +121,7 @@
       <div class="c-price">R$ 75,00</div>
     </div>
   </article><article class="c">
-    <div class="c-img"><img src="/assets/bases/tripe-30.jpg" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div>
+    <div class="c-img"><div class="c-main"><img src="/assets/bases/tripe-30.jpg" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div><div class="c-thumbs"><img src="/assets/bases/tripe-30-uso.jpg" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div></div>
     <div class="c-b">
       <h3>Tripé de ferro · 30 cm</h3>
       <p class="c-esp">Suporte de chão · ferro preto · aro 18 cm · altura 30 cm</p>
@@ -127,7 +130,7 @@
       <div class="c-price">R$ 75,00</div>
     </div>
   </article><article class="c">
-    <div class="c-img"><img src="/assets/bases/madeira-gancho.jpg" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div>
+    <div class="c-img"><div class="c-main"><img src="/assets/bases/madeira-gancho.jpg" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div><div class="c-thumbs"><img src="/assets/bases/madeira-gancho-uso.jpg" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div></div>
     <div class="c-b">
       <h3>Madeira com gancho</h3>
       <p class="c-esp">Suporte · madeira e ferro · base 15×15 cm</p>
@@ -136,7 +139,7 @@
       <div class="c-price">R$ 65,00</div>
     </div>
   </article><article class="c">
-    <div class="c-img"><img src="/assets/bases/madeira-aro.jpg" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div>
+    <div class="c-img"><div class="c-main"><img src="/assets/bases/madeira-aro.jpg" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div><div class="c-thumbs"><img src="/assets/bases/madeira-aro-uso.jpg" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div></div>
     <div class="c-b">
       <h3>Madeira com aro</h3>
       <p class="c-esp">Suporte · madeira e ferro · base 15×15 cm · aro 9 cm · altura 10 cm</p>
@@ -145,7 +148,7 @@
       <div class="c-price">R$ 60,00</div>
     </div>
   </article><article class="c">
-    <div class="c-img"><img src="/assets/bases/madeira-lisa.jpg" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div>
+    <div class="c-img"><div class="c-main"><img src="/assets/bases/madeira-lisa.jpg" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div><div class="c-thumbs"><img src="/assets/bases/madeira-lisa-uso.jpg" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div></div>
     <div class="c-b">
       <h3>Madeira lisa</h3>
       <p class="c-esp">Suporte · madeira · 15 × 15 cm</p>
@@ -154,7 +157,7 @@
       <div class="c-price">R$ 60,00</div>
     </div>
   </article><article class="c">
-    <div class="c-img"><img src="/assets/bases/ferro-aro-base.jpg" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div>
+    <div class="c-img"><div class="c-main"><img src="/assets/bases/ferro-aro-base.jpg" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div><div class="c-thumbs"><img src="/assets/bases/ferro-aro-base-uso.jpg" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div></div>
     <div class="c-b">
       <h3>Ferro · aro sobre base quadrada</h3>
       <p class="c-esp">Suporte · ferro preto</p>
@@ -163,7 +166,7 @@
       <div class="c-price">R$ 50,00</div>
     </div>
   </article><article class="c">
-    <div class="c-img"><img src="/assets/bases/ferro-esfera.jpg" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div>
+    <div class="c-img"><div class="c-main"><img src="/assets/bases/ferro-esfera.jpg" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div><div class="c-thumbs"><img src="/assets/bases/ferro-esfera-uso.jpg" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div></div>
     <div class="c-b">
       <h3>Ferro · esfera de arame</h3>
       <p class="c-esp">Suporte · ferro preto</p>
@@ -172,7 +175,7 @@
       <div class="c-price">R$ 50,00</div>
     </div>
   </article><article class="c">
-    <div class="c-img"><img src="/assets/bases/ferro-cone.jpg" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div>
+    <div class="c-img"><div class="c-main"><img src="/assets/bases/ferro-cone.jpg" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div><div class="c-thumbs"><img src="/assets/bases/ferro-cone-uso.jpg" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div></div>
     <div class="c-b">
       <h3>Ferro · cone</h3>
       <p class="c-esp">Suporte · ferro preto</p>
@@ -181,7 +184,7 @@
       <div class="c-price">R$ 50,00</div>
     </div>
   </article><article class="c">
-    <div class="c-img"><img src="/assets/bases/ferro-tripe-v.jpg" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div>
+    <div class="c-img"><div class="c-main"><img src="/assets/bases/ferro-tripe-v.jpg" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div><div class="c-thumbs"><img src="/assets/bases/ferro-tripe-v-uso.jpg" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div></div>
     <div class="c-b">
       <h3>Ferro · tripé pés em V</h3>
       <p class="c-esp">Suporte · ferro preto</p>
@@ -190,7 +193,7 @@
       <div class="c-price">R$ 50,00</div>
     </div>
   </article><article class="c">
-    <div class="c-img"><img src="/assets/bases/ferro-cruzado.jpg" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div>
+    <div class="c-img"><div class="c-main"><img src="/assets/bases/ferro-cruzado.jpg" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div><div class="c-thumbs"><img src="/assets/bases/ferro-cruzado-uso.jpg" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div></div>
     <div class="c-b">
       <h3>Ferro · aros cruzados</h3>
       <p class="c-esp">Suporte · ferro preto</p>
@@ -199,7 +202,7 @@
       <div class="c-price">R$ 50,00</div>
     </div>
   </article><article class="c">
-    <div class="c-img"><img src="/assets/bases/ferro-dois-aros.jpg" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div>
+    <div class="c-img"><div class="c-main"><img src="/assets/bases/ferro-dois-aros.jpg" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div><div class="c-thumbs"><img src="/assets/bases/ferro-dois-aros-uso.jpg" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div></div>
     <div class="c-b">
       <h3>Ferro · dois aros</h3>
       <p class="c-esp">Suporte · ferro preto</p>
@@ -208,7 +211,7 @@
       <div class="c-price">R$ 50,00</div>
     </div>
   </article><article class="c">
-    <div class="c-img"><img src="/assets/bases/ferro-espiral.jpg" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div>
+    <div class="c-img"><div class="c-main"><img src="/assets/bases/ferro-espiral.jpg" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div><div class="c-thumbs"><img src="/assets/bases/ferro-espiral-uso.jpg" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div></div>
     <div class="c-b">
       <h3>Ferro · espiral</h3>
       <p class="c-esp">Suporte · ferro preto</p>

@@ -20,8 +20,11 @@
   .sec { font-size: 9pt; letter-spacing: .22em; text-transform: uppercase; color: #8c8678; border-bottom: 1px solid #e4e1d7; padding-bottom: 2mm; margin: 8mm 0 5mm; break-after: avoid; }
   .grid { display: flex; flex-direction: column; gap: 6mm; }
   .c { break-inside: avoid; border: 1px solid #e8e5dc; border-radius: 3mm; overflow: hidden; display: flex; gap: 5mm; padding: 4mm; }
-  .c-img { flex: 0 0 56mm; background: #f0ede5; border-radius: 2mm; display: flex; align-items: center; justify-content: center; overflow: hidden; }
-  .c-img img { width: 100%; height: 76mm; object-fit: contain; display: block; }   /* foto inteira, sem corte */
+  .c-img { flex: 0 0 58mm; display: flex; flex-direction: column; gap: 2mm; }
+  .c-main { background: #f0ede5; border-radius: 2mm; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+  .c-main img { width: 100%; height: 66mm; object-fit: contain; display: block; }   /* foto inteira, sem corte */
+  .c-thumbs { display: flex; flex-wrap: wrap; gap: 2mm; }
+  .c-thumbs img { flex: 0 0 auto; width: 17.5mm; height: 23mm; object-fit: cover; background: #f0ede5; border-radius: 1.5mm; display: block; }   /* todas as fotos/cores da peça */
   .c-b { flex: 1; padding: 1mm 1mm 1mm 0; display: flex; flex-direction: column; }
   .c-b h3 { font-family: Georgia, serif; font-weight: 500; font-size: 13.5pt; margin: 0 0 1mm; color: #1a1712; }
   .c-esp { font-family: Georgia, serif; font-style: italic; font-size: 9.5pt; color: #6b6659; margin: 0 0 2mm; }
@@ -46,7 +49,7 @@
   </section>
   <div class="page-head"><span class="t serif">Folhagens</span><span class="n">Atelier Nagori · 名残</span></div>
   <h2 class="sec">Folhagens</h2><div class="grid"><article class="c">
-    <div class="c-img"><img src="/assets/produtos/arranjo-orquidea.jpg?v=190" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div>
+    <div class="c-img"><div class="c-main"><img src="/assets/produtos/arranjo-orquidea.jpg?v=190" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div><div class="c-thumbs"><img src="/assets/produtos/arranjo-orquidea-2.jpg?v=190" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div></div>
     <div class="c-b">
       <h3>Tamandama Orquídea</h3>
       <p class="c-esp">Phalaenopsis com folhagens · composição única</p>
@@ -55,7 +58,7 @@
       <div class="c-price">R$ 480,00</div>
     </div>
   </article><article class="c">
-    <div class="c-img"><img src="/assets/produtos/maxi-tamandama.jpg?v=190" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div>
+    <div class="c-img"><div class="c-main"><img src="/assets/produtos/maxi-tamandama.jpg?v=190" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div><div class="c-thumbs"><img src="/assets/produtos/maxi-tamandama-2.jpg?v=190" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"><img src="/assets/produtos/maxi-tamandama-3.jpg?v=190" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div></div>
     <div class="c-b">
       <h3>Maxi Tamandama Orquídea</h3>
       <p class="c-esp">Phalaenopsis de grande porte com folhagens · composição única</p>
@@ -64,7 +67,7 @@
       <div class="c-price">R$ 580,00</div>
     </div>
   </article><article class="c">
-    <div class="c-img"><img src="/assets/produtos/orquidea-pipoca.jpg?v=190" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div>
+    <div class="c-img"><div class="c-main"><img src="/assets/produtos/orquidea-pipoca.jpg?v=190" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div></div>
     <div class="c-b">
       <h3>Orquídea Pipoca</h3>
       <p class="c-esp">Orquídea · folhagem escura · flores brancas em cacho</p>
@@ -73,7 +76,7 @@
       <div class="c-price">R$ 175,00</div>
     </div>
   </article><article class="c">
-    <div class="c-img"><img src="/assets/produtos/aglaonema-cherry.jpg?v=190" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div>
+    <div class="c-img"><div class="c-main"><img src="/assets/produtos/aglaonema-cherry.jpg?v=190" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div></div>
     <div class="c-b">
       <h3>Aglaonema Cherry</h3>
       <p class="c-esp">Aglaonema commutatum 'Cherry'</p>
@@ -82,7 +85,7 @@
       <div class="c-price">R$ 270,00</div>
     </div>
   </article><article class="c">
-    <div class="c-img"><img src="/assets/produtos/aglaonema-vermelha.jpg?v=190" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div>
+    <div class="c-img"><div class="c-main"><img src="/assets/produtos/aglaonema-vermelha.jpg?v=190" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div></div>
     <div class="c-b">
       <h3>Aglaonema Vermelha</h3>
       <p class="c-esp">Aglaonema sp.</p>
@@ -91,7 +94,7 @@
       <div class="c-price">R$ 230,00</div>
     </div>
   </article><article class="c">
-    <div class="c-img"><img src="/assets/produtos/aglaonema-branca-rosada.jpg?v=190" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div>
+    <div class="c-img"><div class="c-main"><img src="/assets/produtos/aglaonema-branca-rosada.jpg?v=190" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div></div>
     <div class="c-b">
       <h3>Aglaonema Rosa</h3>
       <p class="c-esp">Aglaonema sp.</p>
@@ -100,7 +103,7 @@
       <div class="c-price">R$ 230,00</div>
     </div>
   </article><article class="c">
-    <div class="c-img"><img src="/assets/produtos/aglaonema-rosa.jpg?v=190" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div>
+    <div class="c-img"><div class="c-main"><img src="/assets/produtos/aglaonema-rosa.jpg?v=190" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div></div>
     <div class="c-b">
       <h3>Aglaonema Lima</h3>
       <p class="c-esp">Aglaonema sp.</p>
@@ -109,7 +112,7 @@
       <div class="c-price">R$ 230,00</div>
     </div>
   </article><article class="c">
-    <div class="c-img"><img src="/assets/produtos/aglaonema-branca.jpg?v=190" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div>
+    <div class="c-img"><div class="c-main"><img src="/assets/produtos/aglaonema-branca.jpg?v=190" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div></div>
     <div class="c-b">
       <h3>Aglaonema Branca</h3>
       <p class="c-esp">Aglaonema sp.</p>
@@ -118,7 +121,7 @@
       <div class="c-price">R$ 230,00</div>
     </div>
   </article><article class="c">
-    <div class="c-img"><img src="/assets/produtos/maranta-triostar-grande.jpg?v=190" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div>
+    <div class="c-img"><div class="c-main"><img src="/assets/produtos/maranta-triostar-grande.jpg?v=190" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div></div>
     <div class="c-b">
       <h3>Maranta Triostar</h3>
       <p class="c-esp">Stromanthe sanguinea 'Triostar'</p>
@@ -127,7 +130,7 @@
       <div class="c-price">R$ 245,00</div>
     </div>
   </article><article class="c">
-    <div class="c-img"><img src="/assets/produtos/maranta-triostar.jpg?v=190" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div>
+    <div class="c-img"><div class="c-main"><img src="/assets/produtos/maranta-triostar.jpg?v=190" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div></div>
     <div class="c-b">
       <h3>Mini Maranta Triostar</h3>
       <p class="c-esp">Stromanthe sanguinea 'Triostar'</p>
@@ -136,7 +139,7 @@
       <div class="c-price">R$ 150,00</div>
     </div>
   </article><article class="c">
-    <div class="c-img"><img src="/assets/produtos/maranta-cascavel-grande.jpg?v=190" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div>
+    <div class="c-img"><div class="c-main"><img src="/assets/produtos/maranta-cascavel-grande.jpg?v=190" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div></div>
     <div class="c-b">
       <h3>Maranta Cascavel</h3>
       <p class="c-esp">Goeppertia lancifolia</p>
@@ -145,7 +148,7 @@
       <div class="c-price">R$ 230,00</div>
     </div>
   </article><article class="c">
-    <div class="c-img"><img src="/assets/produtos/maranta-cascavel.jpg?v=190" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div>
+    <div class="c-img"><div class="c-main"><img src="/assets/produtos/maranta-cascavel.jpg?v=190" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div></div>
     <div class="c-b">
       <h3>Mini Maranta Cascavel</h3>
       <p class="c-esp">Goeppertia insignis</p>
@@ -154,7 +157,7 @@
       <div class="c-price">R$ 150,00</div>
     </div>
   </article><article class="c">
-    <div class="c-img"><img src="/assets/produtos/singonio.jpg?v=190" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div>
+    <div class="c-img"><div class="c-main"><img src="/assets/produtos/singonio.jpg?v=190" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div></div>
     <div class="c-b">
       <h3>Singônio Rosa</h3>
       <p class="c-esp">Syngonium podophyllum</p>
@@ -163,7 +166,7 @@
       <div class="c-price">R$ 250,00</div>
     </div>
   </article><article class="c">
-    <div class="c-img"><img src="/assets/produtos/singonio-estrelado.jpg?v=190" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div>
+    <div class="c-img"><div class="c-main"><img src="/assets/produtos/singonio-estrelado.jpg?v=190" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div></div>
     <div class="c-b">
       <h3>Singônio Estrelado</h3>
       <p class="c-esp">Syngonium podophyllum</p>
@@ -172,7 +175,7 @@
       <div class="c-price">R$ 250,00</div>
     </div>
   </article><article class="c">
-    <div class="c-img"><img src="/assets/produtos/philodendron-birkin.jpg?v=190" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div>
+    <div class="c-img"><div class="c-main"><img src="/assets/produtos/philodendron-birkin.jpg?v=190" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div></div>
     <div class="c-b">
       <h3>Philodendron Birkin</h3>
       <p class="c-esp">Philodendron 'Birkin'</p>
@@ -181,7 +184,7 @@
       <div class="c-price">R$ 250,00</div>
     </div>
   </article><article class="c">
-    <div class="c-img"><img src="/assets/produtos/jiboia-suspensa.jpg?v=190" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div>
+    <div class="c-img"><div class="c-main"><img src="/assets/produtos/jiboia-suspensa.jpg?v=190" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div></div>
     <div class="c-b">
       <h3>Jiboia Suspensa</h3>
       <p class="c-esp">Epipremnum aureum · pendente</p>
@@ -190,7 +193,7 @@
       <div class="c-price">R$ 270,00</div>
     </div>
   </article><article class="c">
-    <div class="c-img"><img src="/assets/produtos/mini-jiboia-3.jpg?v=190" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div>
+    <div class="c-img"><div class="c-main"><img src="/assets/produtos/mini-jiboia-3.jpg?v=190" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div><div class="c-thumbs"><img src="/assets/produtos/filodendro-brasil.jpg?v=190" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"><img src="/assets/produtos/mini-jiboia-2.jpg?v=190" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"><img src="/assets/produtos/mini-jiboia-4.jpg?v=190" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"><img src="/assets/produtos/mini-jiboia-5.jpg?v=190" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div></div>
     <div class="c-b">
       <h3>Mini Jiboia</h3>
       <p class="c-esp">Epipremnum aureum · mini</p>
@@ -199,7 +202,7 @@
       <div class="c-price"><small>a partir de</small> R$ 150,00</div>
     </div>
   </article><article class="c">
-    <div class="c-img"><img src="/assets/produtos/hera-estrelada.jpg?v=190" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div>
+    <div class="c-img"><div class="c-main"><img src="/assets/produtos/hera-estrelada.jpg?v=190" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div></div>
     <div class="c-b">
       <h3>Hera Estrelada</h3>
       <p class="c-esp">Hedera helix</p>
@@ -208,7 +211,7 @@
       <div class="c-price">R$ 180,00</div>
     </div>
   </article><article class="c">
-    <div class="c-img"><img src="/assets/produtos/monstera-adansonii.jpg?v=190" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div>
+    <div class="c-img"><div class="c-main"><img src="/assets/produtos/monstera-adansonii.jpg?v=190" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div></div>
     <div class="c-b">
       <h3>Monstera Adansonii</h3>
       <p class="c-esp">Monstera adansonii</p>
@@ -217,7 +220,7 @@
       <div class="c-price">R$ 175,00</div>
     </div>
   </article><article class="c">
-    <div class="c-img"><img src="/assets/produtos/costela-adao.jpg?v=190" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div>
+    <div class="c-img"><div class="c-main"><img src="/assets/produtos/costela-adao.jpg?v=190" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div></div>
     <div class="c-b">
       <h3>Costela de Adão</h3>
       <p class="c-esp">Monstera deliciosa</p>
@@ -226,7 +229,7 @@
       <div class="c-price">R$ 450,00</div>
     </div>
   </article><article class="c">
-    <div class="c-img"><img src="/assets/produtos/costela-adao-constellation.jpg?v=190" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div>
+    <div class="c-img"><div class="c-main"><img src="/assets/produtos/costela-adao-constellation.jpg?v=190" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div></div>
     <div class="c-b">
       <h3>Costela de Adão Constellation</h3>
       <p class="c-esp">Monstera deliciosa 'Thai Constellation'</p>
@@ -235,7 +238,7 @@
       <div class="c-price">R$ 490,00</div>
     </div>
   </article><article class="c">
-    <div class="c-img"><img src="/assets/produtos/mini-costela-adao.jpg?v=190" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div>
+    <div class="c-img"><div class="c-main"><img src="/assets/produtos/mini-costela-adao.jpg?v=190" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div></div>
     <div class="c-b">
       <h3>Mini Costela de Adão</h3>
       <p class="c-esp">Monstera deliciosa · mini</p>
@@ -244,7 +247,7 @@
       <div class="c-price">R$ 175,00</div>
     </div>
   </article><article class="c">
-    <div class="c-img"><img src="/assets/produtos/alocasia-polly.jpg?v=190" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div>
+    <div class="c-img"><div class="c-main"><img src="/assets/produtos/alocasia-polly.jpg?v=190" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div></div>
     <div class="c-b">
       <h3>Alocásia Polly</h3>
       <p class="c-esp">Alocasia × amazonica</p>
@@ -253,7 +256,7 @@
       <div class="c-price">R$ 215,00</div>
     </div>
   </article><article class="c">
-    <div class="c-img"><img src="/assets/produtos/pata-de-elefante.jpg?v=190" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div>
+    <div class="c-img"><div class="c-main"><img src="/assets/produtos/pata-de-elefante.jpg?v=190" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div></div>
     <div class="c-b">
       <h3>Mini Pata de Elefante</h3>
       <p class="c-esp">Beaucarnea recurvata</p>
@@ -262,7 +265,7 @@
       <div class="c-price">R$ 250,00</div>
     </div>
   </article><article class="c">
-    <div class="c-img"><img src="/assets/produtos/pacova.jpg?v=190" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div>
+    <div class="c-img"><div class="c-main"><img src="/assets/produtos/pacova.jpg?v=190" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div></div>
     <div class="c-b">
       <h3>Pacová</h3>
       <p class="c-esp">Philodendron martianum</p>
@@ -271,7 +274,7 @@
       <div class="c-price">R$ 290,00</div>
     </div>
   </article><article class="c">
-    <div class="c-img"><img src="/assets/produtos/pachira-aquatica.jpg?v=190" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div>
+    <div class="c-img"><div class="c-main"><img src="/assets/produtos/pachira-aquatica.jpg?v=190" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div></div>
     <div class="c-b">
       <h3>Pachira · Árvore do Dinheiro</h3>
       <p class="c-esp">Pachira aquatica · a árvore do dinheiro</p>
@@ -280,7 +283,7 @@
       <div class="c-price">R$ 230,00</div>
     </div>
   </article><article class="c">
-    <div class="c-img"><img src="/assets/produtos/mini-arvore-felicidade.jpg?v=190" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div>
+    <div class="c-img"><div class="c-main"><img src="/assets/produtos/mini-arvore-felicidade.jpg?v=190" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div></div>
     <div class="c-b">
       <h3>Árvore da Felicidade</h3>
       <p class="c-esp">Polyscias sp.</p>
@@ -289,7 +292,7 @@
       <div class="c-price">R$ 300,00</div>
     </div>
   </article><article class="c">
-    <div class="c-img"><img src="/assets/produtos/ficus-shivereana.jpg?v=190" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div>
+    <div class="c-img"><div class="c-main"><img src="/assets/produtos/ficus-shivereana.jpg?v=190" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div></div>
     <div class="c-b">
       <h3>Fícus Elástica Shivereana</h3>
       <p class="c-esp">Ficus elastica 'Shivereana'</p>
@@ -298,7 +301,7 @@
       <div class="c-price">R$ 390,00</div>
     </div>
   </article><article class="c">
-    <div class="c-img"><img src="/assets/produtos/ficus-lyrata.jpg?v=190" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div>
+    <div class="c-img"><div class="c-main"><img src="/assets/produtos/ficus-lyrata.jpg?v=190" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div></div>
     <div class="c-b">
       <h3>Fícus Lyrata</h3>
       <p class="c-esp">Ficus lyrata</p>
@@ -307,7 +310,7 @@
       <div class="c-price">R$ 350,00</div>
     </div>
   </article><article class="c">
-    <div class="c-img"><img src="/assets/produtos/ficus-burgundy.jpg?v=190" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div>
+    <div class="c-img"><div class="c-main"><img src="/assets/produtos/ficus-burgundy.jpg?v=190" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div></div>
     <div class="c-b">
       <h3>Fícus Elástica Burgundy</h3>
       <p class="c-esp">Ficus elastica 'Burgundy'</p>
@@ -316,7 +319,7 @@
       <div class="c-price">R$ 390,00</div>
     </div>
   </article><article class="c">
-    <div class="c-img"><img src="/assets/produtos/ficus-tineke.jpg?v=190" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div>
+    <div class="c-img"><div class="c-main"><img src="/assets/produtos/ficus-tineke.jpg?v=190" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div></div>
     <div class="c-b">
       <h3>Fícus Elástica Tineke</h3>
       <p class="c-esp">Ficus elastica 'Tineke'</p>
@@ -325,7 +328,7 @@
       <div class="c-price">R$ 390,00</div>
     </div>
   </article><article class="c">
-    <div class="c-img"><img src="/assets/produtos/ficus-ruby.jpg?v=190" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div>
+    <div class="c-img"><div class="c-main"><img src="/assets/produtos/ficus-ruby.jpg?v=190" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div></div>
     <div class="c-b">
       <h3>Fícus Elástica Ruby</h3>
       <p class="c-esp">Ficus elastica 'Ruby'</p>
@@ -334,7 +337,7 @@
       <div class="c-price">R$ 390,00</div>
     </div>
   </article><article class="c">
-    <div class="c-img"><img src="/assets/produtos/asplenio.jpg?v=190" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div>
+    <div class="c-img"><div class="c-main"><img src="/assets/produtos/asplenio.jpg?v=190" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div></div>
     <div class="c-b">
       <h3>Asplênio</h3>
       <p class="c-esp">Asplenium nidus</p>
@@ -343,7 +346,7 @@
       <div class="c-price">R$ 280,00</div>
     </div>
   </article><article class="c">
-    <div class="c-img"><img src="/assets/produtos/anturio-rosa.jpg?v=190" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div>
+    <div class="c-img"><div class="c-main"><img src="/assets/produtos/anturio-rosa.jpg?v=190" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div></div>
     <div class="c-b">
       <h3>Antúrio Rosa</h3>
       <p class="c-esp">Anthurium andraeanum · tamanho médio</p>
@@ -352,7 +355,7 @@
       <div class="c-price">R$ 275,00</div>
     </div>
   </article><article class="c">
-    <div class="c-img"><img src="/assets/produtos/anturio-coracao.jpg?v=190" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div>
+    <div class="c-img"><div class="c-main"><img src="/assets/produtos/anturio-coracao.jpg?v=190" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div></div>
     <div class="c-b">
       <h3>Antúrio Coração</h3>
       <p class="c-esp">Anthurium clarinervium</p>
@@ -361,7 +364,7 @@
       <div class="c-price">R$ 230,00</div>
     </div>
   </article><article class="c">
-    <div class="c-img"><img src="/assets/produtos/aspargo-melindre.jpg?v=190" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div>
+    <div class="c-img"><div class="c-main"><img src="/assets/produtos/aspargo-melindre.jpg?v=190" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div></div>
     <div class="c-b">
       <h3>Aspargo Melindre</h3>
       <p class="c-esp">Asparagus setaceus</p>
@@ -370,7 +373,7 @@
       <div class="c-price">R$ 230,00</div>
     </div>
   </article><article class="c">
-    <div class="c-img"><img src="/assets/produtos/avenca.jpg?v=190" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div>
+    <div class="c-img"><div class="c-main"><img src="/assets/produtos/avenca.jpg?v=190" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div></div>
     <div class="c-b">
       <h3>Avenca</h3>
       <p class="c-esp">Adiantum sp.</p>
@@ -379,7 +382,7 @@
       <div class="c-price">R$ 230,00</div>
     </div>
   </article><article class="c">
-    <div class="c-img"><img src="/assets/produtos/samambaia-estrela-azul.jpg?v=190" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div>
+    <div class="c-img"><div class="c-main"><img src="/assets/produtos/samambaia-estrela-azul.jpg?v=190" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div></div>
     <div class="c-b">
       <h3>Samambaia Estrela Azul</h3>
       <p class="c-esp">Phlebodium aureum 'Blue Star'</p>
@@ -388,7 +391,7 @@
       <div class="c-price">R$ 270,00</div>
     </div>
   </article><article class="c">
-    <div class="c-img"><img src="/assets/produtos/jade.jpg?v=190" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div>
+    <div class="c-img"><div class="c-main"><img src="/assets/produtos/jade.jpg?v=190" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div></div>
     <div class="c-b">
       <h3>Jade · Árvore da Amizade</h3>
       <p class="c-esp">Crassula ovata · a árvore da amizade</p>
@@ -397,7 +400,7 @@
       <div class="c-price">R$ 190,00</div>
     </div>
   </article><article class="c">
-    <div class="c-img"><img src="/assets/produtos/croton.jpg?v=190" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div>
+    <div class="c-img"><div class="c-main"><img src="/assets/produtos/croton.jpg?v=190" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div></div>
     <div class="c-b">
       <h3>Croton</h3>
       <p class="c-esp">Codiaeum variegatum</p>
@@ -406,7 +409,7 @@
       <div class="c-price">R$ 190,00</div>
     </div>
   </article></div><h2 class="sec">Grande porte</h2><div class="grid"><article class="c">
-    <div class="c-img"><img src="/assets/produtos/oliveira-grande.jpg?v=190" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div>
+    <div class="c-img"><div class="c-main"><img src="/assets/produtos/oliveira-grande.jpg?v=190" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div></div>
     <div class="c-b">
       <h3>Oliveira</h3>
       <p class="c-esp">Olea europaea · 1,60 m a 1,80 m</p>
@@ -415,7 +418,7 @@
       <div class="c-price">R$ 2.500,00</div>
     </div>
   </article><article class="c">
-    <div class="c-img"><img src="/assets/produtos/jabuticabeira-grande.jpg?v=190" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div>
+    <div class="c-img"><div class="c-main"><img src="/assets/produtos/jabuticabeira-grande.jpg?v=190" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div></div>
     <div class="c-b">
       <h3>Jabuticabeira</h3>
       <p class="c-esp">Plinia cauliflora · 1,20 m a 1,60 m · frutificando</p>
@@ -424,7 +427,7 @@
       <div class="c-price">R$ 2.000,00</div>
     </div>
   </article><article class="c">
-    <div class="c-img"><img src="/assets/produtos/arvore-felicidade.jpg?v=190" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div>
+    <div class="c-img"><div class="c-main"><img src="/assets/produtos/arvore-felicidade.jpg?v=190" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div></div>
     <div class="c-b">
       <h3>Árvore da Felicidade</h3>
       <p class="c-esp">Polyscias sp. · fêmea e macho · 80 cm a 1 m</p>

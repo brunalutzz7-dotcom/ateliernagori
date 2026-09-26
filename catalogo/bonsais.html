@@ -20,8 +20,11 @@
   .sec { font-size: 9pt; letter-spacing: .22em; text-transform: uppercase; color: #8c8678; border-bottom: 1px solid #e4e1d7; padding-bottom: 2mm; margin: 8mm 0 5mm; break-after: avoid; }
   .grid { display: flex; flex-direction: column; gap: 6mm; }
   .c { break-inside: avoid; border: 1px solid #e8e5dc; border-radius: 3mm; overflow: hidden; display: flex; gap: 5mm; padding: 4mm; }
-  .c-img { flex: 0 0 56mm; background: #f0ede5; border-radius: 2mm; display: flex; align-items: center; justify-content: center; overflow: hidden; }
-  .c-img img { width: 100%; height: 76mm; object-fit: contain; display: block; }   /* foto inteira, sem corte */
+  .c-img { flex: 0 0 58mm; display: flex; flex-direction: column; gap: 2mm; }
+  .c-main { background: #f0ede5; border-radius: 2mm; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+  .c-main img { width: 100%; height: 66mm; object-fit: contain; display: block; }   /* foto inteira, sem corte */
+  .c-thumbs { display: flex; flex-wrap: wrap; gap: 2mm; }
+  .c-thumbs img { flex: 0 0 auto; width: 17.5mm; height: 23mm; object-fit: cover; background: #f0ede5; border-radius: 1.5mm; display: block; }   /* todas as fotos/cores da peça */
   .c-b { flex: 1; padding: 1mm 1mm 1mm 0; display: flex; flex-direction: column; }
   .c-b h3 { font-family: Georgia, serif; font-weight: 500; font-size: 13.5pt; margin: 0 0 1mm; color: #1a1712; }
   .c-esp { font-family: Georgia, serif; font-style: italic; font-size: 9.5pt; color: #6b6659; margin: 0 0 2mm; }
@@ -46,7 +49,7 @@
   </section>
   <div class="page-head"><span class="t serif">Bonsais</span><span class="n">Atelier Nagori · 名残</span></div>
   <div class="grid"><article class="c">
-    <div class="c-img"><img src="/assets/produtos/bonsai-ligustro-15-2.jpg?v=190" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div>
+    <div class="c-img"><div class="c-main"><img src="/assets/produtos/bonsai-ligustro-15-2.jpg?v=190" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div><div class="c-thumbs"><img src="/assets/produtos/bonsai-ligustro-15.jpg?v=190" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div></div>
     <div class="c-b">
       <h3>Bonsai Ligustro · 15 anos</h3>
       <p class="c-esp">Ligustrum sinense · aprox. 50 cm</p>
@@ -55,7 +58,7 @@
       <div class="c-price">R$ 950,00</div>
     </div>
   </article><article class="c">
-    <div class="c-img"><img src="/assets/produtos/bonsai-serissa-8.jpg?v=190" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div>
+    <div class="c-img"><div class="c-main"><img src="/assets/produtos/bonsai-serissa-8.jpg?v=190" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div></div>
     <div class="c-b">
       <h3>Bonsai Serissa · 8 a 9 anos</h3>
       <p class="c-esp">Serissa japonica · 20 a 30 cm</p>
@@ -64,7 +67,7 @@
       <div class="c-price">R$ 800,00</div>
     </div>
   </article><article class="c">
-    <div class="c-img"><img src="/assets/produtos/bonsai-ficus-6.jpg?v=190" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div>
+    <div class="c-img"><div class="c-main"><img src="/assets/produtos/bonsai-ficus-6.jpg?v=190" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div></div>
     <div class="c-b">
       <h3>Bonsai Fícus · 6 anos</h3>
       <p class="c-esp">Ficus microcarpa · aprox. 30 cm</p>
@@ -73,7 +76,7 @@
       <div class="c-price">R$ 800,00</div>
     </div>
   </article><article class="c">
-    <div class="c-img"><img src="/assets/produtos/bonsai-jabuticabeira-12-2.jpg?v=190" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div>
+    <div class="c-img"><div class="c-main"><img src="/assets/produtos/bonsai-jabuticabeira-12-2.jpg?v=190" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div><div class="c-thumbs"><img src="/assets/produtos/bonsai-jabuticabeira-12-3.jpg?v=190" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"><img src="/assets/produtos/bonsai-jabuticabeira-12-4.jpg?v=190" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div></div>
     <div class="c-b">
       <h3>Bonsai Jabuticabeira · 16 anos</h3>
       <p class="c-esp">Plinia cauliflora · aprox. 50 cm · frutificando</p>
@@ -82,7 +85,7 @@
       <div class="c-price">R$ 2.500,00</div>
     </div>
   </article><article class="c">
-    <div class="c-img"><img src="/assets/produtos/bonsai-jabuticabeira-4.jpg?v=190" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div>
+    <div class="c-img"><div class="c-main"><img src="/assets/produtos/bonsai-jabuticabeira-4.jpg?v=190" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div></div>
     <div class="c-b">
       <h3>Bonsai Jabuticabeira · 4 anos</h3>
       <p class="c-esp">Plinia cauliflora · aprox. 40 cm</p>
@@ -91,7 +94,7 @@
       <div class="c-price">R$ 800,00</div>
     </div>
   </article><article class="c">
-    <div class="c-img"><img src="/assets/produtos/bonsai-amora-17.jpg?v=190" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div>
+    <div class="c-img"><div class="c-main"><img src="/assets/produtos/bonsai-amora-17.jpg?v=190" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div></div>
     <div class="c-b">
       <h3>Bonsai Amora · 16 anos</h3>
       <p class="c-esp">Morus nigra · aprox. 50 cm</p>
@@ -100,7 +103,7 @@
       <div class="c-price">R$ 2.000,00</div>
     </div>
   </article><article class="c">
-    <div class="c-img"><img src="/assets/produtos/bonsai-amora-7.jpg?v=190" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div>
+    <div class="c-img"><div class="c-main"><img src="/assets/produtos/bonsai-amora-7.jpg?v=190" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div></div>
     <div class="c-b">
       <h3>Bonsai Amora · 7 anos</h3>
       <p class="c-esp">Morus nigra · aprox. 50 cm</p>
@@ -109,7 +112,7 @@
       <div class="c-price">R$ 800,00</div>
     </div>
   </article><article class="c">
-    <div class="c-img"><img src="/assets/produtos/bonsai-oliveira-16.jpg?v=190" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div>
+    <div class="c-img"><div class="c-main"><img src="/assets/produtos/bonsai-oliveira-16.jpg?v=190" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div></div>
     <div class="c-b">
       <h3>Bonsai Oliveira · 16 anos</h3>
       <p class="c-esp">Olea europaea · aprox. 40 cm</p>
@@ -118,7 +121,7 @@
       <div class="c-price">R$ 2.500,00</div>
     </div>
   </article><article class="c">
-    <div class="c-img"><img src="/assets/produtos/bonsai-pinheiro-negro-14.jpg?v=190" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div>
+    <div class="c-img"><div class="c-main"><img src="/assets/produtos/bonsai-pinheiro-negro-14.jpg?v=190" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div></div>
     <div class="c-b">
       <h3>Bonsai Pinheiro Negro · 14 anos</h3>
       <p class="c-esp">Pinus thunbergii · 40 a 60 cm</p>
@@ -127,7 +130,7 @@
       <div class="c-price">R$ 3.000,00</div>
     </div>
   </article><article class="c">
-    <div class="c-img"><img src="/assets/produtos/bonsai-shimpaku-16.jpg?v=190" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div>
+    <div class="c-img"><div class="c-main"><img src="/assets/produtos/bonsai-shimpaku-16.jpg?v=190" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div></div>
     <div class="c-b">
       <h3>Bonsai Shimpaku · 16 anos</h3>
       <p class="c-esp">Juniperus chinensis 'Shimpaku' · 30 a 40 cm</p>
@@ -136,7 +139,7 @@
       <div class="c-price">R$ 2.300,00</div>
     </div>
   </article><article class="c">
-    <div class="c-img"><img src="/assets/produtos/bonsai-shimpaku-5.jpg?v=190" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div>
+    <div class="c-img"><div class="c-main"><img src="/assets/produtos/bonsai-shimpaku-5.jpg?v=190" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div></div>
     <div class="c-b">
       <h3>Bonsai Shimpaku · 4 anos</h3>
       <p class="c-esp">Juniperus chinensis 'Shimpaku' · aprox. 30 cm</p>
@@ -145,7 +148,7 @@
       <div class="c-price">R$ 800,00</div>
     </div>
   </article><article class="c">
-    <div class="c-img"><img src="/assets/produtos/bonsai-sakura.jpg?v=190" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div>
+    <div class="c-img"><div class="c-main"><img src="/assets/produtos/bonsai-sakura.jpg?v=190" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div></div>
     <div class="c-b">
       <h3>Bonsai Sakura</h3>
       <p class="c-esp">Prunus serrulata · aprox. 20 cm</p>
@@ -154,7 +157,7 @@
       <div class="c-price">R$ 990,00</div>
     </div>
   </article><article class="c">
-    <div class="c-img"><img src="/assets/produtos/bonsai-caliandra-9.jpg?v=190" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div>
+    <div class="c-img"><div class="c-main"><img src="/assets/produtos/bonsai-caliandra-9.jpg?v=190" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div></div>
     <div class="c-b">
       <h3>Bonsai Caliandra Rosa · 9 anos</h3>
       <p class="c-esp">Calliandra brevipes · aprox. 50 cm</p>
@@ -163,7 +166,7 @@
       <div class="c-price">R$ 1.000,00</div>
     </div>
   </article><article class="c">
-    <div class="c-img"><img src="/assets/produtos/bonsai-jasmim-anao-6.jpg?v=190" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div>
+    <div class="c-img"><div class="c-main"><img src="/assets/produtos/bonsai-jasmim-anao-6.jpg?v=190" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div></div>
     <div class="c-b">
       <h3>Bonsai Jasmim Anão · 6 anos</h3>
       <p class="c-esp">Jasminum sp. · anão · aprox. 30 cm</p>
@@ -172,7 +175,7 @@
       <div class="c-price">R$ 800,00</div>
     </div>
   </article><article class="c">
-    <div class="c-img"><img src="/assets/produtos/bonsai-buxus-9.jpg?v=190" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div>
+    <div class="c-img"><div class="c-main"><img src="/assets/produtos/bonsai-buxus-9.jpg?v=190" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div></div>
     <div class="c-b">
       <h3>Bonsai Buxus · 9 anos</h3>
       <p class="c-esp">Buxus harlandii · aprox. 20 cm</p>
@@ -181,7 +184,7 @@
       <div class="c-price">R$ 900,00</div>
     </div>
   </article><article class="c">
-    <div class="c-img"><img src="/assets/produtos/bonsai-cerejeira-rg-6.jpg?v=190" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div>
+    <div class="c-img"><div class="c-main"><img src="/assets/produtos/bonsai-cerejeira-rg-6.jpg?v=190" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div></div>
     <div class="c-b">
       <h3>Bonsai Cerejeira-do-Rio-Grande · 7 anos</h3>
       <p class="c-esp">Eugenia involucrata · 30 a 40 cm</p>
@@ -190,7 +193,7 @@
       <div class="c-price">R$ 800,00</div>
     </div>
   </article><article class="c">
-    <div class="c-img"><img src="/assets/produtos/bonsai-cambui-8.jpg?v=190" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div>
+    <div class="c-img"><div class="c-main"><img src="/assets/produtos/bonsai-cambui-8.jpg?v=190" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23eceadf'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%239bad86'/%3E%3Cpath d='M200 306v82' stroke='%237c8e68' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='sans-serif' font-size='19' fill='%23a99f88'%3EFOTO EM BREVE%3C/text%3E%3C/svg%3E'"></div></div>
     <div class="c-b">
       <h3>Bonsai Cambuí · 8 anos</h3>
       <p class="c-esp">Myrciaria tenella · aprox. 20 cm</p>
