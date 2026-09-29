@@ -181,6 +181,7 @@
         <span class="card-cat">${catNome(p.categoria)}</span>
         ${p.raridade ? `<span class="card-flag">Raridade</span>` : ""}
         ${cardMedia(p)}
+        ${p.suporte ? "" : `<span class="card-nobase">Suporte não incluso</span>`}
       </div>
       <div class="card-body">
         <h3>${p.nome}</h3>
@@ -277,6 +278,7 @@
     const galeriaHTML = gal.length
       ? `<div class="modal-gallery">
            <img id="modalMainImg" src="${gal[0]}" alt="${p.nome}">
+           ${p.suporte ? "" : `<span class="modal-nobase">Suporte não incluso</span>`}
            ${modalPaired ? `<span class="gal-caption" id="galCaption">${modalVarLabels[0]}</span>` : ""}
            ${multi ? `
              <button class="gal-nav gal-prev" data-gal="-1" aria-label="Foto anterior">‹</button>
@@ -303,7 +305,7 @@
           ${p.significado ? `<p class="modal-mean"><span>✿ Significado</span> ${p.significado}</p>` : ""}
           ${variantesHTML}
           <div class="modal-tags">${chips(p)}</div>
-          ${p.suporte ? "" : `<p class="modal-base">A base é vendida à parte — escolha a sua na categoria <a href="#produtos" data-cat-link="suporte">Suportes</a>.</p>`}
+          ${p.suporte ? "" : `<p class="modal-base">🪴 <strong>O suporte da foto não está incluso.</strong> As peças vão sem base — escolha o seu na categoria <a href="#produtos" data-cat-link="suporte">Suportes</a>.</p>`}
           ${cta}
         </div>
       </div>`;
