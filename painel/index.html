@@ -291,12 +291,14 @@ async function carregar(){
       PRODUTOS = PRODUTOS.filter(p=>p.id!==rid);
     }
   }
-  // Sincroniza nome/categoria com o site (SEED) — só onde diferente
+  // Sincroniza nome/categoria/preço de venda com o site (SEED) — só onde diferente.
+  // O preço de venda deve SEMPRE espelhar o catálogo do site; isso corrige qualquer
+  // valor antigo preso no banco (ex.: Jiboia Suspensa gravada a R$130 em vez de R$270).
   const seedMap = Object.fromEntries(SEED_PRODUTOS.map(s=>[s.id,s]));
-  const nomeFix = PRODUTOS.filter(p=>seedMap[p.id] && (p.nome!==seedMap[p.id].nome || p.categoria!==seedMap[p.id].categoria));
+  const nomeFix = PRODUTOS.filter(p=>seedMap[p.id] && (p.nome!==seedMap[p.id].nome || p.categoria!==seedMap[p.id].categoria || Number(p.preco)!==Number(seedMap[p.id].preco)));
   if(nomeFix.length){
-    nomeFix.forEach(p=>{ p.nome=seedMap[p.id].nome; p.categoria=seedMap[p.id].categoria; });
-    await Promise.all(nomeFix.map(p=>sb.from("produtos").update({nome:p.nome,categoria:p.categoria}).eq("id",p.id)));
+    nomeFix.forEach(p=>{ p.nome=seedMap[p.id].nome; p.categoria=seedMap[p.id].categoria; p.preco=seedMap[p.id].preco; });
+    await Promise.all(nomeFix.map(p=>sb.from("produtos").update({nome:p.nome,categoria:p.categoria,preco:p.preco}).eq("id",p.id)));
   }
   // Migração de custos: atualiza valores auto-gravados quando o custo mudou (preserva edições manuais)
   const migC = PRODUTOS.filter(p=>{ for(const [id,de,para] of CUSTOS_MIGRACAO){ if(p.id===id && Number(p.custo)===de) return true; } return false; });
