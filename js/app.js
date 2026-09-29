@@ -305,7 +305,7 @@
           ${p.significado ? `<p class="modal-mean"><span>✿ Significado</span> ${p.significado}</p>` : ""}
           ${variantesHTML}
           <div class="modal-tags">${chips(p)}</div>
-          ${p.suporte ? "" : `<p class="modal-base">🪴 <strong>O suporte da foto não está incluso.</strong> As peças vão sem base — escolha o seu na categoria <a href="#produtos" data-cat-link="suporte">Suportes</a>.</p>`}
+          ${p.suporte ? "" : `<p class="modal-base"><strong>O suporte da foto não está incluso.</strong> As peças vão sem base — escolha o seu na categoria <a href="#produtos" data-cat-link="suporte">Suportes</a>.</p>`}
           ${cta}
         </div>
       </div>`;
