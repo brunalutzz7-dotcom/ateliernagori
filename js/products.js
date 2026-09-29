@@ -132,7 +132,7 @@ const PRODUCTS = [
   { id: "samambaia-estrela-azul", nome: "Samambaia Estrela Azul", especie: "Phlebodium aureum 'Blue Star'", categoria: "dentro", ambiente: "ambos", pet: "safe",
     descricao: "Frondes largas em tom verde-azulado, bem diferentes da samambaia comum. Adora umidade e luz filtrada.", significado: "A samambaia simboliza proteção, prosperidade e vínculos que se renovam — tradição de casa protegida.", preco: 270, img: IMG("samambaia-estrela-azul") },
   { id: "jade", nome: "Jade · Árvore da Amizade", especie: "Crassula ovata · a árvore da amizade", categoria: "ambos", ambiente: "ambos", pet: "toxic",
-    descricao: "Suculenta de folhas gordinhas e brilhantes. Conhecida como a árvore da amizade, quase não pede água — só bastante luz.", significado: "Conhecida como a árvore da amizade — símbolo de amizade verdadeira, prosperidade e boa sorte. Um presente cheio de significado para quem se quer bem.", preco: 190, img: IMG("jade") },
+    descricao: "Suculenta de folhas gordinhas e brilhantes. Conhecida como a árvore da amizade, quase não pede água — só bastante luz.", significado: "Conhecida como a árvore da amizade — símbolo de amizade verdadeira, prosperidade e boa sorte. Um presente cheio de significado para quem se quer bem.", preco: 220, img: IMG("jade") },
   { id: "croton", nome: "Croton", especie: "Codiaeum variegatum", categoria: "ambos", ambiente: "ambos", pet: "toxic",
     descricao: "Folha coriácea listrada de verde, amarelo e vermelho, que ganha cor quanto mais luz recebe. Nenhuma folha repete a mistura da outra.", significado: "Croton simboliza energia, transformação e alegria — muda de cor com a luz, como a vida em movimento.", preco: 190, img: IMG("croton") },
   /* ---------- 04 · BONSAIS ---------- */
