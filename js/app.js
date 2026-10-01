@@ -203,10 +203,14 @@
   }
   function renderGrid(cat = "todos") {
     // "Todos" mostra as plantas; os suportes aparecem na própria categoria.
+    // "folhagens" agrupa dentro / ambos / ar livre numa visão só.
+    const ehFolhagem = (c) => ["dentro", "ambos", "arlivre"].includes(c);
     const list = cat === "todos"
       ? PRODUCTS.filter((p) => p.categoria !== "suporte")
-      : PRODUCTS.filter((p) => p.categoria === cat);
-    if (cat === "todos") {
+      : cat === "folhagens"
+        ? PRODUCTS.filter((p) => ehFolhagem(p.categoria))
+        : PRODUCTS.filter((p) => p.categoria === cat);
+    if (cat === "todos" || cat === "folhagens") {
       let html = "", secao = null;
       list.forEach((p) => {
         const s = secaoDe(p.categoria);
@@ -824,8 +828,14 @@
       if (!link) return;
       e.preventDefault();
       closeModal();
-      const chip = $(`.chip[data-cat="${link.dataset.catLink}"]`);
+      const alvo = link.dataset.catLink;
+      const chip = $(`.chip[data-cat="${alvo}"]`);
       if (chip) chip.click();
+      else {
+        // categorias "meta" sem chip próprio (ex.: folhagens)
+        $$(".chip").forEach((x) => x.classList.remove("active"));
+        renderGrid(alvo);
+      }
       $("#produtos").scrollIntoView({ behavior: "smooth" });
     });
     $("#checkoutBtn").addEventListener("click", checkout);
