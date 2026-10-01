@@ -185,7 +185,7 @@ const PRODUCTS = [
   { id: "suporte-tronco-alto", nome: "Tronco alto", especie: "Suporte especial · madeira clara · medidas variáveis", categoria: "suporte", suporte: true,
     descricao: "Cilindro de madeira clara com haste fina. Eleva a esfera bem acima da superfície — a base mais vertical da linha.", preco: 120, img: "assets/bases/tronco-alto-uso.jpg" },
   { id: "suporte-madeira-aro-duplo", nome: "Madeira com aro duplo", especie: "Suporte · madeira e ferro · dois aros em alturas diferentes", categoria: "suporte", suporte: true,
-    descricao: "Duas hastes na mesma base, em alturas distintas. Para montar duas peças pequenas juntas, em composição.", preco: 95, imgs: ["assets/bases/madeira-aro-duplo.jpg", "assets/bases/madeira-aro-duplo-uso.jpg"] },
+    descricao: "Duas hastes na mesma base, em alturas distintas. Para montar duas peças pequenas juntas, em composição.", preco: 85, imgs: ["assets/bases/madeira-aro-duplo.jpg", "assets/bases/madeira-aro-duplo-uso.jpg"] },
   { id: "suporte-tripe-45", nome: "Tripé de ferro · 45 cm", especie: "Suporte de chão · ferro preto · aro 18 cm · altura 45 cm", categoria: "suporte", suporte: true,
     descricao: "A altura intermediária do tripé de chão. Ergue a esfera bem acima do piso, com presença de escultura.", preco: 85, imgs: ["assets/bases/tripe-45.jpg", "assets/bases/tripe-45-uso.jpg"] },
   { id: "suporte-cubo-ferro-baixo", nome: "Cubo de ferro · baixo", especie: "Suporte especial · ferro preto · aro interno", categoria: "suporte", suporte: true,
