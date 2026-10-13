@@ -130,7 +130,7 @@ const PRODUCTS = [
   { id: "jade", nome: "Jade · Árvore da Amizade", especie: "Crassula ovata · a árvore da amizade", categoria: "ambos", ambiente: "ambos", pet: "toxic",
     descricao: "Suculenta de folhas gordinhas e brilhantes. Conhecida como a árvore da amizade, quase não pede água — só bastante luz.", significado: "Conhecida como a árvore da amizade — símbolo de amizade verdadeira, prosperidade e boa sorte. Um presente cheio de significado para quem se quer bem.", preco: 240, img: IMG("jade") },
   { id: "croton", nome: "Croton", especie: "Codiaeum variegatum", categoria: "ambos", ambiente: "ambos", pet: "toxic",
-    descricao: "Folha coriácea listrada de verde, amarelo e vermelho, que ganha cor quanto mais luz recebe. Nenhuma folha repete a mistura da outra.", significado: "Croton simboliza energia, transformação e alegria — muda de cor com a luz, como a vida em movimento.", preco: 165, img: IMG("croton") },
+    descricao: "Folha coriácea listrada de verde, amarelo e vermelho, que ganha cor quanto mais luz recebe. Nenhuma folha repete a mistura da outra.", significado: "Croton simboliza energia, transformação e alegria — muda de cor com a luz, como a vida em movimento.", preco: 270, img: IMG("croton") },
   /* ---------- 04 · BONSAIS ---------- */
   { id: "bonsai-ligustro-15", nome: "Bonsai Ligustro · 15 anos", especie: "Ligustrum sinense · aprox. 50 cm", categoria: "bonsai", ambiente: "ambos", pet: "toxic",
     descricao: "Folhagem miúda e densa, tronco que engrossa rápido. Perdoa erro de rega — o bonsai mais generoso para quem está começando.", significado: "Bonsai de ligustro: símbolo de proteção e vida longa, cultivado para trazer harmonia ao lar.", preco: 1300, imgs: [IMG("bonsai-ligustro-15-2"), IMG("bonsai-ligustro-15")] },
