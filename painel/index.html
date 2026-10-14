@@ -108,7 +108,7 @@
 <!-- App -->
 <div id="appView" class="hidden">
   <header class="top">
-    <b>✿ Atelier Nagori</b><span style="font-size:.62rem;opacity:.55;margin-left:7px;letter-spacing:.02em">v33 · subs</span>
+    <b>✿ Atelier Nagori</b><span style="font-size:.62rem;opacity:.55;margin-left:7px;letter-spacing:.02em">v34 · musgo</span>
     <button class="sair" id="btnSair">Sair</button>
   </header>
   <div class="wrap">
@@ -416,7 +416,7 @@ el("btnExportar").addEventListener("click", exportarDados);
 // ---------- COMPRAS DE INSUMOS ----------
 let COMPRAS=[];
 const CAT_LABEL={musgo:"Musgo",embalagem:"Embalagem (kit)",adubo:"Adubo folhagem",substrato:"Substrato folhagem","adubo-bonsai":"Adubo bonsai","substrato-bonsai":"Substrato bonsai","linha-kokedama":"Linha kokedama","linha-tags":"Linha tags","enfeite-natal":"🎄 Enfeite de Natal",planta:"🌿 Planta",outro:"Outro"};
-const CAT_GRAMA=new Set(["adubo","substrato","adubo-bonsai","substrato-bonsai"]); // usam gramas do pacote
+const CAT_GRAMA=new Set(["musgo","adubo","substrato","adubo-bonsai","substrato-bonsai"]); // usam gramas do pacote
 const CAT_RECEITA=new Set(["adubo-bonsai","substrato-bonsai"]);                    // usam g por médio/grande
 function loadCompras(){ try{ COMPRAS=JSON.parse(localStorage.getItem("comprasAN")||"[]")||[]; }catch(e){ COMPRAS=[]; } }
 function saveCompras(){ try{ localStorage.setItem("comprasAN", JSON.stringify(COMPRAS)); }catch(e){} }
@@ -428,7 +428,7 @@ function mostraCamposCompra(){
   const emb=(c==="embalagem");
   el("cItemWrap").style.display=emb?"none":"block";
   el("cEmbWrap").style.display=emb?"block":"none";
-  el("cRendeWrap").style.display=(c==="musgo"||emb)?"block":"none";
+  el("cRendeWrap").style.display=(emb)?"block":"none";
   el("cGramasWrap").style.display=CAT_GRAMA.has(c)?"block":"none";
   el("cReceitaWrap").style.display=CAT_RECEITA.has(c)?"grid":"none";
   el("cQtdWrap").style.display=(c==="enfeite-natal")?"block":"none";
@@ -442,7 +442,7 @@ if(el("compraForm")) el("compraForm").addEventListener("submit", (e)=>{
   const valor=numBR(el("cValor").value);
   if(!item || valor==null){ toast("Preencha o item e o valor"); return; }
   const reg={ id:Date.now().toString(36)+Math.random().toString(36).slice(2,6), data:(el("cData").value||new Date().toISOString().slice(0,10)), item, categoria, valor, obs:el("cObs").value.trim() };
-  if(categoria==="musgo"||categoria==="embalagem"){ const r=numBR(el("cRende").value); if(r) reg.rende=r; }
+  if(categoria==="embalagem"){ const r=numBR(el("cRende").value); if(r) reg.rende=r; }
   if(CAT_GRAMA.has(categoria)){ const g=numBR(el("cGramas").value); if(g) reg.gramas=g; }
   if(CAT_RECEITA.has(categoria)){ const gm=numBR(el("cGmed").value), gg=numBR(el("cGgra").value); if(gm) reg.gmed=gm; if(gg) reg.ggra=gg; }
   if(categoria==="enfeite-natal"){ const qt=numBR(el("cQtd").value); if(qt) reg.qtd=qt; }
@@ -455,9 +455,6 @@ if(el("buscaCompra")) el("buscaCompra").addEventListener("input", renderCompras)
 function totalPecasVendidas(){ return VENDAS.reduce((a,v)=>a+Number(v.quantidade||1),0); }
 function calcCompras(){
   const g=(cat)=>COMPRAS.filter(c=>c.categoria===cat);
-  const musgo=g("musgo");
-  const musgoV=musgo.reduce((a,c)=>a+Number(c.valor||0),0), musgoR=musgo.reduce((a,c)=>a+Number(c.rende||0),0);
-  const musgoPP = musgoR>0 ? musgoV/musgoR : null;
   const porItem={};
   g("embalagem").forEach(c=>{ const k=(c.item||"").toLowerCase().trim(); if(!porItem[k]) porItem[k]={v:0,r:0,nome:c.item}; porItem[k].v+=Number(c.valor||0); porItem[k].r+=Number(c.rende||0); });
   let embItens=[], embComum=0, tagAcrMini=null, tagAcrDemais=null, embOk=false;
@@ -470,8 +467,9 @@ function calcCompras(){
   } });
   const embMini = embOk ? embComum+(tagAcrMini||0) : null;     // embalagem das Mini
   const embOutros = embOk ? embComum+(tagAcrDemais||0) : null; // embalagem das demais
-  // folhagem: R$/grama (adubo e substrato)
-  const porGrama=(cat)=>{ const arr=g(cat); const V=arr.reduce((a,c)=>a+Number(c.valor||0),0), G=arr.reduce((a,c)=>a+Number(c.gramas||0),0); return G>0?V/G:null; };
+  // R$/grama (só conta compras com gramas informados)
+  const porGrama=(cat)=>{ const arr=g(cat).filter(c=>Number(c.gramas||0)>0); const V=arr.reduce((a,c)=>a+Number(c.valor||0),0), G=arr.reduce((a,c)=>a+Number(c.gramas||0),0); return G>0?V/G:null; };
+  const musgoG=porGrama("musgo");
   const aduboG=porGrama("adubo");
   const substratoG=porGrama("substrato");
   // bonsai: receita — soma de (g por porte × R$/grama de cada insumo)
@@ -484,7 +482,7 @@ function calcCompras(){
   const natal=natalC.reduce((a,c)=>a+Number(c.valor||0),0);
   const natalQ=natalC.reduce((a,c)=>a+Number(c.qtd||0),0);
   const custoEnfeite = natalQ>0 ? natal/natalQ : null;
-  return {musgoPP, embMini, embOutros, embComum, tagAcrMini, tagAcrDemais, embItens, aduboG, substratoG, aduboBonMed:aduboBon.med, aduboBonGra:aduboBon.gra, substratoBonMed:substratoBon.med, substratoBonGra:substratoBon.gra, linhaK, linhaT, natal, natalQ, custoEnfeite, pecas};
+  return {musgoG, embMini, embOutros, embComum, tagAcrMini, tagAcrDemais, embItens, aduboG, substratoG, aduboBonMed:aduboBon.med, aduboBonGra:aduboBon.gra, substratoBonMed:substratoBon.med, substratoBonGra:substratoBon.gra, linhaK, linhaT, natal, natalQ, custoEnfeite, pecas};
 }
 function renderCompras(){
   loadCompras();
@@ -492,7 +490,7 @@ function renderCompras(){
   const cc=calcCompras();
   const miss='<span class="muted">—</span>';
   let h="";
-  h+=`<div class="small" style="padding:4px 0"><b>Musgo:</b> ${cc.musgoPP==null?'<span class="muted">registre o saco + quantas peças rende</span>':centBRL(cc.musgoPP)+" / peça"}</div>`;
+  h+=`<div class="small" style="padding:4px 0"><b>Musgo:</b> ${cc.musgoG==null?'<span class="muted">registre o saco + quantos gramas tem</span>':centBRL(cc.musgoG)+" / grama"}</div>`;
   h+=`<div class="small" style="padding:4px 0"><b>Embalagem · Mini:</b> ${cc.embMini==null?'<span class="muted">registre os itens do kit</span>':centBRL(cc.embMini)+" / venda"} <span class="muted">(com tag acrílico Mini)</span></div>`;
   h+=`<div class="small" style="padding:4px 0"><b>Embalagem · demais:</b> ${cc.embOutros==null?'<span class="muted">—</span>':centBRL(cc.embOutros)+" / venda"} <span class="muted">(com tag acrílico demais)</span></div>`;
   if(cc.embItens.length) h+=`<div class="small muted" style="padding:0 0 4px 12px">${cc.embItens.map(i=>gesc(i.nome)+": "+centBRL(i.pp)).join(" · ")}</div>`;
@@ -523,12 +521,15 @@ loadCompras();
 
 // ---------- PORTES (adubo + mão de obra) e aplicação nos custos ----------
 const PORTES=[
-  {k:"mini",nome:"Mini",mao:30},{k:"pequena",nome:"Pequena",mao:40},{k:"media",nome:"Média",mao:50},{k:"grande",nome:"Grande",mao:80},{k:"maxi",nome:"Maxi",mao:300},
-  {k:"tamandama-m",nome:"Tamandama Médio",mao:100},{k:"tamandama-g",nome:"Tamandama Grande",mao:120},
-  {k:"bonsai-m",nome:"Bonsai Médio",mao:100},{k:"bonsai-g",nome:"Bonsai Grande",mao:150}
+  {k:"mini",nome:"Mini",mao:30,musgo:15},{k:"pequena",nome:"Pequena",mao:40,musgo:25},{k:"media",nome:"Média",mao:50,musgo:35},{k:"grande",nome:"Grande",mao:80,musgo:50},{k:"maxi",nome:"Maxi",mao:300,musgo:250},
+  {k:"tamandama-m",nome:"Tamandama Médio",mao:100,musgo:50},{k:"tamandama-g",nome:"Tamandama Grande",mao:120,musgo:60},
+  {k:"bonsai-m",nome:"Bonsai Médio",mao:100,musgo:100},{k:"bonsai-g",nome:"Bonsai Grande",mao:150,musgo:150}
 ];
-// preenche a mão de obra padrão por porte (só onde ainda não foi definida)
-function seedPortesMao(){ let mudou=false; PORTES.forEach(pt=>{ if(pt.mao!=null){ if(!portesCfg[pt.k]) portesCfg[pt.k]={}; if(portesCfg[pt.k].mao==null){ portesCfg[pt.k].mao=pt.mao; mudou=true; } } }); if(mudou) savePortesCfg(); }
+// preenche padrões por porte (mão de obra e gramas de musgo) — só onde ainda não foi definido
+function seedPortesMao(){ let mudou=false; PORTES.forEach(pt=>{ if(!portesCfg[pt.k]) portesCfg[pt.k]={};
+    if(pt.mao!=null && portesCfg[pt.k].mao==null){ portesCfg[pt.k].mao=pt.mao; mudou=true; }
+    if(pt.musgo!=null && portesCfg[pt.k].musgo_g==null){ portesCfg[pt.k].musgo_g=pt.musgo; mudou=true; }
+  }); if(mudou) savePortesCfg(); }
 let portesCfg={}, porteProd={}, selProd=new Set();
 function loadPortesCfg(){ try{ portesCfg=JSON.parse(localStorage.getItem("portesCfgAN")||"{}")||{}; }catch(e){ portesCfg={}; } }
 function savePortesCfg(){ try{ localStorage.setItem("portesCfgAN", JSON.stringify(portesCfg)); }catch(e){} }
@@ -541,19 +542,20 @@ function renderPortes(){
   if(!el("portesTabela")) return;
   const cc=calcCompras();
   const isBon=(k)=>k==="bonsai-m"||k==="bonsai-g";
-  const celFolha=(pt,f,rate)=>{ const cfg=portesCfg[pt.k]||{}; const gv=cfg[f]; const rs=(rate!=null&&gv)?centBRL(rate*gv):"—";
-    return `<label style="flex:1;margin:0"><span class="small muted">${f==="adubo_g"?"🌿 adubo":"🪨 substrato"} (g)</span><input data-pk="${pt.k}" data-f="${f}" value="${gv!=null?gv:''}" inputmode="decimal" placeholder="g" style="width:100%;padding:6px;text-align:center"><span class="small muted" style="display:block;text-align:center">${rs}</span></label>`; };
+  const celFolha=(pt,f,rate,lbl)=>{ const cfg=portesCfg[pt.k]||{}; const gv=cfg[f]; const rs=(rate!=null&&gv)?centBRL(rate*gv):"—";
+    return `<label style="flex:1;margin:0"><span class="small muted">${lbl} (g)</span><input data-pk="${pt.k}" data-f="${f}" value="${gv!=null?gv:''}" inputmode="decimal" placeholder="g" style="width:100%;padding:6px;text-align:center"><span class="small muted" style="display:block;text-align:center">${rs}</span></label>`; };
   const celBon=(emoji,label,val)=>`<div style="flex:1"><span class="small muted">${emoji} ${label}</span><div style="text-align:center;color:#6b6659;font-weight:600;padding:6px 0">${val==null?'<span class="muted">—</span>':centBRL(val)}</div><span class="small muted" style="display:block;text-align:center">receita</span></div>`;
   el("portesTabela").innerHTML = PORTES.map(pt=>{
     const cfg=portesCfg[pt.k]||{}; const bon=isBon(pt.k);
-    const aduCel = bon ? celBon("🌿","adubo", pt.k==="bonsai-m"?cc.aduboBonMed:cc.aduboBonGra) : celFolha(pt,"adubo_g",cc.aduboG);
-    const subCel = bon ? celBon("🪨","substrato", pt.k==="bonsai-m"?cc.substratoBonMed:cc.substratoBonGra) : celFolha(pt,"substrato_g",cc.substratoG);
+    const musCel = celFolha(pt,"musgo_g",cc.musgoG,"🧵 musgo");
+    const aduCel = bon ? celBon("🌿","adubo", pt.k==="bonsai-m"?cc.aduboBonMed:cc.aduboBonGra) : celFolha(pt,"adubo_g",cc.aduboG,"🌿 adubo");
+    const subCel = bon ? celBon("🪨","substrato", pt.k==="bonsai-m"?cc.substratoBonMed:cc.substratoBonGra) : celFolha(pt,"substrato_g",cc.substratoG,"🪨 substrato");
     return `<div style="padding:7px 0;border-bottom:1px solid var(--line)">
       <div style="display:flex;gap:8px;align-items:center">
         <span style="flex:1" class="small"><b>${pt.nome}</b></span>
         <label style="margin:0;width:120px"><span class="small muted">✋ mão R$</span><input data-pk="${pt.k}" data-f="mao" value="${cfg.mao!=null?cfg.mao:''}" inputmode="decimal" placeholder="R$" style="width:100%;padding:6px;text-align:center"></label>
       </div>
-      <div style="display:flex;gap:10px;margin-top:4px">${aduCel}${subCel}</div>
+      <div style="display:flex;gap:10px;margin-top:4px">${musCel}${aduCel}${subCel}</div>
     </div>`; }).join("");
   el("portesTabela").querySelectorAll("input[data-pk]").forEach(inp=>{
     inp.addEventListener("change",()=>{ const k=inp.dataset.pk,f=inp.dataset.f,v=numBR(inp.value); if(!portesCfg[k])portesCfg[k]={}; if(v==null)delete portesCfg[k][f]; else portesCfg[k][f]=v; savePortesCfg(); renderPortes(); });
@@ -603,8 +605,8 @@ async function aplicarCustosPortes(){
     const porte=portesCfg[porteProd[p.id]]||{};
     const nd={planta:Number(base.planta||0),insumo:Number(base.insumo||0),mao:Number(base.mao||0),adubo:Number(base.adubo||0),embalagem:Number(base.embalagem||0)};
     if(base.enfeite!=null && Number(base.enfeite)>0) nd.enfeite=Number(base.enfeite); // preserva Natal
-    // musgo: valor da compra, ou o original (nunca mistura linha)
-    nd.insumo = (cc.musgoPP!=null) ? r2(cc.musgoPP) : Number(emb0.insumo||0);
+    // musgo: gramas do porte × R$/grama, ou o original
+    nd.insumo = (cc.musgoG!=null && porte.musgo_g) ? r2(cc.musgoG*porte.musgo_g) : Number(emb0.insumo||0);
     // embalagem: kit do porte (Mini x demais), ou o original
     const embX = (porteProd[p.id]==="mini") ? cc.embMini : cc.embOutros;
     nd.embalagem = (embX!=null) ? r2(embX) : Number(emb0.embalagem||0);
