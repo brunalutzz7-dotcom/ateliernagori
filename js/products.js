@@ -174,6 +174,18 @@ const PRODUCTS = [
     descricao: "Sai em dois desenhos de folha: a fêmea, de folíolo largo e arredondado, e o macho, de folha recortada e fina. Tronco lenhoso e porte ereto — peça de canto e de entrada.", significado: "A árvore da felicidade — símbolo de boas energias, harmonia e alegria no lar.", preco: 2000, img: IMG("arvore-felicidade") },
 
   /* ---------- 07 · SUPORTES (vendidos à parte, como as peças) ---------- */
+  { id: "suporte-ferro-curvo-cobre", nome: "Base de ferro curva · cobre", especie: "Suporte · ferro curvo · acabamento cobre · aro para a esfera", categoria: "suporte", suporte: true,
+    descricao: "Lâmina de ferro curvada como uma onda, com um aro suspenso que segura a esfera no alto — a kokedama parece flutuar sobre a base. Acabamento cobre.", preco: 100, img: "assets/bases/ferro-curvo-cobre.jpg" },
+  { id: "suporte-ferro-curvo-dourado", nome: "Base de ferro curva · dourada", especie: "Suporte · ferro curvo · acabamento dourado · aro para a esfera", categoria: "suporte", suporte: true,
+    descricao: "Lâmina de ferro curvada como uma onda, com um aro suspenso que segura a esfera no alto — a kokedama parece flutuar sobre a base. Acabamento dourado.", preco: 100, img: "assets/bases/ferro-curvo-dourado.jpg" },
+  { id: "suporte-ferro-curvo-preto", nome: "Base de ferro curva · preta", especie: "Suporte · ferro curvo · acabamento preto · aro para a esfera", categoria: "suporte", suporte: true,
+    descricao: "Lâmina de ferro curvada como uma onda, com um aro suspenso que segura a esfera no alto — a kokedama parece flutuar sobre a base. Acabamento preto brilhante.", preco: 100, img: "assets/bases/ferro-curvo-preto.jpg" },
+  { id: "suporte-aros-dourado", nome: "Suporte de aros · dourado", especie: "Suporte · dois aros em ferro · acabamento dourado", categoria: "suporte", suporte: true,
+    descricao: "Dois aros de ferro ligados por uma curva única: um apoia a esfera, o outro dá base. Desenho leve e circular, que valoriza a peça de todos os ângulos. Acabamento dourado.", preco: 75, img: "assets/bases/aros-dourado.jpg" },
+  { id: "suporte-aros-preto", nome: "Suporte de aros · preto", especie: "Suporte · dois aros em ferro · acabamento preto", categoria: "suporte", suporte: true,
+    descricao: "Dois aros de ferro ligados por uma curva única: um apoia a esfera, o outro dá base. Desenho leve e circular, que valoriza a peça de todos os ângulos. Acabamento preto brilhante.", preco: 75, img: "assets/bases/aros-preto.jpg" },
+  { id: "suporte-aros-cobre", nome: "Suporte de aros · cobre", especie: "Suporte · dois aros em ferro · acabamento cobre", categoria: "suporte", suporte: true,
+    descricao: "Dois aros de ferro ligados por uma curva única: um apoia a esfera, o outro dá base. Desenho leve e circular, que valoriza a peça de todos os ângulos. Acabamento cobre.", preco: 75, img: "assets/bases/aros-cobre.jpg" },
   { id: "suporte-cubo-ferro-alto", nome: "Cubo de ferro · alto", especie: "Suporte especial · ferro preto · aro interno", categoria: "suporte", suporte: true,
     descricao: "Mesmo desenho, mais alto e mais estreito. Para peça de folhagem longa, que precisa de espaço para cair.", preco: 190, imgs: ["assets/bases/cubo-ferro-alto.jpg", "assets/bases/cubo-ferro-alto-uso.jpg"] },
   { id: "suporte-tronco-natural", nome: "Tronco natural", especie: "Suporte especial · tronco 13 cm · altura 8,5 cm · aro 11 cm", categoria: "suporte", suporte: true,
