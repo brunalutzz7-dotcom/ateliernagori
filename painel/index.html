@@ -727,7 +727,7 @@ function renderCustos(){
     const preco=Number(p.preco||0);
     const d=getDetalhe(p.id);
     // quando temos o detalhamento, o custo é a soma das partes (fonte da verdade) — cada parte é editável
-    const CAFE_BONSAIS=new Set(["bonsai-serissa-8","bonsai-ficus-6","bonsai-ligustro-15","bonsai-jabuticabeira-4","bonsai-mini-jabuticabeira","tuia","pinheirinho"]);
+    const CAFE_BONSAIS=new Set(["bonsai-serissa-8","bonsai-ficus-6","bonsai-ligustro-15","bonsai-jabuticabeira-4"]);
     const semCafe=(p.categoria==="Serviços")||(p.categoria==="Bonsais"&&!CAFE_BONSAIS.has(p.id));
     const cafe20 = Math.round(preco*0.20);  // comissão do café: 20% do preço de venda
     const cafeTxt = semCafe ? "" : `<span style="color:#8a6d3b;font-weight:600"> · ☕ café 20% ${BRL(cafe20)}</span>`;
