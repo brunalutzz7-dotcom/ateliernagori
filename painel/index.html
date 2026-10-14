@@ -108,7 +108,7 @@
 <!-- App -->
 <div id="appView" class="hidden">
   <header class="top">
-    <b>✿ Atelier Nagori</b><span style="font-size:.62rem;opacity:.55;margin-left:7px;letter-spacing:.02em">v11 · tags</span>
+    <b>✿ Atelier Nagori</b><span style="font-size:.62rem;opacity:.55;margin-left:7px;letter-spacing:.02em">v12 · linha</span>
     <button class="sair" id="btnSair">Sair</button>
   </header>
   <div class="wrap">
@@ -566,24 +566,27 @@ async function aplicarCustosPortes(){
   loadCompras(); loadPortesCfg(); loadPorteProd(); seedPortesMao();
   const cc=calcCompras();
   const r2=(n)=>Math.round(Number(n)*100)/100;
-  const stdInsumo=(cc.musgoPP!=null||cc.linhaK!=null)?((cc.musgoPP||0)+(cc.linhaK||0)):null;
-  const stdEmbMini=(cc.embMini!=null||cc.linhaT!=null)?((cc.embMini||0)+(cc.linhaT||0)):null;
-  const stdEmbOutros=(cc.embOutros!=null||cc.linhaT!=null)?((cc.embOutros||0)+(cc.linhaT||0)):null;
+  const linhaTot=(cc.linhaK!=null||cc.linhaT!=null)?((cc.linhaK||0)+(cc.linhaT||0)):null;  // linhas juntas (componente próprio)
   const alvo=PRODUTOS.filter(p=> p.categoria!=="Suportes" && selProd.has(p.id));
   if(!alvo.length){ toast("Selecione as peças (caixinhas) primeiro"); return; }
   const mudar=[];
   alvo.forEach(p=>{
     const cur=getDetalhe(p.id); if(cur && cur.material!=null) return;
     const base=cur?{...cur}:{planta:0,insumo:0,mao:0,adubo:0,embalagem:0};
+    const emb0=CUSTOS_DETALHE[p.id]||{};  // valores originais (fallback limpo quando não há compra registrada)
     const porte=portesCfg[porteProd[p.id]]||{};
     const nd={planta:Number(base.planta||0),insumo:Number(base.insumo||0),mao:Number(base.mao||0),adubo:Number(base.adubo||0),embalagem:Number(base.embalagem||0)};
     if(base.enfeite!=null && Number(base.enfeite)>0) nd.enfeite=Number(base.enfeite); // preserva Natal
-    if(stdInsumo!=null) nd.insumo=r2(stdInsumo);
-    const stdEmb = (porteProd[p.id]==="mini") ? stdEmbMini : stdEmbOutros;
-    if(stdEmb!=null) nd.embalagem=r2(stdEmb);
+    // musgo: valor da compra, ou o original (nunca mistura linha)
+    nd.insumo = (cc.musgoPP!=null) ? r2(cc.musgoPP) : Number(emb0.insumo||0);
+    // embalagem: kit do porte (Mini x demais), ou o original
+    const embX = (porteProd[p.id]==="mini") ? cc.embMini : cc.embOutros;
+    nd.embalagem = (embX!=null) ? r2(embX) : Number(emb0.embalagem||0);
+    // linha: componente próprio (kokedama + tags)
+    nd.linha = (linhaTot!=null) ? r2(linhaTot) : Number(base.linha||0);
     if(cc.aduboG!=null && porte.adubo_g) nd.adubo=r2(cc.aduboG*porte.adubo_g);
     if(porte.mao!=null) nd.mao=Number(porte.mao);
-    const tot=r2(nd.planta+nd.insumo+nd.mao+nd.adubo+nd.embalagem+Number(nd.enfeite||0));
+    const tot=r2(nd.planta+nd.insumo+nd.mao+nd.adubo+nd.embalagem+Number(nd.linha||0)+Number(nd.enfeite||0));
     if(tot!==Number(p.custo) || JSON.stringify(nd)!==JSON.stringify(cur)) mudar.push({p,nd,tot});
   });
   if(!mudar.length){ toast("Nada para atualizar (já estão em dia)"); return; }
@@ -611,7 +614,8 @@ async function aplicarNatal(){
     const cur=getDetalhe(p.id); if(cur && cur.material!=null) return;
     const base=cur?{...cur}:{planta:0,insumo:0,mao:0,adubo:0,embalagem:10};
     const nd={planta:Number(base.planta||0),insumo:Number(base.insumo||0),mao:Number(base.mao||0),adubo:Number(base.adubo||0),embalagem:Number(base.embalagem||0),enfeite:custoPorPeca};
-    const tot=Math.round((nd.planta+nd.insumo+nd.mao+nd.adubo+nd.embalagem+nd.enfeite)*100)/100;
+    if(base.linha!=null && Number(base.linha)>0) nd.linha=Number(base.linha); // preserva linha
+    const tot=Math.round((nd.planta+nd.insumo+nd.mao+nd.adubo+nd.embalagem+Number(nd.linha||0)+nd.enfeite)*100)/100;
     mudar.push({p,nd,tot});
   });
   mudar.forEach(m=>{ CUSTOS_OVERRIDE[m.p.id]=m.nd; m.p.custo=m.tot; });
@@ -1048,7 +1052,7 @@ async function editarCusto(id){
     // mantém as demais partes e ajusta a planta (ou o material) para bater com o total informado
     const base={...d};
     if(base.material!=null){ base.material=num; }
-    else { base.planta=Math.round((num-Number(base.insumo||0)-Number(base.mao||0)-Number(base.adubo||0)-Number(base.embalagem||0)-Number(base.enfeite||0))*100)/100; }
+    else { base.planta=Math.round((num-Number(base.insumo||0)-Number(base.mao||0)-Number(base.adubo||0)-Number(base.embalagem||0)-Number(base.linha||0)-Number(base.enfeite||0))*100)/100; }
     await salvarDetalhe(id, base);
   }else{
     p.custo=num; renderCustos(); renderProdutos(); renderPainel();
@@ -1060,11 +1064,11 @@ async function editarCusto(id){
 // ---------- CUSTOS E MARGENS ----------
 // Detalhamento de custo editável: override (edições no app) tem prioridade sobre o padrão.
 let CUSTOS_OVERRIDE = {};
-function somaDetalheObj(d){ if(!d) return null; return d.material!=null ? Number(d.material) : Number(d.planta||0)+Number(d.insumo||0)+Number(d.mao||0)+Number(d.adubo||0)+Number(d.embalagem||0)+Number(d.enfeite||0); }
+function somaDetalheObj(d){ if(!d) return null; return d.material!=null ? Number(d.material) : Number(d.planta||0)+Number(d.insumo||0)+Number(d.mao||0)+Number(d.adubo||0)+Number(d.embalagem||0)+Number(d.linha||0)+Number(d.enfeite||0); }
 function loadOverridesLocal(){ try{ CUSTOS_OVERRIDE = JSON.parse(localStorage.getItem("custosOverride")||"{}")||{}; }catch(e){ CUSTOS_OVERRIDE={}; } }
 function saveOverridesLocal(){ try{ localStorage.setItem("custosOverride", JSON.stringify(CUSTOS_OVERRIDE)); }catch(e){} }
 function getDetalhe(id){ return CUSTOS_OVERRIDE[id] || CUSTOS_DETALHE[id] || null; }
-const LABEL_COMP={planta:"planta",insumo:"musgo/insumo",mao:"mão de obra",adubo:"adubo",embalagem:"embalagem (sacola + manual/adesivo/medalha)",enfeite:"enfeite de Natal",material:"material"};
+const LABEL_COMP={planta:"planta",insumo:"musgo/insumo",mao:"mão de obra",adubo:"adubo",embalagem:"embalagem (kit)",linha:"linha (amarrar koke + tags)",enfeite:"enfeite de Natal",material:"material"};
 async function editarComp(id, campo){
   const p=PRODUTOS.find(x=>x.id===id); if(!p) return;
   const atual = getDetalhe(id);
@@ -1105,9 +1109,10 @@ function renderCustos(){
         somaDet=Number(d.material);
         breakdown=`<div class="small muted" style="margin-top:3px">material ${L('material',BRL(d.material))}${cafeTxt}</div>`;
       }else{
-        somaDet=Number(d.planta||0)+Number(d.insumo||0)+Number(d.mao||0)+Number(d.adubo||0)+Number(d.embalagem||0)+Number(d.enfeite||0);
+        somaDet=Number(d.planta||0)+Number(d.insumo||0)+Number(d.mao||0)+Number(d.adubo||0)+Number(d.embalagem||0)+Number(d.linha||0)+Number(d.enfeite||0);
+        const linhaTxt = (d.linha!=null && Number(d.linha)>0) ? ` · 🧶 linha ${L('linha',BRL(d.linha))}` : "";
         const enfTxt = (d.enfeite!=null && Number(d.enfeite)>0) ? ` · 🎄 enfeite ${L('enfeite',BRL(d.enfeite))}` : "";
-        breakdown=`<div class="small muted" style="margin-top:3px">🌱 planta ${L('planta',BRL(d.planta))} · 🧵 musgo ${L('insumo',BRL(d.insumo))} · ✋ mão de obra ${L('mao',BRL(d.mao))} · 🌿 adubo ${L('adubo',BRL(d.adubo))} · 🛍️ embalagem ${L('embalagem',BRL(d.embalagem||0))}${enfTxt}${cafeTxt}</div>`;
+        breakdown=`<div class="small muted" style="margin-top:3px">🌱 planta ${L('planta',BRL(d.planta))} · 🧵 musgo ${L('insumo',BRL(d.insumo))} · ✋ mão de obra ${L('mao',BRL(d.mao))} · 🌿 adubo ${L('adubo',BRL(d.adubo))} · 🛍️ embalagem ${L('embalagem',BRL(d.embalagem||0))}${linhaTxt}${enfTxt}${cafeTxt}</div>`;
       }
     }
     const custo = (somaDet!=null) ? somaDet : (p.custo!=null?Number(p.custo):null);
