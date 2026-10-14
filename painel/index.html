@@ -715,25 +715,27 @@ function renderCustos(){
     const preco=Number(p.preco||0);
     const d=getDetalhe(p.id);
     // quando temos o detalhamento, o custo é a soma das partes (fonte da verdade) — cada parte é editável
+    const cafe20 = Math.round(preco*0.20);  // comissão do café: 20% do preço de venda
+    const cafeTxt = `<span style="color:#8a6d3b;font-weight:600"> · ☕ café 20% ${BRL(cafe20)}</span>`;
     let somaDet=null, breakdown="";
     const L=(campo,txt)=>`<a href="#" onclick="editarComp('${p.id}','${campo}');return false">${txt}</a>`;
     if(d){
       if(d.material!=null){
         somaDet=Number(d.material);
-        breakdown=`<div class="small muted" style="margin-top:3px">material ${L('material',BRL(d.material))}</div>`;
+        breakdown=`<div class="small muted" style="margin-top:3px">material ${L('material',BRL(d.material))}${cafeTxt}</div>`;
       }else{
         somaDet=Number(d.planta||0)+Number(d.insumo||0)+Number(d.mao||0)+Number(d.adubo||0)+Number(d.embalagem||0);
-        breakdown=`<div class="small muted" style="margin-top:3px">🌱 planta ${L('planta',BRL(d.planta))} · 🧵 musgo ${L('insumo',BRL(d.insumo))} · ✋ mão de obra ${L('mao',BRL(d.mao))} · 🌿 adubo ${L('adubo',BRL(d.adubo))} · 🛍️ embalagem ${L('embalagem',BRL(d.embalagem||0))}</div>`;
+        breakdown=`<div class="small muted" style="margin-top:3px">🌱 planta ${L('planta',BRL(d.planta))} · 🧵 musgo ${L('insumo',BRL(d.insumo))} · ✋ mão de obra ${L('mao',BRL(d.mao))} · 🌿 adubo ${L('adubo',BRL(d.adubo))} · 🛍️ embalagem ${L('embalagem',BRL(d.embalagem||0))}${cafeTxt}</div>`;
       }
     }
     const custo = (somaDet!=null) ? somaDet : (p.custo!=null?Number(p.custo):null);
     const margR=(custo!=null)?preco-custo:null;
     const margP=(custo!=null && preco>0)?margR/preco:null;
     const pctTxt=(margP!=null)?(margP*100).toFixed(0)+"%":"—";
-    // Preço do café: margem >=50% -> +15% | margem <50% -> +20% | suportes = valor cheio (sem markup)
-    const ehSuporte = (p.categoria==="Suportes");
-    const cafeMk = ehSuporte ? 1 : ((margP!=null && margP>=0.5) ? 1.15 : 1.20);
-    const cafePreco = (preco>0) ? (ehSuporte ? preco : Math.round(preco*cafeMk/5)*5) : null;
+    // margem no café = com os 20% de comissão somados ao custo
+    const custoCafe=(custo!=null)?custo+cafe20:null;
+    const margCafeP=(custoCafe!=null && preco>0)?(preco-custoCafe)/preco:null;
+    const cafePct=(margCafeP!=null)?(margCafeP*100).toFixed(0)+"%":"—";
     return `<div class="item">
       ${thumb(p)}
       <div style="flex:1">
@@ -747,7 +749,7 @@ function renderCustos(){
       <div style="text-align:right;min-width:96px">
         <div style="font-weight:700;color:${corMargem(margP)}">${pctTxt}</div>
         <div class="small muted">${margR!=null?BRL(margR):""}</div>
-        <div class="small" style="color:#8a6d3b;font-weight:700;margin-top:4px">☕ café ${cafePreco!=null?BRL(cafePreco):"—"}</div>
+        <div class="small" style="color:#8a6d3b;font-weight:700;margin-top:4px">☕ ${cafePct}</div>
       </div></div>`;
   }).join("");
 }
