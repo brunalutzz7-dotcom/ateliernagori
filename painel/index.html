@@ -108,7 +108,7 @@
 <!-- App -->
 <div id="appView" class="hidden">
   <header class="top">
-    <b>✿ Atelier Nagori</b><span style="font-size:.62rem;opacity:.55;margin-left:7px;letter-spacing:.02em">v32 · base</span>
+    <b>✿ Atelier Nagori</b><span style="font-size:.62rem;opacity:.55;margin-left:7px;letter-spacing:.02em">v33 · subs</span>
     <button class="sair" id="btnSair">Sair</button>
   </header>
   <div class="wrap">
@@ -235,7 +235,10 @@
               <select id="cCategoria">
                 <option value="musgo">Musgo (rende X peças)</option>
                 <option value="embalagem">Embalagem — kit (rende X unidades)</option>
-                <option value="adubo">Adubo (por grama)</option>
+                <option value="adubo">Adubo folhagem (por grama)</option>
+                <option value="substrato">Substrato folhagem (por grama)</option>
+                <option value="adubo-bonsai">Adubo bonsai (receita)</option>
+                <option value="substrato-bonsai">Substrato bonsai (receita)</option>
                 <option value="linha-kokedama">Linha p/ amarrar kokedama (rateio)</option>
                 <option value="linha-tags">Linha p/ amarrar tags (rateio)</option>
                 <option value="enfeite-natal">🎄 Enfeite de Natal (só total)</option>
@@ -258,7 +261,11 @@
               <option value="Tag acrílico demais">Tag acrílico demais</option>
             </select>
           </label>
-          <label id="cGramasWrap" style="display:none">Quantos gramas tem o pote?<input id="cGramas" type="text" inputmode="numeric" placeholder="ex.: 2000"></label>
+          <label id="cGramasWrap" style="display:none">Quantos gramas tem o pacote?<input id="cGramas" type="text" inputmode="numeric" placeholder="ex.: 2000"></label>
+          <div class="grid2" id="cReceitaWrap" style="display:none">
+            <label>Usa quantos g no bonsai <b>médio</b><input id="cGmed" type="text" inputmode="numeric" placeholder="g"></label>
+            <label>Usa quantos g no bonsai <b>grande</b><input id="cGgra" type="text" inputmode="numeric" placeholder="g"></label>
+          </div>
           <label id="cQtdWrap" style="display:none">Quantos enfeites essa compra rende?<input id="cQtd" type="text" inputmode="numeric" placeholder="ex.: 50"></label>
           <div class="grid2">
             <label>Data<input id="cData" type="date"></label>
@@ -289,7 +296,7 @@
         <div id="portesProdutos"></div>
 
         <button class="btn" id="btnAplicarCustos" type="button" style="margin-top:14px">✓ Aplicar custos nas peças selecionadas</button>
-        <p class="small muted" style="margin-top:6px">Atualiza <b>musgo/insumo</b>, <b>embalagem</b>, <b>adubo</b> (porte) e <b>mão de obra</b> (porte). A <b>planta</b> e o <b>enfeite</b> são mantidos.</p>
+        <p class="small muted" style="margin-top:6px">Atualiza <b>musgo</b>, <b>substrato</b>, <b>adubo</b>, <b>embalagem</b> e <b>mão de obra</b> (por porte; bonsai pela receita). A <b>planta</b> e o <b>enfeite</b> são mantidos.</p>
 
         <div style="border-top:1px solid var(--line);margin-top:14px;padding-top:12px">
           <h3 style="margin:0 0 4px;font-size:.95rem">🎄 Enfeite de Natal</h3>
@@ -408,7 +415,9 @@ el("btnExportar").addEventListener("click", exportarDados);
 
 // ---------- COMPRAS DE INSUMOS ----------
 let COMPRAS=[];
-const CAT_LABEL={musgo:"Musgo",embalagem:"Embalagem (kit)",adubo:"Adubo","linha-kokedama":"Linha kokedama","linha-tags":"Linha tags","enfeite-natal":"🎄 Enfeite de Natal",planta:"🌿 Planta",outro:"Outro"};
+const CAT_LABEL={musgo:"Musgo",embalagem:"Embalagem (kit)",adubo:"Adubo folhagem",substrato:"Substrato folhagem","adubo-bonsai":"Adubo bonsai","substrato-bonsai":"Substrato bonsai","linha-kokedama":"Linha kokedama","linha-tags":"Linha tags","enfeite-natal":"🎄 Enfeite de Natal",planta:"🌿 Planta",outro:"Outro"};
+const CAT_GRAMA=new Set(["adubo","substrato","adubo-bonsai","substrato-bonsai"]); // usam gramas do pacote
+const CAT_RECEITA=new Set(["adubo-bonsai","substrato-bonsai"]);                    // usam g por médio/grande
 function loadCompras(){ try{ COMPRAS=JSON.parse(localStorage.getItem("comprasAN")||"[]")||[]; }catch(e){ COMPRAS=[]; } }
 function saveCompras(){ try{ localStorage.setItem("comprasAN", JSON.stringify(COMPRAS)); }catch(e){} }
 function numBR(v){ let s=String(v==null?"":v).trim(); if(!s) return null; if(s.indexOf(",")>-1){ s=s.replace(/\./g,"").replace(",","."); } const n=Number(s); return isNaN(n)?null:n; }
@@ -420,7 +429,8 @@ function mostraCamposCompra(){
   el("cItemWrap").style.display=emb?"none":"block";
   el("cEmbWrap").style.display=emb?"block":"none";
   el("cRendeWrap").style.display=(c==="musgo"||emb)?"block":"none";
-  el("cGramasWrap").style.display=(c==="adubo")?"block":"none";
+  el("cGramasWrap").style.display=CAT_GRAMA.has(c)?"block":"none";
+  el("cReceitaWrap").style.display=CAT_RECEITA.has(c)?"grid":"none";
   el("cQtdWrap").style.display=(c==="enfeite-natal")?"block":"none";
 }
 if(el("cCategoria")) el("cCategoria").addEventListener("change", mostraCamposCompra);
@@ -433,7 +443,8 @@ if(el("compraForm")) el("compraForm").addEventListener("submit", (e)=>{
   if(!item || valor==null){ toast("Preencha o item e o valor"); return; }
   const reg={ id:Date.now().toString(36)+Math.random().toString(36).slice(2,6), data:(el("cData").value||new Date().toISOString().slice(0,10)), item, categoria, valor, obs:el("cObs").value.trim() };
   if(categoria==="musgo"||categoria==="embalagem"){ const r=numBR(el("cRende").value); if(r) reg.rende=r; }
-  if(categoria==="adubo"){ const g=numBR(el("cGramas").value); if(g) reg.gramas=g; }
+  if(CAT_GRAMA.has(categoria)){ const g=numBR(el("cGramas").value); if(g) reg.gramas=g; }
+  if(CAT_RECEITA.has(categoria)){ const gm=numBR(el("cGmed").value), gg=numBR(el("cGgra").value); if(gm) reg.gmed=gm; if(gg) reg.ggra=gg; }
   if(categoria==="enfeite-natal"){ const qt=numBR(el("cQtd").value); if(qt) reg.qtd=qt; }
   COMPRAS.push(reg); saveCompras();
   el("compraForm").reset(); mostraCamposCompra();
@@ -459,9 +470,13 @@ function calcCompras(){
   } });
   const embMini = embOk ? embComum+(tagAcrMini||0) : null;     // embalagem das Mini
   const embOutros = embOk ? embComum+(tagAcrDemais||0) : null; // embalagem das demais
-  const adubo=g("adubo");
-  const adV=adubo.reduce((a,c)=>a+Number(c.valor||0),0), adG=adubo.reduce((a,c)=>a+Number(c.gramas||0),0);
-  const aduboG = adG>0 ? adV/adG : null;
+  // folhagem: R$/grama (adubo e substrato)
+  const porGrama=(cat)=>{ const arr=g(cat); const V=arr.reduce((a,c)=>a+Number(c.valor||0),0), G=arr.reduce((a,c)=>a+Number(c.gramas||0),0); return G>0?V/G:null; };
+  const aduboG=porGrama("adubo");
+  const substratoG=porGrama("substrato");
+  // bonsai: receita — soma de (g por porte × R$/grama de cada insumo)
+  const receita=(cat)=>{ let med=0,gra=0,ok=false; g(cat).forEach(c=>{ const gr=Number(c.gramas||0); const rg=gr>0?Number(c.valor||0)/gr:0; if(c.gmed!=null){med+=Number(c.gmed)*rg;ok=true;} if(c.ggra!=null){gra+=Number(c.ggra)*rg;ok=true;} }); return ok?{med,gra}:{med:null,gra:null}; };
+  const aduboBon=receita("adubo-bonsai"), substratoBon=receita("substrato-bonsai");
   const pecas=totalPecasVendidas();
   const rateio=(cat)=>{ const tot=g(cat).reduce((a,c)=>a+Number(c.valor||0),0); return (pecas>0 && tot>0) ? tot/pecas : (tot>0?null:0); };
   const linhaK=rateio("linha-kokedama"), linhaT=rateio("linha-tags");
@@ -469,7 +484,7 @@ function calcCompras(){
   const natal=natalC.reduce((a,c)=>a+Number(c.valor||0),0);
   const natalQ=natalC.reduce((a,c)=>a+Number(c.qtd||0),0);
   const custoEnfeite = natalQ>0 ? natal/natalQ : null;
-  return {musgoPP, embMini, embOutros, embComum, tagAcrMini, tagAcrDemais, embItens, aduboG, linhaK, linhaT, natal, natalQ, custoEnfeite, pecas};
+  return {musgoPP, embMini, embOutros, embComum, tagAcrMini, tagAcrDemais, embItens, aduboG, substratoG, aduboBonMed:aduboBon.med, aduboBonGra:aduboBon.gra, substratoBonMed:substratoBon.med, substratoBonGra:substratoBon.gra, linhaK, linhaT, natal, natalQ, custoEnfeite, pecas};
 }
 function renderCompras(){
   loadCompras();
@@ -481,7 +496,10 @@ function renderCompras(){
   h+=`<div class="small" style="padding:4px 0"><b>Embalagem · Mini:</b> ${cc.embMini==null?'<span class="muted">registre os itens do kit</span>':centBRL(cc.embMini)+" / venda"} <span class="muted">(com tag acrílico Mini)</span></div>`;
   h+=`<div class="small" style="padding:4px 0"><b>Embalagem · demais:</b> ${cc.embOutros==null?'<span class="muted">—</span>':centBRL(cc.embOutros)+" / venda"} <span class="muted">(com tag acrílico demais)</span></div>`;
   if(cc.embItens.length) h+=`<div class="small muted" style="padding:0 0 4px 12px">${cc.embItens.map(i=>gesc(i.nome)+": "+centBRL(i.pp)).join(" · ")}</div>`;
-  h+=`<div class="small" style="padding:4px 0"><b>Adubo:</b> ${cc.aduboG==null?'<span class="muted">registre o pote + quantos gramas tem</span>':centBRL(cc.aduboG)+" / grama"}</div>`;
+  h+=`<div class="small" style="padding:4px 0"><b>Adubo folhagem:</b> ${cc.aduboG==null?'<span class="muted">registre o pacote + gramas</span>':centBRL(cc.aduboG)+" / grama"}</div>`;
+  h+=`<div class="small" style="padding:4px 0"><b>Substrato folhagem:</b> ${cc.substratoG==null?'<span class="muted">registre o pacote + gramas</span>':centBRL(cc.substratoG)+" / grama"}</div>`;
+  h+=`<div class="small" style="padding:4px 0"><b>🌳 Adubo bonsai:</b> médio ${cc.aduboBonMed==null?miss:centBRL(cc.aduboBonMed)} · grande ${cc.aduboBonGra==null?miss:centBRL(cc.aduboBonGra)} <span class="muted">(receita)</span></div>`;
+  h+=`<div class="small" style="padding:4px 0"><b>🌳 Substrato bonsai:</b> médio ${cc.substratoBonMed==null?miss:centBRL(cc.substratoBonMed)} · grande ${cc.substratoBonGra==null?miss:centBRL(cc.substratoBonGra)} <span class="muted">(receita)</span></div>`;
   h+=`<div class="small" style="padding:4px 0"><b>Linha kokedama:</b> ${cc.linhaK==null?miss:centBRL(cc.linhaK)+" / peça"} <span class="muted">(rateio)</span></div>`;
   h+=`<div class="small" style="padding:4px 0"><b>Linha tags:</b> ${cc.linhaT==null?miss:centBRL(cc.linhaT)+" / peça"} <span class="muted">(rateio)</span></div>`;
   h+=`<div class="small" style="padding:4px 0;color:#8a6d3b"><b>🎄 Enfeites de Natal:</b> total ${centBRL(cc.natal)}${cc.custoEnfeite!=null?` · ${centBRL(cc.custoEnfeite)} por enfeite (${cc.natalQ} un.)`:' <span class="muted">(informe o nº de enfeites)</span>'}</div>`;
@@ -491,7 +509,8 @@ function renderCompras(){
   const lst=COMPRAS.filter(c=>(c.item||"").toLowerCase().includes(q)||(CAT_LABEL[c.categoria]||"").toLowerCase().includes(q)).sort((a,b)=>String(b.data||"").localeCompare(String(a.data||"")));
   if(!lst.length){ el("listaCompras").innerHTML='<p class="small muted">Nenhuma compra registrada ainda.</p>'; return; }
   el("listaCompras").innerHTML=lst.map(c=>{
-    const extra = c.rende?` · rende ${c.rende}`:(c.gramas?` · ${c.gramas}g`:"");
+    let extra = c.rende?` · rende ${c.rende}`:(c.gramas?` · ${c.gramas}g`:"");
+    if(c.gmed!=null||c.ggra!=null) extra+=` · médio ${c.gmed||0}g · grande ${c.ggra||0}g`;
     return `<div style="display:flex;justify-content:space-between;gap:8px;padding:9px 0;border-bottom:1px solid var(--line)">
       <div><b>${gesc(c.item)}</b><div class="small muted">${CAT_LABEL[c.categoria]||c.categoria} · ${c.data||""}${extra}${c.obs?" · "+gesc(c.obs):""}</div></div>
       <div style="text-align:right;white-space:nowrap">${centBRL(c.valor)}<br><a href="#" class="small" style="color:var(--terra)" onclick="removerCompra('${c.id}');return false">remover</a></div>
@@ -521,15 +540,21 @@ function renderPortes(){
   loadPortesCfg(); loadPorteProd(); seedPortesMao();
   if(!el("portesTabela")) return;
   const cc=calcCompras();
-  el("portesTabela").innerHTML =
-    `<div class="small muted" style="display:flex;gap:8px;font-weight:600;padding-bottom:2px"><span style="flex:1">Porte</span><span style="width:84px;text-align:center">Adubo (g)</span><span style="width:84px;text-align:center">Mão R$</span><span style="width:70px;text-align:right">Adubo R$</span></div>`+
-    PORTES.map(pt=>{ const cfg=portesCfg[pt.k]||{}; const aduboRS=(cc.aduboG!=null && cfg.adubo_g)?centBRL(cc.aduboG*cfg.adubo_g):"—";
-      return `<div style="display:flex;gap:8px;align-items:center;padding:4px 0">
-        <span style="flex:1" class="small">${pt.nome}</span>
-        <input data-pk="${pt.k}" data-f="adubo_g" value="${cfg.adubo_g!=null?cfg.adubo_g:''}" inputmode="decimal" placeholder="g" style="width:84px;padding:7px;text-align:center">
-        <input data-pk="${pt.k}" data-f="mao" value="${cfg.mao!=null?cfg.mao:''}" inputmode="decimal" placeholder="R$" style="width:84px;padding:7px;text-align:center">
-        <span class="small muted" style="width:70px;text-align:right">${aduboRS}</span>
-      </div>`; }).join("");
+  const isBon=(k)=>k==="bonsai-m"||k==="bonsai-g";
+  const celFolha=(pt,f,rate)=>{ const cfg=portesCfg[pt.k]||{}; const gv=cfg[f]; const rs=(rate!=null&&gv)?centBRL(rate*gv):"—";
+    return `<label style="flex:1;margin:0"><span class="small muted">${f==="adubo_g"?"🌿 adubo":"🪨 substrato"} (g)</span><input data-pk="${pt.k}" data-f="${f}" value="${gv!=null?gv:''}" inputmode="decimal" placeholder="g" style="width:100%;padding:6px;text-align:center"><span class="small muted" style="display:block;text-align:center">${rs}</span></label>`; };
+  const celBon=(emoji,label,val)=>`<div style="flex:1"><span class="small muted">${emoji} ${label}</span><div style="text-align:center;color:#6b6659;font-weight:600;padding:6px 0">${val==null?'<span class="muted">—</span>':centBRL(val)}</div><span class="small muted" style="display:block;text-align:center">receita</span></div>`;
+  el("portesTabela").innerHTML = PORTES.map(pt=>{
+    const cfg=portesCfg[pt.k]||{}; const bon=isBon(pt.k);
+    const aduCel = bon ? celBon("🌿","adubo", pt.k==="bonsai-m"?cc.aduboBonMed:cc.aduboBonGra) : celFolha(pt,"adubo_g",cc.aduboG);
+    const subCel = bon ? celBon("🪨","substrato", pt.k==="bonsai-m"?cc.substratoBonMed:cc.substratoBonGra) : celFolha(pt,"substrato_g",cc.substratoG);
+    return `<div style="padding:7px 0;border-bottom:1px solid var(--line)">
+      <div style="display:flex;gap:8px;align-items:center">
+        <span style="flex:1" class="small"><b>${pt.nome}</b></span>
+        <label style="margin:0;width:120px"><span class="small muted">✋ mão R$</span><input data-pk="${pt.k}" data-f="mao" value="${cfg.mao!=null?cfg.mao:''}" inputmode="decimal" placeholder="R$" style="width:100%;padding:6px;text-align:center"></label>
+      </div>
+      <div style="display:flex;gap:10px;margin-top:4px">${aduCel}${subCel}</div>
+    </div>`; }).join("");
   el("portesTabela").querySelectorAll("input[data-pk]").forEach(inp=>{
     inp.addEventListener("change",()=>{ const k=inp.dataset.pk,f=inp.dataset.f,v=numBR(inp.value); if(!portesCfg[k])portesCfg[k]={}; if(v==null)delete portesCfg[k][f]; else portesCfg[k][f]=v; savePortesCfg(); renderPortes(); });
   });
@@ -585,9 +610,18 @@ async function aplicarCustosPortes(){
     nd.embalagem = (embX!=null) ? r2(embX) : Number(emb0.embalagem||0);
     // linha: componente próprio (kokedama + tags)
     nd.linha = (linhaTot!=null) ? r2(linhaTot) : Number(base.linha||0);
-    if(cc.aduboG!=null && porte.adubo_g) nd.adubo=r2(cc.aduboG*porte.adubo_g);
+    // adubo e substrato: bonsai usa a receita (R$ por médio/grande); folhagem usa gramas × R$/grama
+    const pk=porteProd[p.id], bon=(pk==="bonsai-m"||pk==="bonsai-g");
+    nd.substrato = Number(base.substrato||0);
+    if(bon){
+      const av=(pk==="bonsai-m")?cc.aduboBonMed:cc.aduboBonGra; if(av!=null) nd.adubo=r2(av);
+      const sv=(pk==="bonsai-m")?cc.substratoBonMed:cc.substratoBonGra; if(sv!=null) nd.substrato=r2(sv);
+    } else {
+      if(cc.aduboG!=null && porte.adubo_g) nd.adubo=r2(cc.aduboG*porte.adubo_g);
+      if(cc.substratoG!=null && porte.substrato_g) nd.substrato=r2(cc.substratoG*porte.substrato_g);
+    }
     if(porte.mao!=null) nd.mao=Number(porte.mao);
-    const tot=r2(nd.planta+nd.insumo+nd.mao+nd.adubo+nd.embalagem+Number(nd.linha||0)+Number(nd.enfeite||0));
+    const tot=r2(nd.planta+nd.insumo+Number(nd.substrato||0)+nd.mao+nd.adubo+nd.embalagem+Number(nd.linha||0)+Number(nd.enfeite||0));
     if(tot!==Number(p.custo) || JSON.stringify(nd)!==JSON.stringify(cur)) mudar.push({p,nd,tot});
   });
   if(!mudar.length){ toast("Nada para atualizar (já estão em dia)"); return; }
@@ -616,7 +650,8 @@ async function aplicarNatal(){
     const base=cur?{...cur}:{planta:0,insumo:0,mao:0,adubo:0,embalagem:10};
     const nd={planta:Number(base.planta||0),insumo:Number(base.insumo||0),mao:Number(base.mao||0),adubo:Number(base.adubo||0),embalagem:Number(base.embalagem||0),enfeite:custoPorPeca};
     if(base.linha!=null && Number(base.linha)>0) nd.linha=Number(base.linha); // preserva linha
-    const tot=Math.round((nd.planta+nd.insumo+nd.mao+nd.adubo+nd.embalagem+Number(nd.linha||0)+nd.enfeite)*100)/100;
+    if(base.substrato!=null && Number(base.substrato)>0) nd.substrato=Number(base.substrato); // preserva substrato
+    const tot=Math.round((nd.planta+nd.insumo+Number(nd.substrato||0)+nd.mao+nd.adubo+nd.embalagem+Number(nd.linha||0)+nd.enfeite)*100)/100;
     mudar.push({p,nd,tot});
   });
   mudar.forEach(m=>{ CUSTOS_OVERRIDE[m.p.id]=m.nd; m.p.custo=m.tot; });
@@ -1063,7 +1098,7 @@ async function editarCusto(id){
     // mantém as demais partes e ajusta a planta (ou o material) para bater com o total informado
     const base={...d};
     if(base.material!=null){ base.material=num; }
-    else { base.planta=Math.round((num-Number(base.insumo||0)-Number(base.mao||0)-Number(base.adubo||0)-Number(base.embalagem||0)-Number(base.linha||0)-Number(base.enfeite||0))*100)/100; }
+    else { base.planta=Math.round((num-Number(base.insumo||0)-Number(base.substrato||0)-Number(base.mao||0)-Number(base.adubo||0)-Number(base.embalagem||0)-Number(base.linha||0)-Number(base.enfeite||0))*100)/100; }
     await salvarDetalhe(id, base);
   }else{
     p.custo=num; renderCustos(); renderProdutos(); renderPainel();
@@ -1075,11 +1110,11 @@ async function editarCusto(id){
 // ---------- CUSTOS E MARGENS ----------
 // Detalhamento de custo editável: override (edições no app) tem prioridade sobre o padrão.
 let CUSTOS_OVERRIDE = {};
-function somaDetalheObj(d){ if(!d) return null; return d.material!=null ? Number(d.material) : Number(d.planta||0)+Number(d.insumo||0)+Number(d.mao||0)+Number(d.adubo||0)+Number(d.embalagem||0)+Number(d.linha||0)+Number(d.enfeite||0); }
+function somaDetalheObj(d){ if(!d) return null; return d.material!=null ? Number(d.material) : Number(d.planta||0)+Number(d.insumo||0)+Number(d.substrato||0)+Number(d.mao||0)+Number(d.adubo||0)+Number(d.embalagem||0)+Number(d.linha||0)+Number(d.enfeite||0); }
 function loadOverridesLocal(){ try{ CUSTOS_OVERRIDE = JSON.parse(localStorage.getItem("custosOverride")||"{}")||{}; }catch(e){ CUSTOS_OVERRIDE={}; } }
 function saveOverridesLocal(){ try{ localStorage.setItem("custosOverride", JSON.stringify(CUSTOS_OVERRIDE)); }catch(e){} }
 function getDetalhe(id){ return CUSTOS_OVERRIDE[id] || CUSTOS_DETALHE[id] || null; }
-const LABEL_COMP={planta:"planta",insumo:"musgo/insumo",mao:"mão de obra",adubo:"adubo",embalagem:"embalagem (kit)",linha:"linha (amarrar koke + tags)",enfeite:"enfeite de Natal",material:"material"};
+const LABEL_COMP={planta:"planta",insumo:"musgo/insumo",substrato:"substrato",mao:"mão de obra",adubo:"adubo",embalagem:"embalagem (kit)",linha:"linha (amarrar koke + tags)",enfeite:"enfeite de Natal",material:"material"};
 async function editarComp(id, campo){
   const p=PRODUTOS.find(x=>x.id===id); if(!p) return;
   const atual = getDetalhe(id);
@@ -1120,10 +1155,11 @@ function renderCustos(){
         somaDet=Number(d.material);
         breakdown=`<div class="small muted" style="margin-top:3px">material ${L('material',BRL(d.material))}${cafeTxt}</div>`;
       }else{
-        somaDet=Number(d.planta||0)+Number(d.insumo||0)+Number(d.mao||0)+Number(d.adubo||0)+Number(d.embalagem||0)+Number(d.linha||0)+Number(d.enfeite||0);
+        somaDet=Number(d.planta||0)+Number(d.insumo||0)+Number(d.substrato||0)+Number(d.mao||0)+Number(d.adubo||0)+Number(d.embalagem||0)+Number(d.linha||0)+Number(d.enfeite||0);
+        const subsTxt = (d.substrato!=null && Number(d.substrato)>0) ? ` · 🪨 substrato ${L('substrato',BRL(d.substrato))}` : "";
         const linhaTxt = (d.linha!=null && Number(d.linha)>0) ? ` · 🧶 linha ${L('linha',BRL(d.linha))}` : "";
         const enfTxt = (d.enfeite!=null && Number(d.enfeite)>0) ? ` · 🎄 enfeite ${L('enfeite',BRL(d.enfeite))}` : "";
-        breakdown=`<div class="small muted" style="margin-top:3px">🌱 planta ${L('planta',BRL(d.planta))} · 🧵 musgo ${L('insumo',BRL(d.insumo))} · ✋ mão de obra ${L('mao',BRL(d.mao))} · 🌿 adubo ${L('adubo',BRL(d.adubo))} · 🛍️ embalagem ${L('embalagem',BRL(d.embalagem||0))}${linhaTxt}${enfTxt}${cafeTxt}</div>`;
+        breakdown=`<div class="small muted" style="margin-top:3px">🌱 planta ${L('planta',BRL(d.planta))} · 🧵 musgo ${L('insumo',BRL(d.insumo))} · ✋ mão de obra ${L('mao',BRL(d.mao))} · 🌿 adubo ${L('adubo',BRL(d.adubo))}${subsTxt} · 🛍️ embalagem ${L('embalagem',BRL(d.embalagem||0))}${linhaTxt}${enfTxt}${cafeTxt}</div>`;
       }
     }
     const custo = (somaDet!=null) ? somaDet : (p.custo!=null?Number(p.custo):null);
