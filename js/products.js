@@ -219,7 +219,7 @@ const PRODUCTS = [
   { id: "suporte-madeira-aro-alto", nome: "Madeira com aro alto · pendente", especie: "Suporte · madeira clara e ferro · haste alta com aro no topo", categoria: "suporte", suporte: true,
     descricao: "A versão mais alta do Madeira com aro: haste de ferro trabalhada que sobe até um aro aberto no topo, onde a esfera assenta. Eleva a peça bem acima da base — ótimo para folhagem que cai.", preco: 75, img: "assets/bases/madeira-aro-alto.jpg" },
   { id: "suporte-madeira-aro", nome: "Madeira com aro · clara", especie: "Suporte · madeira clara e ferro · base 15×15 cm · aro 9 cm · altura 10 cm", categoria: "suporte", suporte: true,
-    descricao: "Aro de ferro preto sobre haste, em base de madeira clara. Levanta a esfera do móvel e deixa o musgo respirar por baixo.", preco: 65, imgs: ["assets/bases/madeira-aro.jpg", "assets/bases/madeira-aro-uso.jpg"] },
+    descricao: "Aro de ferro preto sobre haste, em base de madeira clara. Levanta a esfera do móvel e deixa o musgo respirar por baixo.", preco: 65, imgs: ["assets/bases/madeira-aro.jpg?v=237", "assets/bases/madeira-aro-uso.jpg"] },
   { id: "suporte-madeira-aro-escura", nome: "Madeira com aro · escura", especie: "Suporte · madeira escura (nogueira) e ferro · base 15×15 cm · aro 9 cm", categoria: "suporte", suporte: true,
     descricao: "O mesmo Madeira com aro, em base de madeira escura (nogueira). Aro de ferro preto sobre haste — levanta a esfera e deixa o musgo respirar por baixo.", preco: 65, img: "assets/bases/madeira-aro-escura.jpg" },
   { id: "suporte-madeira-lisa", nome: "Madeira lisa", especie: "Suporte · madeira · 15 × 15 cm", categoria: "suporte", suporte: true,
