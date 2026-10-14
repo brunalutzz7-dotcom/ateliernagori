@@ -184,6 +184,7 @@
       <div class="gper">
         <button data-per="7d" class="on">7 dias</button>
         <button data-per="mes">Este mês</button>
+        <button data-per="ano">Este ano</button>
       </div>
       <div class="card">
         <h2 id="gTit1">Vendas — últimos 7 dias</h2>
@@ -196,7 +197,8 @@
         <div id="gCusto"></div>
       </div>
       <div class="card">
-        <h2>Peças mais vendidas</h2>
+        <h2>Peças mais vendidas · todas as vendas</h2>
+        <p class="small muted" style="margin-top:-4px">Soma de tudo que já foi vendido (não muda com o período) — pra prever quais plantas e suportes comprar mais.</p>
         <div id="gTop" class="small muted">—</div>
       </div>
       <div class="card">
@@ -410,7 +412,14 @@ function renderGraficos(){
   if(!el("gVendas")) return;
   const now=new Date();
   let buckets, inPeriod, idxOf, titSuf, perNome;
-  if(gPeriodo==="mes"){
+  if(gPeriodo==="ano"){
+    const y=now.getFullYear();
+    const mn=["Jan","Fev","Mar","Abr","Mai","Jun","Jul","Ago","Set","Out","Nov","Dez"];
+    buckets=mn.map(m=>({label:m, sub:"", valor:0,custo:0,qtd:0}));
+    inPeriod=d=> d.getFullYear()===y;
+    idxOf=d=> d.getMonth();
+    titSuf="este ano"; perNome="ano";
+  }else if(gPeriodo==="mes"){
     const y=now.getFullYear(), m=now.getMonth();
     const nW=Math.ceil(now.getDate()/7);
     buckets=[]; for(let w=0;w<nW;w++) buckets.push({label:"Sem "+(w+1), sub:"", valor:0,custo:0,qtd:0});
@@ -441,7 +450,7 @@ function renderGraficos(){
   });
   el("gTit1").textContent="Vendas — "+titSuf;
   el("gTit2").textContent="Custo das peças vendidas — "+titSuf;
-  el("gTit3").textContent="Vendidas ("+(gPeriodo==="mes"?"no mês":"na semana")+") — pra repor";
+  el("gTit3").textContent="Vendidas ("+titSuf+") — pra repor";
   const subDe=x=>{const q=x.qtd?x.qtd+"pç":""; return x.sub?(q?x.sub+" · "+q:x.sub):q;};
   el("gResumo").innerHTML =
     `<div class="kpi"><div class="v">${BRL(totV)}</div><div class="l">Vendas (${perNome})</div></div>`+
@@ -454,10 +463,13 @@ function renderGraficos(){
     `<div class="small muted" style="margin-bottom:6px">Custo total (${perNome}): <b>${BRL(totC)}</b> · Lucro: <b>${BRL(totV-totC)}</b></div>`+
     (totC>0 ? svgBars(buckets.map(x=>({label:x.label, sub:x.sub||(x.qtd?x.qtd+"pç":""), value:x.custo, top:x.custo?BRLc(x.custo):""})), "#b5895f")
             : `<p class="small muted">Sem custo de peças vendidas no período.</p>`);
-  const top=Object.entries(porProd).sort((a,b)=>b[1].qtd-a[1].qtd).slice(0,8);
+  // Peças mais vendidas: SEMPRE todas as vendas (não filtra por período) — pra prever compras
+  const porProdTodas={};
+  VENDAS.forEach(v=>{ const nm=v.produto_nome||"—"; porProdTodas[nm]=(porProdTodas[nm]||0)+Number(v.quantidade||1); });
+  const top=Object.entries(porProdTodas).sort((a,b)=>b[1]-a[1]).slice(0,12);
   el("gTop").innerHTML = top.length
-    ? svgBarsH(top.map(([nm,o])=>({label:nm, value:o.qtd, right:o.qtd+"×"})), "#47613f")
-    : "Nada vendido no período.";
+    ? svgBarsH(top.map(([nm,q])=>({label:nm, value:q, right:q+"×"})), "#47613f")
+    : "Nenhuma venda registrada ainda.";
   const rep=Object.entries(repor).sort((a,b)=>b[1].qtd-a[1].qtd);
   el("gRepor").innerHTML = rep.length
     ? rep.map(([nm,o])=>`<div class="item"><span>${o.qtd}× ${nm}</span><b>${BRL(o.custo)}</b></div>`).join("")
