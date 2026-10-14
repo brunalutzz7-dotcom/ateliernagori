@@ -212,6 +212,10 @@
       <div class="card">
         <h2>Custos e margens</h2>
         <p class="small muted" style="margin-top:-4px">Toque no preço ou no custo para editar. A margem recalcula sozinha.</p>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin:6px 0 10px">
+          <button type="button" id="btnExportar" class="btn sec mini">⤓ Exportar dados (pro Claude)</button>
+        </div>
+        <p class="small muted" id="expHint" style="margin:-4px 0 8px;display:none"></p>
         <input class="search" id="buscaCusto" placeholder="🔎 buscar peça..." />
         <div id="listaCustos"></div>
       </div>
@@ -265,6 +269,47 @@ el("loginForm").addEventListener("submit", async (e)=>{
   entrar();
 });
 el("btnSair").addEventListener("click", async ()=>{ await sb.auth.signOut(); location.reload(); });
+
+// ---------- Exportar dados (snapshot pro Claude sincronizar o código) ----------
+function montaExport(){
+  const itens = PRODUTOS.map(p=>({
+    id: p.id,
+    nome: p.nome,
+    categoria: p.categoria,
+    preco: (p.preco==null?null:Number(p.preco)),
+    custo: (p.custo==null?null:Number(p.custo)),
+    detalhe: getDetalhe(p.id)
+  }));
+  return { _tipo:"atelier-nagori-export", versao:1, gerado_em:new Date().toISOString(), total:itens.length, produtos:itens };
+}
+async function exportarDados(){
+  let json;
+  try{ json = JSON.stringify(montaExport(), null, 2); }
+  catch(e){ toast("Erro ao montar os dados"); return; }
+  const hint = el("expHint");
+  // baixa o arquivo (sempre funciona)
+  try{
+    const blob = new Blob([json], {type:"application/json"});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    const d = new Date();
+    a.href = url;
+    a.download = `atelier-custos-${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}.json`;
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(()=>URL.revokeObjectURL(url), 4000);
+  }catch(e){}
+  // tenta copiar pra área de transferência também
+  let copiou=false;
+  try{ await navigator.clipboard.writeText(json); copiou=true; }catch(e){ copiou=false; }
+  toast(copiou ? "Copiado! Pode colar pro Claude 📋" : "Arquivo baixado ⤓");
+  if(hint){
+    hint.style.display="block";
+    hint.textContent = copiou
+      ? "Pronto: os dados foram copiados E baixados. Cole aqui no Claude (ou mande o arquivo)."
+      : "Arquivo baixado. Mande ele pro Claude aqui no chat.";
+  }
+}
+el("btnExportar").addEventListener("click", exportarDados);
 document.querySelectorAll("nav.tabs button").forEach(b=> b.addEventListener("click", ()=>show(b.dataset.tab)) );
 document.querySelectorAll(".gper button").forEach(b=> b.addEventListener("click", ()=>{
   gPeriodo=b.dataset.per;
