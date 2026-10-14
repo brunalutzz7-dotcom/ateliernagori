@@ -214,6 +214,8 @@ const PRODUCTS = [
     descricao: "Haste alta curvada em gancho sobre base de madeira escura (nogueira). A esfera fica suspensa e a folhagem cai livre — a escolha das pendentes.", preco: 80, img: "assets/bases/madeira-gancho-escura.jpg" },
   { id: "suporte-madeira-gancho-alto-escura", nome: "Madeira com gancho alto · escura", especie: "Suporte · madeira escura (nogueira) e ferro · gancho preto alto", categoria: "suporte", suporte: true,
     descricao: "A versão mais alta do pendente, sobre base de madeira escura (nogueira). A haste sobe bem mais, para a folhagem cair em cascata com fôlego — ideal para pendentes longas.", preco: 100, img: "assets/bases/madeira-gancho-alto-escura.jpg" },
+  { id: "suporte-triangulo-madeira", nome: "Base triângulo · madeira e ferro", especie: "Suporte · base triangular de madeira clara · armação de ferro preto · aro superior", categoria: "suporte", suporte: true,
+    descricao: "Base triangular de madeira clara com armação de ferro preto que sobe até um aro — a esfera assenta no alto, numa composição geométrica e moderna. Peça de desenho marcante.", preco: 85, img: "assets/bases/triangulo-madeira.jpg" },
   { id: "suporte-madeira-aro", nome: "Madeira com aro", especie: "Suporte · madeira e ferro · base 15×15 cm · aro 9 cm · altura 10 cm", categoria: "suporte", suporte: true,
     descricao: "Aro de ferro preto sobre haste, em base de madeira. Levanta a esfera do móvel e deixa o musgo respirar por baixo.", preco: 65, imgs: ["assets/bases/madeira-aro.jpg", "assets/bases/madeira-aro-uso.jpg"] },
   { id: "suporte-madeira-lisa", nome: "Madeira lisa", especie: "Suporte · madeira · 15 × 15 cm", categoria: "suporte", suporte: true,
