@@ -730,6 +730,10 @@ function renderCustos(){
     const margR=(custo!=null)?preco-custo:null;
     const margP=(custo!=null && preco>0)?margR/preco:null;
     const pctTxt=(margP!=null)?(margP*100).toFixed(0)+"%":"—";
+    // Preço do café: margem >=50% -> +15% | margem <50% -> +20% | suportes = valor cheio (sem markup)
+    const ehSuporte = (p.categoria==="Suportes");
+    const cafeMk = ehSuporte ? 1 : ((margP!=null && margP>=0.5) ? 1.15 : 1.20);
+    const cafePreco = (preco>0) ? (ehSuporte ? preco : Math.round(preco*cafeMk/5)*5) : null;
     return `<div class="item">
       ${thumb(p)}
       <div style="flex:1">
@@ -743,6 +747,7 @@ function renderCustos(){
       <div style="text-align:right;min-width:96px">
         <div style="font-weight:700;color:${corMargem(margP)}">${pctTxt}</div>
         <div class="small muted">${margR!=null?BRL(margR):""}</div>
+        <div class="small" style="color:#8a6d3b;font-weight:700;margin-top:4px">☕ café ${cafePreco!=null?BRL(cafePreco):"—"}</div>
       </div></div>`;
   }).join("");
 }
