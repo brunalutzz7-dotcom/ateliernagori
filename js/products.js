@@ -187,7 +187,7 @@ const PRODUCTS = [
   { id: "suporte-aros-cobre", nome: "Suporte de aros · cobre", especie: "Suporte · dois aros em ferro · acabamento cobre", categoria: "suporte", suporte: true,
     descricao: "Dois aros de ferro ligados por uma curva única: um apoia a esfera, o outro dá base. Desenho leve e circular, que valoriza a peça de todos os ângulos. Acabamento cobre.", preco: 75, img: "assets/bases/aros-cobre.jpg" },
   { id: "suporte-coluna-bronze-80", nome: "Coluna de ferro · bronze · 80 cm", especie: "Suporte de chão · ferro bronze · torre vazada · altura 80 cm", categoria: "suporte", suporte: true,
-    descricao: "Torre vazada de ferro, alta e esguia, em acabamento bronze. Leva a kokedama à altura do olhar e vira peça de decoração por si só — ideal para canto de sala ou entrada. 80 cm de altura.", preco: 220, img: "assets/bases/coluna-bronze-80.jpg" },
+    descricao: "Torre vazada de ferro, alta e esguia, em acabamento bronze. Leva a kokedama à altura do olhar e vira peça de decoração por si só — ideal para canto de sala ou entrada. 80 cm de altura.", preco: 220, imgs: ["assets/bases/coluna-bronze-80.jpg", "assets/bases/coluna-bronze-80-uso.jpg"] },
   { id: "suporte-cubo-ferro-alto", nome: "Cubo de ferro · alto", especie: "Suporte especial · ferro preto · aro interno", categoria: "suporte", suporte: true,
     descricao: "Mesmo desenho, mais alto e mais estreito. Para peça de folhagem longa, que precisa de espaço para cair.", preco: 190, imgs: ["assets/bases/cubo-ferro-alto.jpg", "assets/bases/cubo-ferro-alto-uso.jpg"] },
   { id: "suporte-tronco-natural", nome: "Tronco natural", especie: "Suporte especial · tronco 13 cm · altura 8,5 cm · aro 11 cm", categoria: "suporte", suporte: true,
