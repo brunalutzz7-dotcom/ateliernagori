@@ -108,7 +108,7 @@
 <!-- App -->
 <div id="appView" class="hidden">
   <header class="top">
-    <b>✿ Atelier Nagori</b><span style="font-size:.62rem;opacity:.55;margin-left:7px;letter-spacing:.02em">v10 · tags</span>
+    <b>✿ Atelier Nagori</b><span style="font-size:.62rem;opacity:.55;margin-left:7px;letter-spacing:.02em">v11 · tags</span>
     <button class="sair" id="btnSair">Sair</button>
   </header>
   <div class="wrap">
@@ -251,10 +251,11 @@
           <label id="cEmbWrap" style="display:none">Item do kit de embalagem
             <select id="cEmbItem">
               <option value="Sacola">Sacola</option>
-              <option value="Tag acrílico">Tag acrílico (Mini)</option>
               <option value="Adesivo">Adesivo</option>
-              <option value="Tag papel">Tag papel (demais)</option>
               <option value="Manual">Manual</option>
+              <option value="Tag papel">Tag papel</option>
+              <option value="Tag acrílico Mini">Tag acrílico Mini</option>
+              <option value="Tag acrílico demais">Tag acrílico demais</option>
             </select>
           </label>
           <label id="cGramasWrap" style="display:none">Quantos gramas tem o pote?<input id="cGramas" type="text" inputmode="numeric" placeholder="ex.: 2000"></label>
@@ -447,15 +448,16 @@ function calcCompras(){
   const musgoPP = musgoR>0 ? musgoV/musgoR : null;
   const porItem={};
   g("embalagem").forEach(c=>{ const k=(c.item||"").toLowerCase().trim(); if(!porItem[k]) porItem[k]={v:0,r:0,nome:c.item}; porItem[k].v+=Number(c.valor||0); porItem[k].r+=Number(c.rende||0); });
-  let embItens=[], embComum=0, tagAcr=null, tagPap=null, embOk=false;
+  let embItens=[], embComum=0, tagAcrMini=null, tagAcrDemais=null, embOk=false;
   Object.values(porItem).forEach(it=>{ if(it.r>0){ const pp=it.v/it.r; embItens.push({nome:it.nome,pp}); embOk=true;
     const nm=(it.nome||"").toLowerCase();
-    if(nm.indexOf("acr")>-1) tagAcr=(tagAcr||0)+pp;          // tag acrílico -> só Mini
-    else if(nm.indexOf("papel")>-1) tagPap=(tagPap||0)+pp;   // tag papel -> demais
-    else embComum+=pp;                                        // sacola, adesivo, manual -> todas
+    if(nm.indexOf("acr")>-1){                                 // tag acrílico: 2 tamanhos
+      if(nm.indexOf("mini")>-1) tagAcrMini=(tagAcrMini||0)+pp; // acrílico Mini -> só Mini
+      else tagAcrDemais=(tagAcrDemais||0)+pp;                  // acrílico demais -> as outras
+    } else embComum+=pp;                                        // sacola, adesivo, manual, tag papel -> todas
   } });
-  const embMini = embOk ? embComum+(tagAcr||0) : null;        // embalagem das Mini
-  const embOutros = embOk ? embComum+(tagPap||0) : null;      // embalagem das demais
+  const embMini = embOk ? embComum+(tagAcrMini||0) : null;     // embalagem das Mini
+  const embOutros = embOk ? embComum+(tagAcrDemais||0) : null; // embalagem das demais
   const adubo=g("adubo");
   const adV=adubo.reduce((a,c)=>a+Number(c.valor||0),0), adG=adubo.reduce((a,c)=>a+Number(c.gramas||0),0);
   const aduboG = adG>0 ? adV/adG : null;
@@ -466,7 +468,7 @@ function calcCompras(){
   const natal=natalC.reduce((a,c)=>a+Number(c.valor||0),0);
   const natalQ=natalC.reduce((a,c)=>a+Number(c.qtd||0),0);
   const custoEnfeite = natalQ>0 ? natal/natalQ : null;
-  return {musgoPP, embMini, embOutros, embComum, tagAcr, tagPap, embItens, aduboG, linhaK, linhaT, natal, natalQ, custoEnfeite, pecas};
+  return {musgoPP, embMini, embOutros, embComum, tagAcrMini, tagAcrDemais, embItens, aduboG, linhaK, linhaT, natal, natalQ, custoEnfeite, pecas};
 }
 function renderCompras(){
   loadCompras();
@@ -475,8 +477,8 @@ function renderCompras(){
   const miss='<span class="muted">—</span>';
   let h="";
   h+=`<div class="small" style="padding:4px 0"><b>Musgo:</b> ${cc.musgoPP==null?'<span class="muted">registre o saco + quantas peças rende</span>':centBRL(cc.musgoPP)+" / peça"}</div>`;
-  h+=`<div class="small" style="padding:4px 0"><b>Embalagem · Mini:</b> ${cc.embMini==null?'<span class="muted">registre os itens do kit</span>':centBRL(cc.embMini)+" / venda"} <span class="muted">(tag acrílico)</span></div>`;
-  h+=`<div class="small" style="padding:4px 0"><b>Embalagem · demais:</b> ${cc.embOutros==null?'<span class="muted">—</span>':centBRL(cc.embOutros)+" / venda"} <span class="muted">(tag papel)</span></div>`;
+  h+=`<div class="small" style="padding:4px 0"><b>Embalagem · Mini:</b> ${cc.embMini==null?'<span class="muted">registre os itens do kit</span>':centBRL(cc.embMini)+" / venda"} <span class="muted">(com tag acrílico Mini)</span></div>`;
+  h+=`<div class="small" style="padding:4px 0"><b>Embalagem · demais:</b> ${cc.embOutros==null?'<span class="muted">—</span>':centBRL(cc.embOutros)+" / venda"} <span class="muted">(com tag acrílico demais)</span></div>`;
   if(cc.embItens.length) h+=`<div class="small muted" style="padding:0 0 4px 12px">${cc.embItens.map(i=>gesc(i.nome)+": "+centBRL(i.pp)).join(" · ")}</div>`;
   h+=`<div class="small" style="padding:4px 0"><b>Adubo:</b> ${cc.aduboG==null?'<span class="muted">registre o pote + quantos gramas tem</span>':centBRL(cc.aduboG)+" / grama"}</div>`;
   h+=`<div class="small" style="padding:4px 0"><b>Linha kokedama:</b> ${cc.linhaK==null?miss:centBRL(cc.linhaK)+" / peça"} <span class="muted">(rateio)</span></div>`;
