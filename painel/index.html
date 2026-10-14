@@ -227,7 +227,7 @@
         <p class="small muted" style="margin-top:-4px">Registre o que você compra. O app calcula o custo por peça de cada insumo — e vai ficando mais preciso a cada compra.</p>
         <form id="compraForm" style="margin-top:10px">
           <div class="grid2">
-            <label>Item<input id="cItem" placeholder="ex.: saco de musgo" required></label>
+            <label id="cItemWrap">Item<input id="cItem" placeholder="ex.: saco de musgo"></label>
             <label>Categoria
               <select id="cCategoria">
                 <option value="musgo">Musgo (rende X peças)</option>
@@ -245,6 +245,15 @@
             <label>Valor pago (R$)<input id="cValor" type="text" inputmode="decimal" placeholder="35,00" required></label>
             <label id="cRendeWrap">Rende quantas peças/unid.<input id="cRende" type="text" inputmode="numeric" placeholder="ex.: 40"></label>
           </div>
+          <label id="cEmbWrap" style="display:none">Item do kit de embalagem
+            <select id="cEmbItem">
+              <option value="Sacola">Sacola</option>
+              <option value="Tag acrílico">Tag acrílico</option>
+              <option value="Adesivo">Adesivo</option>
+              <option value="Tag papel">Tag papel</option>
+              <option value="Manual">Manual</option>
+            </select>
+          </label>
           <label id="cGramasWrap" style="display:none">Quantos gramas tem o pote?<input id="cGramas" type="text" inputmode="numeric" placeholder="ex.: 2000"></label>
           <label id="cQtdWrap" style="display:none">Quantos enfeites essa compra rende?<input id="cQtd" type="text" inputmode="numeric" placeholder="ex.: 50"></label>
           <div class="grid2">
@@ -402,7 +411,10 @@ const centBRL=(n)=> (n==null||isNaN(n)) ? "—" : "R$ "+Number(n).toLocaleString
 
 function mostraCamposCompra(){
   const c=el("cCategoria").value;
-  el("cRendeWrap").style.display=(c==="musgo"||c==="embalagem")?"block":"none";
+  const emb=(c==="embalagem");
+  el("cItemWrap").style.display=emb?"none":"block";
+  el("cEmbWrap").style.display=emb?"block":"none";
+  el("cRendeWrap").style.display=(c==="musgo"||emb)?"block":"none";
   el("cGramasWrap").style.display=(c==="adubo")?"block":"none";
   el("cQtdWrap").style.display=(c==="enfeite-natal")?"block":"none";
 }
@@ -410,8 +422,8 @@ if(el("cCategoria")) el("cCategoria").addEventListener("change", mostraCamposCom
 if(el("compraForm")) el("compraForm").addEventListener("submit", (e)=>{
   e.preventDefault();
   loadCompras();
-  const item=el("cItem").value.trim();
   const categoria=el("cCategoria").value;
+  const item=(categoria==="embalagem") ? el("cEmbItem").value : el("cItem").value.trim();
   const valor=numBR(el("cValor").value);
   if(!item || valor==null){ toast("Preencha o item e o valor"); return; }
   const reg={ id:Date.now().toString(36)+Math.random().toString(36).slice(2,6), data:(el("cData").value||new Date().toISOString().slice(0,10)), item, categoria, valor, obs:el("cObs").value.trim() };
