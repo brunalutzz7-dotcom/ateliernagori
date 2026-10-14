@@ -261,6 +261,18 @@
       </div>
 
       <div class="card">
+        <h2>Portes · adubo e mão de obra</h2>
+        <p class="small muted" style="margin-top:-4px">Defina o adubo (gramas) e a mão de obra (R$) de cada porte. O adubo em R$ sai de: gramas × preço por grama das compras.</p>
+        <div id="portesTabela"></div>
+        <h3 style="margin:16px 0 2px;font-size:.95rem">Porte de cada peça</h3>
+        <p class="small muted" style="margin:0 0 6px">Marque o porte de cada peça. As que ficarem sem porte não são alteradas.</p>
+        <input class="search" id="buscaPorte" placeholder="🔎 buscar peça..." />
+        <div id="portesProdutos"></div>
+        <button class="btn" id="btnAplicarCustos" type="button" style="margin-top:14px">✓ Aplicar custos das compras nas peças</button>
+        <p class="small muted" style="margin-top:6px">Atualiza <b>musgo/insumo</b>, <b>embalagem</b>, <b>adubo</b> e <b>mão de obra</b> de cada peça com porte. A <b>planta</b> é sempre mantida. Pede confirmação antes.</p>
+      </div>
+
+      <div class="card">
         <h2>Compras registradas</h2>
         <input class="search" id="buscaCompra" placeholder="🔎 buscar item..." />
         <div id="listaCompras"></div>
@@ -328,8 +340,11 @@ function montaExport(){
     custo: (p.custo==null?null:Number(p.custo)),
     detalhe: getDetalhe(p.id)
   }));
-  let compras=[]; try{ compras=JSON.parse(localStorage.getItem("comprasAN")||"[]")||[]; }catch(e){ compras=[]; }
-  return { _tipo:"atelier-nagori-export", versao:2, gerado_em:new Date().toISOString(), total:itens.length, produtos:itens, compras:compras };
+  let compras=[],pcfg={},pprod={};
+  try{ compras=JSON.parse(localStorage.getItem("comprasAN")||"[]")||[]; }catch(e){ compras=[]; }
+  try{ pcfg=JSON.parse(localStorage.getItem("portesCfgAN")||"{}")||{}; }catch(e){ pcfg={}; }
+  try{ pprod=JSON.parse(localStorage.getItem("porteProdAN")||"{}")||{}; }catch(e){ pprod={}; }
+  return { _tipo:"atelier-nagori-export", versao:3, gerado_em:new Date().toISOString(), total:itens.length, produtos:itens, compras:compras, portes_config:pcfg, portes_por_peca:pprod };
 }
 async function exportarDados(){
   let json;
@@ -434,9 +449,87 @@ function renderCompras(){
       <div style="text-align:right;white-space:nowrap">${centBRL(c.valor)}<br><a href="#" class="small" style="color:var(--terra)" onclick="removerCompra('${c.id}');return false">remover</a></div>
     </div>`;
   }).join("");
+  if(typeof renderPortes==="function") renderPortes();
 }
 function removerCompra(id){ if(!confirm("Remover esta compra?")) return; loadCompras(); COMPRAS=COMPRAS.filter(c=>c.id!==id); saveCompras(); renderCompras(); toast("Removida"); }
 loadCompras();
+
+// ---------- PORTES (adubo + mão de obra) e aplicação nos custos ----------
+const PORTES=[
+  {k:"mini",nome:"Mini"},{k:"pequena",nome:"Pequena"},{k:"media",nome:"Média"},{k:"grande",nome:"Grande"},
+  {k:"tamandama-m",nome:"Tamandama Médio"},{k:"tamandama-g",nome:"Tamandama Grande"},
+  {k:"bonsai-m",nome:"Bonsai Médio"},{k:"bonsai-g",nome:"Bonsai Grande"}
+];
+let portesCfg={}, porteProd={};
+function loadPortesCfg(){ try{ portesCfg=JSON.parse(localStorage.getItem("portesCfgAN")||"{}")||{}; }catch(e){ portesCfg={}; } }
+function savePortesCfg(){ try{ localStorage.setItem("portesCfgAN", JSON.stringify(portesCfg)); }catch(e){} }
+function loadPorteProd(){ try{ porteProd=JSON.parse(localStorage.getItem("porteProdAN")||"{}")||{}; }catch(e){ porteProd={}; } }
+function savePorteProd(){ try{ localStorage.setItem("porteProdAN", JSON.stringify(porteProd)); }catch(e){} }
+loadPortesCfg(); loadPorteProd();
+
+function renderPortes(){
+  loadPortesCfg(); loadPorteProd();
+  if(!el("portesTabela")) return;
+  const cc=calcCompras();
+  el("portesTabela").innerHTML =
+    `<div class="small muted" style="display:flex;gap:8px;font-weight:600;padding-bottom:2px"><span style="flex:1">Porte</span><span style="width:84px;text-align:center">Adubo (g)</span><span style="width:84px;text-align:center">Mão R$</span><span style="width:70px;text-align:right">Adubo R$</span></div>`+
+    PORTES.map(pt=>{ const cfg=portesCfg[pt.k]||{}; const aduboRS=(cc.aduboG!=null && cfg.adubo_g)?centBRL(cc.aduboG*cfg.adubo_g):"—";
+      return `<div style="display:flex;gap:8px;align-items:center;padding:4px 0">
+        <span style="flex:1" class="small">${pt.nome}</span>
+        <input data-pk="${pt.k}" data-f="adubo_g" value="${cfg.adubo_g!=null?cfg.adubo_g:''}" inputmode="decimal" placeholder="g" style="width:84px;padding:7px;text-align:center">
+        <input data-pk="${pt.k}" data-f="mao" value="${cfg.mao!=null?cfg.mao:''}" inputmode="decimal" placeholder="R$" style="width:84px;padding:7px;text-align:center">
+        <span class="small muted" style="width:70px;text-align:right">${aduboRS}</span>
+      </div>`; }).join("");
+  el("portesTabela").querySelectorAll("input[data-pk]").forEach(inp=>{
+    inp.addEventListener("change",()=>{ const k=inp.dataset.pk,f=inp.dataset.f,v=numBR(inp.value); if(!portesCfg[k])portesCfg[k]={}; if(v==null)delete portesCfg[k][f]; else portesCfg[k][f]=v; savePortesCfg(); renderPortes(); });
+  });
+  const q=(el("buscaPorte").value||"").toLowerCase();
+  const lst=PRODUTOS.filter(p=>p.categoria!=="Suportes" && (p.nome||"").toLowerCase().includes(q));
+  el("portesProdutos").innerHTML = lst.map(p=>{
+    const sel=porteProd[p.id]||"";
+    return `<div style="display:flex;gap:8px;align-items:center;padding:5px 0;border-bottom:1px solid var(--line)">
+      <span style="flex:1" class="small">${gesc(p.nome)}</span>
+      <select data-pid="${p.id}" style="width:155px;padding:7px">
+        <option value="">— porte —</option>
+        ${PORTES.map(pt=>`<option value="${pt.k}" ${sel===pt.k?"selected":""}>${pt.nome}</option>`).join("")}
+      </select></div>`;
+  }).join("");
+  el("portesProdutos").querySelectorAll("select[data-pid]").forEach(se=>{
+    se.addEventListener("change",()=>{ const id=se.dataset.pid; if(se.value) porteProd[id]=se.value; else delete porteProd[id]; savePorteProd(); });
+  });
+}
+if(el("buscaPorte")) el("buscaPorte").addEventListener("input", renderPortes);
+
+async function aplicarCustosPortes(){
+  loadCompras(); loadPortesCfg(); loadPorteProd();
+  const cc=calcCompras();
+  const r2=(n)=>Math.round(Number(n)*100)/100;
+  const stdInsumo=(cc.musgoPP!=null||cc.linhaK!=null)?((cc.musgoPP||0)+(cc.linhaK||0)):null;
+  const stdEmb=(cc.embPP!=null||cc.linhaT!=null)?((cc.embPP||0)+(cc.linhaT||0)):null;
+  const alvo=PRODUTOS.filter(p=> p.categoria!=="Suportes" && porteProd[p.id]);
+  if(!alvo.length){ toast("Marque o porte de pelo menos uma peça primeiro"); return; }
+  const mudar=[];
+  alvo.forEach(p=>{
+    const cur=getDetalhe(p.id); if(cur && cur.material!=null) return;
+    const base=cur?{...cur}:{planta:0,insumo:0,mao:0,adubo:0,embalagem:0};
+    const porte=portesCfg[porteProd[p.id]]||{};
+    const nd={planta:Number(base.planta||0),insumo:Number(base.insumo||0),mao:Number(base.mao||0),adubo:Number(base.adubo||0),embalagem:Number(base.embalagem||0)};
+    if(stdInsumo!=null) nd.insumo=r2(stdInsumo);
+    if(stdEmb!=null) nd.embalagem=r2(stdEmb);
+    if(cc.aduboG!=null && porte.adubo_g) nd.adubo=r2(cc.aduboG*porte.adubo_g);
+    if(porte.mao!=null) nd.mao=Number(porte.mao);
+    const tot=r2(nd.planta+nd.insumo+nd.mao+nd.adubo+nd.embalagem);
+    if(tot!==Number(p.custo) || JSON.stringify(nd)!==JSON.stringify(cur)) mudar.push({p,nd,tot});
+  });
+  if(!mudar.length){ toast("Nada para atualizar (já estão em dia)"); return; }
+  if(!confirm(`Vou atualizar o custo de ${mudar.length} peça(s) com os valores das compras + portes.\nA planta de cada uma é mantida. Continuar?`)) return;
+  mudar.forEach(m=>{ CUSTOS_OVERRIDE[m.p.id]=m.nd; m.p.custo=m.tot; });
+  saveOverridesLocal();
+  await Promise.all(mudar.map(m=> sb.from("produtos").update({custo:m.tot, custo_detalhe:m.nd}).eq("id",m.p.id).then(r=> r&&r.error ? sb.from("produtos").update({custo:m.tot}).eq("id",m.p.id) : r )));
+  renderCustos(); renderProdutos(); renderPainel(); renderCompras();
+  toast(`${mudar.length} peça(s) atualizada(s) ✓`);
+}
+if(el("btnAplicarCustos")) el("btnAplicarCustos").addEventListener("click", aplicarCustosPortes);
 document.querySelectorAll("nav.tabs button").forEach(b=> b.addEventListener("click", ()=>show(b.dataset.tab)) );
 document.querySelectorAll(".gper button").forEach(b=> b.addEventListener("click", ()=>{
   gPeriodo=b.dataset.per;
