@@ -490,19 +490,21 @@ loadCompras();
 
 // ---------- PORTES (adubo + mão de obra) e aplicação nos custos ----------
 const PORTES=[
-  {k:"mini",nome:"Mini"},{k:"pequena",nome:"Pequena"},{k:"media",nome:"Média"},{k:"grande",nome:"Grande"},
-  {k:"tamandama-m",nome:"Tamandama Médio"},{k:"tamandama-g",nome:"Tamandama Grande"},
-  {k:"bonsai-m",nome:"Bonsai Médio"},{k:"bonsai-g",nome:"Bonsai Grande"}
+  {k:"mini",nome:"Mini",mao:30},{k:"pequena",nome:"Pequena"},{k:"media",nome:"Média",mao:50},{k:"grande",nome:"Grande",mao:80},
+  {k:"tamandama-m",nome:"Tamandama Médio",mao:100},{k:"tamandama-g",nome:"Tamandama Grande (Maxi)",mao:120},
+  {k:"bonsai-m",nome:"Bonsai Médio",mao:100},{k:"bonsai-g",nome:"Bonsai Grande",mao:150}
 ];
+// preenche a mão de obra padrão por porte (só onde ainda não foi definida)
+function seedPortesMao(){ let mudou=false; PORTES.forEach(pt=>{ if(pt.mao!=null){ if(!portesCfg[pt.k]) portesCfg[pt.k]={}; if(portesCfg[pt.k].mao==null){ portesCfg[pt.k].mao=pt.mao; mudou=true; } } }); if(mudou) savePortesCfg(); }
 let portesCfg={}, porteProd={}, selProd=new Set();
 function loadPortesCfg(){ try{ portesCfg=JSON.parse(localStorage.getItem("portesCfgAN")||"{}")||{}; }catch(e){ portesCfg={}; } }
 function savePortesCfg(){ try{ localStorage.setItem("portesCfgAN", JSON.stringify(portesCfg)); }catch(e){} }
 function loadPorteProd(){ try{ porteProd=JSON.parse(localStorage.getItem("porteProdAN")||"{}")||{}; }catch(e){ porteProd={}; } }
 function savePorteProd(){ try{ localStorage.setItem("porteProdAN", JSON.stringify(porteProd)); }catch(e){} }
-loadPortesCfg(); loadPorteProd();
+loadPortesCfg(); loadPorteProd(); seedPortesMao();
 
 function renderPortes(){
-  loadPortesCfg(); loadPorteProd();
+  loadPortesCfg(); loadPorteProd(); seedPortesMao();
   if(!el("portesTabela")) return;
   const cc=calcCompras();
   el("portesTabela").innerHTML =
@@ -548,7 +550,7 @@ if(el("btnSelTodas")) el("btnSelTodas").addEventListener("click", ()=>{
 if(el("btnSelNenhuma")) el("btnSelNenhuma").addEventListener("click", ()=>{ selProd.clear(); renderPortes(); });
 
 async function aplicarCustosPortes(){
-  loadCompras(); loadPortesCfg(); loadPorteProd();
+  loadCompras(); loadPortesCfg(); loadPorteProd(); seedPortesMao();
   const cc=calcCompras();
   const r2=(n)=>Math.round(Number(n)*100)/100;
   const stdInsumo=(cc.musgoPP!=null||cc.linhaK!=null)?((cc.musgoPP||0)+(cc.linhaK||0)):null;
