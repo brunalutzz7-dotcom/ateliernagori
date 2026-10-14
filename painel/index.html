@@ -221,12 +221,59 @@
       </div>
     </section>
 
+    <section id="tab-compras" class="hidden">
+      <div class="card">
+        <h2>Compras de insumos</h2>
+        <p class="small muted" style="margin-top:-4px">Registre o que você compra. O app calcula o custo por peça de cada insumo — e vai ficando mais preciso a cada compra.</p>
+        <form id="compraForm" style="margin-top:10px">
+          <div class="grid2">
+            <label>Item<input id="cItem" placeholder="ex.: saco de musgo" required></label>
+            <label>Categoria
+              <select id="cCategoria">
+                <option value="musgo">Musgo (rende X peças)</option>
+                <option value="embalagem">Embalagem — kit (rende X unidades)</option>
+                <option value="adubo">Adubo (por grama)</option>
+                <option value="linha-kokedama">Linha p/ amarrar kokedama (rateio)</option>
+                <option value="linha-tags">Linha p/ amarrar tags (rateio)</option>
+                <option value="enfeite-natal">🎄 Enfeite de Natal (só total)</option>
+                <option value="planta">🌿 Planta</option>
+                <option value="outro">Outro</option>
+              </select>
+            </label>
+          </div>
+          <div class="grid2">
+            <label>Valor pago (R$)<input id="cValor" type="text" inputmode="decimal" placeholder="35,00" required></label>
+            <label id="cRendeWrap">Rende quantas peças/unid.<input id="cRende" type="text" inputmode="numeric" placeholder="ex.: 40"></label>
+          </div>
+          <label id="cGramasWrap" style="display:none">Quantos gramas tem o pote?<input id="cGramas" type="text" inputmode="numeric" placeholder="ex.: 2000"></label>
+          <div class="grid2">
+            <label>Data<input id="cData" type="date"></label>
+            <label>Marca/obs. (opcional)<input id="cObs" placeholder=""></label>
+          </div>
+          <button class="btn" type="submit" style="margin-top:8px">+ Registrar compra</button>
+        </form>
+      </div>
+
+      <div class="card">
+        <h2>Custo por peça (calculado)</h2>
+        <p class="small muted" style="margin-top:-4px">Vem das suas compras. Ainda não altera os custos das peças — é só pra você conferir.</p>
+        <div id="comprasCalc"></div>
+      </div>
+
+      <div class="card">
+        <h2>Compras registradas</h2>
+        <input class="search" id="buscaCompra" placeholder="🔎 buscar item..." />
+        <div id="listaCompras"></div>
+      </div>
+    </section>
+
   </div>
 
   <nav class="tabs">
     <button data-tab="painel" class="on"><i>📊</i>Painel</button>
     <button data-tab="graficos"><i>📈</i>Gráficos</button>
     <button data-tab="vendas"><i>🧾</i>Vendas</button>
+    <button data-tab="compras"><i>🛒</i>Compras</button>
     <button data-tab="estoque"><i>📦</i>Estoque</button>
     <button data-tab="custos"><i>💰</i>Custos</button>
   </nav>
@@ -249,9 +296,10 @@ const el = (id)=>document.getElementById(id);
 let sb=null, PRODUTOS=[], VENDAS=[];
 
 function toast(m){const t=el("toast");t.textContent=m;t.classList.add("show");setTimeout(()=>t.classList.remove("show"),2200);}
-function show(id){ ["painel","graficos","vendas","estoque","custos"].forEach(t=>el("tab-"+t).classList.toggle("hidden",t!==id));
+function show(id){ ["painel","graficos","vendas","compras","estoque","custos"].forEach(t=>el("tab-"+t).classList.toggle("hidden",t!==id));
   document.querySelectorAll("nav.tabs button").forEach(b=>b.classList.toggle("on",b.dataset.tab===id));
-  if(id==="graficos") renderGraficos(); }
+  if(id==="graficos") renderGraficos();
+  if(id==="compras") renderCompras(); }
 
 // ---------- inicialização ----------
 if(!window.supabase || SUPABASE_URL.startsWith("COLE") || SUPABASE_ANON.startsWith("COLE")){
@@ -280,7 +328,8 @@ function montaExport(){
     custo: (p.custo==null?null:Number(p.custo)),
     detalhe: getDetalhe(p.id)
   }));
-  return { _tipo:"atelier-nagori-export", versao:1, gerado_em:new Date().toISOString(), total:itens.length, produtos:itens };
+  let compras=[]; try{ compras=JSON.parse(localStorage.getItem("comprasAN")||"[]")||[]; }catch(e){ compras=[]; }
+  return { _tipo:"atelier-nagori-export", versao:2, gerado_em:new Date().toISOString(), total:itens.length, produtos:itens, compras:compras };
 }
 async function exportarDados(){
   let json;
@@ -310,6 +359,84 @@ async function exportarDados(){
   }
 }
 el("btnExportar").addEventListener("click", exportarDados);
+
+// ---------- COMPRAS DE INSUMOS ----------
+let COMPRAS=[];
+const CAT_LABEL={musgo:"Musgo",embalagem:"Embalagem (kit)",adubo:"Adubo","linha-kokedama":"Linha kokedama","linha-tags":"Linha tags","enfeite-natal":"🎄 Enfeite de Natal",planta:"🌿 Planta",outro:"Outro"};
+function loadCompras(){ try{ COMPRAS=JSON.parse(localStorage.getItem("comprasAN")||"[]")||[]; }catch(e){ COMPRAS=[]; } }
+function saveCompras(){ try{ localStorage.setItem("comprasAN", JSON.stringify(COMPRAS)); }catch(e){} }
+function numBR(v){ let s=String(v==null?"":v).trim(); if(!s) return null; if(s.indexOf(",")>-1){ s=s.replace(/\./g,"").replace(",","."); } const n=Number(s); return isNaN(n)?null:n; }
+const centBRL=(n)=> (n==null||isNaN(n)) ? "—" : "R$ "+Number(n).toLocaleString("pt-BR",{minimumFractionDigits:2,maximumFractionDigits:2});
+
+function mostraCamposCompra(){
+  const c=el("cCategoria").value;
+  el("cRendeWrap").style.display=(c==="musgo"||c==="embalagem")?"block":"none";
+  el("cGramasWrap").style.display=(c==="adubo")?"block":"none";
+}
+if(el("cCategoria")) el("cCategoria").addEventListener("change", mostraCamposCompra);
+if(el("compraForm")) el("compraForm").addEventListener("submit", (e)=>{
+  e.preventDefault();
+  loadCompras();
+  const item=el("cItem").value.trim();
+  const categoria=el("cCategoria").value;
+  const valor=numBR(el("cValor").value);
+  if(!item || valor==null){ toast("Preencha o item e o valor"); return; }
+  const reg={ id:Date.now().toString(36)+Math.random().toString(36).slice(2,6), data:(el("cData").value||new Date().toISOString().slice(0,10)), item, categoria, valor, obs:el("cObs").value.trim() };
+  if(categoria==="musgo"||categoria==="embalagem"){ const r=numBR(el("cRende").value); if(r) reg.rende=r; }
+  if(categoria==="adubo"){ const g=numBR(el("cGramas").value); if(g) reg.gramas=g; }
+  COMPRAS.push(reg); saveCompras();
+  el("compraForm").reset(); mostraCamposCompra();
+  renderCompras(); toast("Compra registrada ✓");
+});
+if(el("buscaCompra")) el("buscaCompra").addEventListener("input", renderCompras);
+
+function totalPecasVendidas(){ return VENDAS.reduce((a,v)=>a+Number(v.quantidade||1),0); }
+function calcCompras(){
+  const g=(cat)=>COMPRAS.filter(c=>c.categoria===cat);
+  const musgo=g("musgo");
+  const musgoV=musgo.reduce((a,c)=>a+Number(c.valor||0),0), musgoR=musgo.reduce((a,c)=>a+Number(c.rende||0),0);
+  const musgoPP = musgoR>0 ? musgoV/musgoR : null;
+  const porItem={};
+  g("embalagem").forEach(c=>{ const k=(c.item||"").toLowerCase().trim(); if(!porItem[k]) porItem[k]={v:0,r:0,nome:c.item}; porItem[k].v+=Number(c.valor||0); porItem[k].r+=Number(c.rende||0); });
+  let embPP=0, embItens=[], embOk=false;
+  Object.values(porItem).forEach(it=>{ if(it.r>0){ const pp=it.v/it.r; embPP+=pp; embItens.push({nome:it.nome,pp}); embOk=true; } });
+  const adubo=g("adubo");
+  const adV=adubo.reduce((a,c)=>a+Number(c.valor||0),0), adG=adubo.reduce((a,c)=>a+Number(c.gramas||0),0);
+  const aduboG = adG>0 ? adV/adG : null;
+  const pecas=totalPecasVendidas();
+  const rateio=(cat)=>{ const tot=g(cat).reduce((a,c)=>a+Number(c.valor||0),0); return (pecas>0 && tot>0) ? tot/pecas : (tot>0?null:0); };
+  const linhaK=rateio("linha-kokedama"), linhaT=rateio("linha-tags");
+  const natal=g("enfeite-natal").reduce((a,c)=>a+Number(c.valor||0),0);
+  return {musgoPP, embPP:embOk?embPP:null, embItens, aduboG, linhaK, linhaT, natal, pecas};
+}
+function renderCompras(){
+  loadCompras();
+  if(!el("comprasCalc")) return;
+  const cc=calcCompras();
+  const miss='<span class="muted">—</span>';
+  let h="";
+  h+=`<div class="small" style="padding:4px 0"><b>Musgo:</b> ${cc.musgoPP==null?'<span class="muted">registre o saco + quantas peças rende</span>':centBRL(cc.musgoPP)+" / peça"}</div>`;
+  h+=`<div class="small" style="padding:4px 0"><b>Embalagem (kit):</b> ${cc.embPP==null?'<span class="muted">registre os itens do kit + rendimento</span>':centBRL(cc.embPP)+" / venda"}</div>`;
+  if(cc.embItens.length) h+=`<div class="small muted" style="padding:0 0 4px 12px">${cc.embItens.map(i=>gesc(i.nome)+": "+centBRL(i.pp)).join(" · ")}</div>`;
+  h+=`<div class="small" style="padding:4px 0"><b>Adubo:</b> ${cc.aduboG==null?'<span class="muted">registre o pote + quantos gramas tem</span>':centBRL(cc.aduboG)+" / grama"}</div>`;
+  h+=`<div class="small" style="padding:4px 0"><b>Linha kokedama:</b> ${cc.linhaK==null?miss:centBRL(cc.linhaK)+" / peça"} <span class="muted">(rateio)</span></div>`;
+  h+=`<div class="small" style="padding:4px 0"><b>Linha tags:</b> ${cc.linhaT==null?miss:centBRL(cc.linhaT)+" / peça"} <span class="muted">(rateio)</span></div>`;
+  h+=`<div class="small" style="padding:4px 0;color:#8a6d3b"><b>🎄 Enfeites de Natal (total gasto):</b> ${centBRL(cc.natal)}</div>`;
+  h+=`<div class="small muted" style="padding-top:8px">Rateio das linhas calculado sobre <b>${cc.pecas}</b> peça(s) vendida(s) — vai ficando mais preciso a cada mês.</div>`;
+  el("comprasCalc").innerHTML=h;
+  const q=(el("buscaCompra").value||"").toLowerCase();
+  const lst=COMPRAS.filter(c=>(c.item||"").toLowerCase().includes(q)||(CAT_LABEL[c.categoria]||"").toLowerCase().includes(q)).sort((a,b)=>String(b.data||"").localeCompare(String(a.data||"")));
+  if(!lst.length){ el("listaCompras").innerHTML='<p class="small muted">Nenhuma compra registrada ainda.</p>'; return; }
+  el("listaCompras").innerHTML=lst.map(c=>{
+    const extra = c.rende?` · rende ${c.rende}`:(c.gramas?` · ${c.gramas}g`:"");
+    return `<div style="display:flex;justify-content:space-between;gap:8px;padding:9px 0;border-bottom:1px solid var(--line)">
+      <div><b>${gesc(c.item)}</b><div class="small muted">${CAT_LABEL[c.categoria]||c.categoria} · ${c.data||""}${extra}${c.obs?" · "+gesc(c.obs):""}</div></div>
+      <div style="text-align:right;white-space:nowrap">${centBRL(c.valor)}<br><a href="#" class="small" style="color:var(--terra)" onclick="removerCompra('${c.id}');return false">remover</a></div>
+    </div>`;
+  }).join("");
+}
+function removerCompra(id){ if(!confirm("Remover esta compra?")) return; loadCompras(); COMPRAS=COMPRAS.filter(c=>c.id!==id); saveCompras(); renderCompras(); toast("Removida"); }
+loadCompras();
 document.querySelectorAll("nav.tabs button").forEach(b=> b.addEventListener("click", ()=>show(b.dataset.tab)) );
 document.querySelectorAll(".gper button").forEach(b=> b.addEventListener("click", ()=>{
   gPeriodo=b.dataset.per;
