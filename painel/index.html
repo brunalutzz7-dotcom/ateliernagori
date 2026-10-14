@@ -339,6 +339,13 @@ async function carregar(){
     faltando.forEach(p=>{ p.custo = CUSTOS_TOTAIS[p.id]; });
     await Promise.all(faltando.map(p=>sb.from("produtos").update({custo:p.custo}).eq("id",p.id)));
   }
+  // Sincroniza o custo com o catálogo embutido (CUSTOS_TOTAIS) nos produtos SEM edição manual.
+  // Preserva o que foi editado à mão no app (tem override); corrige os que ficaram com custo antigo no banco.
+  const custoSync = PRODUTOS.filter(p=>!CUSTOS_OVERRIDE[p.id] && CUSTOS_TOTAIS[p.id]!=null && Number(p.custo)!==Number(CUSTOS_TOTAIS[p.id]));
+  if(custoSync.length){
+    custoSync.forEach(p=>{ p.custo = CUSTOS_TOTAIS[p.id]; });
+    await Promise.all(custoSync.map(p=>sb.from("produtos").update({custo:p.custo}).eq("id",p.id)));
+  }
   renderProdutosSelect(); renderPainel(); renderVendas(); renderProdutos(); renderCustos(); renderGraficos();
 }
 
