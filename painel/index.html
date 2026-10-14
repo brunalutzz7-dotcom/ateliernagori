@@ -246,6 +246,7 @@
             <label id="cRendeWrap">Rende quantas peças/unid.<input id="cRende" type="text" inputmode="numeric" placeholder="ex.: 40"></label>
           </div>
           <label id="cGramasWrap" style="display:none">Quantos gramas tem o pote?<input id="cGramas" type="text" inputmode="numeric" placeholder="ex.: 2000"></label>
+          <label id="cQtdWrap" style="display:none">Quantos enfeites essa compra rende?<input id="cQtd" type="text" inputmode="numeric" placeholder="ex.: 50"></label>
           <div class="grid2">
             <label>Data<input id="cData" type="date"></label>
             <label>Marca/obs. (opcional)<input id="cObs" placeholder=""></label>
@@ -264,12 +265,28 @@
         <h2>Portes · adubo e mão de obra</h2>
         <p class="small muted" style="margin-top:-4px">Defina o adubo (gramas) e a mão de obra (R$) de cada porte. O adubo em R$ sai de: gramas × preço por grama das compras.</p>
         <div id="portesTabela"></div>
-        <h3 style="margin:16px 0 2px;font-size:.95rem">Porte de cada peça</h3>
-        <p class="small muted" style="margin:0 0 6px">Marque o porte de cada peça. As que ficarem sem porte não são alteradas.</p>
+        <h3 style="margin:16px 0 2px;font-size:.95rem">Peças · porte e seleção</h3>
+        <p class="small muted" style="margin:0 0 6px">Marque o <b>porte</b> (pro adubo e mão de obra) e use a <b>caixinha ☑</b> pra escolher em quais peças os botões abaixo vão mexer.</p>
         <input class="search" id="buscaPorte" placeholder="🔎 buscar peça..." />
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin:8px 0">
+          <button type="button" id="btnSelTodas" class="btn sec mini">☑ Selecionar todas</button>
+          <button type="button" id="btnSelNenhuma" class="btn sec mini">▢ Limpar seleção</button>
+          <span class="small muted" id="selInfo" style="align-self:center"></span>
+        </div>
         <div id="portesProdutos"></div>
-        <button class="btn" id="btnAplicarCustos" type="button" style="margin-top:14px">✓ Aplicar custos das compras nas peças</button>
-        <p class="small muted" style="margin-top:6px">Atualiza <b>musgo/insumo</b>, <b>embalagem</b>, <b>adubo</b> e <b>mão de obra</b> de cada peça com porte. A <b>planta</b> é sempre mantida. Pede confirmação antes.</p>
+
+        <button class="btn" id="btnAplicarCustos" type="button" style="margin-top:14px">✓ Aplicar custos nas peças selecionadas</button>
+        <p class="small muted" style="margin-top:6px">Atualiza <b>musgo/insumo</b>, <b>embalagem</b>, <b>adubo</b> (porte) e <b>mão de obra</b> (porte). A <b>planta</b> e o <b>enfeite</b> são mantidos.</p>
+
+        <div style="border-top:1px solid var(--line);margin-top:14px;padding-top:12px">
+          <h3 style="margin:0 0 4px;font-size:.95rem">🎄 Enfeite de Natal</h3>
+          <p class="small muted" style="margin:0 0 6px">Primeiro registre as compras de Natal (com o nº de enfeites). Depois selecione as peças que vão ser enfeitadas e aplique.</p>
+          <label>Enfeites por peça<input id="natalQtd" type="text" inputmode="numeric" value="1" style="max-width:120px"></label>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px">
+            <button class="btn" id="btnAplicarNatal" type="button" style="width:auto">🎄 Aplicar enfeite nas selecionadas</button>
+            <button class="btn sec" id="btnTirarNatal" type="button" style="width:auto">Tirar enfeite das selecionadas</button>
+          </div>
+        </div>
       </div>
 
       <div class="card">
@@ -387,6 +404,7 @@ function mostraCamposCompra(){
   const c=el("cCategoria").value;
   el("cRendeWrap").style.display=(c==="musgo"||c==="embalagem")?"block":"none";
   el("cGramasWrap").style.display=(c==="adubo")?"block":"none";
+  el("cQtdWrap").style.display=(c==="enfeite-natal")?"block":"none";
 }
 if(el("cCategoria")) el("cCategoria").addEventListener("change", mostraCamposCompra);
 if(el("compraForm")) el("compraForm").addEventListener("submit", (e)=>{
@@ -399,6 +417,7 @@ if(el("compraForm")) el("compraForm").addEventListener("submit", (e)=>{
   const reg={ id:Date.now().toString(36)+Math.random().toString(36).slice(2,6), data:(el("cData").value||new Date().toISOString().slice(0,10)), item, categoria, valor, obs:el("cObs").value.trim() };
   if(categoria==="musgo"||categoria==="embalagem"){ const r=numBR(el("cRende").value); if(r) reg.rende=r; }
   if(categoria==="adubo"){ const g=numBR(el("cGramas").value); if(g) reg.gramas=g; }
+  if(categoria==="enfeite-natal"){ const qt=numBR(el("cQtd").value); if(qt) reg.qtd=qt; }
   COMPRAS.push(reg); saveCompras();
   el("compraForm").reset(); mostraCamposCompra();
   renderCompras(); toast("Compra registrada ✓");
@@ -421,8 +440,11 @@ function calcCompras(){
   const pecas=totalPecasVendidas();
   const rateio=(cat)=>{ const tot=g(cat).reduce((a,c)=>a+Number(c.valor||0),0); return (pecas>0 && tot>0) ? tot/pecas : (tot>0?null:0); };
   const linhaK=rateio("linha-kokedama"), linhaT=rateio("linha-tags");
-  const natal=g("enfeite-natal").reduce((a,c)=>a+Number(c.valor||0),0);
-  return {musgoPP, embPP:embOk?embPP:null, embItens, aduboG, linhaK, linhaT, natal, pecas};
+  const natalC=g("enfeite-natal");
+  const natal=natalC.reduce((a,c)=>a+Number(c.valor||0),0);
+  const natalQ=natalC.reduce((a,c)=>a+Number(c.qtd||0),0);
+  const custoEnfeite = natalQ>0 ? natal/natalQ : null;
+  return {musgoPP, embPP:embOk?embPP:null, embItens, aduboG, linhaK, linhaT, natal, natalQ, custoEnfeite, pecas};
 }
 function renderCompras(){
   loadCompras();
@@ -436,7 +458,7 @@ function renderCompras(){
   h+=`<div class="small" style="padding:4px 0"><b>Adubo:</b> ${cc.aduboG==null?'<span class="muted">registre o pote + quantos gramas tem</span>':centBRL(cc.aduboG)+" / grama"}</div>`;
   h+=`<div class="small" style="padding:4px 0"><b>Linha kokedama:</b> ${cc.linhaK==null?miss:centBRL(cc.linhaK)+" / peça"} <span class="muted">(rateio)</span></div>`;
   h+=`<div class="small" style="padding:4px 0"><b>Linha tags:</b> ${cc.linhaT==null?miss:centBRL(cc.linhaT)+" / peça"} <span class="muted">(rateio)</span></div>`;
-  h+=`<div class="small" style="padding:4px 0;color:#8a6d3b"><b>🎄 Enfeites de Natal (total gasto):</b> ${centBRL(cc.natal)}</div>`;
+  h+=`<div class="small" style="padding:4px 0;color:#8a6d3b"><b>🎄 Enfeites de Natal:</b> total ${centBRL(cc.natal)}${cc.custoEnfeite!=null?` · ${centBRL(cc.custoEnfeite)} por enfeite (${cc.natalQ} un.)`:' <span class="muted">(informe o nº de enfeites)</span>'}</div>`;
   h+=`<div class="small muted" style="padding-top:8px">Rateio das linhas calculado sobre <b>${cc.pecas}</b> peça(s) vendida(s) — vai ficando mais preciso a cada mês.</div>`;
   el("comprasCalc").innerHTML=h;
   const q=(el("buscaCompra").value||"").toLowerCase();
@@ -460,7 +482,7 @@ const PORTES=[
   {k:"tamandama-m",nome:"Tamandama Médio"},{k:"tamandama-g",nome:"Tamandama Grande"},
   {k:"bonsai-m",nome:"Bonsai Médio"},{k:"bonsai-g",nome:"Bonsai Grande"}
 ];
-let portesCfg={}, porteProd={};
+let portesCfg={}, porteProd={}, selProd=new Set();
 function loadPortesCfg(){ try{ portesCfg=JSON.parse(localStorage.getItem("portesCfgAN")||"{}")||{}; }catch(e){ portesCfg={}; } }
 function savePortesCfg(){ try{ localStorage.setItem("portesCfgAN", JSON.stringify(portesCfg)); }catch(e){} }
 function loadPorteProd(){ try{ porteProd=JSON.parse(localStorage.getItem("porteProdAN")||"{}")||{}; }catch(e){ porteProd={}; } }
@@ -486,10 +508,12 @@ function renderPortes(){
   const q=(el("buscaPorte").value||"").toLowerCase();
   const lst=PRODUTOS.filter(p=>p.categoria!=="Suportes" && (p.nome||"").toLowerCase().includes(q));
   el("portesProdutos").innerHTML = lst.map(p=>{
-    const sel=porteProd[p.id]||"";
+    const sel=porteProd[p.id]||""; const ck=selProd.has(p.id)?"checked":"";
+    const temEnf = getDetalhe(p.id) && Number(getDetalhe(p.id).enfeite||0)>0;
     return `<div style="display:flex;gap:8px;align-items:center;padding:5px 0;border-bottom:1px solid var(--line)">
-      <span style="flex:1" class="small">${gesc(p.nome)}</span>
-      <select data-pid="${p.id}" style="width:155px;padding:7px">
+      <input type="checkbox" data-sel="${p.id}" ${ck} style="width:auto;margin:0;flex:none">
+      <span style="flex:1" class="small">${gesc(p.nome)}${temEnf?' <span title="tem enfeite de Natal">🎄</span>':''}</span>
+      <select data-pid="${p.id}" style="width:150px;padding:7px">
         <option value="">— porte —</option>
         ${PORTES.map(pt=>`<option value="${pt.k}" ${sel===pt.k?"selected":""}>${pt.nome}</option>`).join("")}
       </select></div>`;
@@ -497,8 +521,19 @@ function renderPortes(){
   el("portesProdutos").querySelectorAll("select[data-pid]").forEach(se=>{
     se.addEventListener("change",()=>{ const id=se.dataset.pid; if(se.value) porteProd[id]=se.value; else delete porteProd[id]; savePorteProd(); });
   });
+  el("portesProdutos").querySelectorAll("input[data-sel]").forEach(cb=>{
+    cb.addEventListener("change",()=>{ const id=cb.dataset.sel; if(cb.checked) selProd.add(id); else selProd.delete(id); atualizaSelInfo(); });
+  });
+  atualizaSelInfo();
 }
+function atualizaSelInfo(){ if(el("selInfo")) el("selInfo").textContent = selProd.size ? `${selProd.size} peça(s) selecionada(s)` : "nenhuma selecionada"; }
 if(el("buscaPorte")) el("buscaPorte").addEventListener("input", renderPortes);
+if(el("btnSelTodas")) el("btnSelTodas").addEventListener("click", ()=>{
+  const q=(el("buscaPorte").value||"").toLowerCase();
+  PRODUTOS.filter(p=>p.categoria!=="Suportes" && (p.nome||"").toLowerCase().includes(q)).forEach(p=>selProd.add(p.id));
+  renderPortes();
+});
+if(el("btnSelNenhuma")) el("btnSelNenhuma").addEventListener("click", ()=>{ selProd.clear(); renderPortes(); });
 
 async function aplicarCustosPortes(){
   loadCompras(); loadPortesCfg(); loadPorteProd();
@@ -506,23 +541,24 @@ async function aplicarCustosPortes(){
   const r2=(n)=>Math.round(Number(n)*100)/100;
   const stdInsumo=(cc.musgoPP!=null||cc.linhaK!=null)?((cc.musgoPP||0)+(cc.linhaK||0)):null;
   const stdEmb=(cc.embPP!=null||cc.linhaT!=null)?((cc.embPP||0)+(cc.linhaT||0)):null;
-  const alvo=PRODUTOS.filter(p=> p.categoria!=="Suportes" && porteProd[p.id]);
-  if(!alvo.length){ toast("Marque o porte de pelo menos uma peça primeiro"); return; }
+  const alvo=PRODUTOS.filter(p=> p.categoria!=="Suportes" && selProd.has(p.id));
+  if(!alvo.length){ toast("Selecione as peças (caixinhas) primeiro"); return; }
   const mudar=[];
   alvo.forEach(p=>{
     const cur=getDetalhe(p.id); if(cur && cur.material!=null) return;
     const base=cur?{...cur}:{planta:0,insumo:0,mao:0,adubo:0,embalagem:0};
     const porte=portesCfg[porteProd[p.id]]||{};
     const nd={planta:Number(base.planta||0),insumo:Number(base.insumo||0),mao:Number(base.mao||0),adubo:Number(base.adubo||0),embalagem:Number(base.embalagem||0)};
+    if(base.enfeite!=null && Number(base.enfeite)>0) nd.enfeite=Number(base.enfeite); // preserva Natal
     if(stdInsumo!=null) nd.insumo=r2(stdInsumo);
     if(stdEmb!=null) nd.embalagem=r2(stdEmb);
     if(cc.aduboG!=null && porte.adubo_g) nd.adubo=r2(cc.aduboG*porte.adubo_g);
     if(porte.mao!=null) nd.mao=Number(porte.mao);
-    const tot=r2(nd.planta+nd.insumo+nd.mao+nd.adubo+nd.embalagem);
+    const tot=r2(nd.planta+nd.insumo+nd.mao+nd.adubo+nd.embalagem+Number(nd.enfeite||0));
     if(tot!==Number(p.custo) || JSON.stringify(nd)!==JSON.stringify(cur)) mudar.push({p,nd,tot});
   });
   if(!mudar.length){ toast("Nada para atualizar (já estão em dia)"); return; }
-  if(!confirm(`Vou atualizar o custo de ${mudar.length} peça(s) com os valores das compras + portes.\nA planta de cada uma é mantida. Continuar?`)) return;
+  if(!confirm(`Vou atualizar o custo de ${mudar.length} peça(s) selecionada(s) com os valores das compras + portes.\nA planta e o enfeite de Natal são mantidos. Continuar?`)) return;
   mudar.forEach(m=>{ CUSTOS_OVERRIDE[m.p.id]=m.nd; m.p.custo=m.tot; });
   saveOverridesLocal();
   await Promise.all(mudar.map(m=> sb.from("produtos").update({custo:m.tot, custo_detalhe:m.nd}).eq("id",m.p.id).then(r=> r&&r.error ? sb.from("produtos").update({custo:m.tot}).eq("id",m.p.id) : r )));
@@ -530,6 +566,43 @@ async function aplicarCustosPortes(){
   toast(`${mudar.length} peça(s) atualizada(s) ✓`);
 }
 if(el("btnAplicarCustos")) el("btnAplicarCustos").addEventListener("click", aplicarCustosPortes);
+
+// ---------- Aplicar ENFEITE DE NATAL nas peças selecionadas ----------
+async function aplicarNatal(){
+  loadCompras(); loadPorteProd();
+  const cc=calcCompras();
+  if(cc.custoEnfeite==null){ toast("Registre o gasto de Natal + o nº de enfeites primeiro"); return; }
+  const qtd=numBR(el("natalQtd").value)||1;
+  const custoPorPeca=Math.round(cc.custoEnfeite*qtd*100)/100;
+  const alvo=PRODUTOS.filter(p=> p.categoria!=="Suportes" && selProd.has(p.id));
+  if(!alvo.length){ toast("Selecione as peças que vão levar enfeite (caixinhas)"); return; }
+  if(!confirm(`Vou somar ${centBRL(custoPorPeca)} de enfeite de Natal (${qtd} enfeite(s) × ${centBRL(cc.custoEnfeite)}) em ${alvo.length} peça(s) selecionada(s). Continuar?`)) return;
+  const mudar=[];
+  alvo.forEach(p=>{
+    const cur=getDetalhe(p.id); if(cur && cur.material!=null) return;
+    const base=cur?{...cur}:{planta:0,insumo:0,mao:0,adubo:0,embalagem:10};
+    const nd={planta:Number(base.planta||0),insumo:Number(base.insumo||0),mao:Number(base.mao||0),adubo:Number(base.adubo||0),embalagem:Number(base.embalagem||0),enfeite:custoPorPeca};
+    const tot=Math.round((nd.planta+nd.insumo+nd.mao+nd.adubo+nd.embalagem+nd.enfeite)*100)/100;
+    mudar.push({p,nd,tot});
+  });
+  mudar.forEach(m=>{ CUSTOS_OVERRIDE[m.p.id]=m.nd; m.p.custo=m.tot; });
+  saveOverridesLocal();
+  await Promise.all(mudar.map(m=> sb.from("produtos").update({custo:m.tot, custo_detalhe:m.nd}).eq("id",m.p.id).then(r=> r&&r.error ? sb.from("produtos").update({custo:m.tot}).eq("id",m.p.id) : r )));
+  renderCustos(); renderProdutos(); renderPainel(); renderCompras();
+  toast(`Enfeite aplicado em ${mudar.length} peça(s) ✓`);
+}
+if(el("btnAplicarNatal")) el("btnAplicarNatal").addEventListener("click", aplicarNatal);
+function tirarNatal(){
+  const alvo=PRODUTOS.filter(p=> selProd.has(p.id) && getDetalhe(p.id) && Number(getDetalhe(p.id).enfeite||0)>0);
+  if(!alvo.length){ toast("Nenhuma selecionada tem enfeite"); return; }
+  if(!confirm(`Tirar o enfeite de Natal de ${alvo.length} peça(s) selecionada(s)?`)) return;
+  alvo.forEach(p=>{ const nd={...getDetalhe(p.id)}; delete nd.enfeite; CUSTOS_OVERRIDE[p.id]=nd; p.custo=somaDetalheObj(nd); });
+  saveOverridesLocal();
+  Promise.all(alvo.map(p=> sb.from("produtos").update({custo:p.custo, custo_detalhe:CUSTOS_OVERRIDE[p.id]}).eq("id",p.id).then(r=> r&&r.error ? sb.from("produtos").update({custo:p.custo}).eq("id",p.id) : r )));
+  renderCustos(); renderProdutos(); renderPainel(); renderCompras();
+  toast(`Enfeite removido de ${alvo.length} peça(s) ✓`);
+}
+if(el("btnTirarNatal")) el("btnTirarNatal").addEventListener("click", tirarNatal);
 document.querySelectorAll("nav.tabs button").forEach(b=> b.addEventListener("click", ()=>show(b.dataset.tab)) );
 document.querySelectorAll(".gper button").forEach(b=> b.addEventListener("click", ()=>{
   gPeriodo=b.dataset.per;
@@ -946,7 +1019,7 @@ async function editarCusto(id){
     // mantém as demais partes e ajusta a planta (ou o material) para bater com o total informado
     const base={...d};
     if(base.material!=null){ base.material=num; }
-    else { base.planta=Math.round((num-Number(base.insumo||0)-Number(base.mao||0)-Number(base.adubo||0)-Number(base.embalagem||0))*100)/100; }
+    else { base.planta=Math.round((num-Number(base.insumo||0)-Number(base.mao||0)-Number(base.adubo||0)-Number(base.embalagem||0)-Number(base.enfeite||0))*100)/100; }
     await salvarDetalhe(id, base);
   }else{
     p.custo=num; renderCustos(); renderProdutos(); renderPainel();
@@ -958,11 +1031,11 @@ async function editarCusto(id){
 // ---------- CUSTOS E MARGENS ----------
 // Detalhamento de custo editável: override (edições no app) tem prioridade sobre o padrão.
 let CUSTOS_OVERRIDE = {};
-function somaDetalheObj(d){ if(!d) return null; return d.material!=null ? Number(d.material) : Number(d.planta||0)+Number(d.insumo||0)+Number(d.mao||0)+Number(d.adubo||0)+Number(d.embalagem||0); }
+function somaDetalheObj(d){ if(!d) return null; return d.material!=null ? Number(d.material) : Number(d.planta||0)+Number(d.insumo||0)+Number(d.mao||0)+Number(d.adubo||0)+Number(d.embalagem||0)+Number(d.enfeite||0); }
 function loadOverridesLocal(){ try{ CUSTOS_OVERRIDE = JSON.parse(localStorage.getItem("custosOverride")||"{}")||{}; }catch(e){ CUSTOS_OVERRIDE={}; } }
 function saveOverridesLocal(){ try{ localStorage.setItem("custosOverride", JSON.stringify(CUSTOS_OVERRIDE)); }catch(e){} }
 function getDetalhe(id){ return CUSTOS_OVERRIDE[id] || CUSTOS_DETALHE[id] || null; }
-const LABEL_COMP={planta:"planta",insumo:"musgo/insumo",mao:"mão de obra",adubo:"adubo",embalagem:"embalagem (sacola + manual/adesivo/medalha)",material:"material"};
+const LABEL_COMP={planta:"planta",insumo:"musgo/insumo",mao:"mão de obra",adubo:"adubo",embalagem:"embalagem (sacola + manual/adesivo/medalha)",enfeite:"enfeite de Natal",material:"material"};
 async function editarComp(id, campo){
   const p=PRODUTOS.find(x=>x.id===id); if(!p) return;
   const atual = getDetalhe(id);
@@ -1003,8 +1076,9 @@ function renderCustos(){
         somaDet=Number(d.material);
         breakdown=`<div class="small muted" style="margin-top:3px">material ${L('material',BRL(d.material))}${cafeTxt}</div>`;
       }else{
-        somaDet=Number(d.planta||0)+Number(d.insumo||0)+Number(d.mao||0)+Number(d.adubo||0)+Number(d.embalagem||0);
-        breakdown=`<div class="small muted" style="margin-top:3px">🌱 planta ${L('planta',BRL(d.planta))} · 🧵 musgo ${L('insumo',BRL(d.insumo))} · ✋ mão de obra ${L('mao',BRL(d.mao))} · 🌿 adubo ${L('adubo',BRL(d.adubo))} · 🛍️ embalagem ${L('embalagem',BRL(d.embalagem||0))}${cafeTxt}</div>`;
+        somaDet=Number(d.planta||0)+Number(d.insumo||0)+Number(d.mao||0)+Number(d.adubo||0)+Number(d.embalagem||0)+Number(d.enfeite||0);
+        const enfTxt = (d.enfeite!=null && Number(d.enfeite)>0) ? ` · 🎄 enfeite ${L('enfeite',BRL(d.enfeite))}` : "";
+        breakdown=`<div class="small muted" style="margin-top:3px">🌱 planta ${L('planta',BRL(d.planta))} · 🧵 musgo ${L('insumo',BRL(d.insumo))} · ✋ mão de obra ${L('mao',BRL(d.mao))} · 🌿 adubo ${L('adubo',BRL(d.adubo))} · 🛍️ embalagem ${L('embalagem',BRL(d.embalagem||0))}${enfTxt}${cafeTxt}</div>`;
       }
     }
     const custo = (somaDet!=null) ? somaDet : (p.custo!=null?Number(p.custo):null);
