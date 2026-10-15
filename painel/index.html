@@ -108,7 +108,7 @@
 <!-- App -->
 <div id="appView" class="hidden">
   <header class="top">
-    <b>✿ Atelier Nagori</b><span style="font-size:.62rem;opacity:.55;margin-left:7px;letter-spacing:.02em">v46 · ordem</span>
+    <b>✿ Atelier Nagori</b><span style="font-size:.62rem;opacity:.55;margin-left:7px;letter-spacing:.02em">v47 · estoque</span>
     <button class="sair" id="btnSair">Sair</button>
   </header>
   <div class="wrap">
@@ -376,6 +376,7 @@ function montaExport(){
     categoria: p.categoria,
     preco: (p.preco==null?null:Number(p.preco)),
     custo: (p.custo==null?null:Number(p.custo)),
+    estoque: Number(p.estoque||0),
     detalhe: getDetalhe(p.id)
   }));
   let compras=[],pcfg={},pprod={};
@@ -1177,7 +1178,7 @@ function renderCustos(){
     return `<div class="item">
       ${thumb(p)}
       <div style="flex:1">
-        <div>${p.nome}</div>
+        <div>${p.nome} <span class="small" style="font-weight:600;color:${Number(p.estoque||0)>0?'var(--moss)':'var(--terra)'}">· 📦 ${Number(p.estoque||0)}</span></div>
         <div class="small muted">
           venda <a href="#" onclick="editarPreco('${p.id}');return false">${BRL(preco)}</a>
           · custo <a href="#" onclick="editarCusto('${p.id}');return false">${custo!=null?BRL(custo):"definir"}</a>
