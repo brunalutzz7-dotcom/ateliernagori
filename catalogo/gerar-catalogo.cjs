@@ -107,10 +107,10 @@ function pagina({ titulo, sub, itens, secoes }) {
 </body></html>`;
 }
 
-const folhagens = PRODUCTS.filter((p) => ["dentro", "ambos", "arlivre"].includes(p.categoria));
-const grande = PRODUCTS.filter((p) => p.categoria === "grande");
-const bonsais = PRODUCTS.filter((p) => p.categoria === "bonsai");
-const suportes = PRODUCTS.filter((p) => p.categoria === "suporte");
+const folhagens = PRODUCTS.filter((p) => ["dentro", "ambos", "arlivre"].includes(p.categoria) && !p.oculto);
+const grande = PRODUCTS.filter((p) => p.categoria === "grande" && !p.oculto);
+const bonsais = PRODUCTS.filter((p) => p.categoria === "bonsai" && !p.oculto);
+const suportes = PRODUCTS.filter((p) => p.categoria === "suporte" && !p.oculto);
 
 const catDir = path.join(ROOT, "catalogo");
 fs.mkdirSync(catDir, { recursive: true });
