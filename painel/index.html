@@ -108,7 +108,7 @@
 <!-- App -->
 <div id="appView" class="hidden">
   <header class="top">
-    <b>✿ Atelier Nagori</b><span style="font-size:.62rem;opacity:.55;margin-left:7px;letter-spacing:.02em">v38 · linha</span>
+    <b>✿ Atelier Nagori</b><span style="font-size:.62rem;opacity:.55;margin-left:7px;letter-spacing:.02em">v39 · linha</span>
     <button class="sair" id="btnSair">Sair</button>
   </header>
   <div class="wrap">
@@ -1147,7 +1147,7 @@ function renderCustos(){
     const preco=Number(p.preco||0);
     const d=getDetalhe(p.id);
     // quando temos o detalhamento, o custo é a soma das partes (fonte da verdade) — cada parte é editável
-    const CAFE_BONSAIS=new Set(["bonsai-serissa-8","bonsai-ficus-6","bonsai-ligustro-15","bonsai-jabuticabeira-4"]);
+    const CAFE_BONSAIS=new Set(["bonsai-serissa-8","bonsai-ficus-6","bonsai-ligustro-15","bonsai-jabuticabeira-4","bonsai-mini-jabuticabeira"]);
     const semCafe=(p.categoria==="Serviços")||(p.categoria==="Bonsais"&&!CAFE_BONSAIS.has(p.id));
     const cafe20 = Math.round(preco*0.20);  // comissão do café: 20% do preço de venda
     const cafeTxt = semCafe ? "" : `<span style="color:#8a6d3b;font-weight:600"> · ☕ café 20% ${BRL(cafe20)}</span>`;
