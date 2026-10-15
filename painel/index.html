@@ -108,7 +108,7 @@
 <!-- App -->
 <div id="appView" class="hidden">
   <header class="top">
-    <b>✿ Atelier Nagori</b><span style="font-size:.62rem;opacity:.55;margin-left:7px;letter-spacing:.02em">v45 · ordem</span>
+    <b>✿ Atelier Nagori</b><span style="font-size:.62rem;opacity:.55;margin-left:7px;letter-spacing:.02em">v46 · ordem</span>
     <button class="sair" id="btnSair">Sair</button>
   </header>
   <div class="wrap">
@@ -1056,7 +1056,7 @@ function fotoDe(id){ return (id&&id.indexOf('suporte-')===0) ? '../assets/bases/
 function thumb(p){ return `<img class="thumb" loading="lazy" src="${fotoDe(p.id)}" alt="" onerror="this.onerror=null;this.src=THUMB_PH">`; }
 function renderProdutos(){
   const q=(el("buscaProd").value||"").toLowerCase();
-  const lista=PRODUTOS.filter(p=>p.nome.toLowerCase().includes(q));
+  const lista=PRODUTOS.filter(p=>p.nome.toLowerCase().includes(q)).sort((a,b)=>(ORDEM_SITE[a.id]??9999)-(ORDEM_SITE[b.id]??9999));
   el("listaProdutos").innerHTML = lista.map(p=>`
     <div class="item">
       ${thumb(p)}
@@ -1142,7 +1142,7 @@ async function salvarDetalhe(id, detalhe){
 function corMargem(pct){ if(pct==null) return 'var(--muted)'; if(pct<0.4) return 'var(--terra)'; if(pct<0.6) return '#c79a3a'; return 'var(--moss)'; }
 function renderCustos(){
   const q=(document.getElementById("buscaCusto").value||"").toLowerCase();
-  const lista=PRODUTOS.filter(p=>p.nome.toLowerCase().includes(q));
+  const lista=PRODUTOS.filter(p=>p.nome.toLowerCase().includes(q)).sort((a,b)=>(ORDEM_SITE[a.id]??9999)-(ORDEM_SITE[b.id]??9999));
   document.getElementById("listaCustos").innerHTML = lista.map(p=>{
     const preco=Number(p.preco||0);
     const d=getDetalhe(p.id);
