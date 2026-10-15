@@ -172,11 +172,11 @@ const PRODUCTS = [
     descricao: "Nativa da mata atlântica, de folha minúscula e casca clara que descama sozinha. Dá frutinha vermelha comestível.", significado: "Nativa que dá fruto — símbolo de fartura, raízes brasileiras e a doçura das coisas simples.", preco: 1100, img: IMG("bonsai-cambui-8") },
 
   /* ---------- 06 · GRANDE PORTE (maxi kokedamas · em estoque) ---------- */
-  { id: "oliveira-grande", oculto: true, nome: "Oliveira", especie: "Olea europaea · 1,60 m a 1,80 m", categoria: "grande", ambiente: "externo", pet: "safe",
+  { id: "oliveira-grande", encomenda: true, nome: "Oliveira", especie: "Olea europaea · 1,60 m a 1,80 m", categoria: "grande", ambiente: "externo", pet: "safe",
     descricao: "Oliveira adulta sustentada por uma única esfera de musgo. Tronco e folha prateada em escala de árvore — peça de chão, para hall e canto de sala.", significado: "A oliveira é símbolo universal de paz, sabedoria e prosperidade — a árvore da longevidade.", preco: 2500, img: IMG("oliveira-grande") },
-  { id: "jabuticabeira-grande", oculto: true, nome: "Jabuticabeira", especie: "Plinia cauliflora · 1,20 m a 1,60 m · frutificando", categoria: "grande", ambiente: "externo", pet: "safe",
+  { id: "jabuticabeira-grande", encomenda: true, nome: "Jabuticabeira", especie: "Plinia cauliflora · 1,20 m a 1,60 m · frutificando", categoria: "grande", ambiente: "externo", pet: "safe",
     descricao: "Árvore em idade de produzir, suspensa ou apoiada. Muda o eixo de um hall inteiro — e dá fruta.", significado: "A jabuticabeira simboliza fartura, raízes e paciência — a árvore de quem valoriza o tempo.", preco: 2000, img: IMG("jabuticabeira-grande") },
-  { id: "arvore-felicidade", nome: "Árvore da Felicidade", especie: "Polyscias sp. · fêmea e macho · 80 cm a 1 m", categoria: "grande", ambiente: "interno", pet: "toxic",
+  { id: "arvore-felicidade", encomenda: true, nome: "Árvore da Felicidade", especie: "Polyscias sp. · fêmea e macho · 80 cm a 1 m", categoria: "grande", ambiente: "interno", pet: "toxic",
     descricao: "Sai em dois desenhos de folha: a fêmea, de folíolo largo e arredondado, e o macho, de folha recortada e fina. Tronco lenhoso e porte ereto — peça de canto e de entrada.", significado: "A árvore da felicidade — símbolo de boas energias, harmonia e alegria no lar.", preco: 2000, img: IMG("arvore-felicidade") },
 
   /* ---------- 07 · SUPORTES (vendidos à parte, como as peças) ---------- */

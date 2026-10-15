@@ -19,6 +19,7 @@ const esc = (s) => (s || "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replac
 function precoTxt(p) {
   if (p.categoria === "suporte") return BRL(p.preco);
   if (temVar(p)) return `<small>a partir de</small> ${BRL(menor(p))}`;
+  if (p.encomenda) return `${BRL(p.preco)}<small>Sob encomenda · prazo 3 dias</small>`;
   return BRL(p.preco);
 }
 
@@ -107,10 +108,11 @@ function pagina({ titulo, sub, itens, secoes }) {
 </body></html>`;
 }
 
-const folhagens = PRODUCTS.filter((p) => ["dentro", "ambos", "arlivre"].includes(p.categoria) && !p.oculto);
-const grande = PRODUCTS.filter((p) => p.categoria === "grande" && !p.oculto);
-const bonsais = PRODUCTS.filter((p) => p.categoria === "bonsai" && !p.oculto);
-const suportes = PRODUCTS.filter((p) => p.categoria === "suporte" && !p.oculto);
+// Catálogo lista o portfólio completo (inclui itens temporariamente sem estoque).
+const folhagens = PRODUCTS.filter((p) => ["dentro", "ambos", "arlivre"].includes(p.categoria));
+const grande = PRODUCTS.filter((p) => p.categoria === "grande");
+const bonsais = PRODUCTS.filter((p) => p.categoria === "bonsai");
+const suportes = PRODUCTS.filter((p) => p.categoria === "suporte");
 
 const catDir = path.join(ROOT, "catalogo");
 fs.mkdirSync(catDir, { recursive: true });

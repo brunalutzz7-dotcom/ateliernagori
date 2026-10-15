@@ -41,7 +41,7 @@
   const precoCard = (p) =>
     temVariantes(p)
       ? `<span class="card-price"><small>a partir de</small> ${BRL(menorPreco(p))}</span>`
-      : `<span class="card-price">${BRL(p.preco)}</span>`;
+      : `<span class="card-price">${BRL(p.preco)}${p.encomenda ? `<small>Sob encomenda · prazo 3 dias</small>` : ""}</span>`;
 
   const AMBIENTE = { interno: "Interno", externo: "Externo", ambos: "Interno e externo" };
   const petInfo = (pet) =>
@@ -266,7 +266,7 @@
 
     const cta = p.encomenda
       ? `<a class="btn btn-primary btn-block" data-encomenda="${p.id}" href="#">Encomendar pelo WhatsApp</a>
-         <p class="modal-hint">Peça de grande porte, feita sob encomenda — combinamos prazo e entrega pelo WhatsApp.</p>`
+         <p class="modal-hint">Peça de grande porte, feita sob encomenda — prazo aproximado de 3 dias. Combinamos entrega pelo WhatsApp.</p>`
       : `<button class="btn btn-primary btn-block" data-add="${p.id}">Adicionar ao carrinho</button>`;
 
     const precoView = temVariantes(p)
