@@ -204,8 +204,6 @@ const PRODUCTS = [
     descricao: "A altura intermediária do tripé de chão. Ergue a esfera bem acima do piso, com presença de escultura.", preco: 85, imgs: ["assets/bases/tripe-45.jpg", "assets/bases/tripe-45-uso.jpg"] },
   { id: "suporte-cubo-ferro-baixo", nome: "Cubo de ferro · baixo", especie: "Suporte especial · ferro preto · aro interno", categoria: "suporte", suporte: true,
     descricao: "Estrutura vazada com aro suspenso no centro. A esfera flutua dentro do quadro, na altura do olhar sentado.", preco: 90, imgs: ["assets/bases/cubo-ferro-baixo.jpg", "assets/bases/cubo-ferro-baixo-uso.jpg"] },
-  { id: "suporte-ceramica", nome: "Cumbuca de cerâmica", especie: "Suporte · cerâmica artesanal", categoria: "suporte", suporte: true,
-    descricao: "Cerâmica esmaltada em branco pontilhado, com raios gravados na borda. Feita à mão, cada peça com pequenas variações — a esfera assenta dentro, num contraste bonito entre o musgo e o vidrado.", preco: 75, imgs: ["assets/bases/ceramica.jpg", "assets/bases/ceramica-uso.jpg"] },
   { id: "suporte-tripe-30", nome: "Tripé de ferro · 30 cm", especie: "Suporte de chão · ferro preto · aro 18 cm · altura 30 cm", categoria: "suporte", suporte: true,
     descricao: "Fica no chão, não sobre móvel. Levanta a árvore do piso — feito para as peças de grande porte e as maxi kokedamas.", preco: 75, imgs: ["assets/bases/tripe-30.jpg", "assets/bases/tripe-30-uso.jpg"] },
   { id: "suporte-madeira-gancho", nome: "Madeira com gancho · clara", especie: "Suporte · madeira clara e ferro · base 15×15 cm · gancho preto", categoria: "suporte", suporte: true,
