@@ -108,7 +108,7 @@
 <!-- App -->
 <div id="appView" class="hidden">
   <header class="top">
-    <b>✿ Atelier Nagori</b><span style="font-size:.62rem;opacity:.55;margin-left:7px;letter-spacing:.02em">v35 · musgo</span>
+    <b>✿ Atelier Nagori</b><span style="font-size:.62rem;opacity:.55;margin-left:7px;letter-spacing:.02em">v36 · linha</span>
     <button class="sair" id="btnSair">Sair</button>
   </header>
   <div class="wrap">
@@ -239,8 +239,8 @@
                 <option value="substrato">Substrato folhagem (por grama)</option>
                 <option value="adubo-bonsai">Adubo bonsai (g por médio/grande)</option>
                 <option value="substrato-bonsai">Substrato bonsai (g por médio/grande)</option>
-                <option value="linha-kokedama">Linha p/ amarrar kokedama (rateio)</option>
-                <option value="linha-tags">Linha p/ amarrar tags (rateio)</option>
+                <option value="linha-kokedama">Linha p/ amarrar kokedama (rende X peças)</option>
+                <option value="linha-tags">Linha p/ amarrar tags (rende X peças)</option>
                 <option value="enfeite-natal">🎄 Enfeite de Natal (só total)</option>
                 <option value="planta">🌿 Planta</option>
                 <option value="outro">Outro</option>
@@ -428,7 +428,7 @@ function mostraCamposCompra(){
   const emb=(c==="embalagem");
   el("cItemWrap").style.display=emb?"none":"block";
   el("cEmbWrap").style.display=emb?"block":"none";
-  el("cRendeWrap").style.display=(emb)?"block":"none";
+  el("cRendeWrap").style.display=(emb||c==="linha-kokedama"||c==="linha-tags")?"block":"none";
   el("cGramasWrap").style.display=CAT_GRAMA.has(c)?"block":"none";
   el("cReceitaWrap").style.display=CAT_RECEITA.has(c)?"grid":"none";
   el("cQtdWrap").style.display=(c==="enfeite-natal")?"block":"none";
@@ -442,7 +442,7 @@ if(el("compraForm")) el("compraForm").addEventListener("submit", (e)=>{
   const valor=numBR(el("cValor").value);
   if(!item || valor==null){ toast("Preencha o item e o valor"); return; }
   const reg={ id:Date.now().toString(36)+Math.random().toString(36).slice(2,6), data:(el("cData").value||new Date().toISOString().slice(0,10)), item, categoria, valor, obs:el("cObs").value.trim() };
-  if(categoria==="embalagem"){ const r=numBR(el("cRende").value); if(r) reg.rende=r; }
+  if(categoria==="embalagem"||categoria==="linha-kokedama"||categoria==="linha-tags"){ const r=numBR(el("cRende").value); if(r) reg.rende=r; }
   if(CAT_GRAMA.has(categoria)){ const g=numBR(el("cGramas").value); if(g) reg.gramas=g; }
   if(CAT_RECEITA.has(categoria)){ const gm=numBR(el("cGmed").value), gg=numBR(el("cGgra").value); if(gm) reg.gmed=gm; if(gg) reg.ggra=gg; }
   if(categoria==="enfeite-natal"){ const qt=numBR(el("cQtd").value); if(qt) reg.qtd=qt; }
@@ -476,8 +476,9 @@ function calcCompras(){
   const receita=(cat)=>{ let med=0,gra=0,ok=false; g(cat).forEach(c=>{ const gr=Number(c.gramas||0); const rg=gr>0?Number(c.valor||0)/gr:0; if(c.gmed!=null){med+=Number(c.gmed)*rg;ok=true;} if(c.ggra!=null){gra+=Number(c.ggra)*rg;ok=true;} }); return ok?{med,gra}:{med:null,gra:null}; };
   const aduboBon=receita("adubo-bonsai"), substratoBon=receita("substrato-bonsai");
   const pecas=totalPecasVendidas();
-  const rateio=(cat)=>{ const tot=g(cat).reduce((a,c)=>a+Number(c.valor||0),0); return (pecas>0 && tot>0) ? tot/pecas : (tot>0?null:0); };
-  const linhaK=rateio("linha-kokedama"), linhaT=rateio("linha-tags");
+  // linha: rendimento (1 rolo rende X kokedamas) → R$/peça
+  const rendimento=(cat)=>{ const arr=g(cat); const V=arr.reduce((a,c)=>a+Number(c.valor||0),0), R=arr.reduce((a,c)=>a+Number(c.rende||0),0); return R>0?V/R:null; };
+  const linhaK=rendimento("linha-kokedama"), linhaT=rendimento("linha-tags");
   const natalC=g("enfeite-natal");
   const natal=natalC.reduce((a,c)=>a+Number(c.valor||0),0);
   const natalQ=natalC.reduce((a,c)=>a+Number(c.qtd||0),0);
@@ -498,10 +499,10 @@ function renderCompras(){
   h+=`<div class="small" style="padding:4px 0"><b>Substrato folhagem:</b> ${cc.substratoG==null?'<span class="muted">registre o pacote + gramas</span>':centBRL(cc.substratoG)+" / grama"}</div>`;
   h+=`<div class="small" style="padding:4px 0"><b>🌳 Adubo bonsai:</b> médio ${cc.aduboBonMed==null?miss:centBRL(cc.aduboBonMed)} · grande ${cc.aduboBonGra==null?miss:centBRL(cc.aduboBonGra)} <span class="muted">(por tamanho)</span></div>`;
   h+=`<div class="small" style="padding:4px 0"><b>🌳 Substrato bonsai:</b> médio ${cc.substratoBonMed==null?miss:centBRL(cc.substratoBonMed)} · grande ${cc.substratoBonGra==null?miss:centBRL(cc.substratoBonGra)} <span class="muted">(por tamanho)</span></div>`;
-  h+=`<div class="small" style="padding:4px 0"><b>Linha kokedama:</b> ${cc.linhaK==null?miss:centBRL(cc.linhaK)+" / peça"} <span class="muted">(rateio)</span></div>`;
-  h+=`<div class="small" style="padding:4px 0"><b>Linha tags:</b> ${cc.linhaT==null?miss:centBRL(cc.linhaT)+" / peça"} <span class="muted">(rateio)</span></div>`;
+  h+=`<div class="small" style="padding:4px 0"><b>Linha kokedama:</b> ${cc.linhaK==null?'<span class="muted">registre o rolo + quantas kokedamas rende</span>':centBRL(cc.linhaK)+" / peça"}</div>`;
+  h+=`<div class="small" style="padding:4px 0"><b>Linha tags:</b> ${cc.linhaT==null?miss:centBRL(cc.linhaT)+" / peça"}</div>`;
   h+=`<div class="small" style="padding:4px 0;color:#8a6d3b"><b>🎄 Enfeites de Natal:</b> total ${centBRL(cc.natal)}${cc.custoEnfeite!=null?` · ${centBRL(cc.custoEnfeite)} por enfeite (${cc.natalQ} un.)`:' <span class="muted">(informe o nº de enfeites)</span>'}</div>`;
-  h+=`<div class="small muted" style="padding-top:8px">Rateio das linhas calculado sobre <b>${cc.pecas}</b> peça(s) vendida(s) — vai ficando mais preciso a cada mês.</div>`;
+  h+=`<div class="small muted" style="padding-top:8px">Cada linha é por rendimento (1 rolo rende X peças). As de folhagem/bonsai (musgo, adubo, substrato) são por grama × porte.</div>`;
   el("comprasCalc").innerHTML=h;
   const q=(el("buscaCompra").value||"").toLowerCase();
   const lst=COMPRAS.filter(c=>(c.item||"").toLowerCase().includes(q)||(CAT_LABEL[c.categoria]||"").toLowerCase().includes(q)).sort((a,b)=>String(b.data||"").localeCompare(String(a.data||"")));
