@@ -108,7 +108,7 @@
 <!-- App -->
 <div id="appView" class="hidden">
   <header class="top">
-    <b>✿ Atelier Nagori</b><span style="font-size:.62rem;opacity:.55;margin-left:7px;letter-spacing:.02em">v44 · ordem</span>
+    <b>✿ Atelier Nagori</b><span style="font-size:.62rem;opacity:.55;margin-left:7px;letter-spacing:.02em">v45 · ordem</span>
     <button class="sair" id="btnSair">Sair</button>
   </header>
   <div class="wrap">
@@ -562,7 +562,7 @@ function renderPortes(){
     inp.addEventListener("change",()=>{ const k=inp.dataset.pk,f=inp.dataset.f,v=numBR(inp.value); if(!portesCfg[k])portesCfg[k]={}; if(v==null)delete portesCfg[k][f]; else portesCfg[k][f]=v; savePortesCfg(); renderPortes(); });
   });
   const q=(el("buscaPorte").value||"").toLowerCase();
-  const lst=PRODUTOS.filter(p=>p.categoria!=="Suportes" && (p.nome||"").toLowerCase().includes(q));
+  const lst=PRODUTOS.filter(p=>p.categoria!=="Suportes" && (p.nome||"").toLowerCase().includes(q)).sort((a,b)=>(ORDEM_SITE[a.id]??9999)-(ORDEM_SITE[b.id]??9999));
   el("portesProdutos").innerHTML = lst.map(p=>{
     const sel=porteProd[p.id]||""; const ck=selProd.has(p.id)?"checked":"";
     const temEnf = getDetalhe(p.id) && Number(getDetalhe(p.id).enfeite||0)>0;
