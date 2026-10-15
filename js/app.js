@@ -141,7 +141,7 @@
      PRODUTOS — galeria
      ================================================================= */
   function renderFilters() {
-    const usados = CATEGORIAS.filter((c) => PRODUCTS.some((p) => p.categoria === c.id));
+    const usados = CATEGORIAS.filter((c) => PRODUCTS.some((p) => p.categoria === c.id && !p.oculto));
     const box = $("#filters");
     box.innerHTML =
       `<button class="chip active" data-cat="todos">Todos</button>` +
@@ -206,10 +206,10 @@
     // "folhagens" agrupa dentro / ambos / ar livre numa visão só.
     const ehFolhagem = (c) => ["dentro", "ambos", "arlivre"].includes(c);
     const list = cat === "todos"
-      ? PRODUCTS.filter((p) => p.categoria !== "suporte")
+      ? PRODUCTS.filter((p) => p.categoria !== "suporte" && !p.oculto)
       : cat === "folhagens"
-        ? PRODUCTS.filter((p) => ehFolhagem(p.categoria))
-        : PRODUCTS.filter((p) => p.categoria === cat);
+        ? PRODUCTS.filter((p) => ehFolhagem(p.categoria) && !p.oculto)
+        : PRODUCTS.filter((p) => p.categoria === cat && !p.oculto);
     if (cat === "todos" || cat === "folhagens") {
       let html = "", secao = null;
       list.forEach((p) => {
