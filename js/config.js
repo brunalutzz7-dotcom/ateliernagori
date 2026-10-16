@@ -126,7 +126,14 @@ const CONFIG = {
   motoboy: {
     perto: 20,
     longe: 40,
-    saoJose: 50, // entregas em São José dos Pinhais (cidade vizinha)
+    vizinha: 50, // cidades vizinhas de Curitiba (região metropolitana)
+    // Cidades vizinhas atendidas por motoboy a R$50 (nomes minúsculos, sem acento).
+    // É só adicionar/remover cidades aqui.
+    cidadesVizinhas: [
+      "sao jose dos pinhais", "pinhais", "colombo", "almirante tamandare",
+      "araucaria", "campo largo", "campo magro", "fazenda rio grande",
+      "piraquara", "quatro barras", "campina grande do sul",
+    ],
     bairrosLonge: [
       "cidade industrial de curitiba", "tatuquara", "umbara", "caximba", "ganchinho",
       "sitio cercado", "pinheirinho", "alto boqueirao", "boqueirao", "xaxim",

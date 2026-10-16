@@ -459,19 +459,22 @@
       else preco += acr; // acréscimo por transportadora (embalagem/manuseio)
       return { id: t.id, nome: t.nome, obs: t.obs, preco, gratis, prazo: t.prazo[i] };
     });
-    // Motoboy — Curitiba (CEP 80/81/82) e São José dos Pinhais (CEP 83000–83135).
+    // Motoboy — Curitiba (CEP 80/81/82) e cidades vizinhas da região metropolitana.
     // Curitiba: R$20 na maioria dos bairros, R$40 nos mais distantes do Seminário.
-    // São José dos Pinhais (cidade vizinha): R$50.
+    // Cidades vizinhas (São José dos Pinhais, Pinhais, Colombo…): R$50.
+    const mb = CONFIG.motoboy || {};
     const cidade = semAcento(loc && loc.cidade);
     const cep5 = parseInt(onlyDigits(cep).slice(0, 5), 10);
     const ehCuritiba = ["80", "81", "82"].includes(onlyDigits(cep).slice(0, 2)) || cidade === "curitiba";
-    const ehSJP = cidade === "sao jose dos pinhais" || (cep5 >= 83000 && cep5 <= 83135);
-    if ((ehCuritiba || ehSJP) && CONFIG.motoboy) {
-      const mb = CONFIG.motoboy;
+    // Vizinha: pela cidade do CEP, ou (sem ViaCEP) pela faixa de São José dos Pinhais.
+    const ehVizinha = (mb.cidadesVizinhas || []).includes(cidade)
+      || (!cidade && cep5 >= 83000 && cep5 <= 83135);
+    if ((ehCuritiba || ehVizinha) && CONFIG.motoboy) {
       let preco, obs, nome;
-      if (ehSJP && !ehCuritiba) {
-        preco = mb.saoJose || 50; obs = "São José dos Pinhais";
-        nome = "Entrega São José dos Pinhais (motoboy)";
+      if (ehVizinha && !ehCuritiba) {
+        preco = mb.vizinha || 50;
+        const nomeCidade = (loc && loc.cidade) || "São José dos Pinhais";
+        obs = nomeCidade; nome = `Entrega ${nomeCidade} (motoboy)`;
       } else {
         const bairro = semAcento(loc && loc.bairro);
         const longe = !!bairro && (mb.bairrosLonge || []).includes(bairro);
