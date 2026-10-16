@@ -126,11 +126,14 @@ const CONFIG = {
   motoboy: {
     perto: 20,
     longe: 40,
-    vizinha: 50, // cidades vizinhas de Curitiba (região metropolitana)
-    // Cidades vizinhas atendidas por motoboy a R$50 (nomes minúsculos, sem acento).
-    // É só adicionar/remover cidades aqui.
+    vizinha: 50,       // cidades vizinhas próximas (R$50)
+    vizinhaLonge: 100, // cidades vizinhas mais distantes, ~25-30 km (R$100)
+    // Cidades vizinhas próximas (R$50) — nomes minúsculos, sem acento:
     cidadesVizinhas: [
       "sao jose dos pinhais", "pinhais", "colombo", "almirante tamandare",
+    ],
+    // Cidades vizinhas distantes (R$100):
+    cidadesVizinhasLonge: [
       "araucaria", "campo largo", "campo magro", "fazenda rio grande",
       "piraquara", "quatro barras", "campina grande do sul",
     ],

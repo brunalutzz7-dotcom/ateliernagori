@@ -467,12 +467,13 @@
     const cep5 = parseInt(onlyDigits(cep).slice(0, 5), 10);
     const ehCuritiba = ["80", "81", "82"].includes(onlyDigits(cep).slice(0, 2)) || cidade === "curitiba";
     // Vizinha: pela cidade do CEP, ou (sem ViaCEP) pela faixa de São José dos Pinhais.
-    const ehVizinha = (mb.cidadesVizinhas || []).includes(cidade)
+    const ehVizinhaLonge = (mb.cidadesVizinhasLonge || []).includes(cidade);
+    const ehVizinha = (mb.cidadesVizinhas || []).includes(cidade) || ehVizinhaLonge
       || (!cidade && cep5 >= 83000 && cep5 <= 83135);
     if ((ehCuritiba || ehVizinha) && CONFIG.motoboy) {
       let preco, obs, nome;
       if (ehVizinha && !ehCuritiba) {
-        preco = mb.vizinha || 50;
+        preco = ehVizinhaLonge ? (mb.vizinhaLonge || 100) : (mb.vizinha || 50);
         const nomeCidade = (loc && loc.cidade) || "São José dos Pinhais";
         obs = nomeCidade; nome = `Entrega ${nomeCidade} (motoboy)`;
       } else {
