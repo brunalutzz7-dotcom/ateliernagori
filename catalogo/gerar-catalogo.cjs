@@ -17,11 +17,25 @@ const menor = (p) => (temVar(p) ? Math.min(...p.variantes.map((v) => v.preco)) :
 const PH = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23e7dcc3'/%3E%3Cpath d='M200 300c26 16 34 50 0 100-34-50-26-84 0-100z' fill='%238d8f66'/%3E%3Cpath d='M200 306v82' stroke='%236f7a56' stroke-width='4'/%3E%3Ctext x='200' y='432' text-anchor='middle' font-family='Georgia, serif' font-size='18' fill='%238d8f66'%3Efoto em breve%3C/text%3E%3C/svg%3E";
 const esc = (s) => (s || "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 
-// ramo botânico em linha (olive) — reutilizado na capa
-const SPRIG = (cls) => `<svg class="sprig ${cls}" viewBox="0 0 220 90" fill="none" stroke="#8d8f66" stroke-width="1.5" stroke-linecap="round" xmlns="http://www.w3.org/2000/svg">
-  <path d="M10 80 C 70 72 130 48 210 10"/>
-  ${[0.18,0.32,0.46,0.6,0.74].map((t,i)=>{const x=10+200*t,y=80-70*t;const s=i%2?1:-1;return `<path d="M${x} ${y} q ${s*14} -16 ${s*30} -14" /><path d="M${x} ${y} q ${s*8} -2 ${s*16} -14"/>`;}).join("")}
-  <ellipse cx="206" cy="12" rx="4" ry="8" transform="rotate(-38 206 12)" fill="#9aa07a" stroke="none"/>
+// ---- Ramos botânicos em linha (folhas cheias, estilo manual) ----
+const OLIVE = "#8d8f66";
+const cubic = (a,b,c,d,t)=>{const m=1-t;return [m*m*m*a[0]+3*m*m*t*b[0]+3*m*t*t*c[0]+t*t*t*d[0], m*m*m*a[1]+3*m*m*t*b[1]+3*m*t*t*c[1]+t*t*t*d[1]];};
+const cubicTan = (a,b,c,d,t)=>{const m=1-t;const dx=3*m*m*(b[0]-a[0])+6*m*t*(c[0]-b[0])+3*t*t*(d[0]-c[0]);const dy=3*m*m*(b[1]-a[1])+6*m*t*(c[1]-b[1])+3*t*t*(d[1]-c[1]);return Math.atan2(dy,dx)*180/Math.PI;};
+function leaf(cx,cy,ang,L,W){const a=ang*Math.PI/180,co=Math.cos(a),si=Math.sin(a);
+  const tp=(x,y)=>[(cx+x*co-y*si).toFixed(1),(cy+x*si+y*co).toFixed(1)];
+  const b=tp(0,0),tip=tp(L,0),c1=tp(L*0.5,-W*0.5),c2=tp(L*0.5,W*0.5);
+  return `<path d="M${b[0]},${b[1]} Q${c1[0]},${c1[1]} ${tip[0]},${tip[1]} Q${c2[0]},${c2[1]} ${b[0]},${b[1]} Z" fill="none" stroke="${OLIVE}" stroke-width="1.3"/>`
+       + `<path d="M${b[0]},${b[1]} L${tip[0]},${tip[1]}" fill="none" stroke="${OLIVE}" stroke-width="0.8" opacity="0.6"/>`;}
+function branch(p0,p1,p2,p3,n,lmax,lmin){
+  let out=[`<path d="M${p0[0]},${p0[1]} C${p1[0]},${p1[1]} ${p2[0]},${p2[1]} ${p3[0]},${p3[1]}" fill="none" stroke="${OLIVE}" stroke-width="1.6" stroke-linecap="round"/>`];
+  for(let i=0;i<n;i++){const t=0.08+(0.9-0.08)*i/(n-1);const [px,py]=cubic(p0,p1,p2,p3,t);
+    const tan=cubicTan(p0,p1,p2,p3,t);const side=i%2?1:-1;const L=lmax-(lmax-lmin)*(i/(n-1));
+    out.push(leaf(px,py,tan+side*48,L,L*0.62));}
+  const [tx,ty]=cubic(p0,p1,p2,p3,0.985);out.push(leaf(tx,ty,cubicTan(p0,p1,p2,p3,0.985),lmin+6,(lmin+6)*0.6));
+  return out.join("");}
+const SPRIG = (cls) => `<svg class="sprig ${cls}" viewBox="0 0 300 230" xmlns="http://www.w3.org/2000/svg">
+  ${branch([298,18],[205,52],[150,145],[30,214],12,32,13)}
+  ${branch([196,96],[156,104],[128,165],[86,220],6,24,12)}
 </svg>`;
 
 function precoTxt(p) {
@@ -100,8 +114,12 @@ function pagina({ titulo, sub, itens, secoes }) {
   .cover .contato { margin-top: 12mm; font-family: var(--sans); font-size: 9pt; color: var(--green); line-height: 1.8; letter-spacing: .02em; }
   .cover .contato b { color: var(--gold-d); letter-spacing: .06em; }
   /* ---------- Cabeçalho das páginas ---------- */
-  .page-head { display: flex; justify-content: space-between; align-items: baseline;
+  .page-head { display: flex; justify-content: space-between; align-items: center;
     border-bottom: .8pt solid var(--line); padding-bottom: 3mm; margin-bottom: 6mm; }
+  .ph-left { display: flex; align-items: center; gap: 3.5mm; }
+  .ph-seal { width: 11mm; height: 11mm; border-radius: 50%; background: var(--badge); color: var(--gold);
+    display: inline-flex; align-items: center; justify-content: center; font-family: var(--serif);
+    font-size: 10pt; line-height: 1; letter-spacing: .03em; flex: none; }
   .page-head .t { font-family: var(--serif); font-weight: 600; font-size: 19pt; color: var(--green-d); }
   .page-head .n { font-family: var(--sans); font-size: 8pt; letter-spacing: .2em; text-transform: uppercase; color: var(--gold-d); }
   .sec { text-align: center; margin: 9mm 0 5mm; break-after: avoid; display: flex; align-items: center; justify-content: center; gap: 4mm; }
@@ -143,7 +161,7 @@ function pagina({ titulo, sub, itens, secoes }) {
       Curitiba · PR — feito à mão
     </div>
   </section>
-  <div class="page-head"><span class="t">${esc(titulo)}</span><span class="n">Atelier Nagori · 名残</span></div>
+  <div class="page-head"><span class="ph-left"><span class="ph-seal">名残</span><span class="t">${esc(titulo)}</span></span><span class="n">Atelier Nagori · 名残</span></div>
   ${corpo}
   <div class="foot">Para encomendar, chame no <b>WhatsApp (41) 98707-4284</b> — envio para todo o Brasil, saída de Curitiba/PR.<br>Base inclusa; bases especiais à parte. Valores sujeitos a alteração.</div>
 </body></html>`;
