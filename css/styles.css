@@ -5,17 +5,19 @@
 :root {
   /* Paleta minimalista monocromática quente (inspiração The Coffee):
      as fotos das plantas trazem toda a cor; a interface fica neutra. */
-  --moss:      #26241d;  /* carvão quente — botões, chips ativos */
-  --moss-deep: #1a1712;  /* quase-preto — títulos, preços, rodapé, selos */
-  --sand:      #e7e3d9;
-  --sand-lt:   #f0ede5;
-  --cream:     #f6f4ee;  /* papel off-white */
-  --ink:       #1d1b16;
-  --ink-soft:  #79756b;
-  --terra:     #8c8678;  /* taupe neutro (antes terracota) */
-  --terra-dk:  #6b6659;
-  --line:      #e4e1d7;
-  --white:     #ffffff;
+  /* Identidade oficial Atelier Nagori: papel kraft, verde-floresta, dourado ocre. */
+  --moss:      #2a3820;  /* verde-floresta — botões, chips ativos */
+  --moss-deep: #223018;  /* verde escuro — títulos, preços, rodapé, selos */
+  --sand:      #e3d9c1;
+  --sand-lt:   #efe7d4;
+  --cream:     #ece3cf;  /* papel kraft */
+  --ink:       #2c3522;  /* verde-grafite — texto */
+  --ink-soft:  #6b6a51;  /* olive suave — texto secundário */
+  --terra:     #a9833c;  /* dourado ocre — eyebrows, selo, acentos */
+  --terra-dk:  #8a6a30;  /* dourado escuro */
+  --line:      #d8ccae;
+  --white:     #fcfaf4;  /* off-white quente — cards */
+  --gold:      #a9833c;
 
   --radius:    6px;
   --radius-sm: 4px;
@@ -65,7 +67,8 @@ h2 { font-size: clamp(1.9rem, 4vw, 2.9rem); }
 /* ---- Header ---- */
 .site-header {
   position: sticky; top: 0; z-index: 40;
-  background: rgba(251, 249, 243, .88); backdrop-filter: blur(10px);
+  background: rgba(236, 227, 207, .90); backdrop-filter: blur(10px);
+  border-top: 3px solid var(--gold);
   border-bottom: 1px solid var(--line);
 }
 .header-inner { display: flex; align-items: center; gap: 1.5rem; padding: .85rem 0; }
@@ -234,7 +237,7 @@ h2 { font-size: clamp(1.9rem, 4vw, 2.9rem); }
 .pet-toxic { background: #fbeee7; color: #a1543a; border-color: #f0d6c9; }
 .card-foot { display: flex; align-items: center; justify-content: space-between; gap: .8rem; margin-top: auto; }
 .card-price { font-family: var(--serif); font-size: 1.5rem; color: var(--moss-deep); line-height: 1.1; }
-.card-price small { display: block; font-size: .68rem; color: var(--ink-soft); font-family: var(--sans); letter-spacing: .03em; }
+.card-price small { display: block; font-size: .68rem; color: var(--terra-dk); font-family: var(--sans); letter-spacing: .04em; text-transform: uppercase; font-weight: 600; }
 
 /* ---- Suportes ---- */
 .suporte-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 1.4rem; }
