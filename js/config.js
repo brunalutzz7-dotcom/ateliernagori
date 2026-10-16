@@ -126,6 +126,7 @@ const CONFIG = {
   motoboy: {
     perto: 20,
     longe: 40,
+    saoJose: 50, // entregas em São José dos Pinhais (cidade vizinha)
     bairrosLonge: [
       "cidade industrial de curitiba", "tatuquara", "umbara", "caximba", "ganchinho",
       "sitio cercado", "pinheirinho", "alto boqueirao", "boqueirao", "xaxim",

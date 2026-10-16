@@ -459,20 +459,27 @@
       else preco += acr; // acréscimo por transportadora (embalagem/manuseio)
       return { id: t.id, nome: t.nome, obs: t.obs, preco, gratis, prazo: t.prazo[i] };
     });
-    // Motoboy — só para Curitiba (CEP 80/81/82 ou cidade "Curitiba").
-    // R$20 na maioria dos bairros; R$40 nos bairros mais distantes do Seminário.
-    const ehCuritiba = ["80", "81", "82"].includes(onlyDigits(cep).slice(0, 2))
-      || (loc && semAcento(loc.cidade) === "curitiba");
-    if (ehCuritiba && CONFIG.motoboy) {
+    // Motoboy — Curitiba (CEP 80/81/82) e São José dos Pinhais (CEP 83000–83135).
+    // Curitiba: R$20 na maioria dos bairros, R$40 nos mais distantes do Seminário.
+    // São José dos Pinhais (cidade vizinha): R$50.
+    const cidade = semAcento(loc && loc.cidade);
+    const cep5 = parseInt(onlyDigits(cep).slice(0, 5), 10);
+    const ehCuritiba = ["80", "81", "82"].includes(onlyDigits(cep).slice(0, 2)) || cidade === "curitiba";
+    const ehSJP = cidade === "sao jose dos pinhais" || (cep5 >= 83000 && cep5 <= 83135);
+    if ((ehCuritiba || ehSJP) && CONFIG.motoboy) {
       const mb = CONFIG.motoboy;
-      const bairro = semAcento(loc && loc.bairro);
-      const longe = !!bairro && (mb.bairrosLonge || []).includes(bairro);
-      list.push({
-        id: "motoboy", nome: "Entrega em Curitiba (motoboy)",
-        obs: longe ? "bairro mais distante" : "Curitiba",
-        preco: longe ? (mb.longe || 40) : (mb.perto || 20),
-        gratis: false, prazo: "combinar",
-      });
+      let preco, obs, nome;
+      if (ehSJP && !ehCuritiba) {
+        preco = mb.saoJose || 50; obs = "São José dos Pinhais";
+        nome = "Entrega São José dos Pinhais (motoboy)";
+      } else {
+        const bairro = semAcento(loc && loc.bairro);
+        const longe = !!bairro && (mb.bairrosLonge || []).includes(bairro);
+        preco = longe ? (mb.longe || 40) : (mb.perto || 20);
+        obs = longe ? "bairro mais distante" : "Curitiba";
+        nome = "Entrega em Curitiba (motoboy)";
+      }
+      list.push({ id: "motoboy", nome, obs, preco, gratis: false, prazo: "combinar" });
     }
     list.push({ id: "retirada", nome: "Retirada no ateliê", obs: "Grátis", preco: 0, gratis: true, prazo: "combinar" });
     return list.sort((a, b) => a.preco - b.preco);
