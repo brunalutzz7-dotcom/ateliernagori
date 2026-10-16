@@ -444,7 +444,8 @@
 
   // totalKg = peso total do carrinho (kg). O preço "base" cobre até "pesoBase"
   // kg; cada kg extra (arredondado p/ cima) soma o "porKg" da transportadora.
-  function quotesForCep(cep, totalKg) {
+  const semAcento = (s) => (s || "").normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase().trim();
+  function quotesForCep(cep, totalKg, loc) {
     const i = zoneFromCep(cep) - 1;
     const sub = subtotal();
     const acr = CONFIG.acrescimoFrete || 0;
@@ -458,6 +459,21 @@
       else preco += acr; // acréscimo por transportadora (embalagem/manuseio)
       return { id: t.id, nome: t.nome, obs: t.obs, preco, gratis, prazo: t.prazo[i] };
     });
+    // Motoboy — só para Curitiba (CEP 80/81/82 ou cidade "Curitiba").
+    // R$20 na maioria dos bairros; R$40 nos bairros mais distantes do Seminário.
+    const ehCuritiba = ["80", "81", "82"].includes(onlyDigits(cep).slice(0, 2))
+      || (loc && semAcento(loc.cidade) === "curitiba");
+    if (ehCuritiba && CONFIG.motoboy) {
+      const mb = CONFIG.motoboy;
+      const bairro = semAcento(loc && loc.bairro);
+      const longe = !!bairro && (mb.bairrosLonge || []).includes(bairro);
+      list.push({
+        id: "motoboy", nome: "Entrega em Curitiba (motoboy)",
+        obs: longe ? "bairro mais distante" : "Curitiba",
+        preco: longe ? (mb.longe || 40) : (mb.perto || 20),
+        gratis: false, prazo: "combinar",
+      });
+    }
     list.push({ id: "retirada", nome: "Retirada no ateliê", obs: "Grátis", preco: 0, gratis: true, prazo: "combinar" });
     return list.sort((a, b) => a.preco - b.preco);
   }
@@ -473,7 +489,7 @@
     $("#freteLocal").textContent = loc ? `📍 ${loc.cidade} — ${loc.uf}` : "";
     // Se houver carrinho, usa o peso real; senão estima uma peça média (1,8 kg).
     const kg = cartCount() ? cartWeight() : 1.8;
-    const quotes = quotesForCep(cep, kg);
+    const quotes = quotesForCep(cep, kg, loc);
     const q = cartCount();
     $("#freteResults").innerHTML = `
       <div class="ship-list">
@@ -494,8 +510,9 @@
     if (onlyDigits(cep).length !== 8) { toast("Digite um CEP válido (8 números)."); return; }
     shipCep = maskCep(cep);
     $("#cartShipOptions").innerHTML = `<p class="frete-placeholder">Calculando…</p>`;
-    fillAddress(await lookupCep(cep));
-    const quotes = quotesForCep(cep, cartWeight());
+    const loc = await lookupCep(cep);
+    fillAddress(loc);
+    const quotes = quotesForCep(cep, cartWeight(), loc);
     selectedShip = { id: quotes[0].id, nome: quotes[0].nome, preco: quotes[0].preco };
     $("#cartShipOptions").innerHTML = quotes.map((s, idx) => `
       <label class="ship-opt ${idx === 0 ? "selected" : ""}">

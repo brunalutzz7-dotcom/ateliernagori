@@ -118,4 +118,21 @@ const CONFIG = {
       prazo: ["1-3", "2-4", "3-5", "4-7", "5-8"],
     },
   ],
+
+  /* Motoboy em Curitiba (origem: bairro Seminário).
+     R$20 na maioria dos bairros; R$40 nos bairros mais distantes do Seminário
+     (lista abaixo — nomes em minúsculo e sem acento). É só editar a lista
+     pra mudar o que conta como "longe". */
+  motoboy: {
+    perto: 20,
+    longe: 40,
+    bairrosLonge: [
+      "cidade industrial de curitiba", "tatuquara", "umbara", "caximba", "ganchinho",
+      "sitio cercado", "pinheirinho", "alto boqueirao", "boqueirao", "xaxim",
+      "cajuru", "uberaba", "capao da imbuia", "bairro alto", "cachoeira", "barreirinha",
+      "abranches", "sao lourenco", "santa candida", "atuba", "tingui", "taboao",
+      "taruma", "riviera", "sao miguel", "augusta", "butiatuvinha", "lamenha pequena",
+      "campo de santana",
+    ],
+  },
 };
