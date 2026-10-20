@@ -38,7 +38,7 @@ function fotoEmBreve() {
 }
 
 /* Versão das fotos: incremente ao trocar qualquer imagem para o navegador buscar a nova (evita cache). */
-const ASSET_V = "202";
+const ASSET_V = "203";
 const IMG = (id) => `assets/produtos/${id}.jpg?v=${ASSET_V}`;
 
 /* Categorias (seções do catálogo) ------------------------------------- */
@@ -130,7 +130,7 @@ const PRODUCTS = [
   { id: "pau-dagua", nome: "Pau d'água", especie: "Dracaena fragrans", categoria: "dentro", ambiente: "interno", pet: "toxic",
     descricao: "Tronco lenhoso coroado por um tufo de folhas largas e arqueadas, verde-vivas. Resistente e fácil, tolera luz baixa e ainda purifica o ar — o clássico das casas.", significado: "Conhecida como pau-d'água ou árvore da felicidade: símbolo de sorte, prosperidade e boas energias no lar.", preco: 230, img: IMG("pau-dagua") },
   { id: "aspargo-melindre", nome: "Aspargo Melindre", especie: "Asparagus setaceus", categoria: "dentro", ambiente: "ambos", pet: "toxic",
-    descricao: "Ramos horizontais em camadas finíssimas, quase gráficos. Parece desenho a nanquim.", significado: "Símbolo de leveza e renovação — folhagem delicada que traz frescor e bons ares ao ambiente.", preco: 220, img: IMG("aspargo-melindre") },
+    descricao: "Ramos horizontais em camadas finíssimas, quase gráficos. Parece desenho a nanquim.", significado: "Símbolo de leveza e renovação — folhagem delicada que traz frescor e bons ares ao ambiente.", preco: 220, imgs: [IMG("aspargo-melindre"), IMG("aspargo-melindre-2")] },
   { id: "avenca", nome: "Avenca", especie: "Adiantum sp.", categoria: "dentro", ambiente: "interno", pet: "safe",
     descricao: "Frondes delicadas de folíolos miúdos, verde vivo. Adora umidade — ótima em banheiro claro ou pertinho de outras plantas.", significado: "A avenca simboliza delicadeza, sinceridade e a beleza discreta — presente de carinho verdadeiro.", preco: 220, img: IMG("avenca") },
   { id: "samambaia-estrela-azul", nome: "Samambaia Estrela Azul", especie: "Phlebodium aureum 'Blue Star'", categoria: "dentro", ambiente: "ambos", pet: "safe",
