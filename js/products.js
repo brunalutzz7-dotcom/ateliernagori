@@ -38,7 +38,7 @@ function fotoEmBreve() {
 }
 
 /* Versão das fotos: incremente ao trocar qualquer imagem para o navegador buscar a nova (evita cache). */
-const ASSET_V = "194";
+const ASSET_V = "195";
 const IMG = (id) => `assets/produtos/${id}.jpg?v=${ASSET_V}`;
 
 /* Categorias (seções do catálogo) ------------------------------------- */
@@ -129,6 +129,8 @@ const PRODUCTS = [
     descricao: "Folhagem verde-escura e lustrosa que abre espatas brancas elegantes ao longo do ano. Resistente, floresce mesmo em luz baixa e ainda purifica o ar.", significado: "Símbolo de paz, harmonia e recomeços — a flor branca que traz serenidade para a casa.", preco: 240, img: IMG("lirio-da-paz") },
   { id: "calathea", nome: "Calathea", especie: "Goeppertia sp.", categoria: "dentro", ambiente: "interno", pet: "safe",
     descricao: "Folhas largas com desenho de penas em tons de verde e verso vinho. Planta da oração: ergue e baixa as folhas conforme o dia. Gosta de luz indireta e umidade.", significado: "Planta da oração — símbolo de gratidão, calma e proteção do lar.", preco: 225, img: IMG("calathea") },
+  { id: "pau-dagua", nome: "Pau d'água", especie: "Dracaena fragrans", categoria: "dentro", ambiente: "interno", pet: "toxic",
+    descricao: "Tronco lenhoso coroado por um tufo de folhas largas e arqueadas, verde-vivas. Resistente e fácil, tolera luz baixa e ainda purifica o ar — o clássico das casas.", significado: "Conhecida como pau-d'água ou árvore da felicidade: símbolo de sorte, prosperidade e boas energias no lar.", preco: 230, img: IMG("pau-dagua") },
   { id: "aspargo-melindre", nome: "Aspargo Melindre", especie: "Asparagus setaceus", categoria: "dentro", ambiente: "ambos", pet: "toxic",
     descricao: "Ramos horizontais em camadas finíssimas, quase gráficos. Parece desenho a nanquim.", significado: "Símbolo de leveza e renovação — folhagem delicada que traz frescor e bons ares ao ambiente.", preco: 220, img: IMG("aspargo-melindre") },
   { id: "avenca", nome: "Avenca", especie: "Adiantum sp.", categoria: "dentro", ambiente: "interno", pet: "safe",
