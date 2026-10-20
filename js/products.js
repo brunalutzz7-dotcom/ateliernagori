@@ -38,7 +38,7 @@ function fotoEmBreve() {
 }
 
 /* Versão das fotos: incremente ao trocar qualquer imagem para o navegador buscar a nova (evita cache). */
-const ASSET_V = "196";
+const ASSET_V = "197";
 const IMG = (id) => `assets/produtos/${id}.jpg?v=${ASSET_V}`;
 
 /* Categorias (seções do catálogo) ------------------------------------- */
@@ -54,9 +54,11 @@ const CATEGORIAS = [
 const PRODUCTS = [
   /* ---------- 01 · FOLHAGENS ---------- */
   { id: "arranjo-orquidea", nome: "Tamandama Orquídea", peso: 3, especie: "Phalaenopsis com folhagens · composição única", categoria: "dentro", ambiente: "interno", pet: "safe",
-    descricao: "Uma orquídea de porte menor combinada com folhagens delicadas sobre a mesma esfera de musgo vivo. A raiz da orquídea e o musgo se entendem naturalmente, e cada arranjo é montado de forma única.", significado: "A orquídea simboliza beleza rara, elegância e um amor que floresce com paciência.", preco: 400, imgs: [IMG("arranjo-orquidea"), IMG("arranjo-orquidea-2")] },
+    descricao: "Uma orquídea de porte menor combinada com folhagens delicadas sobre a mesma esfera de musgo vivo. A raiz da orquídea e o musgo se entendem naturalmente, e cada arranjo é montado de forma única.", significado: "A orquídea simboliza beleza rara, elegância e um amor que floresce com paciência.", preco: 400, imgs: [IMG("arranjo-orquidea"), IMG("arranjo-orquidea-2"), IMG("arranjo-orquidea-3")] },
   { id: "maxi-tamandama", nome: "Maxi Tamandama Orquídea", peso: 4, especie: "Phalaenopsis de grande porte com folhagens · composição única", categoria: "dentro", ambiente: "interno", pet: "safe",
-    descricao: "A versão grande do nosso Tamandama: uma orquídea de maior porte — cerca de 30 cm mais alta — combinada com folhagens generosas sobre a mesma esfera de musgo vivo. Uma peça imponente, que leva mais tempo e mais cuidado para montar. Cada arranjo é único.", significado: "A orquídea simboliza beleza rara, elegância e um amor que floresce com paciência.", preco: 490, imgs: [IMG("maxi-tamandama"), IMG("maxi-tamandama-2"), IMG("maxi-tamandama-3")] },
+    descricao: "A versão grande do nosso Tamandama: uma orquídea de maior porte — cerca de 30 cm mais alta — combinada com folhagens generosas sobre a mesma esfera de musgo vivo. Uma peça imponente, que leva mais tempo e mais cuidado para montar. Cada arranjo é único.", significado: "A orquídea simboliza beleza rara, elegância e um amor que floresce com paciência.", preco: 490, imgs: [IMG("maxi-tamandama"), IMG("maxi-tamandama-2"), IMG("maxi-tamandama-3"), IMG("maxi-tamandama-4")] },
+  { id: "tamandama-diversos", nome: "Tamandama Diversos", peso: 3, especie: "Composição de folhagens diversas · peça única", categoria: "dentro", ambiente: "interno", pet: "toxic",
+    descricao: "Uma composição de folhagens variadas montadas juntas sobre a mesma esfera de musgo vivo — samambaias, heras, palmeirinhas e o que a estação trouxer. Cada peça é única, pensada na hora para equilibrar formas e texturas.", significado: "A reunião de muitas folhagens num só ninho verde — símbolo de abundância, variedade e harmonia no lar.", preco: 290, img: IMG("tamandama-diversos") },
   { id: "aglaonema-vermelha", nome: "Aglaonema Vermelha", especie: "Aglaonema sp.", categoria: "dentro", ambiente: "interno", pet: "toxic",
     descricao: "Folhagem de vermelho intenso sobre o verde, cor viva o ano inteiro sem depender de flor. Fácil de cuidar, gosta de luz indireta.", significado: "Conhecida como planta da sorte: simboliza prosperidade e boas energias, atraindo fortuna para a casa.", preco: 240, img: IMG("aglaonema-vermelha") },
   { id: "aglaonema-branca-rosada", nome: "Aglaonema Rosa", especie: "Aglaonema sp.", categoria: "dentro", ambiente: "interno", pet: "toxic",
@@ -67,6 +69,8 @@ const PRODUCTS = [
     descricao: "Folhas quase totalmente creme salpicadas de verde — delicada e luminosa. Cor o ano todo sem depender de flor, gosta de luz indireta.", significado: "Conhecida como planta da sorte: simboliza prosperidade e boas energias, atraindo fortuna para a casa.", preco: 240, img: IMG("aglaonema-branca") },
   { id: "aglaonema-creta", nome: "Aglaonema Creta", especie: "Aglaonema sp.", categoria: "dentro", ambiente: "interno", pet: "toxic",
     descricao: "Folhas marmorizadas em verde, creme e rosado — colorida o ano todo sem depender de flor. Fácil de cuidar, gosta de luz indireta clara.", significado: "Conhecida como planta da sorte: simboliza prosperidade e boas energias, atraindo fortuna para a casa.", preco: 240, img: IMG("aglaonema-creta") },
+  { id: "aglaonema-cherry", nome: "Aglaonema Cherry", especie: "Aglaonema sp.", categoria: "dentro", ambiente: "interno", pet: "toxic",
+    descricao: "Folhas estreitas em rosa e vermelho sobre o verde, com nervuras e bordas avermelhadas. Cor viva o ano inteiro sem depender de flor, gosta de luz indireta clara.", significado: "Conhecida como planta da sorte: simboliza prosperidade e boas energias, atraindo fortuna para a casa.", preco: 260, img: IMG("aglaonema-cherry") },
   { id: "maranta-triostar-grande", nome: "Maranta Triostar", especie: "Stromanthe sanguinea 'Triostar'", categoria: "dentro", ambiente: "interno", pet: "safe",
     descricao: "A Triostar em tamanho cheio: folhas longas pintadas de verde, creme e rosa, com o verso magenta vibrante. Uma folhagem de presença, das mais desejadas.", significado: "Planta da oração — ergue e baixa as folhas como em prece. Símbolo de gratidão e proteção do lar.", preco: 220, img: IMG("maranta-triostar-grande") },
   { id: "maranta-triostar", nome: "Mini Maranta Triostar", especie: "Stromanthe sanguinea 'Triostar'", categoria: "dentro", ambiente: "interno", pet: "safe",
@@ -104,7 +108,7 @@ const PRODUCTS = [
   { id: "pata-de-elefante", nome: "Mini Pata de Elefante", peso: 3, especie: "Beaucarnea recurvata", categoria: "ambos", ambiente: "ambos", pet: "safe",
     descricao: "Base inchada que guarda água, folhas finas em cascata. Esquece a rega e ela não sente.", significado: "Guarda água no tronco — símbolo de resiliência, longevidade e prosperidade que se acumula com o tempo.", preco: 250, img: IMG("pata-de-elefante") },
   { id: "pacova", nome: "Pacová", peso: 3, especie: "Philodendron martianum", categoria: "ambos", ambiente: "ambos", pet: "toxic",
-    descricao: "Folha inteira e grossa sobre pecíolo inflado. Forma limpa, quase escultórica.", significado: "Da família dos filodendros — símbolo de saúde, força e abundância, o verde que traz bem-estar ao ambiente.", preco: 365, img: IMG("pacova") },
+    descricao: "Folha inteira e grossa sobre pecíolo inflado. Forma limpa, quase escultórica.", significado: "Da família dos filodendros — símbolo de saúde, força e abundância, o verde que traz bem-estar ao ambiente.", preco: 365, imgs: [IMG("pacova"), IMG("pacova-2")] },
   { id: "pachira-aquatica", nome: "Pachira · Árvore do Dinheiro", peso: 3, especie: "Pachira aquatica · a árvore do dinheiro", categoria: "ambos", ambiente: "ambos", pet: "safe",
     descricao: "Tronco trançado à mão e folhas em leque no topo. É a famosa árvore do dinheiro — dizem que atrai prosperidade, e é por isso que sai tanto como presente.", significado: "A famosa árvore do dinheiro — símbolo de prosperidade, fortuna e boa sorte. O presente clássico para atrair abundância para a casa.", preco: 275, imgs: [IMG("pachira-aquatica"), IMG("pachira-aquatica-2")] },
   { id: "mini-arvore-felicidade", nome: "Árvore da Felicidade", especie: "Polyscias sp.", categoria: "dentro", ambiente: "interno", pet: "toxic",
