@@ -38,7 +38,7 @@ function fotoEmBreve() {
 }
 
 /* Versão das fotos: incremente ao trocar qualquer imagem para o navegador buscar a nova (evita cache). */
-const ASSET_V = "193";
+const ASSET_V = "194";
 const IMG = (id) => `assets/produtos/${id}.jpg?v=${ASSET_V}`;
 
 /* Categorias (seções do catálogo) ------------------------------------- */
@@ -96,7 +96,7 @@ const PRODUCTS = [
   { id: "costela-adao", nome: "Costela de Adão", peso: 3, especie: "Monstera deliciosa", categoria: "ambos", ambiente: "ambos", pet: "toxic",
     descricao: "Folha recortada que ganha novos vãos a cada broto. Cresce rápido e pede espaço.", significado: "Símbolo de longevidade e prosperidade — as folhas que se abrem representam crescimento e boas oportunidades.", preco: 390, img: IMG("costela-adao") },
   { id: "costela-adao-constellation", nome: "Costela de Adão Constellation", especie: "Monstera deliciosa 'Thai Constellation'", categoria: "ambos", ambiente: "ambos", pet: "toxic",
-    descricao: "A variegada mais desejada: folhas grandes salpicadas de creme, cada uma um desenho único. Peça de colecionador.", significado: "Símbolo de longevidade e prosperidade — cada nova folha aberta representa crescimento e boas oportunidades.", preco: 490, img: IMG("costela-adao-constellation") },
+    descricao: "A variegada mais desejada: folhas grandes salpicadas de creme, cada uma um desenho único. Peça de colecionador.", significado: "Símbolo de longevidade e prosperidade — cada nova folha aberta representa crescimento e boas oportunidades.", preco: 490, imgs: [IMG("costela-adao-constellation"), IMG("costela-adao-constellation-2")] },
   { id: "mini-costela-adao", nome: "Mini Costela de Adão", especie: "Monstera deliciosa · mini", categoria: "ambos", ambiente: "ambos", pet: "toxic",
     descricao: "A costela de Adão em tamanho de mesa, com os recortes que todo mundo ama já começando a aparecer.", significado: "Símbolo de longevidade e prosperidade — cada nova folha aberta representa crescimento e boas oportunidades.", preco: 210, img: IMG("mini-costela-adao") },
   { id: "alocasia-polly", nome: "Alocásia Polly", peso: 3, especie: "Alocasia × amazonica", categoria: "dentro", ambiente: "interno", pet: "toxic",
@@ -122,9 +122,13 @@ const PRODUCTS = [
 
   /* ---------- 01b · FOLHAGENS NOVAS (foto em breve) ---------- */
   { id: "anturio-rosa", nome: "Antúrio Rosa", especie: "Anthurium andraeanum · tamanho médio", categoria: "dentro", ambiente: "interno", pet: "toxic",
-    descricao: "Espata rosada e brilhante que dura semanas abertas, sobre folhagem verde-escura lustrosa. Floresce quase o ano todo em luz indireta.", significado: "O antúrio simboliza hospitalidade, abundância e um amor caloroso — de coração aberto para quem chega.", preco: 250, img: IMG("anturio-rosa") },
+    descricao: "Espata rosada e brilhante que dura semanas abertas, sobre folhagem verde-escura lustrosa. Floresce quase o ano todo em luz indireta.", significado: "O antúrio simboliza hospitalidade, abundância e um amor caloroso — de coração aberto para quem chega.", preco: 250, imgs: [IMG("anturio-rosa"), IMG("anturio-rosa-2")] },
   { id: "anturio-coracao", nome: "Antúrio Coração", especie: "Anthurium clarinervium", categoria: "dentro", ambiente: "interno", pet: "toxic",
     descricao: "Folhas grandes em forma de coração, aveludadas e verde-escuras, com nervuras brancas bem marcadas. Uma folhagem de colecionador — pede luz indireta e umidade.", significado: "Suas folhas em coração são símbolo de amor, hospitalidade e afeto cultivado com carinho.", preco: 270, img: IMG("anturio-coracao") },
+  { id: "lirio-da-paz", nome: "Lírio da Paz", especie: "Spathiphyllum wallisii", categoria: "dentro", ambiente: "interno", pet: "toxic",
+    descricao: "Folhagem verde-escura e lustrosa que abre espatas brancas elegantes ao longo do ano. Resistente, floresce mesmo em luz baixa e ainda purifica o ar.", significado: "Símbolo de paz, harmonia e recomeços — a flor branca que traz serenidade para a casa.", preco: 240, img: IMG("lirio-da-paz") },
+  { id: "calathea", nome: "Calathea", especie: "Goeppertia sp.", categoria: "dentro", ambiente: "interno", pet: "safe",
+    descricao: "Folhas largas com desenho de penas em tons de verde e verso vinho. Planta da oração: ergue e baixa as folhas conforme o dia. Gosta de luz indireta e umidade.", significado: "Planta da oração — símbolo de gratidão, calma e proteção do lar.", preco: 225, img: IMG("calathea") },
   { id: "aspargo-melindre", nome: "Aspargo Melindre", especie: "Asparagus setaceus", categoria: "dentro", ambiente: "ambos", pet: "toxic",
     descricao: "Ramos horizontais em camadas finíssimas, quase gráficos. Parece desenho a nanquim.", significado: "Símbolo de leveza e renovação — folhagem delicada que traz frescor e bons ares ao ambiente.", preco: 220, img: IMG("aspargo-melindre") },
   { id: "avenca", nome: "Avenca", especie: "Adiantum sp.", categoria: "dentro", ambiente: "interno", pet: "safe",
