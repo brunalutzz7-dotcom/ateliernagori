@@ -38,7 +38,7 @@ function fotoEmBreve() {
 }
 
 /* Versão das fotos: incremente ao trocar qualquer imagem para o navegador buscar a nova (evita cache). */
-const ASSET_V = "199";
+const ASSET_V = "200";
 const IMG = (id) => `assets/produtos/${id}.jpg?v=${ASSET_V}`;
 
 /* Categorias (seções do catálogo) ------------------------------------- */
@@ -75,10 +75,7 @@ const PRODUCTS = [
   { id: "maranta-cascavel-grande", nome: "Maranta Cascavel", especie: "Goeppertia lancifolia", categoria: "dentro", ambiente: "interno", pet: "safe",
     descricao: "Folhas longas e onduladas com o desenho de manchas escuras que lembra pele de cobra, e o verso vinho. Tamanho cheio, cheia de folhas — uma das marantas mais marcantes.", significado: "Planta da oração: fecha as folhas à noite. Símbolo de gratidão, calma e proteção.", preco: 200, img: IMG("maranta-cascavel-grande") },
   { id: "maranta-cascavel", nome: "Mini Maranta Cascavel", especie: "Goeppertia insignis", categoria: "dentro", ambiente: "interno", pet: "safe",
-    descricao: "Folha estreita e ondulada, salpicada de manchas escuras alternadas — o nome vem do desenho, que lembra pele de cobra.", significado: "Planta da oração: fecha as folhas à noite. Símbolo de gratidão, calma e proteção.", preco: 155, img: IMG("maranta-cascavel") },
-  { id: "maranta-burle-marx-mini", nome: "Mini Maranta Burle Marx", especie: "Ctenanthe burle-marxii", categoria: "dentro", ambiente: "interno", pet: "safe",
-    descricao: "Folhas claras com listras verde-escuras em espinha de peixe e verso vinho. Compacta e cheia de desenho, fecha as folhas à noite.", significado: "Planta da oração: símbolo de gratidão, calma e proteção para o lar.", preco: 155, img: IMG("maranta-burle-marx-mini") },
-  { id: "singonio", nome: "Singônio Rosa", especie: "Syngonium podophyllum", categoria: "dentro", ambiente: "interno", pet: "toxic",
+    descricao: "Folha estreita e ondulada, salpicada de manchas escuras alternadas — o nome vem do desenho, que lembra pele de cobra.", significado: "Planta da oração: fecha as folhas à noite. Símbolo de gratidão, calma e proteção.", preco: 155, img: IMG("maranta-cascavel") },  { id: "singonio", nome: "Singônio Rosa", especie: "Syngonium podophyllum", categoria: "dentro", ambiente: "interno", pet: "toxic",
     descricao: "Folha em ponta de flecha que muda de forma conforme a planta amadurece.", significado: "Símbolo de renovação e crescimento — dizem que atrai energia positiva para os novos começos.", preco: 220, img: IMG("singonio") },
   { id: "singonio-estrelado", nome: "Singônio Estrelado", especie: "Syngonium podophyllum", categoria: "dentro", ambiente: "interno", pet: "toxic",
     descricao: "Folhas recortadas em ponta de estrela, que mudam de forma conforme a planta cresce. Compacto e cheio.", significado: "Símbolo de renovação e de novos ciclos — atrai energia positiva e leveza para a casa.", preco: 265, img: IMG("singonio-estrelado") },
