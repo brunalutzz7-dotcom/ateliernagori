@@ -38,7 +38,7 @@ function fotoEmBreve() {
 }
 
 /* Versão das fotos: incremente ao trocar qualquer imagem para o navegador buscar a nova (evita cache). */
-const ASSET_V = "192";
+const ASSET_V = "193";
 const IMG = (id) => `assets/produtos/${id}.jpg?v=${ASSET_V}`;
 
 /* Categorias (seções do catálogo) ------------------------------------- */
@@ -83,6 +83,8 @@ const PRODUCTS = [
     descricao: "Folhas recortadas em ponta de estrela, que mudam de forma conforme a planta cresce. Compacto e cheio.", significado: "Símbolo de renovação e de novos ciclos — atrai energia positiva e leveza para a casa.", preco: 265, img: IMG("singonio-estrelado") },
   { id: "philodendron-birkin", nome: "Philodendron Birkin", especie: "Philodendron 'Birkin'", categoria: "dentro", ambiente: "interno", pet: "toxic",
     descricao: "Riscos brancos finos, nenhuma folha igual à outra. Compacta e discreta.", significado: "Seu nome vem do grego 'amor às árvores' — símbolo de amor que cresce, saúde e abundância.", preco: 350, img: IMG("philodendron-birkin") },
+  { id: "philodendron-pink", nome: "Philodendron Pink Princess", especie: "Philodendron erubescens 'Pink Princess'", categoria: "dentro", ambiente: "interno", pet: "toxic",
+    descricao: "Folhas verde-escuras lustrosas marcadas por manchas rosa, cada broto com um desenho diferente — nenhuma folha igual à outra. Uma das folhagens mais desejadas pelos colecionadores.", significado: "Seu nome vem do grego 'amor às árvores' — símbolo de amor raro que cresce com o tempo, saúde e abundância.", preco: 250, img: IMG("philodendron-pink") },
   { id: "jiboia-suspensa", nome: "Jiboia Suspensa", especie: "Epipremnum aureum · pendente", categoria: "dentro", ambiente: "interno", pet: "toxic",
     descricao: "Folhas em coração, variegadas de verde e creme, que caem livres da esfera. Perfeita para prateleira alta ou suporte de gancho.", significado: "Conhecida como planta do dinheiro no oriente — símbolo de prosperidade, e ainda purifica o ar." , preco: 340, img: IMG("jiboia-suspensa") },
   { id: "mini-jiboia", nome: "Mini Jiboia", especie: "Epipremnum aureum · mini", categoria: "dentro", ambiente: "ambos", pet: "toxic",
@@ -104,7 +106,7 @@ const PRODUCTS = [
   { id: "pacova", nome: "Pacová", peso: 3, especie: "Philodendron martianum", categoria: "ambos", ambiente: "ambos", pet: "toxic",
     descricao: "Folha inteira e grossa sobre pecíolo inflado. Forma limpa, quase escultórica.", significado: "Da família dos filodendros — símbolo de saúde, força e abundância, o verde que traz bem-estar ao ambiente.", preco: 365, img: IMG("pacova") },
   { id: "pachira-aquatica", nome: "Pachira · Árvore do Dinheiro", peso: 3, especie: "Pachira aquatica · a árvore do dinheiro", categoria: "ambos", ambiente: "ambos", pet: "safe",
-    descricao: "Tronco trançado à mão e folhas em leque no topo. É a famosa árvore do dinheiro — dizem que atrai prosperidade, e é por isso que sai tanto como presente.", significado: "A famosa árvore do dinheiro — símbolo de prosperidade, fortuna e boa sorte. O presente clássico para atrair abundância para a casa.", preco: 275, img: IMG("pachira-aquatica") },
+    descricao: "Tronco trançado à mão e folhas em leque no topo. É a famosa árvore do dinheiro — dizem que atrai prosperidade, e é por isso que sai tanto como presente.", significado: "A famosa árvore do dinheiro — símbolo de prosperidade, fortuna e boa sorte. O presente clássico para atrair abundância para a casa.", preco: 275, imgs: [IMG("pachira-aquatica"), IMG("pachira-aquatica-2")] },
   { id: "mini-arvore-felicidade", nome: "Árvore da Felicidade", especie: "Polyscias sp.", categoria: "dentro", ambiente: "interno", pet: "toxic",
     descricao: "Árvore da felicidade em tamanho médio. Tronco lenhoso e folhagem recortada — dizem que atrai boas energias, e é por isso que sai tanto como presente.", significado: "A árvore da felicidade — símbolo de boas energias, harmonia e alegria no lar.", preco: 340, img: IMG("mini-arvore-felicidade") },
   { id: "ficus-shivereana", nome: "Fícus Elástica Shivereana", peso: 3, especie: "Ficus elastica 'Shivereana'", categoria: "dentro", ambiente: "interno", pet: "toxic",
