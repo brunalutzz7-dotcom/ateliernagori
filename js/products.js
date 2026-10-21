@@ -38,7 +38,7 @@ function fotoEmBreve() {
 }
 
 /* Versão das fotos: incremente ao trocar qualquer imagem para o navegador buscar a nova (evita cache). */
-const ASSET_V = "205";
+const ASSET_V = "206";
 const IMG = (id) => `assets/produtos/${id}.jpg?v=${ASSET_V}`;
 
 /* Categorias (seções do catálogo) ------------------------------------- */
@@ -58,7 +58,7 @@ const PRODUCTS = [
   { id: "maxi-tamandama", nome: "Maxi Tamandama Orquídea", peso: 4, especie: "Phalaenopsis de grande porte com folhagens · composição única", categoria: "dentro", ambiente: "interno", pet: "safe",
     descricao: "A versão grande do nosso Tamandama: uma orquídea de maior porte — cerca de 30 cm mais alta — combinada com folhagens generosas sobre a mesma esfera de musgo vivo. Uma peça imponente, que leva mais tempo e mais cuidado para montar. Cada arranjo é único.", significado: "A orquídea simboliza beleza rara, elegância e um amor que floresce com paciência.", preco: 490, imgs: [IMG("maxi-tamandama"), IMG("maxi-tamandama-2"), IMG("maxi-tamandama-3"), IMG("maxi-tamandama-4"), IMG("maxi-tamandama-5")] },
   { id: "tamandama-diversos", nome: "Tamandama Diversos", peso: 3, especie: "Composição de folhagens diversas · peça única", categoria: "dentro", ambiente: "interno", pet: "toxic",
-    descricao: "Uma composição de folhagens variadas montadas juntas sobre a mesma esfera de musgo vivo — samambaias, heras, palmeirinhas e o que a estação trouxer. Cada peça é única, pensada na hora para equilibrar formas e texturas.", significado: "A reunião de muitas folhagens num só ninho verde — símbolo de abundância, variedade e harmonia no lar.", preco: 290, imgs: [IMG("tamandama-diversos"), IMG("tamandama-diversos-2"), IMG("tamandama-diversos-3"), IMG("tamandama-diversos-4"), IMG("tamandama-diversos-5"), IMG("tamandama-diversos-6")] },
+    descricao: "Uma composição de folhagens variadas montadas juntas sobre a mesma esfera de musgo vivo — samambaias, heras, palmeirinhas e o que a estação trouxer. Cada peça é única, pensada na hora para equilibrar formas e texturas.", significado: "A reunião de muitas folhagens num só ninho verde — símbolo de abundância, variedade e harmonia no lar.", preco: 290, imgs: [IMG("tamandama-diversos"), IMG("tamandama-diversos-2"), IMG("tamandama-diversos-3"), IMG("tamandama-diversos-4"), IMG("tamandama-diversos-5"), IMG("tamandama-diversos-6"), IMG("tamandama-diversos-7")] },
   { id: "aglaonema-vermelha", nome: "Aglaonema Vermelha", especie: "Aglaonema sp.", categoria: "dentro", ambiente: "interno", pet: "toxic",
     descricao: "Folhagem de vermelho intenso sobre o verde, cor viva o ano inteiro sem depender de flor. Fácil de cuidar, gosta de luz indireta.", significado: "Conhecida como planta da sorte: simboliza prosperidade e boas energias, atraindo fortuna para a casa.", preco: 240, img: IMG("aglaonema-vermelha") },
   { id: "aglaonema-branca-rosada", nome: "Aglaonema Rosa", especie: "Aglaonema sp.", categoria: "dentro", ambiente: "interno", pet: "toxic",
@@ -96,9 +96,15 @@ const PRODUCTS = [
   { id: "costela-adao-constellation", nome: "Costela de Adão Constellation", especie: "Monstera deliciosa 'Thai Constellation'", categoria: "ambos", ambiente: "ambos", pet: "toxic",
     descricao: "A variegada mais desejada: folhas grandes salpicadas de creme, cada uma um desenho único. Peça de colecionador.", significado: "Símbolo de longevidade e prosperidade — cada nova folha aberta representa crescimento e boas oportunidades.", preco: 490, imgs: [IMG("costela-adao-constellation"), IMG("costela-adao-constellation-2")] },
   { id: "mini-costela-adao", nome: "Mini Costela de Adão", especie: "Monstera deliciosa · mini", categoria: "ambos", ambiente: "ambos", pet: "toxic",
-    descricao: "A costela de Adão em tamanho de mesa, com os recortes que todo mundo ama já começando a aparecer.", significado: "Símbolo de longevidade e prosperidade — cada nova folha aberta representa crescimento e boas oportunidades.", preco: 210, img: IMG("mini-costela-adao") },
+    descricao: "A costela de Adão em tamanho de mesa, com os recortes que todo mundo ama já começando a aparecer.", significado: "Símbolo de longevidade e prosperidade — cada nova folha aberta representa crescimento e boas oportunidades.", preco: 225, img: IMG("mini-costela-adao") },
   { id: "alocasia-polly", nome: "Alocásia Polly", peso: 3, especie: "Alocasia × amazonica", categoria: "dentro", ambiente: "interno", pet: "toxic",
     descricao: "Folha em ponta de flecha, verde quase preto com nervura branca em relevo. Desenho gráfico, quase artificial de tão marcado.", significado: "Símbolo de boas-vindas e proteção do lar — suas folhas em flecha representam caminhos que se abrem.", preco: 245, img: IMG("alocasia-polly") },
+  { id: "alocasia-golden-bone", nome: "Alocásia Golden Bone", especie: "Alocasia sp. 'Golden Bone'", categoria: "dentro", ambiente: "interno", pet: "toxic",
+    descricao: "Folhas verde-claras em ponta de flecha sobre caules dourados marcantes, que dão nome e personalidade à peça. Uma alocásia de presença, cheia de vigor.", significado: "As alocásias são símbolo de proteção e prosperidade — suas folhas em flecha representam caminhos que se abrem.", preco: 220, img: IMG("alocasia-golden-bone") },
+  { id: "begonia", nome: "Begônia Maculata", especie: "Begonia maculata", categoria: "dentro", ambiente: "interno", pet: "toxic",
+    descricao: "Folhas em asa de anjo, verde-escuras salpicadas de prata por cima e vinho por baixo. Uma folhagem de desenho único, cheia de charme.", significado: "A begônia simboliza delicadeza e gratidão sincera — um gesto de carinho e apreço por quem se recebe.", preco: 250, imgs: [IMG("begonia"), IMG("begonia-2")] },
+  { id: "zamioculca-mini", nome: "Zamioculca Mini", especie: "Zamioculcas zamiifolia · mini", categoria: "dentro", ambiente: "ambos", pet: "toxic",
+    descricao: "Folhas lustrosas e firmes em versão compacta. Resistente e fácil de cuidar, tolera meia-luz e esquecimentos — a planta ideal para começar.", significado: "A zamioculca é a planta da prosperidade: representa crescimento constante e fortuna que chega aos poucos.", preco: 185, img: IMG("zamioculca-mini") },
   { id: "pata-de-elefante", nome: "Mini Pata de Elefante", peso: 3, especie: "Beaucarnea recurvata", categoria: "ambos", ambiente: "ambos", pet: "safe",
     descricao: "Base inchada que guarda água, folhas finas em cascata. Esquece a rega e ela não sente.", significado: "Guarda água no tronco — símbolo de resiliência, longevidade e prosperidade que se acumula com o tempo.", preco: 250, img: IMG("pata-de-elefante") },
   { id: "pacova", nome: "Pacová", peso: 3, especie: "Philodendron martianum", categoria: "ambos", ambiente: "ambos", pet: "toxic",
