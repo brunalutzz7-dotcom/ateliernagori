@@ -38,7 +38,7 @@ function fotoEmBreve() {
 }
 
 /* Versão das fotos: incremente ao trocar qualquer imagem para o navegador buscar a nova (evita cache). */
-const ASSET_V = "209";
+const ASSET_V = "210";
 const IMG = (id) => `assets/produtos/${id}.jpg?v=${ASSET_V}`;
 
 /* Categorias (seções do catálogo) ------------------------------------- */
@@ -157,7 +157,7 @@ const PRODUCTS = [
   { id: "bonsai-ficus-6", nome: "Bonsai Fícus · 7 anos", especie: "Ficus microcarpa · aprox. 30 cm", categoria: "bonsai", ambiente: "interno", pet: "toxic",
     descricao: "Sete anos num fícus de raízes engrossadas que emergem da esfera como um pequeno tronco de várias pernas. Folha pequena, lustrosa e verde-escura, copa densa. O bonsai de interior mais generoso — aceita luz indireta e perdoa esquecimento.", significado: "Fícus em bonsai — símbolo de abundância, unidade e prosperidade duradoura.", preco: 950, img: IMG("bonsai-ficus-6") },
   { id: "bonsai-jabuticabeira-12", nome: "Bonsai Jabuticabeira · 16 anos", especie: "Plinia cauliflora · aprox. 50 cm · frutificando", categoria: "bonsai", ambiente: "externo", pet: "safe",
-    descricao: "Dezesseis anos de formação, e já frutifica. A jabuticaba nasce colada ao tronco, como na árvore inteira — só que em meio metro de altura.", significado: "A jabuticabeira simboliza fartura, raízes e paciência — a árvore de quem valoriza o tempo.", preco: 2500, imgs: [IMG("bonsai-jabuticabeira-12"), IMG("bonsai-jabuticabeira-12-2"), IMG("bonsai-jabuticabeira-12-3"), IMG("bonsai-jabuticabeira-12-4")] },
+    descricao: "Dezesseis anos de formação, e já frutifica. A jabuticaba nasce colada ao tronco, como na árvore inteira — só que em meio metro de altura.", significado: "A jabuticabeira simboliza fartura, raízes e paciência — a árvore de quem valoriza o tempo.", preco: 2500, img: IMG("bonsai-jabuticabeira-12") },
   { id: "bonsai-jabuticabeira-4", nome: "Bonsai Jabuticabeira · 4 anos", especie: "Plinia cauliflora · aprox. 40 cm", categoria: "bonsai", ambiente: "externo", pet: "safe",
     descricao: "Casca lisa e clara, folhagem miúda, estrutura ainda em desenho. A peça de quem quer acompanhar a árvore desde cedo.", significado: "A jabuticabeira simboliza fartura, raízes e paciência — a árvore de quem valoriza o tempo.", preco: 1000, img: IMG("bonsai-jabuticabeira-4") },
   { id: "bonsai-amora-17", nome: "Bonsai Amora · 16 anos", especie: "Morus nigra · aprox. 50 cm", categoria: "bonsai", ambiente: "externo", pet: "safe",
