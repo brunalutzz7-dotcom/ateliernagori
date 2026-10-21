@@ -38,7 +38,7 @@ function fotoEmBreve() {
 }
 
 /* Versão das fotos: incremente ao trocar qualquer imagem para o navegador buscar a nova (evita cache). */
-const ASSET_V = "203";
+const ASSET_V = "204";
 const IMG = (id) => `assets/produtos/${id}.jpg?v=${ASSET_V}`;
 
 /* Categorias (seções do catálogo) ------------------------------------- */
@@ -58,7 +58,7 @@ const PRODUCTS = [
   { id: "maxi-tamandama", nome: "Maxi Tamandama Orquídea", peso: 4, especie: "Phalaenopsis de grande porte com folhagens · composição única", categoria: "dentro", ambiente: "interno", pet: "safe",
     descricao: "A versão grande do nosso Tamandama: uma orquídea de maior porte — cerca de 30 cm mais alta — combinada com folhagens generosas sobre a mesma esfera de musgo vivo. Uma peça imponente, que leva mais tempo e mais cuidado para montar. Cada arranjo é único.", significado: "A orquídea simboliza beleza rara, elegância e um amor que floresce com paciência.", preco: 490, imgs: [IMG("maxi-tamandama"), IMG("maxi-tamandama-2"), IMG("maxi-tamandama-3"), IMG("maxi-tamandama-4"), IMG("maxi-tamandama-5")] },
   { id: "tamandama-diversos", nome: "Tamandama Diversos", peso: 3, especie: "Composição de folhagens diversas · peça única", categoria: "dentro", ambiente: "interno", pet: "toxic",
-    descricao: "Uma composição de folhagens variadas montadas juntas sobre a mesma esfera de musgo vivo — samambaias, heras, palmeirinhas e o que a estação trouxer. Cada peça é única, pensada na hora para equilibrar formas e texturas.", significado: "A reunião de muitas folhagens num só ninho verde — símbolo de abundância, variedade e harmonia no lar.", preco: 290, img: IMG("tamandama-diversos") },
+    descricao: "Uma composição de folhagens variadas montadas juntas sobre a mesma esfera de musgo vivo — samambaias, heras, palmeirinhas e o que a estação trouxer. Cada peça é única, pensada na hora para equilibrar formas e texturas.", significado: "A reunião de muitas folhagens num só ninho verde — símbolo de abundância, variedade e harmonia no lar.", preco: 290, imgs: [IMG("tamandama-diversos"), IMG("tamandama-diversos-2"), IMG("tamandama-diversos-3"), IMG("tamandama-diversos-4"), IMG("tamandama-diversos-5"), IMG("tamandama-diversos-6")] },
   { id: "aglaonema-vermelha", nome: "Aglaonema Vermelha", especie: "Aglaonema sp.", categoria: "dentro", ambiente: "interno", pet: "toxic",
     descricao: "Folhagem de vermelho intenso sobre o verde, cor viva o ano inteiro sem depender de flor. Fácil de cuidar, gosta de luz indireta.", significado: "Conhecida como planta da sorte: simboliza prosperidade e boas energias, atraindo fortuna para a casa.", preco: 240, img: IMG("aglaonema-vermelha") },
   { id: "aglaonema-branca-rosada", nome: "Aglaonema Rosa", especie: "Aglaonema sp.", categoria: "dentro", ambiente: "interno", pet: "toxic",
@@ -92,7 +92,7 @@ const PRODUCTS = [
   { id: "monstera-adansonii", nome: "Monstera Adansonii", especie: "Monstera adansonii", categoria: "dentro", ambiente: "interno", pet: "toxic",
     descricao: "Folha vazada de furos irregulares. Trepa ou pende, conforme você deixar.", significado: "Símbolo de longevidade e respeito — no oriente representa vida longa e prosperidade duradoura.", preco: 185, img: IMG("monstera-adansonii") },
   { id: "costela-adao", nome: "Costela de Adão", peso: 3, especie: "Monstera deliciosa", categoria: "ambos", ambiente: "ambos", pet: "toxic",
-    descricao: "Folha recortada que ganha novos vãos a cada broto. Cresce rápido e pede espaço.", significado: "Símbolo de longevidade e prosperidade — as folhas que se abrem representam crescimento e boas oportunidades.", preco: 390, img: IMG("costela-adao") },
+    descricao: "Folha recortada que ganha novos vãos a cada broto. Cresce rápido e pede espaço.", significado: "Símbolo de longevidade e prosperidade — as folhas que se abrem representam crescimento e boas oportunidades.", preco: 390, imgs: [IMG("costela-adao"), IMG("costela-adao-2"), IMG("costela-adao-3")] },
   { id: "costela-adao-constellation", nome: "Costela de Adão Constellation", especie: "Monstera deliciosa 'Thai Constellation'", categoria: "ambos", ambiente: "ambos", pet: "toxic",
     descricao: "A variegada mais desejada: folhas grandes salpicadas de creme, cada uma um desenho único. Peça de colecionador.", significado: "Símbolo de longevidade e prosperidade — cada nova folha aberta representa crescimento e boas oportunidades.", preco: 490, imgs: [IMG("costela-adao-constellation"), IMG("costela-adao-constellation-2")] },
   { id: "mini-costela-adao", nome: "Mini Costela de Adão", especie: "Monstera deliciosa · mini", categoria: "ambos", ambiente: "ambos", pet: "toxic",
@@ -140,7 +140,7 @@ const PRODUCTS = [
   { id: "jade", nome: "Jade · Árvore da Amizade", especie: "Crassula ovata · a árvore da amizade", categoria: "ambos", ambiente: "ambos", pet: "toxic",
     descricao: "Suculenta de folhas gordinhas e brilhantes. Conhecida como a árvore da amizade, quase não pede água — só bastante luz.", significado: "Conhecida como a árvore da amizade — símbolo de amizade verdadeira, prosperidade e boa sorte. Um presente cheio de significado para quem se quer bem.", preco: 250, img: IMG("jade") },
   { id: "croton", nome: "Croton", especie: "Codiaeum variegatum", categoria: "ambos", ambiente: "ambos", pet: "toxic",
-    descricao: "Folha coriácea listrada de verde, amarelo e vermelho, que ganha cor quanto mais luz recebe. Nenhuma folha repete a mistura da outra.", significado: "Croton simboliza energia, transformação e alegria — muda de cor com a luz, como a vida em movimento.", preco: 340, img: IMG("croton") },
+    descricao: "Folha coriácea listrada de verde, amarelo e vermelho, que ganha cor quanto mais luz recebe. Nenhuma folha repete a mistura da outra.", significado: "Croton simboliza energia, transformação e alegria — muda de cor com a luz, como a vida em movimento.", preco: 340, imgs: [IMG("croton"), IMG("croton-2")] },
   /* ---------- 04 · BONSAIS ---------- */
   { id: "bonsai-ligustro-15", nome: "Bonsai Ligustro · 15 anos", especie: "Ligustrum sinense · aprox. 50 cm", categoria: "bonsai", ambiente: "ambos", pet: "toxic",
     descricao: "Folhagem miúda e densa, tronco que engrossa rápido. Perdoa erro de rega — o bonsai mais generoso para quem está começando.", significado: "Bonsai de ligustro: símbolo de proteção e vida longa, cultivado para trazer harmonia ao lar.", preco: 1400, imgs: [IMG("bonsai-ligustro-15-2"), IMG("bonsai-ligustro-15")] },
