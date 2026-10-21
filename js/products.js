@@ -38,7 +38,7 @@ function fotoEmBreve() {
 }
 
 /* Versão das fotos: incremente ao trocar qualquer imagem para o navegador buscar a nova (evita cache). */
-const ASSET_V = "204";
+const ASSET_V = "205";
 const IMG = (id) => `assets/produtos/${id}.jpg?v=${ASSET_V}`;
 
 /* Categorias (seções do catálogo) ------------------------------------- */
@@ -139,8 +139,10 @@ const PRODUCTS = [
     descricao: "Frondes finíssimas e muito recortadas, leves como renda, caindo em cascata — peça de grande porte, cheia de movimento. Adora umidade e luz indireta.", significado: "A samambaia simboliza proteção e prosperidade, e vínculos que se renovam ao longo do tempo.", preco: 270, img: IMG("renda-francesa") },
   { id: "jade", nome: "Jade · Árvore da Amizade", especie: "Crassula ovata · a árvore da amizade", categoria: "ambos", ambiente: "ambos", pet: "toxic",
     descricao: "Suculenta de folhas gordinhas e brilhantes. Conhecida como a árvore da amizade, quase não pede água — só bastante luz.", significado: "Conhecida como a árvore da amizade — símbolo de amizade verdadeira, prosperidade e boa sorte. Um presente cheio de significado para quem se quer bem.", preco: 250, img: IMG("jade") },
-  { id: "croton", nome: "Croton", especie: "Codiaeum variegatum", categoria: "ambos", ambiente: "ambos", pet: "toxic",
-    descricao: "Folha coriácea listrada de verde, amarelo e vermelho, que ganha cor quanto mais luz recebe. Nenhuma folha repete a mistura da outra.", significado: "Croton simboliza energia, transformação e alegria — muda de cor com a luz, como a vida em movimento.", preco: 340, imgs: [IMG("croton"), IMG("croton-2")] },
+  { id: "croton", nome: "Croton", especie: "Codiaeum variegatum · tamanho P", categoria: "ambos", ambiente: "ambos", pet: "toxic",
+    descricao: "Folha coriácea listrada de verde, amarelo e vermelho, que ganha cor quanto mais luz recebe. Nenhuma folha repete a mistura da outra.", significado: "Croton simboliza energia, transformação e alegria — muda de cor com a luz, como a vida em movimento.", preco: 175, img: IMG("croton") },
+  { id: "maxi-croton", nome: "Maxi Croton", especie: "Codiaeum variegatum · porte grande", categoria: "ambos", ambiente: "ambos", pet: "toxic",
+    descricao: "A versão grande do nosso croton: folhas largas e coriáceas listradas de verde, amarelo, laranja e vermelho, cheias de cor. Uma peça de presença, que fica ainda mais vibrante quanto mais luz recebe.", significado: "Croton simboliza energia, transformação e alegria — muda de cor com a luz, como a vida em movimento.", preco: 340, imgs: [IMG("maxi-croton"), IMG("maxi-croton-2")] },
   /* ---------- 04 · BONSAIS ---------- */
   { id: "bonsai-ligustro-15", nome: "Bonsai Ligustro · 15 anos", especie: "Ligustrum sinense · aprox. 50 cm", categoria: "bonsai", ambiente: "ambos", pet: "toxic",
     descricao: "Folhagem miúda e densa, tronco que engrossa rápido. Perdoa erro de rega — o bonsai mais generoso para quem está começando.", significado: "Bonsai de ligustro: símbolo de proteção e vida longa, cultivado para trazer harmonia ao lar.", preco: 1400, imgs: [IMG("bonsai-ligustro-15-2"), IMG("bonsai-ligustro-15")] },
