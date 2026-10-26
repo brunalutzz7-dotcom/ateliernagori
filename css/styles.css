@@ -167,6 +167,16 @@ h2 { font-size: clamp(1.9rem, 4vw, 2.9rem); }
 }
 .chip:hover { border-color: var(--moss); color: var(--moss-deep); }
 .chip.active { background: var(--moss); color: #fff; border-color: var(--moss); }
+/* separador entre as categorias e o "guia de presentes" */
+.chip-sep { width: 1px; align-self: stretch; margin: .1rem .4rem; background: var(--line); }
+/* chips de faixa de preço (guia de presentes) */
+.chip-gift { font-family: var(--sans); font-size: .82rem; letter-spacing: .01em; }
+.chip-gift.active { background: var(--gold, #a9833c); border-color: var(--gold, #a9833c); color: #fff; }
+/* chip de Natal em destaque */
+.chip-natal { border-color: #9c2b2b; color: #9c2b2b; font-weight: 600; }
+.chip-natal:hover { border-color: #7f1f1f; color: #7f1f1f; }
+.chip-natal.active { background: #9c2b2b; border-color: #9c2b2b; color: #fff; }
+.product-grid .grid-empty { grid-column: 1 / -1; text-align: center; color: var(--ink-soft); padding: 2.4rem 0; }
 
 /* ---- Grid de produtos ---- */
 .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 1.6rem; }
@@ -535,6 +545,10 @@ body { letter-spacing: .004em; }
 .btn-ghost:hover { background: transparent; border-color: var(--ink); }
 .chip { border-radius: 4px; }
 .chip.active { background: var(--ink); border-color: var(--ink); }
+.chip-gift.active { background: var(--gold, #a9833c); border-color: var(--gold, #a9833c); color: #fff; }
+.chip-natal { border-color: #9c2b2b; color: #9c2b2b; }
+.chip-natal:hover { border-color: #7f1f1f; color: #7f1f1f; }
+.chip-natal.active { background: #9c2b2b; border-color: #9c2b2b; color: #fff; }
 .cart-btn, .ig-btn, .nav-toggle { border-radius: 4px; background: transparent; }
 .cart-btn:hover, .ig-btn:hover { background: var(--sand-lt); }
 .ig-btn:hover { color: var(--ink); }
@@ -553,6 +567,7 @@ body { letter-spacing: .004em; }
 .card:hover, .suporte-card:hover { transform: translateY(-2px); box-shadow: 0 6px 22px rgba(30, 28, 22, .08); }
 .card-cat { background: rgba(255, 255, 255, .94); color: var(--ink); border-radius: 3px; }
 .card-flag { background: var(--ink); border-radius: 3px; }
+.card-flag-natal { background: #9c2b2b; }
 
 /* Selo pet: neutro (mantém só a leitura de seguro/tóxico bem discreta) */
 .pet-safe { background: var(--sand-lt); color: var(--ink); border-color: var(--line); }

@@ -140,18 +140,30 @@
   /* =================================================================
      PRODUTOS — galeria
      ================================================================= */
+  // Faixas de preço — "guia de presentes" (usa o menor preço da peça)
+  const FAIXAS = [
+    { f: "faixa:250", label: "Presentes até R$ 250" },
+    { f: "faixa:350", label: "até R$ 350" },
+    { f: "faixa:450", label: "até R$ 450" },
+    { f: "especiais", label: "Peças especiais" },
+  ];
+
   function renderFilters() {
     const usados = CATEGORIAS.filter((c) => PRODUCTS.some((p) => p.categoria === c.id && !p.oculto));
+    const temNatal = PRODUCTS.some((p) => p.natal && !p.oculto);
     const box = $("#filters");
     box.innerHTML =
-      `<button class="chip active" data-cat="todos">Todos</button>` +
-      usados.map((c) => `<button class="chip" data-cat="${c.id}">${c.nome}</button>`).join("");
+      `<button class="chip active" data-f="todos">Todos</button>` +
+      usados.map((c) => `<button class="chip" data-f="${c.id}">${c.nome}</button>`).join("") +
+      `<span class="chip-sep" aria-hidden="true"></span>` +
+      (temNatal ? `<button class="chip chip-natal" data-f="natal">🎄 Presentes de Natal</button>` : "") +
+      FAIXAS.map((x) => `<button class="chip chip-gift" data-f="${x.f}">${x.label}</button>`).join("");
     box.addEventListener("click", (e) => {
       const b = e.target.closest(".chip");
-      if (!b) return;
+      if (!b || !b.dataset.f) return;
       $$(".chip", box).forEach((x) => x.classList.remove("active"));
       b.classList.add("active");
-      renderGrid(b.dataset.cat);
+      renderGrid(b.dataset.f);
     });
   }
 
@@ -179,7 +191,7 @@
     <article class="card">
       <div class="card-media" data-open="${p.id}">
         <span class="card-cat">${catNome(p.categoria)}</span>
-        ${p.raridade ? `<span class="card-flag">Raridade</span>` : ""}
+        ${p.natal ? `<span class="card-flag card-flag-natal">🎄 Natal</span>` : p.raridade ? `<span class="card-flag">Raridade</span>` : ""}
         ${cardMedia(p)}
         ${p.suporte ? "" : `<span class="card-nobase">Suporte não incluso</span>`}
       </div>
@@ -201,25 +213,56 @@
     if (cat === "suporte") return "Suportes";
     return "Folhagens"; // dentro / ambos / arlivre
   }
-  function renderGrid(cat = "todos") {
+  // Normaliza o argumento do filtro: string de chip → descritor.
+  function normFiltro(f) {
+    if (f == null) return { tipo: "cat", valor: "todos" };
+    if (typeof f === "object") return f;
+    if (f === "natal") return { tipo: "natal" };
+    if (f === "especiais") return { tipo: "faixa", min: 450 };
+    if (f.startsWith("faixa:")) return { tipo: "faixa", max: +f.slice(6) };
+    return { tipo: "cat", valor: f };
+  }
+
+  function filtrarLista(f) {
+    const ehFolhagem = (c) => ["dentro", "ambos", "arlivre"].includes(c);
+    const visiveis = PRODUCTS.filter((p) => !p.oculto);
+    if (f.tipo === "natal") return visiveis.filter((p) => p.natal);
+    if (f.tipo === "faixa") {
+      // faixas de preço não incluem suportes (acessórios)
+      const base = visiveis.filter((p) => p.categoria !== "suporte");
+      if (f.max != null) return base.filter((p) => menorPreco(p) <= f.max);
+      if (f.min != null) return base.filter((p) => menorPreco(p) > f.min);
+      return base;
+    }
+    const cat = f.valor;
+    if (cat === "todos") return visiveis.filter((p) => p.categoria !== "suporte");
+    if (cat === "folhagens") return visiveis.filter((p) => ehFolhagem(p.categoria));
+    return visiveis.filter((p) => p.categoria === cat);
+  }
+
+  function renderGrid(filtro) {
     // "Todos" mostra as plantas; os suportes aparecem na própria categoria.
     // "folhagens" agrupa dentro / ambos / ar livre numa visão só.
-    const ehFolhagem = (c) => ["dentro", "ambos", "arlivre"].includes(c);
-    const list = cat === "todos"
-      ? PRODUCTS.filter((p) => p.categoria !== "suporte" && !p.oculto)
-      : cat === "folhagens"
-        ? PRODUCTS.filter((p) => ehFolhagem(p.categoria) && !p.oculto)
-        : PRODUCTS.filter((p) => p.categoria === cat && !p.oculto);
-    if (cat === "todos" || cat === "folhagens") {
+    // faixas de preço e Natal podem misturar categorias → agrupamos por seção.
+    const f = normFiltro(filtro);
+    const list = filtrarLista(f);
+    const grid = $("#productGrid");
+    if (!list.length) {
+      grid.innerHTML = `<p class="grid-empty">Nenhuma peça nesta faixa no momento. 🌿</p>`;
+      return;
+    }
+    const comSecoes = f.tipo === "natal" || f.tipo === "faixa" ||
+      (f.tipo === "cat" && (f.valor === "todos" || f.valor === "folhagens"));
+    if (comSecoes) {
       let html = "", secao = null;
       list.forEach((p) => {
         const s = secaoDe(p.categoria);
         if (s !== secao) { html += `<h2 class="grid-section">${s}</h2>`; secao = s; }
         html += cardHTML(p);
       });
-      $("#productGrid").innerHTML = html;
+      grid.innerHTML = html;
     } else {
-      $("#productGrid").innerHTML = list.map(cardHTML).join("");
+      grid.innerHTML = list.map(cardHTML).join("");
     }
   }
 
@@ -857,7 +900,7 @@
       e.preventDefault();
       closeModal();
       const alvo = link.dataset.catLink;
-      const chip = $(`.chip[data-cat="${alvo}"]`);
+      const chip = $(`.chip[data-f="${alvo}"]`);
       if (chip) chip.click();
       else {
         // categorias "meta" sem chip próprio (ex.: folhagens)
