@@ -142,9 +142,9 @@
      ================================================================= */
   // Faixas de preço — "guia de presentes" (usa o menor preço da peça)
   const FAIXAS = [
-    { f: "faixa:250", label: "Presentes até R$ 250" },
-    { f: "faixa:350", label: "até R$ 350" },
-    { f: "faixa:450", label: "até R$ 450" },
+    { f: "faixa:0-250", label: "Presentes até R$ 250" },
+    { f: "faixa:250-350", label: "R$ 250 a R$ 350" },
+    { f: "faixa:350-500", label: "R$ 350 a R$ 500" },
     { f: "especiais", label: "Peças especiais" },
   ];
 
@@ -218,8 +218,14 @@
     if (f == null) return { tipo: "cat", valor: "todos" };
     if (typeof f === "object") return f;
     if (f === "natal") return { tipo: "natal" };
-    if (f === "especiais") return { tipo: "faixa", min: 450 };
-    if (f.startsWith("faixa:")) return { tipo: "faixa", max: +f.slice(6) };
+    if (f === "especiais") return { tipo: "faixa", min: 500 };
+    if (f.startsWith("faixa:")) {
+      const [lo, hi] = f.slice(6).split("-").map(Number);
+      const spec = { tipo: "faixa" };
+      if (lo > 0) spec.min = lo;   // limite inferior exclusivo
+      if (hi) spec.max = hi;       // limite superior inclusivo
+      return spec;
+    }
     return { tipo: "cat", valor: f };
   }
 
@@ -229,10 +235,10 @@
     if (f.tipo === "natal") return visiveis.filter((p) => p.natal);
     if (f.tipo === "faixa") {
       // faixas de preço não incluem suportes (acessórios)
-      const base = visiveis.filter((p) => p.categoria !== "suporte");
-      if (f.max != null) return base.filter((p) => menorPreco(p) <= f.max);
-      if (f.min != null) return base.filter((p) => menorPreco(p) > f.min);
-      return base;
+      let r = visiveis.filter((p) => p.categoria !== "suporte" && menorPreco(p) != null);
+      if (f.min != null) r = r.filter((p) => menorPreco(p) > f.min);
+      if (f.max != null) r = r.filter((p) => menorPreco(p) <= f.max);
+      return r;
     }
     const cat = f.valor;
     if (cat === "todos") return visiveis.filter((p) => p.categoria !== "suporte");
