@@ -38,7 +38,7 @@ function fotoEmBreve() {
 }
 
 /* Versão das fotos: incremente ao trocar qualquer imagem para o navegador buscar a nova (evita cache). */
-const ASSET_V = "213";
+const ASSET_V = "214";
 const IMG = (id) => `assets/produtos/${id}.jpg?v=${ASSET_V}`;
 
 /* Categorias (seções do catálogo) ------------------------------------- */
@@ -52,6 +52,9 @@ const CATEGORIAS = [
 ];
 
 const PRODUCTS = [
+  /* ---------- 00 · COLEÇÃO DE NATAL ---------- */
+  { id: "tuia", nome: "Tuia Holandesa · Coleção de Natal", peso: 3, especie: "Cupressus macrocarpa 'Goldcrest' · edição de Natal", categoria: "ambos", ambiente: "ambos", pet: "safe", raridade: true,
+    descricao: "Nossa tuia holandesa montada em kokedama e decorada à mão para o Natal — enfeites, laço de veludo vinho e luzinhas. Folhagem densa, perfumada e de um verde-limão luminoso. Depois das festas continua linda o ano todo: é só retirar os enfeites.", significado: "A árvore de Natal que não se joga fora — símbolo de renovação, esperança e de um Natal que permanece vivo ano após ano.", preco: 450, img: IMG("tuia") },
   /* ---------- 01 · FOLHAGENS ---------- */
   { id: "arranjo-orquidea", nome: "Tamandama Orquídea", peso: 3, especie: "Phalaenopsis com folhagens · composição única", categoria: "dentro", ambiente: "interno", pet: "safe",
     descricao: "Uma orquídea de porte menor combinada com folhagens delicadas sobre a mesma esfera de musgo vivo. A raiz da orquídea e o musgo se entendem naturalmente, e cada arranjo é montado de forma única.", significado: "A orquídea simboliza beleza rara, elegância e um amor que floresce com paciência.", preco: 400, imgs: [IMG("arranjo-orquidea"), IMG("arranjo-orquidea-2"), IMG("arranjo-orquidea-3")] },
