@@ -38,7 +38,7 @@ function fotoEmBreve() {
 }
 
 /* Versão das fotos: incremente ao trocar qualquer imagem para o navegador buscar a nova (evita cache). */
-const ASSET_V = "216";
+const ASSET_V = "217";
 const IMG = (id) => `assets/produtos/${id}.jpg?v=${ASSET_V}`;
 
 /* Categorias (seções do catálogo) ------------------------------------- */
@@ -163,6 +163,8 @@ const PRODUCTS = [
     descricao: "Dezesseis anos de formação, e já frutifica. A jabuticaba nasce colada ao tronco, como na árvore inteira — só que em meio metro de altura.", significado: "A jabuticabeira simboliza fartura, raízes e paciência — a árvore de quem valoriza o tempo.", preco: 2500, imgs: [IMG("bonsai-jabuticabeira-12"), IMG("bonsai-jabuticabeira-12-2"), IMG("bonsai-jabuticabeira-12-3"), IMG("bonsai-jabuticabeira-12-4")] },
   { id: "bonsai-jabuticabeira-4", nome: "Bonsai Jabuticabeira · 4 anos", especie: "Plinia cauliflora · aprox. 40 cm", categoria: "bonsai", ambiente: "externo", pet: "safe",
     descricao: "Casca lisa e clara, folhagem miúda, estrutura ainda em desenho. A peça de quem quer acompanhar a árvore desde cedo.", significado: "A jabuticabeira simboliza fartura, raízes e paciência — a árvore de quem valoriza o tempo.", preco: 1000, img: IMG("bonsai-jabuticabeira-4") },
+  { id: "bonsai-mini-jabuticabeira", nome: "Bonsai Mini Jabuticabeira", especie: "Plinia cauliflora · porte mini", categoria: "bonsai", ambiente: "externo", pet: "safe",
+    descricao: "A menor das nossas jabuticabeiras — folhagem miúda e tronco ainda jovem, começando a ganhar forma. O começo de uma árvore para acompanhar a vida toda.", significado: "A jabuticabeira simboliza fartura, raízes e paciência — a árvore de quem valoriza o tempo.", preco: 550, img: IMG("bonsai-mini-jabuticabeira") },
   { id: "bonsai-amora-17", nome: "Bonsai Amora · 16 anos", especie: "Morus nigra · aprox. 50 cm", categoria: "bonsai", ambiente: "externo", pet: "safe",
     descricao: "Dezesseis anos em meio metro. Tronco engrossado, casca fissurada, e fruta escura na estação — árvore que dá colheita numa mesa de sala.", significado: "A amoreira simboliza sabedoria, fartura e a doçura da vida colhida com paciência.", preco: 2200, img: IMG("bonsai-amora-17") },
   { id: "bonsai-amora-7", nome: "Bonsai Amora · 7 anos", especie: "Morus nigra · aprox. 50 cm", categoria: "bonsai", ambiente: "externo", pet: "safe",
