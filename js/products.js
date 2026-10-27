@@ -38,7 +38,7 @@ function fotoEmBreve() {
 }
 
 /* Versão das fotos: incremente ao trocar qualquer imagem para o navegador buscar a nova (evita cache). */
-const ASSET_V = "215";
+const ASSET_V = "216";
 const IMG = (id) => `assets/produtos/${id}.jpg?v=${ASSET_V}`;
 
 /* Categorias (seções do catálogo) ------------------------------------- */
@@ -156,7 +156,7 @@ const PRODUCTS = [
   { id: "bonsai-ligustro-15", nome: "Bonsai Ligustro · 15 anos", especie: "Ligustrum sinense · aprox. 50 cm", categoria: "bonsai", ambiente: "ambos", pet: "toxic",
     descricao: "Folhagem miúda e densa, tronco que engrossa rápido. Perdoa erro de rega — o bonsai mais generoso para quem está começando.", significado: "Bonsai de ligustro: símbolo de proteção e vida longa, cultivado para trazer harmonia ao lar.", preco: 1400, imgs: [IMG("bonsai-ligustro-15-2"), IMG("bonsai-ligustro-15")] },
   { id: "bonsai-serissa-8", nome: "Bonsai Serissa · 8 a 9 anos", especie: "Serissa japonica · 20 a 30 cm", categoria: "bonsai", ambiente: "ambos", pet: "toxic",
-    descricao: "Conhecida como árvore das mil estrelas — cobre-se de flores brancas miúdas em ondas sucessivas. Tronco claro e retorcido.", significado: "A serissa, 'árvore das mil estrelas', simboliza renascimento e a beleza dos pequenos recomeços.", preco: 900, imgs: [IMG("bonsai-serissa-8"), IMG("bonsai-serissa-8-2")] },
+    descricao: "Conhecida como árvore das mil estrelas — cobre-se de flores brancas miúdas em ondas sucessivas. Tronco claro e retorcido.", significado: "A serissa, 'árvore das mil estrelas', simboliza renascimento e a beleza dos pequenos recomeços.", preco: 900, imgs: [IMG("bonsai-serissa-8"), IMG("bonsai-serissa-8-2"), IMG("bonsai-serissa-8-3")] },
   { id: "bonsai-ficus-6", nome: "Bonsai Fícus · 7 anos", especie: "Ficus microcarpa · aprox. 30 cm", categoria: "bonsai", ambiente: "interno", pet: "toxic",
     descricao: "Sete anos num fícus de raízes engrossadas que emergem da esfera como um pequeno tronco de várias pernas. Folha pequena, lustrosa e verde-escura, copa densa. O bonsai de interior mais generoso — aceita luz indireta e perdoa esquecimento.", significado: "Fícus em bonsai — símbolo de abundância, unidade e prosperidade duradoura.", preco: 950, img: IMG("bonsai-ficus-6") },
   { id: "bonsai-jabuticabeira-12", nome: "Bonsai Jabuticabeira · 16 anos", especie: "Plinia cauliflora · aprox. 50 cm · frutificando", categoria: "bonsai", ambiente: "externo", pet: "safe",
