@@ -38,7 +38,7 @@ function fotoEmBreve() {
 }
 
 /* Versão das fotos: incremente ao trocar qualquer imagem para o navegador buscar a nova (evita cache). */
-const ASSET_V = "218";
+const ASSET_V = "219";
 const IMG = (id) => `assets/produtos/${id}.jpg?v=${ASSET_V}`;
 
 /* Categorias (seções do catálogo) ------------------------------------- */
@@ -55,6 +55,8 @@ const PRODUCTS = [
   /* ---------- 00 · COLEÇÃO DE NATAL ---------- */
   { id: "tuia", nome: "Tuia Holandesa · Coleção de Natal", peso: 3, especie: "Cupressus macrocarpa 'Goldcrest' · edição de Natal", categoria: "ambos", ambiente: "ambos", pet: "safe", natal: true,
     descricao: "Nossa tuia holandesa montada em kokedama e decorada à mão para o Natal — enfeites, laço de veludo vinho e luzinhas. Folhagem densa, perfumada e de um verde-limão luminoso. Depois das festas continua linda o ano todo: é só retirar os enfeites.", significado: "A árvore de Natal que não se joga fora — símbolo de renovação, esperança e de um Natal que permanece vivo ano após ano.", preco: 450, img: IMG("tuia") },
+  { id: "mini-tuia-natal", nome: "Mini Tuia · Especial de Natal", especie: "Conífera em miniatura · edição de Natal", categoria: "ambos", ambiente: "ambos", pet: "safe", natal: true,
+    descricao: "A versão mini da nossa tuia de Natal — uma coníferazinha de folhagem macia e dourada, montada em kokedama e decorada à mão com laço e enfeite de Natal. Já vem com enfeite incluso. Perfeita como presente ou pra dar um toque natalino a qualquer cantinho.", significado: "Sempre verde, a tuia simboliza vida longa, união e proteção. Em miniatura, leva a esperança do Natal em formato de presente.", preco: 260, img: IMG("mini-tuia-natal") },
   /* ---------- 01 · FOLHAGENS ---------- */
   { id: "arranjo-orquidea", nome: "Tamandama Orquídea", peso: 3, especie: "Phalaenopsis com folhagens · composição única", categoria: "dentro", ambiente: "interno", pet: "safe",
     descricao: "Uma orquídea de porte menor combinada com folhagens delicadas sobre a mesma esfera de musgo vivo. A raiz da orquídea e o musgo se entendem naturalmente, e cada arranjo é montado de forma única.", significado: "A orquídea simboliza beleza rara, elegância e um amor que floresce com paciência.", preco: 400, imgs: [IMG("arranjo-orquidea"), IMG("arranjo-orquidea-2"), IMG("arranjo-orquidea-3")] },
