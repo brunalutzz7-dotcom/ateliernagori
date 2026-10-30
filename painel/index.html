@@ -108,7 +108,7 @@
 <!-- App -->
 <div id="appView" class="hidden">
   <header class="top">
-    <b>✿ Atelier Nagori</b><span style="font-size:.62rem;opacity:.55;margin-left:7px;letter-spacing:.02em">v70 · Carmona custo planta 230</span>
+    <b>✿ Atelier Nagori</b><span style="font-size:.62rem;opacity:.55;margin-left:7px;letter-spacing:.02em">v71 · Controle de peças no café ☕</span>
     <button class="sair" id="btnSair">Sair</button>
   </header>
   <div class="wrap">
@@ -317,12 +317,42 @@
       </div>
     </section>
 
+    <!-- CAFÉ -->
+    <section id="tab-cafe" class="hidden">
+      <div class="card">
+        <h2>☕ Enviar peça para o café</h2>
+        <p class="small muted" style="margin-top:-4px">Marque aqui as peças que você levou para o café. Depois é só conferir esta lista com as vendas.</p>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;margin-top:10px">
+          <label style="flex:1;min-width:180px">Peça
+            <select id="cafeProd"></select>
+          </label>
+          <label style="max-width:84px">Qtd<input id="cafeQtd" type="text" inputmode="numeric" value="1"></label>
+          <button class="btn" id="btnEnviarCafe" type="button" style="width:auto">☕ Enviar para o café</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap">
+          <h2 style="margin:0">No café agora <span id="cafeTotal" class="small muted"></span></h2>
+          <button class="btn sec mini" id="btnCopiarCafe" type="button">📋 Copiar lista</button>
+        </div>
+        <div id="cafeLista" style="margin-top:10px"></div>
+      </div>
+
+      <div class="card">
+        <h2>Histórico de movimentações</h2>
+        <p class="small muted" style="margin-top:-4px">Tudo que entrou e saiu do café, com data — pra conferência com as vendas.</p>
+        <div id="cafeHist" class="small"></div>
+      </div>
+    </section>
+
   </div>
 
   <nav class="tabs">
     <button data-tab="painel" class="on"><i>📊</i>Painel</button>
     <button data-tab="graficos"><i>📈</i>Gráficos</button>
     <button data-tab="vendas"><i>🧾</i>Vendas</button>
+    <button data-tab="cafe"><i>☕</i>Café</button>
     <button data-tab="compras"><i>🛒</i>Compras</button>
     <button data-tab="estoque"><i>📦</i>Estoque</button>
     <button data-tab="custos"><i>💰</i>Custos</button>
@@ -347,10 +377,11 @@ const el = (id)=>document.getElementById(id);
 let sb=null, PRODUTOS=[], VENDAS=[];
 
 function toast(m){const t=el("toast");t.textContent=m;t.classList.add("show");setTimeout(()=>t.classList.remove("show"),2200);}
-function show(id){ ["painel","graficos","vendas","compras","estoque","custos"].forEach(t=>el("tab-"+t).classList.toggle("hidden",t!==id));
+function show(id){ ["painel","graficos","vendas","cafe","compras","estoque","custos"].forEach(t=>el("tab-"+t).classList.toggle("hidden",t!==id));
   document.querySelectorAll("nav.tabs button").forEach(b=>b.classList.toggle("on",b.dataset.tab===id));
   if(id==="graficos") renderGraficos();
-  if(id==="compras") renderCompras(); }
+  if(id==="compras") renderCompras();
+  if(id==="cafe") renderCafe(); }
 
 // ---------- inicialização ----------
 if(!window.supabase || SUPABASE_URL.startsWith("COLE") || SUPABASE_ANON.startsWith("COLE")){
@@ -771,7 +802,82 @@ async function carregar(){
     }
   }catch(e){}
   renderProdutosSelect(); renderPainel(); renderVendas(); renderProdutos(); renderCustos(); renderGraficos();
+  loadCafe(); renderCafe();
 }
+
+// ---------- CAFÉ ----------
+// Controle das peças que estão no café. Salvo neste navegador (localStorage),
+// no mesmo esquema das compras e dos portes. CAFE = estado atual; CAFE_LOG = histórico.
+let CAFE={}, CAFE_LOG=[];
+function loadCafe(){
+  try{ CAFE=JSON.parse(localStorage.getItem("cafeAN")||"{}")||{}; }catch(e){ CAFE={}; }
+  try{ CAFE_LOG=JSON.parse(localStorage.getItem("cafeLogAN")||"[]")||[]; }catch(e){ CAFE_LOG=[]; }
+}
+function saveCafe(){ try{ localStorage.setItem("cafeAN",JSON.stringify(CAFE)); localStorage.setItem("cafeLogAN",JSON.stringify(CAFE_LOG)); }catch(e){} }
+function cafeNome(id){ const p=PRODUTOS.find(x=>x.id===id); return p?p.nome:id; }
+function cafeDataBR(iso){ try{ return new Date(iso).toLocaleDateString("pt-BR",{day:"2-digit",month:"2-digit"}); }catch(e){ return ""; } }
+function cafeAdd(id,q){
+  if(!id||q<=0) return;
+  if(!CAFE[id]) CAFE[id]={qtd:0,desde:new Date().toISOString()};
+  if(!CAFE[id].desde) CAFE[id].desde=new Date().toISOString();
+  CAFE[id].qtd+=q;
+  CAFE_LOG.unshift({data:new Date().toISOString(),id,nome:cafeNome(id),acao:"enviou",qtd:q});
+  saveCafe(); renderCafe();
+}
+function cafeTira(id,q){
+  if(!CAFE[id]) return;
+  q=Math.min(q,CAFE[id].qtd); if(q<=0) return;
+  CAFE[id].qtd-=q;
+  CAFE_LOG.unshift({data:new Date().toISOString(),id,nome:cafeNome(id),acao:"tirou",qtd:q});
+  if(CAFE[id].qtd<=0) delete CAFE[id];
+  saveCafe(); renderCafe();
+}
+function enviarCafe(){
+  const id=el("cafeProd").value; const q=Math.max(1,parseInt(el("cafeQtd").value,10)||1);
+  if(!id){ toast("Escolha uma peça"); return; }
+  cafeAdd(id,q); toast(`${q} enviada(s) para o café ☕`);
+}
+function renderCafeSelect(){
+  const sel=el("cafeProd"); if(!sel) return;
+  const cur=sel.value;
+  const lista=PRODUTOS.filter(p=>p.categoria!=="Suportes").sort((a,b)=>(ORDEM_SITE[a.id]??9999)-(ORDEM_SITE[b.id]??9999));
+  sel.innerHTML=lista.map(p=>`<option value="${p.id}">${gesc(p.nome)}</option>`).join("");
+  if(cur && lista.some(p=>p.id===cur)) sel.value=cur;
+}
+function renderCafe(){
+  if(!el("cafeLista")) return;
+  renderCafeSelect();
+  const ids=Object.keys(CAFE).filter(id=>CAFE[id].qtd>0).sort((a,b)=>(ORDEM_SITE[a]??9999)-(ORDEM_SITE[b]??9999));
+  const total=ids.reduce((a,id)=>a+CAFE[id].qtd,0);
+  if(el("cafeTotal")) el("cafeTotal").textContent = total ? `· ${total} peça(s)` : "";
+  el("cafeLista").innerHTML = ids.length ? ids.map(id=>`
+    <div class="item">
+      ${thumb(PRODUTOS.find(p=>p.id===id)||{id})}
+      <div style="flex:1"><div>${gesc(cafeNome(id))}</div>
+        <div class="small muted">no café desde ${cafeDataBR(CAFE[id].desde)}</div></div>
+      <div class="row stepper">
+        <button onclick="cafeTira('${id}',1)">−</button>
+        <span class="est">${CAFE[id].qtd}</span>
+        <button onclick="cafeAdd('${id}',1)">+</button>
+      </div>
+      <button class="btn sec mini" style="margin-left:6px" onclick="cafeTira('${id}',${CAFE[id].qtd})">Tirar</button>
+    </div>`).join("") : `<p class="small muted">Nenhuma peça no café agora. Use o campo acima para enviar. ☕</p>`;
+  if(el("cafeHist")) el("cafeHist").innerHTML = CAFE_LOG.length ? CAFE_LOG.slice(0,60).map(l=>
+    `<div class="item"><div style="flex:1"><span>${l.acao==="enviou"?"☕ Enviou":"↩️ Tirou"} ${l.qtd}× ${gesc(l.nome)}</span></div><span class="small muted">${cafeDataBR(l.data)}</span></div>`
+  ).join("") : `<p class="small muted">Sem movimentações ainda.</p>`;
+}
+function copiarCafe(){
+  const ids=Object.keys(CAFE).filter(id=>CAFE[id].qtd>0).sort((a,b)=>(ORDEM_SITE[a]??9999)-(ORDEM_SITE[b]??9999));
+  const total=ids.reduce((a,id)=>a+CAFE[id].qtd,0);
+  const hoje=new Date().toLocaleDateString("pt-BR");
+  let txt=`☕ Peças no café — Atelier Nagori (${hoje})\n\n`;
+  txt+= ids.length ? ids.map(id=>`• ${cafeNome(id)} — ${CAFE[id].qtd} un (desde ${cafeDataBR(CAFE[id].desde)})`).join("\n") : "Nenhuma peça no café.";
+  txt+=`\n\nTotal: ${total} peça(s)`;
+  if(navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(txt).then(()=>toast("Lista copiada! 📋")).catch(()=>prompt("Copie a lista:",txt)); }
+  else prompt("Copie a lista:",txt);
+}
+if(el("btnEnviarCafe")) el("btnEnviarCafe").addEventListener("click", enviarCafe);
+if(el("btnCopiarCafe")) el("btnCopiarCafe").addEventListener("click", copiarCafe);
 
 // ---------- PAINEL ----------
 function renderPainel(){
