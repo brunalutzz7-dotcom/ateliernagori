@@ -38,7 +38,7 @@ function fotoEmBreve() {
 }
 
 /* Versão das fotos: incremente ao trocar qualquer imagem para o navegador buscar a nova (evita cache). */
-const ASSET_V = "223";
+const ASSET_V = "224";
 const IMG = (id) => `assets/produtos/${id}.jpg?v=${ASSET_V}`;
 
 /* Categorias (seções do catálogo) ------------------------------------- */
@@ -182,7 +182,7 @@ const PRODUCTS = [
   { id: "bonsai-pinheiro-negro-14", nome: "Bonsai Pinheiro Negro · 14 anos", especie: "Pinus thunbergii · 40 a 60 cm", categoria: "bonsai", ambiente: "externo", pet: "toxic",
     descricao: "A espécie mais reverenciada da tradição japonesa. Agulha rígida, casca em placas, silhueta construída agulha por agulha ao longo de catorze anos.", significado: "O pinheiro simboliza longevidade, força e imortalidade — a árvore mais reverenciada da tradição japonesa.", preco: 3000, img: IMG("bonsai-pinheiro-negro-14") },
   { id: "bonsai-shimpaku-16", nome: "Bonsai Shimpaku · 16 anos", especie: "Juniperus chinensis 'Shimpaku' · 30 a 40 cm", categoria: "bonsai", ambiente: "externo", pet: "toxic",
-    descricao: "Junípero de folha escamosa e macia, madeira que aceita torção. O clássico dos jardins japoneses, em escala de mesa.", significado: "O junípero simboliza proteção, purificação e vida longa — guardião dos jardins japoneses.", preco: 2500, img: IMG("bonsai-shimpaku-16") },
+    descricao: "Junípero de folha escamosa e macia, madeira que aceita torção. O clássico dos jardins japoneses, em escala de mesa.", significado: "O junípero simboliza proteção, purificação e vida longa — guardião dos jardins japoneses.", preco: 2500, imgs: [IMG("bonsai-shimpaku-16"), IMG("bonsai-shimpaku-16-2"), IMG("bonsai-shimpaku-16-3")] },
   { id: "bonsai-shimpaku-5", nome: "Bonsai Shimpaku · 4 anos", especie: "Juniperus chinensis 'Shimpaku' · aprox. 30 cm", categoria: "bonsai", ambiente: "externo", pet: "toxic",
     descricao: "Quatro anos de condução num tronco já curvado, de casca fina e folhagem escamosa verde-clara. O junípero clássico dos jardins japoneses, no ponto em que ainda se deixa moldar — para acompanhar a árvore ganhar forma.", significado: "O junípero simboliza proteção, purificação e vida longa — guardião dos jardins japoneses.", preco: 800, img: IMG("bonsai-shimpaku-5") },
   { id: "bonsai-sakura", nome: "Bonsai Sakura", especie: "Prunus serrulata · aprox. 20 cm", categoria: "bonsai", ambiente: "externo", pet: "toxic",
