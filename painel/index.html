@@ -108,7 +108,7 @@
 <!-- App -->
 <div id="appView" class="hidden">
   <header class="top">
-    <b>✿ Atelier Nagori</b><span style="font-size:.62rem;opacity:.55;margin-left:7px;letter-spacing:.02em">v71 · Controle de peças no café ☕</span>
+    <b>✿ Atelier Nagori</b><span style="font-size:.62rem;opacity:.55;margin-left:7px;letter-spacing:.02em">v72 · Café: suportes, preço e planilha</span>
     <button class="sair" id="btnSair">Sair</button>
   </header>
   <div class="wrap">
@@ -334,7 +334,10 @@
       <div class="card">
         <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap">
           <h2 style="margin:0">No café agora <span id="cafeTotal" class="small muted"></span></h2>
-          <button class="btn sec mini" id="btnCopiarCafe" type="button">📋 Copiar lista</button>
+          <div style="display:flex;gap:8px;flex-wrap:wrap">
+            <button class="btn mini" id="btnExportCafe" type="button" style="width:auto">📊 Exportar planilha</button>
+            <button class="btn sec mini" id="btnCopiarCafe" type="button">📋 Copiar texto</button>
+          </div>
         </div>
         <div id="cafeLista" style="margin-top:10px"></div>
       </div>
@@ -815,6 +818,8 @@ function loadCafe(){
 }
 function saveCafe(){ try{ localStorage.setItem("cafeAN",JSON.stringify(CAFE)); localStorage.setItem("cafeLogAN",JSON.stringify(CAFE_LOG)); }catch(e){} }
 function cafeNome(id){ const p=PRODUTOS.find(x=>x.id===id); return p?p.nome:id; }
+function cafePreco(id){ const p=PRODUTOS.find(x=>x.id===id); return p?Number(p.preco||0):0; }
+function cafeCat(id){ const p=PRODUTOS.find(x=>x.id===id); return p?(p.categoria||""):""; }
 function cafeDataBR(iso){ try{ return new Date(iso).toLocaleDateString("pt-BR",{day:"2-digit",month:"2-digit"}); }catch(e){ return ""; } }
 function cafeAdd(id,q){
   if(!id||q<=0) return;
@@ -840,9 +845,13 @@ function enviarCafe(){
 function renderCafeSelect(){
   const sel=el("cafeProd"); if(!sel) return;
   const cur=sel.value;
-  const lista=PRODUTOS.filter(p=>p.categoria!=="Suportes").sort((a,b)=>(ORDEM_SITE[a.id]??9999)-(ORDEM_SITE[b.id]??9999));
-  sel.innerHTML=lista.map(p=>`<option value="${p.id}">${gesc(p.nome)}</option>`).join("");
-  if(cur && lista.some(p=>p.id===cur)) sel.value=cur;
+  const ord=(a,b)=>(ORDEM_SITE[a.id]??9999)-(ORDEM_SITE[b.id]??9999);
+  const pecas=PRODUTOS.filter(p=>p.categoria!=="Suportes").sort(ord);
+  const sups=PRODUTOS.filter(p=>p.categoria==="Suportes").sort(ord);
+  const opt=p=>`<option value="${p.id}">${gesc(p.nome)}</option>`;
+  sel.innerHTML=`<optgroup label="Peças">${pecas.map(opt).join("")}</optgroup>`+
+    (sups.length?`<optgroup label="Suportes">${sups.map(opt).join("")}</optgroup>`:"");
+  if(cur && PRODUTOS.some(p=>p.id===cur)) sel.value=cur;
 }
 function renderCafe(){
   if(!el("cafeLista")) return;
@@ -854,7 +863,7 @@ function renderCafe(){
     <div class="item">
       ${thumb(PRODUTOS.find(p=>p.id===id)||{id})}
       <div style="flex:1"><div>${gesc(cafeNome(id))}</div>
-        <div class="small muted">no café desde ${cafeDataBR(CAFE[id].desde)}</div></div>
+        <div class="small muted">${BRL(cafePreco(id))} · no café desde ${cafeDataBR(CAFE[id].desde)}</div></div>
       <div class="row stepper">
         <button onclick="cafeTira('${id}',1)">−</button>
         <span class="est">${CAFE[id].qtd}</span>
@@ -866,18 +875,39 @@ function renderCafe(){
     `<div class="item"><div style="flex:1"><span>${l.acao==="enviou"?"☕ Enviou":"↩️ Tirou"} ${l.qtd}× ${gesc(l.nome)}</span></div><span class="small muted">${cafeDataBR(l.data)}</span></div>`
   ).join("") : `<p class="small muted">Sem movimentações ainda.</p>`;
 }
+function cafeIdsOrdenados(){ return Object.keys(CAFE).filter(id=>CAFE[id].qtd>0).sort((a,b)=>(ORDEM_SITE[a]??9999)-(ORDEM_SITE[b]??9999)); }
 function copiarCafe(){
-  const ids=Object.keys(CAFE).filter(id=>CAFE[id].qtd>0).sort((a,b)=>(ORDEM_SITE[a]??9999)-(ORDEM_SITE[b]??9999));
-  const total=ids.reduce((a,id)=>a+CAFE[id].qtd,0);
+  const ids=cafeIdsOrdenados();
+  const totQ=ids.reduce((a,id)=>a+CAFE[id].qtd,0);
+  const totV=ids.reduce((a,id)=>a+CAFE[id].qtd*cafePreco(id),0);
   const hoje=new Date().toLocaleDateString("pt-BR");
   let txt=`☕ Peças no café — Atelier Nagori (${hoje})\n\n`;
-  txt+= ids.length ? ids.map(id=>`• ${cafeNome(id)} — ${CAFE[id].qtd} un (desde ${cafeDataBR(CAFE[id].desde)})`).join("\n") : "Nenhuma peça no café.";
-  txt+=`\n\nTotal: ${total} peça(s)`;
+  txt+= ids.length ? ids.map(id=>`• ${cafeNome(id)} — ${CAFE[id].qtd}x · ${BRL(cafePreco(id))} cada = ${BRL(CAFE[id].qtd*cafePreco(id))}`).join("\n") : "Nenhuma peça no café.";
+  txt+=`\n\nTotal: ${totQ} peça(s) · ${BRL(totV)}`;
   if(navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(txt).then(()=>toast("Lista copiada! 📋")).catch(()=>prompt("Copie a lista:",txt)); }
   else prompt("Copie a lista:",txt);
 }
+function exportarCafeCSV(){
+  const ids=cafeIdsOrdenados();
+  if(!ids.length){ toast("Nenhuma peça no café"); return; }
+  const dec=n=>Number(n||0).toFixed(2).replace(".",",");
+  const esc=s=>{ s=String(s==null?"":s); return /[;"\n]/.test(s) ? '"'+s.replace(/"/g,'""')+'"' : s; };
+  const linhas=[["Peça","Categoria","Quantidade","Preço de venda (R$)","Total (R$)","No café desde"]];
+  let tq=0, tv=0;
+  ids.forEach(id=>{ const q=CAFE[id].qtd, pr=cafePreco(id); tq+=q; tv+=q*pr;
+    linhas.push([cafeNome(id), cafeCat(id), q, dec(pr), dec(q*pr), cafeDataBR(CAFE[id].desde)]); });
+  linhas.push([]); linhas.push(["TOTAL","",tq,"",dec(tv),""]);
+  const csv="﻿"+linhas.map(r=>r.map(esc).join(";")).join("\r\n");
+  const blob=new Blob([csv],{type:"text/csv;charset=utf-8;"});
+  const url=URL.createObjectURL(blob), a=document.createElement("a");
+  a.href=url; a.download=`cafe-atelier-nagori-${new Date().toISOString().slice(0,10)}.csv`;
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  setTimeout(()=>URL.revokeObjectURL(url),1000);
+  toast("Planilha exportada! 📊");
+}
 if(el("btnEnviarCafe")) el("btnEnviarCafe").addEventListener("click", enviarCafe);
 if(el("btnCopiarCafe")) el("btnCopiarCafe").addEventListener("click", copiarCafe);
+if(el("btnExportCafe")) el("btnExportCafe").addEventListener("click", exportarCafeCSV);
 
 // ---------- PAINEL ----------
 function renderPainel(){
