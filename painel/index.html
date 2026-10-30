@@ -108,7 +108,7 @@
 <!-- App -->
 <div id="appView" class="hidden">
   <header class="top">
-    <b>✿ Atelier Nagori</b><span style="font-size:.62rem;opacity:.55;margin-left:7px;letter-spacing:.02em">v72 · Café: suportes, preço e planilha</span>
+    <b>✿ Atelier Nagori</b><span style="font-size:.62rem;opacity:.55;margin-left:7px;letter-spacing:.02em">v73 · Café: planilha com foto (=IMAGE)</span>
     <button class="sair" id="btnSair">Sair</button>
   </header>
   <div class="wrap">
@@ -820,6 +820,11 @@ function saveCafe(){ try{ localStorage.setItem("cafeAN",JSON.stringify(CAFE)); l
 function cafeNome(id){ const p=PRODUTOS.find(x=>x.id===id); return p?p.nome:id; }
 function cafePreco(id){ const p=PRODUTOS.find(x=>x.id===id); return p?Number(p.preco||0):0; }
 function cafeCat(id){ const p=PRODUTOS.find(x=>x.id===id); return p?(p.categoria||""):""; }
+// URL pública da foto (suportes ficam em /bases, sem o prefixo "suporte-")
+function cafeFotoURL(id){
+  const base="https://ateliernagori.com.br/assets/";
+  return id.indexOf("suporte-")===0 ? base+"bases/"+id.slice(8)+".jpg" : base+"produtos/"+id+".jpg";
+}
 function cafeDataBR(iso){ try{ return new Date(iso).toLocaleDateString("pt-BR",{day:"2-digit",month:"2-digit"}); }catch(e){ return ""; } }
 function cafeAdd(id,q){
   if(!id||q<=0) return;
@@ -892,11 +897,12 @@ function exportarCafeCSV(){
   if(!ids.length){ toast("Nenhuma peça no café"); return; }
   const dec=n=>Number(n||0).toFixed(2).replace(".",",");
   const esc=s=>{ s=String(s==null?"":s); return /[;"\n]/.test(s) ? '"'+s.replace(/"/g,'""')+'"' : s; };
-  const linhas=[["Peça","Categoria","Quantidade","Preço de venda (R$)","Total (R$)","No café desde"]];
+  const foto=id=>`=IMAGE("${cafeFotoURL(id)}")`;
+  const linhas=[["Foto","Peça","Categoria","Quantidade","Preço de venda (R$)","Total (R$)","No café desde"]];
   let tq=0, tv=0;
   ids.forEach(id=>{ const q=CAFE[id].qtd, pr=cafePreco(id); tq+=q; tv+=q*pr;
-    linhas.push([cafeNome(id), cafeCat(id), q, dec(pr), dec(q*pr), cafeDataBR(CAFE[id].desde)]); });
-  linhas.push([]); linhas.push(["TOTAL","",tq,"",dec(tv),""]);
+    linhas.push([foto(id), cafeNome(id), cafeCat(id), q, dec(pr), dec(q*pr), cafeDataBR(CAFE[id].desde)]); });
+  linhas.push([]); linhas.push(["","TOTAL","",tq,"",dec(tv),""]);
   const csv="﻿"+linhas.map(r=>r.map(esc).join(";")).join("\r\n");
   const blob=new Blob([csv],{type:"text/csv;charset=utf-8;"});
   const url=URL.createObjectURL(blob), a=document.createElement("a");
