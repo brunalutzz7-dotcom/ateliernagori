@@ -38,7 +38,7 @@ function fotoEmBreve() {
 }
 
 /* Versão das fotos: incremente ao trocar qualquer imagem para o navegador buscar a nova (evita cache). */
-const ASSET_V = "221";
+const ASSET_V = "222";
 const IMG = (id) => `assets/produtos/${id}.jpg?v=${ASSET_V}`;
 
 /* Categorias (seções do catálogo) ------------------------------------- */
@@ -161,6 +161,8 @@ const PRODUCTS = [
     descricao: "Tronco com bom movimento e folhagem miúda e densa. Rústico e generoso, perdoa erro de rega — um ótimo bonsai para quem está começando.", significado: "Bonsai de ligustro: símbolo de proteção e vida longa, cultivado para trazer harmonia ao lar.", preco: 900, img: IMG("bonsai-ligustro-9") },
   { id: "bonsai-ligustro-9b", nome: "Bonsai Ligustro · 9 anos · tronco trabalhado", especie: "Ligustrum sinense · tronco trabalhado · aprox. 40 cm", categoria: "bonsai", ambiente: "ambos", pet: "toxic",
     descricao: "Exemplar de tronco bem trabalhado — base grossa e movimento marcante, anos de condução à vista. Folhagem miúda e densa, rústico e generoso. Uma peça de caráter.", significado: "Bonsai de ligustro: símbolo de proteção e vida longa, cultivado para trazer harmonia ao lar.", preco: 900, imgs: [IMG("bonsai-ligustro-9b"), IMG("bonsai-ligustro-9b-2"), IMG("bonsai-ligustro-9b-3")] },
+  { id: "bonsai-carmona-9", nome: "Bonsai Carmona · 9 anos", especie: "Carmona retusa · chá-de-fukien · aprox. 40 cm", categoria: "bonsai", ambiente: "interno", pet: "toxic",
+    descricao: "Conhecida como chá-de-fukien: folhas pequenas e lustrosas, florzinhas brancas ao longo do ano e, de vez em quando, frutinhos vermelhos. Tronco com bom movimento — um clássico dos bonsais de interior.", significado: "A carmona simboliza longevidade, harmonia e serenidade — uma presença calma que floresce o ano todo.", preco: 900, imgs: [IMG("bonsai-carmona-9"), IMG("bonsai-carmona-9-2")] },
   { id: "bonsai-serissa-8", nome: "Bonsai Serissa · 8 a 9 anos", especie: "Serissa japonica · 20 a 30 cm", categoria: "bonsai", ambiente: "ambos", pet: "toxic",
     descricao: "Conhecida como árvore das mil estrelas — cobre-se de flores brancas miúdas em ondas sucessivas. Tronco claro e retorcido.", significado: "A serissa, 'árvore das mil estrelas', simboliza renascimento e a beleza dos pequenos recomeços.", preco: 900, imgs: [IMG("bonsai-serissa-8"), IMG("bonsai-serissa-8-2"), IMG("bonsai-serissa-8-3")] },
   { id: "bonsai-ficus-6", nome: "Bonsai Fícus · 7 anos", especie: "Ficus microcarpa · aprox. 30 cm", categoria: "bonsai", ambiente: "interno", pet: "toxic",
