@@ -38,7 +38,7 @@ function fotoEmBreve() {
 }
 
 /* Versão das fotos: incremente ao trocar qualquer imagem para o navegador buscar a nova (evita cache). */
-const ASSET_V = "224";
+const ASSET_V = "225";
 const IMG = (id) => `assets/produtos/${id}.jpg?v=${ASSET_V}`;
 
 /* Categorias (seções do catálogo) ------------------------------------- */
@@ -173,7 +173,7 @@ const PRODUCTS = [
     descricao: "Casca lisa e clara, folhagem miúda, estrutura ainda em desenho. A peça de quem quer acompanhar a árvore desde cedo.", significado: "A jabuticabeira simboliza fartura, raízes e paciência — a árvore de quem valoriza o tempo.", preco: 1000, img: IMG("bonsai-jabuticabeira-4") },
   { id: "bonsai-mini-jabuticabeira", nome: "Bonsai Mini Jabuticabeira", especie: "Plinia cauliflora · porte mini", categoria: "bonsai", ambiente: "externo", pet: "safe",
     descricao: "A menor das nossas jabuticabeiras — folhagem miúda e tronco ainda jovem, começando a ganhar forma. O começo de uma árvore para acompanhar a vida toda.", significado: "A jabuticabeira simboliza fartura, raízes e paciência — a árvore de quem valoriza o tempo.", preco: 550, img: IMG("bonsai-mini-jabuticabeira") },
-  { id: "bonsai-amora-17", nome: "Bonsai Amora · 16 anos", especie: "Morus nigra · aprox. 50 cm", categoria: "bonsai", ambiente: "externo", pet: "safe",
+  { id: "bonsai-amora-17", oculto: true, nome: "Bonsai Amora · 16 anos", especie: "Morus nigra · aprox. 50 cm", categoria: "bonsai", ambiente: "externo", pet: "safe",
     descricao: "Dezesseis anos em meio metro. Tronco engrossado, casca fissurada, e fruta escura na estação — árvore que dá colheita numa mesa de sala.", significado: "A amoreira simboliza sabedoria, fartura e a doçura da vida colhida com paciência.", preco: 2200, img: IMG("bonsai-amora-17") },
   { id: "bonsai-amora-7", nome: "Bonsai Amora · 7 anos", especie: "Morus nigra · aprox. 50 cm", categoria: "bonsai", ambiente: "externo", pet: "safe",
     descricao: "Mesma altura da irmã mais velha, dez anos a menos de tronco. Cresce rápido e responde bem à poda — boa para quem quer aprender a conduzir.", significado: "A amoreira simboliza sabedoria, fartura e a doçura da vida colhida com paciência.", preco: 800, img: IMG("bonsai-amora-7") },
