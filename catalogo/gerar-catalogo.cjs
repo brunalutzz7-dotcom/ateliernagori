@@ -167,11 +167,13 @@ function pagina({ titulo, sub, itens, secoes }) {
 </body></html>`;
 }
 
-// Catálogo lista o portfólio completo (inclui itens temporariamente sem estoque).
-const folhagens = PRODUCTS.filter((p) => ["dentro", "ambos", "arlivre"].includes(p.categoria));
-const grande = PRODUCTS.filter((p) => p.categoria === "grande");
-const bonsais = PRODUCTS.filter((p) => p.categoria === "bonsai");
-const suportes = PRODUCTS.filter((p) => p.categoria === "suporte");
+// Catálogo lista o portfólio completo (inclui itens temporariamente sem estoque),
+// mas pula as peças ocultas (oculto:true) — mesmas que não aparecem no site.
+const visivel = (p) => !p.oculto;
+const folhagens = PRODUCTS.filter((p) => visivel(p) && ["dentro", "ambos", "arlivre"].includes(p.categoria));
+const grande = PRODUCTS.filter((p) => visivel(p) && p.categoria === "grande");
+const bonsais = PRODUCTS.filter((p) => visivel(p) && p.categoria === "bonsai");
+const suportes = PRODUCTS.filter((p) => visivel(p) && p.categoria === "suporte");
 
 const catDir = path.join(ROOT, "catalogo");
 fs.mkdirSync(catDir, { recursive: true });
