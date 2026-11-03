@@ -108,7 +108,7 @@
 <!-- App -->
 <div id="appView" class="hidden">
   <header class="top">
-    <b>✿ Atelier Nagori</b><span style="font-size:.62rem;opacity:.55;margin-left:7px;letter-spacing:.02em">v75 · Coluna de ferro dourada</span>
+    <b>✿ Atelier Nagori</b><span style="font-size:.62rem;opacity:.55;margin-left:7px;letter-spacing:.02em">v76 · Planilha café: colunas de venda + fórmulas</span>
     <button class="sair" id="btnSair">Sair</button>
   </header>
   <div class="wrap">
@@ -904,11 +904,17 @@ function exportarCafeCSV(){
   const dec=n=>Number(n||0).toFixed(2).replace(".",",");
   const esc=s=>{ s=String(s==null?"":s); return /[;"\n]/.test(s) ? '"'+s.replace(/"/g,'""')+'"' : s; };
   const foto=id=>`=IMAGE("${cafeFotoURL(id)}")`;
-  const linhas=[["Foto","Peça","Categoria","Quantidade","Preço de venda (R$)","Total (R$)","No café desde"]];
-  let tq=0, tv=0;
-  ids.forEach(id=>{ const q=CAFE[id].qtd, pr=cafePreco(id); tq+=q; tv+=q*pr;
-    linhas.push([foto(id), cafeNome(id), cafeCat(id), q, dec(pr), dec(q*pr), cafeDataBR(CAFE[id].desde)]); });
-  linhas.push([]); linhas.push(["","TOTAL","",tq,"",dec(tv),""]);
+  // Colunas: A Foto · B Peça · C Categoria · D Qtd · E Preço · F Total(=D*E) ·
+  //   G No café desde · H Forma de pagamento · I Taxa(2,75%) · J Recebido · K 20% loja · L Nagori
+  // Fórmulas usam só números inteiros/células (sem vírgula decimal) p/ funcionar em qualquer idioma do Sheets/Excel.
+  const linhas=[["Foto","Peça","Categoria","Quantidade","Preço de venda (R$)","Total (R$)","No café desde","Forma de pagamento","Taxa (2,75%)","Recebido","20% loja","Nagori"]];
+  let tq=0;
+  ids.forEach((id,i)=>{ const r=i+2; const q=CAFE[id].qtd; tq+=q;
+    linhas.push([ foto(id), cafeNome(id), cafeCat(id), q, dec(cafePreco(id)),
+      `=D${r}*E${r}`, cafeDataBR(CAFE[id].desde), "",
+      `=F${r}*275/10000`, `=F${r}-I${r}`, `=J${r}/5`, `=J${r}-K${r}` ]); });
+  const last=ids.length+1; // última linha de dados
+  linhas.push(["","TOTAL","",tq,"",`=SUM(F2:F${last})`,"","",`=SUM(I2:I${last})`,`=SUM(J2:J${last})`,`=SUM(K2:K${last})`,`=SUM(L2:L${last})`]);
   const csv="﻿"+linhas.map(r=>r.map(esc).join(";")).join("\r\n");
   const blob=new Blob([csv],{type:"text/csv;charset=utf-8;"});
   const url=URL.createObjectURL(blob), a=document.createElement("a");
