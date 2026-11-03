@@ -3,6 +3,10 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="theme-color" content="#33472e" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content="Nagori Painel" />
 <title>Atelier Nagori · Painel</title>
 <meta name="robots" content="noindex, nofollow" />
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
@@ -110,7 +114,7 @@
 <!-- App -->
 <div id="appView" class="hidden">
   <header class="top">
-    <b>✿ Atelier Nagori</b><span style="font-size:.62rem;opacity:.55;margin-left:7px;letter-spacing:.02em">v80 · Planilha café: título, resumo e melhorias</span>
+    <b>✿ Atelier Nagori</b><span style="font-size:.62rem;opacity:.55;margin-left:7px;letter-spacing:.02em">v81 · App: café no painel + melhorias</span>
     <button class="sair" id="btnSair">Sair</button>
   </header>
   <div class="wrap">
@@ -133,6 +137,11 @@
       <div class="card">
         <h2>⚠️ Estoque baixo</h2>
         <div id="estBaixo" class="small muted">—</div>
+      </div>
+      <div class="card">
+        <h2 style="display:flex;justify-content:space-between;align-items:center;gap:8px">☕ No café agora
+          <button class="btn sec mini" type="button" onclick="show('cafe')" style="width:auto">Ver / exportar</button></h2>
+        <div id="cafePainelInfo" class="small muted">—</div>
       </div>
     </section>
 
@@ -815,8 +824,9 @@ async function carregar(){
       await Promise.all(estNovos.map(p=>sb.from("produtos").update({estoque:p.estoque}).eq("id",p.id)));
     }
   }catch(e){}
+  loadCafe();
   renderProdutosSelect(); renderPainel(); renderVendas(); renderProdutos(); renderCustos(); renderGraficos();
-  loadCafe(); renderCafe();
+  renderCafe();
 }
 
 // ---------- CAFÉ ----------
@@ -879,7 +889,8 @@ function renderCafe(){
   renderCafeSelect();
   const ids=Object.keys(CAFE).filter(id=>CAFE[id].qtd>0).sort((a,b)=>(ORDEM_SITE[a]??9999)-(ORDEM_SITE[b]??9999));
   const total=ids.reduce((a,id)=>a+CAFE[id].qtd,0);
-  if(el("cafeTotal")) el("cafeTotal").textContent = total ? `· ${total} peça(s)` : "";
+  const totVal=ids.reduce((a,id)=>a+CAFE[id].qtd*cafePreco(id),0);
+  if(el("cafeTotal")) el("cafeTotal").textContent = total ? `· ${total} peça(s) · ${BRL(totVal)}` : "";
   el("cafeLista").innerHTML = ids.length ? ids.map(id=>`
     <div class="item">
       ${thumb(PRODUTOS.find(p=>p.id===id)||{id})}
@@ -890,11 +901,23 @@ function renderCafe(){
         <span class="est">${CAFE[id].qtd}</span>
         <button onclick="cafeAdd('${id}',1)">+</button>
       </div>
-      <button class="btn sec mini" style="margin-left:6px" onclick="cafeTira('${id}',${CAFE[id].qtd})">Tirar</button>
+      <button class="btn sec mini" style="margin-left:6px" onclick="cafeTirarConfirm('${id}')">Tirar</button>
     </div>`).join("") : `<p class="small muted">Nenhuma peça no café agora. Use o campo acima para enviar. ☕</p>`;
   if(el("cafeHist")) el("cafeHist").innerHTML = CAFE_LOG.length ? CAFE_LOG.slice(0,60).map(l=>
     `<div class="item"><div style="flex:1"><span>${l.acao==="enviou"?"☕ Enviou":"↩️ Tirou"} ${l.qtd}× ${gesc(l.nome)}</span></div><span class="small muted">${cafeDataBR(l.data)}</span></div>`
   ).join("") : `<p class="small muted">Sem movimentações ainda.</p>`;
+  renderCafePainel();
+}
+function cafeTirarConfirm(id){ if(!CAFE[id]) return; if(confirm(`Tirar ${CAFE[id].qtd}× ${cafeNome(id)} do café?`)) cafeTira(id, CAFE[id].qtd); }
+function renderCafePainel(){
+  const box=el("cafePainelInfo"); if(!box) return;
+  const ids=cafeIdsOrdenados();
+  if(!ids.length){ box.innerHTML="Nenhuma peça no café no momento."; return; }
+  const total=ids.reduce((a,id)=>a+CAFE[id].qtd,0);
+  const totVal=ids.reduce((a,id)=>a+CAFE[id].qtd*cafePreco(id),0);
+  const linhas=ids.slice(0,6).map(id=>`<div class="item" style="padding:3px 0"><span>${CAFE[id].qtd>1?CAFE[id].qtd+"× ":""}${gesc(cafeNome(id))}</span><span class="small muted">${BRL(cafePreco(id)*CAFE[id].qtd)}</span></div>`).join("");
+  const mais = ids.length>6 ? `<div class="small muted" style="padding-top:2px">+ ${ids.length-6} peça(s)…</div>` : "";
+  box.innerHTML = `<div style="font-weight:600;margin-bottom:4px">${total} peça(s) · ${BRL(totVal)}</div>${linhas}${mais}`;
 }
 function cafeIdsOrdenados(){ return Object.keys(CAFE).filter(id=>CAFE[id].qtd>0).sort((a,b)=>(ORDEM_SITE[a]??9999)-(ORDEM_SITE[b]??9999)); }
 function copiarCafe(){
@@ -1080,6 +1103,7 @@ function renderPainel(){
   // estoque baixo
   const baixo=PRODUTOS.filter(p=>Number(p.estoque||0)<=1).sort((a,b)=>(a.estoque||0)-(b.estoque||0));
   el("estBaixo").innerHTML = baixo.length? baixo.slice(0,20).map(p=>`<div class="item"><span>${p.nome}</span><b class="est" style="color:${(p.estoque||0)===0?'var(--terra)':'inherit'}">${p.estoque||0}</b></div>`).join("") : "Tudo com estoque ok. 🌿";
+  if(typeof renderCafePainel==="function") renderCafePainel();
 }
 
 // ---------- GRÁFICOS ----------
