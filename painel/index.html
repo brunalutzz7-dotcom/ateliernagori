@@ -110,7 +110,7 @@
 <!-- App -->
 <div id="appView" class="hidden">
   <header class="top">
-    <b>✿ Atelier Nagori</b><span style="font-size:.62rem;opacity:.55;margin-left:7px;letter-spacing:.02em">v78 · Planilha café em Excel com fotos</span>
+    <b>✿ Atelier Nagori</b><span style="font-size:.62rem;opacity:.55;margin-left:7px;letter-spacing:.02em">v79 · Planilha café: data do pagamento</span>
     <button class="sair" id="btnSair">Sair</button>
   </header>
   <div class="wrap">
@@ -959,7 +959,7 @@ async function buildCafeWB(ExcelJS, items){
     {header:"Forma de pagamento",key:"forma",width:18},{header:"Valor da venda (R$)",key:"valor",width:16},
     {header:"Taxa 2,75% (R$)",key:"taxa",width:14},{header:"Recebido (R$)",key:"receb",width:13},
     {header:"20% café (R$)",key:"cafe",width:13},{header:"Nagori (R$)",key:"nagori",width:13},
-    {header:"Pago à Nagori?",key:"pago",width:14},
+    {header:"Pago à Nagori?",key:"pago",width:14},{header:"Data do pagamento",key:"dataPago",width:16},
   ];
   const head=ws.getRow(1);
   head.font={bold:true,color:{argb:"FFF3EAD4"},size:11};
@@ -977,7 +977,7 @@ async function buildCafeWB(ExcelJS, items){
     row.getCell("cafe").value={formula:`L${r}*0.2`};
     row.getCell("nagori").value={formula:`L${r}-M${r}`};
     ["preco","valor","taxa","receb","cafe","nagori"].forEach(k=>row.getCell(k).numFmt=money);
-    ["preco","qtdcafe","qtdv","valor","taxa","receb","cafe","nagori","data","forma","pago"].forEach(k=>row.getCell(k).alignment={vertical:"middle",horizontal:"center"});
+    ["preco","qtdcafe","qtdv","valor","taxa","receb","cafe","nagori","data","forma","pago","dataPago"].forEach(k=>row.getCell(k).alignment={vertical:"middle",horizontal:"center"});
     const img=await cafeImgBuffer(it.id);
     if(img&&img.buffer){ const imgId=wb.addImage({buffer:img.buffer,extension:img.ext||"jpeg"});
       ws.addImage(imgId,{tl:{col:1.12,row:(r-1)+0.12},ext:{width:62,height:62},editAs:"oneCell"}); }
@@ -991,13 +991,13 @@ async function buildCafeWB(ExcelJS, items){
   ["valor","taxa","receb","cafe","nagori"].forEach(k=>{tr.getCell(k).numFmt=money;tr.getCell(k).alignment={horizontal:"center"};});
   tr.getCell("qtdv").alignment={horizontal:"center"}; tr.font={bold:true}; tr.getCell("peca").alignment={horizontal:"right"};
   for(let i=2;i<=last;i++){
-    ws.getCell(`H${i}`).numFmt="dd/mm/yyyy";
+    ws.getCell(`H${i}`).numFmt="dd/mm/yyyy"; ws.getCell(`P${i}`).numFmt="dd/mm/yyyy";
     ws.getCell(`I${i}`).dataValidation={type:"list",allowBlank:true,formulae:['"Dinheiro,Pix,Cartão"']};
     ws.getCell(`O${i}`).dataValidation={type:"list",allowBlank:true,formulae:['"Sim,Não"']};
   }
-  ws.addConditionalFormatting({ref:`A2:O${last}`,rules:[
+  ws.addConditionalFormatting({ref:`A2:P${last}`,rules:[
     {type:"expression",priority:1,formulae:['$O2="Sim"'],style:{fill:{type:"pattern",pattern:"solid",fgColor:{argb:"FFD9EAD3"}}}}]});
-  for(let i=1;i<=last;i++){ for(let c=1;c<=15;c++){ ws.getRow(i).getCell(c).border={
+  for(let i=1;i<=last;i++){ for(let c=1;c<=16;c++){ ws.getRow(i).getCell(c).border={
     top:{style:"thin",color:{argb:"FFE3DCCB"}},bottom:{style:"thin",color:{argb:"FFE3DCCB"}},
     left:{style:"thin",color:{argb:"FFE3DCCB"}},right:{style:"thin",color:{argb:"FFE3DCCB"}}};}}
   return wb;
