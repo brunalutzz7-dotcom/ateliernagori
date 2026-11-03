@@ -53,6 +53,10 @@
   .pill.direto{background:#f0e4dc;color:var(--terra)}
   .pill.loja{background:#e9ddc2;color:#6b5a2e}
   .pill.cafe{background:#efe0cf;color:#8a5a2b}
+  .cvmodal{position:fixed;inset:0;background:rgba(0,0,0,.42);display:flex;align-items:center;justify-content:center;z-index:50;padding:16px}
+  .cvmodal.hidden{display:none}
+  .cvbox{background:#fff;border-radius:14px;padding:16px 16px 18px;max-width:420px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.28)}
+  .cvbox h3{margin:0 0 12px;font-size:1.05rem}
   .est{min-width:34px;text-align:center;font-weight:700}
   .stepper button{width:34px;height:34px;border:1px solid var(--line);background:#fff;border-radius:8px;font-size:1.1rem}
   nav.tabs{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid var(--line);
@@ -114,7 +118,7 @@
 <!-- App -->
 <div id="appView" class="hidden">
   <header class="top">
-    <b>✿ Atelier Nagori</b><span style="font-size:.62rem;opacity:.55;margin-left:7px;letter-spacing:.02em">v82 · Painel financeiro + patrocínios</span>
+    <b>✿ Atelier Nagori</b><span style="font-size:.62rem;opacity:.55;margin-left:7px;letter-spacing:.02em">v83 · Botão "Vendeu no café"</span>
     <button class="sair" id="btnSair">Sair</button>
   </header>
   <div class="wrap">
@@ -398,6 +402,25 @@
       </div>
     </section>
 
+  </div>
+
+  <div id="cafeVendaModal" class="cvmodal hidden">
+    <div class="cvbox">
+      <h3 id="cvTitulo">Vendeu no café</h3>
+      <div class="grid2">
+        <label>Quantidade<input id="cvQtd" type="number" min="1" value="1"></label>
+        <label>Forma de pagamento<select id="cvForma">
+          <option value="dinheiro">Dinheiro</option>
+          <option value="pix">Pix</option>
+          <option value="cartao">Cartão · −2,75%</option>
+        </select></label>
+      </div>
+      <div id="cvResumo" class="small" style="margin-top:8px"></div>
+      <div style="display:flex;gap:8px;margin-top:12px">
+        <button class="btn" id="cvConfirmar" type="button" style="width:auto">Confirmar venda ☕</button>
+        <button class="btn sec" id="cvCancelar" type="button" style="width:auto">Cancelar</button>
+      </div>
+    </div>
   </div>
 
   <nav class="tabs">
@@ -932,7 +955,8 @@ function renderCafe(){
         <span class="est">${CAFE[id].qtd}</span>
         <button onclick="cafeAdd('${id}',1)">+</button>
       </div>
-      <button class="btn sec mini" style="margin-left:6px" onclick="cafeTirarConfirm('${id}')">Tirar</button>
+      <button class="btn mini" style="margin-left:6px" onclick="venderNoCafe('${id}')">Vendeu</button>
+      <button class="btn sec mini" style="margin-left:4px" onclick="cafeTirarConfirm('${id}')">Tirar</button>
     </div>`).join("") : `<p class="small muted">Nenhuma peça no café agora. Use o campo acima para enviar. ☕</p>`;
   if(el("cafeHist")) el("cafeHist").innerHTML = CAFE_LOG.length ? CAFE_LOG.slice(0,60).map(l=>
     `<div class="item"><div style="flex:1"><span>${l.acao==="enviou"?"☕ Enviou":"↩️ Tirou"} ${l.qtd}× ${gesc(l.nome)}</span></div><span class="small muted">${cafeDataBR(l.data)}</span></div>`
@@ -940,6 +964,48 @@ function renderCafe(){
   renderCafePainel();
 }
 function cafeTirarConfirm(id){ if(!CAFE[id]) return; if(confirm(`Tirar ${CAFE[id].qtd}× ${cafeNome(id)} do café?`)) cafeTira(id, CAFE[id].qtd); }
+// ---- Vendeu no café: registra a venda (canal café, com taxas) e tira do café ----
+let cvId=null;
+function venderNoCafe(id){ if(!CAFE[id]) return; cvId=id;
+  el("cvTitulo").textContent="Vendeu no café — "+cafeNome(id);
+  el("cvQtd").value=1; el("cvQtd").max=CAFE[id].qtd; el("cvForma").value="dinheiro";
+  el("cafeVendaModal").classList.remove("hidden"); renderCvResumo();
+}
+function cvCalc(){
+  const maxq=CAFE[cvId]?CAFE[cvId].qtd:1;
+  const q=Math.max(1,Math.min(Number(el("cvQtd").value||1),maxq));
+  const pr=cafePreco(cvId), valor=pr*q, forma=el("cvForma").value;
+  const taxa=forma==="cartao"?valor*TAXA_CARTAO:0;
+  const receb=valor-taxa, cafe=receb*CAFE_PCT, liq=receb-cafe;
+  return {q,pr,valor,forma,taxa,receb,cafe,liq};
+}
+function renderCvResumo(){ if(!cvId) return; const t=cvCalc();
+  el("cvResumo").innerHTML =
+    `<div class="item"><span>Valor da venda</span><span>${BRL(t.valor)}</span></div>`
+    + (t.taxa>0?`<div class="item"><span>Taxa cartão (−2,75%)</span><span>− ${BRL(t.taxa)}</span></div>`:"")
+    + `<div class="item"><span>Café (−20%)</span><span>− ${BRL(t.cafe)}</span></div>`
+    + `<div class="item" style="font-weight:700;color:#1e7a44;border-top:1px solid var(--line);margin-top:2px;padding-top:6px"><span>Líquido Nagori</span><span>${BRL(t.liq)}</span></div>`;
+}
+function fecharCvModal(){ el("cafeVendaModal").classList.add("hidden"); cvId=null; }
+async function confirmarVendaCafe(){
+  if(!cvId||!CAFE[cvId]) return fecharCvModal();
+  const t=cvCalc(), p=PRODUTOS.find(x=>x.id===cvId);
+  const notas=["Café", t.forma==="cartao"?"Cartão −2,75%":(t.forma==="pix"?"Pix":"Dinheiro"), "café 20%", "líq "+BRL(t.liq)];
+  const row={ produto_id:cvId, produto_nome:cafeNome(cvId), quantidade:t.q, canal:"cafe",
+    valor:+t.valor.toFixed(2), custo:(p&&p.custo!=null)?+(Number(p.custo)*t.q).toFixed(2):null, obs:notas.join(" · ") };
+  const {error}=await sb.from("vendas").insert([row]);
+  if(error){ toast("Erro ao salvar venda: "+error.message); return; }
+  if(p){ const novo=Math.max(0,Number(p.estoque||0)-t.q); await sb.from("produtos").update({estoque:novo}).eq("id",cvId); }
+  cafeTira(cvId,t.q);
+  fecharCvModal();
+  toast("Venda no café registrada ☕");
+  await carregar();
+}
+if(el("cvQtd")) el("cvQtd").addEventListener("input", renderCvResumo);
+if(el("cvForma")) el("cvForma").addEventListener("change", renderCvResumo);
+if(el("cvConfirmar")) el("cvConfirmar").addEventListener("click", confirmarVendaCafe);
+if(el("cvCancelar")) el("cvCancelar").addEventListener("click", fecharCvModal);
+if(el("cafeVendaModal")) el("cafeVendaModal").addEventListener("click", (e)=>{ if(e.target.id==="cafeVendaModal") fecharCvModal(); });
 function renderCafePainel(){
   const box=el("cafePainelInfo"); if(!box) return;
   const ids=cafeIdsOrdenados();
