@@ -110,7 +110,7 @@
 <!-- App -->
 <div id="appView" class="hidden">
   <header class="top">
-    <b>✿ Atelier Nagori</b><span style="font-size:.62rem;opacity:.55;margin-left:7px;letter-spacing:.02em">v77 · Venda: canal loja/café + taxas e líquido</span>
+    <b>✿ Atelier Nagori</b><span style="font-size:.62rem;opacity:.55;margin-left:7px;letter-spacing:.02em">v78 · Planilha café em Excel com fotos</span>
     <button class="sair" id="btnSair">Sair</button>
   </header>
   <div class="wrap">
@@ -933,9 +933,96 @@ function exportarCafeCSV(){
   setTimeout(()=>URL.revokeObjectURL(url),1000);
   toast("Planilha exportada! 📊");
 }
+// ---- Exportar planilha de VENDAS do café em .xlsx (Excel) com fotos embutidas ----
+function loadExcelJS(){
+  return new Promise((res,rej)=>{
+    if(window.ExcelJS) return res(window.ExcelJS);
+    const s=document.createElement("script");
+    s.src="https://cdnjs.cloudflare.com/ajax/libs/exceljs/4.4.0/exceljs.min.js";
+    s.onload=()=>window.ExcelJS?res(window.ExcelJS):rej(new Error("exceljs"));
+    s.onerror=()=>rej(new Error("cdn"));
+    document.head.appendChild(s);
+  });
+}
+async function cafeImgBuffer(id){
+  try{ const r=await fetch(cafeFotoURL(id),{cache:"force-cache"}); if(!r.ok) return null; return {buffer:await r.arrayBuffer(), ext:"jpeg"}; }
+  catch(e){ return null; }
+}
+async function buildCafeWB(ExcelJS, items){
+  const wb=new ExcelJS.Workbook();
+  const ws=wb.addWorksheet("Vendas Café",{views:[{state:"frozen",ySplit:1}]});
+  ws.columns=[
+    {header:"No café desde",key:"desde",width:14},{header:"Foto",key:"foto",width:12},
+    {header:"Peça",key:"peca",width:34},{header:"Categoria",key:"cat",width:15},
+    {header:"Preço (R$)",key:"preco",width:11},{header:"Qtd no café",key:"qtdcafe",width:11},
+    {header:"Qtd vendida",key:"qtdv",width:11},{header:"Data da venda",key:"data",width:13},
+    {header:"Forma de pagamento",key:"forma",width:18},{header:"Valor da venda (R$)",key:"valor",width:16},
+    {header:"Taxa 2,75% (R$)",key:"taxa",width:14},{header:"Recebido (R$)",key:"receb",width:13},
+    {header:"20% café (R$)",key:"cafe",width:13},{header:"Nagori (R$)",key:"nagori",width:13},
+    {header:"Pago à Nagori?",key:"pago",width:14},
+  ];
+  const head=ws.getRow(1);
+  head.font={bold:true,color:{argb:"FFF3EAD4"},size:11};
+  head.fill={type:"pattern",pattern:"solid",fgColor:{argb:"FF2B3A22"}};
+  head.alignment={vertical:"middle",horizontal:"center",wrapText:true}; head.height=32;
+  const money="#,##0.00"; let r=2;
+  for(const it of items){
+    const row=ws.getRow(r); row.height=54; row.alignment={vertical:"middle"};
+    row.getCell("desde").value=it.desde||""; row.getCell("peca").value=it.nome;
+    row.getCell("cat").value=it.categoria||""; row.getCell("preco").value=Number(it.preco||0);
+    row.getCell("qtdcafe").value=it.qtdCafe!=null?it.qtdCafe:"";
+    row.getCell("valor").value={formula:`G${r}*E${r}`};
+    row.getCell("taxa").value={formula:`IF(I${r}="Cartão",J${r}*0.0275,0)`};
+    row.getCell("receb").value={formula:`J${r}-K${r}`};
+    row.getCell("cafe").value={formula:`L${r}*0.2`};
+    row.getCell("nagori").value={formula:`L${r}-M${r}`};
+    ["preco","valor","taxa","receb","cafe","nagori"].forEach(k=>row.getCell(k).numFmt=money);
+    ["preco","qtdcafe","qtdv","valor","taxa","receb","cafe","nagori","data","forma","pago"].forEach(k=>row.getCell(k).alignment={vertical:"middle",horizontal:"center"});
+    const img=await cafeImgBuffer(it.id);
+    if(img&&img.buffer){ const imgId=wb.addImage({buffer:img.buffer,extension:img.ext||"jpeg"});
+      ws.addImage(imgId,{tl:{col:1.12,row:(r-1)+0.12},ext:{width:62,height:62},editAs:"oneCell"}); }
+    r++;
+  }
+  const last=r-1; const tr=ws.getRow(r);
+  tr.getCell("peca").value="TOTAL";
+  tr.getCell("qtdv").value={formula:`SUM(G2:G${last})`}; tr.getCell("valor").value={formula:`SUM(J2:J${last})`};
+  tr.getCell("taxa").value={formula:`SUM(K2:K${last})`}; tr.getCell("receb").value={formula:`SUM(L2:L${last})`};
+  tr.getCell("cafe").value={formula:`SUM(M2:M${last})`}; tr.getCell("nagori").value={formula:`SUM(N2:N${last})`};
+  ["valor","taxa","receb","cafe","nagori"].forEach(k=>{tr.getCell(k).numFmt=money;tr.getCell(k).alignment={horizontal:"center"};});
+  tr.getCell("qtdv").alignment={horizontal:"center"}; tr.font={bold:true}; tr.getCell("peca").alignment={horizontal:"right"};
+  for(let i=2;i<=last;i++){
+    ws.getCell(`H${i}`).numFmt="dd/mm/yyyy";
+    ws.getCell(`I${i}`).dataValidation={type:"list",allowBlank:true,formulae:['"Dinheiro,Pix,Cartão"']};
+    ws.getCell(`O${i}`).dataValidation={type:"list",allowBlank:true,formulae:['"Sim,Não"']};
+  }
+  ws.addConditionalFormatting({ref:`A2:O${last}`,rules:[
+    {type:"expression",priority:1,formulae:['$O2="Sim"'],style:{fill:{type:"pattern",pattern:"solid",fgColor:{argb:"FFD9EAD3"}}}}]});
+  for(let i=1;i<=last;i++){ for(let c=1;c<=15;c++){ ws.getRow(i).getCell(c).border={
+    top:{style:"thin",color:{argb:"FFE3DCCB"}},bottom:{style:"thin",color:{argb:"FFE3DCCB"}},
+    left:{style:"thin",color:{argb:"FFE3DCCB"}},right:{style:"thin",color:{argb:"FFE3DCCB"}}};}}
+  return wb;
+}
+async function exportarCafeXLSX(){
+  const ids=cafeIdsOrdenados();
+  if(!ids.length){ toast("Nenhuma peça no café"); return; }
+  let ExcelJS;
+  try{ toast("Gerando planilha… 📊"); ExcelJS=await loadExcelJS(); }
+  catch(e){ toast("Sem internet p/ o Excel — exportando CSV"); return exportarCafeCSV(); }
+  try{
+    const items=ids.map(id=>({id, nome:cafeNome(id), categoria:cafeCat(id), preco:cafePreco(id), qtdCafe:CAFE[id].qtd, desde:cafeDataBR(CAFE[id].desde)}));
+    const wb=await buildCafeWB(ExcelJS, items);
+    const buf=await wb.xlsx.writeBuffer();
+    const blob=new Blob([buf],{type:"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"});
+    const url=URL.createObjectURL(blob), a=document.createElement("a");
+    a.href=url; a.download=`vendas-cafe-atelier-nagori-${new Date().toISOString().slice(0,10)}.xlsx`;
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    setTimeout(()=>URL.revokeObjectURL(url),1500);
+    toast("Planilha Excel exportada! 📊");
+  }catch(e){ toast("Erro ao gerar Excel — exportando CSV"); exportarCafeCSV(); }
+}
 if(el("btnEnviarCafe")) el("btnEnviarCafe").addEventListener("click", enviarCafe);
 if(el("btnCopiarCafe")) el("btnCopiarCafe").addEventListener("click", copiarCafe);
-if(el("btnExportCafe")) el("btnExportCafe").addEventListener("click", exportarCafeCSV);
+if(el("btnExportCafe")) el("btnExportCafe").addEventListener("click", exportarCafeXLSX);
 if(el("cafeBusca")) el("cafeBusca").addEventListener("input", renderCafeSelect);
 
 // ---------- PAINEL ----------
