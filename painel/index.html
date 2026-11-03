@@ -108,7 +108,7 @@
 <!-- App -->
 <div id="appView" class="hidden">
   <header class="top">
-    <b>✿ Atelier Nagori</b><span style="font-size:.62rem;opacity:.55;margin-left:7px;letter-spacing:.02em">v73 · Café: planilha com foto (=IMAGE)</span>
+    <b>✿ Atelier Nagori</b><span style="font-size:.62rem;opacity:.55;margin-left:7px;letter-spacing:.02em">v74 · Café: busca na seleção de peça</span>
     <button class="sair" id="btnSair">Sair</button>
   </header>
   <div class="wrap">
@@ -322,7 +322,8 @@
       <div class="card">
         <h2>☕ Enviar peça para o café</h2>
         <p class="small muted" style="margin-top:-4px">Marque aqui as peças que você levou para o café. Depois é só conferir esta lista com as vendas.</p>
-        <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;margin-top:10px">
+        <input class="search" id="cafeBusca" placeholder="🔎 digite para procurar a peça..." style="margin-top:10px" />
+        <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;margin-top:8px">
           <label style="flex:1;min-width:180px">Peça
             <select id="cafeProd"></select>
           </label>
@@ -850,13 +851,18 @@ function enviarCafe(){
 function renderCafeSelect(){
   const sel=el("cafeProd"); if(!sel) return;
   const cur=sel.value;
+  const q=((el("cafeBusca")&&el("cafeBusca").value)||"").toLowerCase().trim();
+  const match=p=>!q || (p.nome||"").toLowerCase().includes(q) || (p.categoria||"").toLowerCase().includes(q);
   const ord=(a,b)=>(ORDEM_SITE[a.id]??9999)-(ORDEM_SITE[b.id]??9999);
-  const pecas=PRODUTOS.filter(p=>p.categoria!=="Suportes").sort(ord);
-  const sups=PRODUTOS.filter(p=>p.categoria==="Suportes").sort(ord);
+  const pecas=PRODUTOS.filter(p=>p.categoria!=="Suportes" && match(p)).sort(ord);
+  const sups=PRODUTOS.filter(p=>p.categoria==="Suportes" && match(p)).sort(ord);
   const opt=p=>`<option value="${p.id}">${gesc(p.nome)}</option>`;
-  sel.innerHTML=`<optgroup label="Peças">${pecas.map(opt).join("")}</optgroup>`+
-    (sups.length?`<optgroup label="Suportes">${sups.map(opt).join("")}</optgroup>`:"");
-  if(cur && PRODUTOS.some(p=>p.id===cur)) sel.value=cur;
+  let html=(pecas.length?`<optgroup label="Peças">${pecas.map(opt).join("")}</optgroup>`:"")
+    +(sups.length?`<optgroup label="Suportes">${sups.map(opt).join("")}</optgroup>`:"");
+  if(!html) html=`<option value="" disabled selected>Nenhuma peça encontrada</option>`;
+  sel.innerHTML=html;
+  // mantém a seleção atual se ela continua na lista filtrada; senão vai pra 1ª
+  if(cur && [...sel.options].some(o=>o.value===cur)) sel.value=cur;
 }
 function renderCafe(){
   if(!el("cafeLista")) return;
@@ -914,6 +920,7 @@ function exportarCafeCSV(){
 if(el("btnEnviarCafe")) el("btnEnviarCafe").addEventListener("click", enviarCafe);
 if(el("btnCopiarCafe")) el("btnCopiarCafe").addEventListener("click", copiarCafe);
 if(el("btnExportCafe")) el("btnExportCafe").addEventListener("click", exportarCafeCSV);
+if(el("cafeBusca")) el("cafeBusca").addEventListener("input", renderCafeSelect);
 
 // ---------- PAINEL ----------
 function renderPainel(){
