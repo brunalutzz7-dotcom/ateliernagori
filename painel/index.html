@@ -110,7 +110,7 @@
 <!-- App -->
 <div id="appView" class="hidden">
   <header class="top">
-    <b>✿ Atelier Nagori</b><span style="font-size:.62rem;opacity:.55;margin-left:7px;letter-spacing:.02em">v79 · Planilha café: data do pagamento</span>
+    <b>✿ Atelier Nagori</b><span style="font-size:.62rem;opacity:.55;margin-left:7px;letter-spacing:.02em">v80 · Planilha café: título, resumo e melhorias</span>
     <button class="sair" id="btnSair">Sair</button>
   </header>
   <div class="wrap">
@@ -950,56 +950,92 @@ async function cafeImgBuffer(id){
 }
 async function buildCafeWB(ExcelJS, items){
   const wb=new ExcelJS.Workbook();
-  const ws=wb.addWorksheet("Vendas Café",{views:[{state:"frozen",ySplit:1}]});
-  ws.columns=[
-    {header:"No café desde",key:"desde",width:14},{header:"Foto",key:"foto",width:12},
-    {header:"Peça",key:"peca",width:34},{header:"Categoria",key:"cat",width:15},
-    {header:"Preço (R$)",key:"preco",width:11},{header:"Qtd no café",key:"qtdcafe",width:11},
-    {header:"Qtd vendida",key:"qtdv",width:11},{header:"Data da venda",key:"data",width:13},
-    {header:"Forma de pagamento",key:"forma",width:18},{header:"Valor da venda (R$)",key:"valor",width:16},
-    {header:"Taxa 2,75% (R$)",key:"taxa",width:14},{header:"Recebido (R$)",key:"receb",width:13},
-    {header:"20% café (R$)",key:"cafe",width:13},{header:"Nagori (R$)",key:"nagori",width:13},
-    {header:"Pago à Nagori?",key:"pago",width:14},{header:"Data do pagamento",key:"dataPago",width:16},
+  const ws=wb.addWorksheet("Vendas Café");
+  const COLS=[
+    {t:"No café desde",w:13},{t:"Foto",w:11},{t:"Peça",w:32},{t:"Categoria",w:14},
+    {t:"Preço",w:11},{t:"Qtd no café",w:10},{t:"Qtd vendida",w:11},{t:"Data da venda",w:13},
+    {t:"Forma de pagamento",w:17},{t:"Valor da venda",w:14},{t:"Taxa 2,75%",w:12},
+    {t:"Recebido",w:12},{t:"20% café",w:11},{t:"Nagori",w:12},
+    {t:"Pago à Nagori?",w:13},{t:"Data do pagamento",w:15},
   ];
-  const head=ws.getRow(1);
-  head.font={bold:true,color:{argb:"FFF3EAD4"},size:11};
-  head.fill={type:"pattern",pattern:"solid",fgColor:{argb:"FF2B3A22"}};
-  head.alignment={vertical:"middle",horizontal:"center",wrapText:true}; head.height=32;
-  const money="#,##0.00"; let r=2;
+  COLS.forEach((c,i)=>{ ws.getColumn(i+1).width=c.w; });
+  const GREEN="FF2B3A22",CREAM="FFF3EAD4",GOLD="FFC0963F",INPUT="FFFFF7D6",PAID="FFD9EAD3",LINE="FFE3DCCB",money='"R$" #,##0.00';
+  const HROW=3,DSTART=4,n=items.length,last=DSTART+n-1;
+  ws.mergeCells("A1:P1");
+  const t1=ws.getCell("A1");
+  t1.value="名残  ATELIER NAGORI · Controle de Vendas — Café";
+  t1.font={bold:true,size:14,color:{argb:CREAM}}; t1.fill={type:"pattern",pattern:"solid",fgColor:{argb:GREEN}};
+  t1.alignment={vertical:"middle",horizontal:"center"}; ws.getRow(1).height=30;
+  ws.mergeCells("A2:L2");
+  const t2=ws.getCell("A2");
+  t2.value="Preencha os campos destacados (Qtd vendida · Data · Forma de pagamento). O resto calcula sozinho. Marque \"Pago à Nagori?\" = Sim quando o acerto for feito.";
+  t2.font={italic:true,size:10,color:{argb:"FF6B5A2E"}}; t2.alignment={vertical:"middle",horizontal:"left",wrapText:true};
+  ws.getCell("M2").value="Semana de:"; ws.getCell("M2").font={bold:true,size:10}; ws.getCell("M2").alignment={vertical:"middle",horizontal:"right"};
+  ws.mergeCells("N2:P2"); ws.getCell("N2").fill={type:"pattern",pattern:"solid",fgColor:{argb:INPUT}}; ws.getCell("N2").border={bottom:{style:"thin",color:{argb:GOLD}}};
+  ws.getRow(2).height=30;
+  const head=ws.getRow(HROW);
+  COLS.forEach((c,i)=>{ const cell=head.getCell(i+1); cell.value=c.t;
+    cell.font={bold:true,color:{argb:CREAM},size:10.5}; cell.fill={type:"pattern",pattern:"solid",fgColor:{argb:GREEN}};
+    cell.alignment={vertical:"middle",horizontal:"center",wrapText:true}; });
+  head.height=30; ws.views=[{state:"frozen",ySplit:HROW}];
+  const INPUT_COLS=["G","H","I","O","P"];
+  let r=DSTART;
   for(const it of items){
     const row=ws.getRow(r); row.height=54; row.alignment={vertical:"middle"};
-    row.getCell("desde").value=it.desde||""; row.getCell("peca").value=it.nome;
-    row.getCell("cat").value=it.categoria||""; row.getCell("preco").value=Number(it.preco||0);
-    row.getCell("qtdcafe").value=it.qtdCafe!=null?it.qtdCafe:"";
-    row.getCell("valor").value={formula:`G${r}*E${r}`};
-    row.getCell("taxa").value={formula:`IF(I${r}="Cartão",J${r}*0.0275,0)`};
-    row.getCell("receb").value={formula:`J${r}-K${r}`};
-    row.getCell("cafe").value={formula:`L${r}*0.2`};
-    row.getCell("nagori").value={formula:`L${r}-M${r}`};
-    ["preco","valor","taxa","receb","cafe","nagori"].forEach(k=>row.getCell(k).numFmt=money);
-    ["preco","qtdcafe","qtdv","valor","taxa","receb","cafe","nagori","data","forma","pago","dataPago"].forEach(k=>row.getCell(k).alignment={vertical:"middle",horizontal:"center"});
+    ws.getCell(`A${r}`).value=it.desde||""; ws.getCell(`C${r}`).value=it.nome;
+    ws.getCell(`D${r}`).value=it.categoria||""; ws.getCell(`E${r}`).value=Number(it.preco||0);
+    ws.getCell(`F${r}`).value=it.qtdCafe!=null?it.qtdCafe:"";
+    ws.getCell(`J${r}`).value={formula:`G${r}*E${r}`};
+    ws.getCell(`K${r}`).value={formula:`IF(I${r}="Cartão",J${r}*0.0275,0)`};
+    ws.getCell(`L${r}`).value={formula:`J${r}-K${r}`};
+    ws.getCell(`M${r}`).value={formula:`L${r}*0.2`};
+    ws.getCell(`N${r}`).value={formula:`L${r}-M${r}`};
+    ["E","J","K","L","M","N"].forEach(c=>ws.getCell(`${c}${r}`).numFmt=money);
+    ["E","F","G","J","K","L","M","N","H","I","O","P"].forEach(c=>ws.getCell(`${c}${r}`).alignment={vertical:"middle",horizontal:"center"});
+    ws.getCell(`C${r}`).alignment={vertical:"middle",horizontal:"left"};
+    INPUT_COLS.forEach(c=>ws.getCell(`${c}${r}`).fill={type:"pattern",pattern:"solid",fgColor:{argb:INPUT}});
     const img=await cafeImgBuffer(it.id);
     if(img&&img.buffer){ const imgId=wb.addImage({buffer:img.buffer,extension:img.ext||"jpeg"});
       ws.addImage(imgId,{tl:{col:1.12,row:(r-1)+0.12},ext:{width:62,height:62},editAs:"oneCell"}); }
     r++;
   }
-  const last=r-1; const tr=ws.getRow(r);
-  tr.getCell("peca").value="TOTAL";
-  tr.getCell("qtdv").value={formula:`SUM(G2:G${last})`}; tr.getCell("valor").value={formula:`SUM(J2:J${last})`};
-  tr.getCell("taxa").value={formula:`SUM(K2:K${last})`}; tr.getCell("receb").value={formula:`SUM(L2:L${last})`};
-  tr.getCell("cafe").value={formula:`SUM(M2:M${last})`}; tr.getCell("nagori").value={formula:`SUM(N2:N${last})`};
-  ["valor","taxa","receb","cafe","nagori"].forEach(k=>{tr.getCell(k).numFmt=money;tr.getCell(k).alignment={horizontal:"center"};});
-  tr.getCell("qtdv").alignment={horizontal:"center"}; tr.font={bold:true}; tr.getCell("peca").alignment={horizontal:"right"};
-  for(let i=2;i<=last;i++){
+  const tr=ws.getRow(r); ws.getCell(`C${r}`).value="TOTAL"; ws.getCell(`C${r}`).alignment={horizontal:"right"};
+  ws.getCell(`G${r}`).value=n?{formula:`SUM(G${DSTART}:G${last})`}:0;
+  ws.getCell(`J${r}`).value=n?{formula:`SUM(J${DSTART}:J${last})`}:0;
+  ws.getCell(`K${r}`).value=n?{formula:`SUM(K${DSTART}:K${last})`}:0;
+  ws.getCell(`L${r}`).value=n?{formula:`SUM(L${DSTART}:L${last})`}:0;
+  ws.getCell(`M${r}`).value=n?{formula:`SUM(M${DSTART}:M${last})`}:0;
+  ws.getCell(`N${r}`).value=n?{formula:`SUM(N${DSTART}:N${last})`}:0;
+  ["J","K","L","M","N"].forEach(c=>{ws.getCell(`${c}${r}`).numFmt=money;ws.getCell(`${c}${r}`).alignment={horizontal:"center"};});
+  ws.getCell(`G${r}`).alignment={horizontal:"center"}; tr.font={bold:true};
+  tr.eachCell(c=>{c.fill={type:"pattern",pattern:"solid",fgColor:{argb:"FFEFE6CF"}};});
+  const totalRow=r;
+  for(let i=DSTART;i<=last;i++){
     ws.getCell(`H${i}`).numFmt="dd/mm/yyyy"; ws.getCell(`P${i}`).numFmt="dd/mm/yyyy";
+    ws.getCell(`G${i}`).dataValidation={type:"whole",operator:"between",allowBlank:true,formulae:[0,`F${i}`],showErrorMessage:true,errorTitle:"Qtd vendida",error:"Não pode vender mais do que tem no café."};
     ws.getCell(`I${i}`).dataValidation={type:"list",allowBlank:true,formulae:['"Dinheiro,Pix,Cartão"']};
     ws.getCell(`O${i}`).dataValidation={type:"list",allowBlank:true,formulae:['"Sim,Não"']};
   }
-  ws.addConditionalFormatting({ref:`A2:P${last}`,rules:[
-    {type:"expression",priority:1,formulae:['$O2="Sim"'],style:{fill:{type:"pattern",pattern:"solid",fgColor:{argb:"FFD9EAD3"}}}}]});
-  for(let i=1;i<=last;i++){ for(let c=1;c<=16;c++){ ws.getRow(i).getCell(c).border={
-    top:{style:"thin",color:{argb:"FFE3DCCB"}},bottom:{style:"thin",color:{argb:"FFE3DCCB"}},
-    left:{style:"thin",color:{argb:"FFE3DCCB"}},right:{style:"thin",color:{argb:"FFE3DCCB"}}};}}
+  if(n) ws.addConditionalFormatting({ref:`A${DSTART}:P${last}`,rules:[
+    {type:"expression",priority:1,formulae:[`$O${DSTART}="Sim"`],style:{fill:{type:"pattern",pattern:"solid",fgColor:{argb:PAID}}}}]});
+  const sr=totalRow+2;
+  ws.getCell(`C${sr}`).value="Resumo do acerto"; ws.getCell(`C${sr}`).font={bold:true,size:11,color:{argb:GREEN}};
+  const resumo=[
+    ["Total vendido", n?`SUM(J${DSTART}:J${last})`:"0"],
+    ["Total Nagori (líquido)", n?`SUM(N${DSTART}:N${last})`:"0"],
+    ["Já pago à Nagori", n?`SUMIF(O${DSTART}:O${last},"Sim",N${DSTART}:N${last})`:"0"],
+    ["A receber", `D${sr+2}-D${sr+3}`],
+  ];
+  resumo.forEach((lr,k)=>{ const rr=sr+1+k;
+    ws.getCell(`C${rr}`).value=lr[0]; ws.getCell(`C${rr}`).alignment={horizontal:"right"};
+    ws.getCell(`D${rr}`).value={formula:lr[1]}; ws.getCell(`D${rr}`).numFmt=money; ws.getCell(`D${rr}`).font={bold:true};
+    if(k===3){ ws.getCell(`C${rr}`).font={bold:true,color:{argb:"FF9c2b2b"}}; ws.getCell(`D${rr}`).font={bold:true,color:{argb:"FF9c2b2b"}}; }
+  });
+  for(let i=HROW;i<=totalRow;i++){ for(let c=1;c<=16;c++){ ws.getRow(i).getCell(c).border={
+    top:{style:"thin",color:{argb:LINE}},bottom:{style:"thin",color:{argb:LINE}},
+    left:{style:"thin",color:{argb:LINE}},right:{style:"thin",color:{argb:LINE}}};}}
+  ws.pageSetup={orientation:"landscape",fitToPage:true,fitToWidth:1,fitToHeight:0,margins:{left:0.3,right:0.3,top:0.4,bottom:0.4,header:0.2,footer:0.2}};
+  ws.headerFooter={oddFooter:"&CAtelier Nagori · página &P de &N"};
   return wb;
 }
 async function exportarCafeXLSX(){
