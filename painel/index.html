@@ -114,7 +114,7 @@
 <!-- App -->
 <div id="appView" class="hidden">
   <header class="top">
-    <b>✿ Atelier Nagori</b><span style="font-size:.62rem;opacity:.55;margin-left:7px;letter-spacing:.02em">v81 · App: café no painel + melhorias</span>
+    <b>✿ Atelier Nagori</b><span style="font-size:.62rem;opacity:.55;margin-left:7px;letter-spacing:.02em">v82 · Painel financeiro + patrocínios</span>
     <button class="sair" id="btnSair">Sair</button>
   </header>
   <div class="wrap">
@@ -142,6 +142,34 @@
         <h2 style="display:flex;justify-content:space-between;align-items:center;gap:8px">☕ No café agora
           <button class="btn sec mini" type="button" onclick="show('cafe')" style="width:auto">Ver / exportar</button></h2>
         <div id="cafePainelInfo" class="small muted">—</div>
+      </div>
+    </section>
+
+    <!-- FINANCEIRO -->
+    <section id="tab-financeiro" class="hidden">
+      <div class="card">
+        <h2>Financeiro</h2>
+        <div class="kpis">
+          <div class="kpi"><div class="v" id="fInvestTotal">—</div><div class="l">Total investido</div></div>
+          <div class="kpi"><div class="v" id="fInvestMes">—</div><div class="l">Investido este mês</div></div>
+          <div class="kpi"><div class="v" id="fFatTotal">—</div><div class="l">Faturamento total</div></div>
+          <div class="kpi"><div class="v lucro" id="fResultado">—</div><div class="l">Entrou − saiu</div></div>
+        </div>
+        <p class="small muted" style="margin-top:4px">"Investido" = tudo que você registrou em Compras (insumos, plantas, patrocínios…). "Entrou − saiu" = faturamento total menos tudo que investiu.</p>
+      </div>
+      <div class="card">
+        <h2>Investido vs. faturado · 6 meses</h2>
+        <p class="small muted" style="margin-top:-4px"><b style="color:var(--moss)">■</b> faturou &nbsp; <b style="color:var(--terra)">■</b> investiu</p>
+        <div id="fPorMes"></div>
+      </div>
+      <div class="card">
+        <h2>Despesas por categoria</h2>
+        <div id="fPorCategoria" class="small muted">—</div>
+      </div>
+      <div class="card">
+        <h2>📣 Patrocínios · Instagram</h2>
+        <p class="small muted" style="margin-top:-4px">Para registrar: aba <b>Compras</b> → categoria <b>"Patrocínio / Instagram"</b> (coloque o valor, a data e no item o nome/campanha).</p>
+        <div id="fPatrocinios" class="small muted">—</div>
       </div>
     </section>
 
@@ -262,6 +290,7 @@
                 <option value="linha-tags">Linha p/ amarrar tags (rende X peças)</option>
                 <option value="enfeite-natal">🎄 Enfeite de Natal (só total)</option>
                 <option value="planta">🌿 Planta</option>
+                <option value="patrocinio">📣 Patrocínio / Instagram</option>
                 <option value="outro">Outro</option>
               </select>
             </label>
@@ -374,6 +403,7 @@
   <nav class="tabs">
     <button data-tab="painel" class="on"><i>📊</i>Painel</button>
     <button data-tab="graficos"><i>📈</i>Gráficos</button>
+    <button data-tab="financeiro"><i>💵</i>Finanças</button>
     <button data-tab="vendas"><i>🧾</i>Vendas</button>
     <button data-tab="cafe"><i>☕</i>Café</button>
     <button data-tab="compras"><i>🛒</i>Compras</button>
@@ -400,11 +430,12 @@ const el = (id)=>document.getElementById(id);
 let sb=null, PRODUTOS=[], VENDAS=[];
 
 function toast(m){const t=el("toast");t.textContent=m;t.classList.add("show");setTimeout(()=>t.classList.remove("show"),2200);}
-function show(id){ ["painel","graficos","vendas","cafe","compras","estoque","custos"].forEach(t=>el("tab-"+t).classList.toggle("hidden",t!==id));
+function show(id){ ["painel","graficos","financeiro","vendas","cafe","compras","estoque","custos"].forEach(t=>el("tab-"+t).classList.toggle("hidden",t!==id));
   document.querySelectorAll("nav.tabs button").forEach(b=>b.classList.toggle("on",b.dataset.tab===id));
   if(id==="graficos") renderGraficos();
   if(id==="compras") renderCompras();
-  if(id==="cafe") renderCafe(); }
+  if(id==="cafe") renderCafe();
+  if(id==="financeiro") renderFinanceiro(); }
 
 // ---------- inicialização ----------
 if(!window.supabase || SUPABASE_URL.startsWith("COLE") || SUPABASE_ANON.startsWith("COLE")){
@@ -471,7 +502,7 @@ el("btnExportar").addEventListener("click", exportarDados);
 
 // ---------- COMPRAS DE INSUMOS ----------
 let COMPRAS=[];
-const CAT_LABEL={musgo:"Musgo",embalagem:"Embalagem (kit)",adubo:"Adubo folhagem",substrato:"Substrato folhagem","adubo-bonsai":"Adubo bonsai","substrato-bonsai":"Substrato bonsai","linha-kokedama":"Linha kokedama","linha-tags":"Linha tags","enfeite-natal":"🎄 Enfeite de Natal",planta:"🌿 Planta",outro:"Outro"};
+const CAT_LABEL={musgo:"Musgo",embalagem:"Embalagem (kit)",adubo:"Adubo folhagem",substrato:"Substrato folhagem","adubo-bonsai":"Adubo bonsai","substrato-bonsai":"Substrato bonsai","linha-kokedama":"Linha kokedama","linha-tags":"Linha tags","enfeite-natal":"🎄 Enfeite de Natal",planta:"🌿 Planta",patrocinio:"📣 Patrocínio / Instagram",outro:"Outro"};
 const CAT_GRAMA=new Set(["musgo","adubo","substrato","adubo-bonsai","substrato-bonsai"]); // usam gramas do pacote
 const CAT_RECEITA=new Set(["adubo-bonsai","substrato-bonsai"]);                    // usam g por médio/grande
 function loadCompras(){ try{ COMPRAS=JSON.parse(localStorage.getItem("comprasAN")||"[]")||[]; }catch(e){ COMPRAS=[]; } }
@@ -504,7 +535,7 @@ if(el("compraForm")) el("compraForm").addEventListener("submit", (e)=>{
   if(categoria==="enfeite-natal"){ const qt=numBR(el("cQtd").value); if(qt) reg.qtd=qt; }
   COMPRAS.push(reg); saveCompras();
   el("compraForm").reset(); mostraCamposCompra();
-  renderCompras(); toast("Compra registrada ✓");
+  renderCompras(); renderFinanceiro(); toast("Compra registrada ✓");
 });
 if(el("buscaCompra")) el("buscaCompra").addEventListener("input", renderCompras);
 
@@ -573,7 +604,7 @@ function renderCompras(){
   }).join("");
   if(typeof renderPortes==="function") renderPortes();
 }
-function removerCompra(id){ if(!confirm("Remover esta compra?")) return; loadCompras(); COMPRAS=COMPRAS.filter(c=>c.id!==id); saveCompras(); renderCompras(); toast("Removida"); }
+function removerCompra(id){ if(!confirm("Remover esta compra?")) return; loadCompras(); COMPRAS=COMPRAS.filter(c=>c.id!==id); saveCompras(); renderCompras(); renderFinanceiro(); toast("Removida"); }
 loadCompras();
 
 // ---------- PORTES (adubo + mão de obra) e aplicação nos custos ----------
@@ -826,7 +857,7 @@ async function carregar(){
   }catch(e){}
   loadCafe();
   renderProdutosSelect(); renderPainel(); renderVendas(); renderProdutos(); renderCustos(); renderGraficos();
-  renderCafe();
+  renderCafe(); renderFinanceiro();
 }
 
 // ---------- CAFÉ ----------
@@ -1104,6 +1135,50 @@ function renderPainel(){
   const baixo=PRODUTOS.filter(p=>Number(p.estoque||0)<=1).sort((a,b)=>(a.estoque||0)-(b.estoque||0));
   el("estBaixo").innerHTML = baixo.length? baixo.slice(0,20).map(p=>`<div class="item"><span>${p.nome}</span><b class="est" style="color:${(p.estoque||0)===0?'var(--terra)':'inherit'}">${p.estoque||0}</b></div>`).join("") : "Tudo com estoque ok. 🌿";
   if(typeof renderCafePainel==="function") renderCafePainel();
+}
+
+// ---------- FINANCEIRO ----------
+function nomeMesAbrev(key){ const [y,m]=key.split("-"); return ["jan","fev","mar","abr","mai","jun","jul","ago","set","out","nov","dez"][(+m)-1]+"/"+y.slice(2); }
+function renderFinanceiro(){
+  if(!el("fInvestTotal")) return;
+  loadCompras();
+  const now=new Date(), ym=now.toISOString().slice(0,7);
+  const compValor=c=>Number(c.valor||0);
+  const despTotal=COMPRAS.reduce((a,c)=>a+compValor(c),0);
+  const despMes=COMPRAS.filter(c=>(c.data||"").slice(0,7)===ym).reduce((a,c)=>a+compValor(c),0);
+  const fatTotal=VENDAS.reduce((a,v)=>a+Number(v.valor||0),0);
+  el("fInvestTotal").textContent=centBRL(despTotal);
+  el("fInvestMes").textContent=centBRL(despMes);
+  el("fFatTotal").textContent=centBRL(fatTotal);
+  const res=fatTotal-despTotal; const rEl=el("fResultado");
+  rEl.textContent=centBRL(res); rEl.style.color = res<0 ? "var(--terra)" : "var(--moss)";
+  // por categoria
+  const porCat={}; COMPRAS.forEach(c=>{ const k=c.categoria||"outro"; porCat[k]=(porCat[k]||0)+compValor(c); });
+  const cats=Object.entries(porCat).sort((a,b)=>b[1]-a[1]);
+  el("fPorCategoria").innerHTML = cats.length ? cats.map(([k,v])=>{
+    const pct=despTotal>0?Math.round(v/despTotal*100):0;
+    return `<div class="item"><span>${CAT_LABEL[k]||k}</span><span>${centBRL(v)} <span class="muted">· ${pct}%</span></span></div>`;
+  }).join("") : "Nenhuma despesa registrada ainda.";
+  // por mês (últimos 6)
+  const meses=[]; for(let i=5;i>=0;i--){ const d=new Date(now.getFullYear(),now.getMonth()-i,1); meses.push(d.toISOString().slice(0,7)); }
+  const invByM={}, fatByM={};
+  COMPRAS.forEach(c=>{ const k=(c.data||"").slice(0,7); if(k) invByM[k]=(invByM[k]||0)+compValor(c); });
+  VENDAS.forEach(v=>{ const k=(v.criado_em||"").slice(0,7); if(k) fatByM[k]=(fatByM[k]||0)+Number(v.valor||0); });
+  const maxM=Math.max(1,...meses.map(k=>Math.max(invByM[k]||0,fatByM[k]||0)));
+  el("fPorMes").innerHTML = meses.map(k=>{
+    const inv=invByM[k]||0, fat=fatByM[k]||0;
+    return `<div style="margin:9px 0 11px"><div style="display:flex;justify-content:space-between;align-items:baseline"><b>${nomeMesAbrev(k)}</b><span class="small muted">faturou ${centBRL(fat)} · investiu ${centBRL(inv)}</span></div>
+      <div style="height:8px;background:var(--sand);border-radius:6px;margin-top:4px;overflow:hidden"><div style="height:100%;width:${Math.round(fat/maxM*100)}%;background:var(--moss)"></div></div>
+      <div style="height:8px;background:var(--sand);border-radius:6px;margin-top:3px;overflow:hidden"><div style="height:100%;width:${Math.round(inv/maxM*100)}%;background:var(--terra)"></div></div>
+    </div>`;
+  }).join("");
+  // patrocínios
+  const patros=COMPRAS.filter(c=>c.categoria==="patrocinio").sort((a,b)=>(b.data||"").localeCompare(a.data||""));
+  const patroTotal=patros.reduce((a,c)=>a+compValor(c),0);
+  el("fPatrocinios").innerHTML = patros.length
+    ? `<div style="font-weight:600;margin-bottom:5px;color:var(--ink)">Total em patrocínios: ${centBRL(patroTotal)}</div>`
+      + patros.map(c=>`<div class="item"><span>${gesc(c.item||"Patrocínio")}${c.obs?' · '+gesc(c.obs):''}</span><span>${centBRL(c.valor)} <span class="muted">· ${(c.data||"").split("-").reverse().join("/")}</span></span></div>`).join("")
+    : "Nenhum patrocínio registrado ainda.";
 }
 
 // ---------- GRÁFICOS ----------
