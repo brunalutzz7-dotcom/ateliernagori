@@ -47,6 +47,8 @@
   .pill.site{background:#e4efdc;color:var(--moss)}
   .pill.whatsapp{background:#dcf3e4;color:#1e7a44}
   .pill.direto{background:#f0e4dc;color:var(--terra)}
+  .pill.loja{background:#e9ddc2;color:#6b5a2e}
+  .pill.cafe{background:#efe0cf;color:#8a5a2b}
   .est{min-width:34px;text-align:center;font-weight:700}
   .stepper button{width:34px;height:34px;border:1px solid var(--line);background:#fff;border-radius:8px;font-size:1.1rem}
   nav.tabs{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid var(--line);
@@ -108,7 +110,7 @@
 <!-- App -->
 <div id="appView" class="hidden">
   <header class="top">
-    <b>✿ Atelier Nagori</b><span style="font-size:.62rem;opacity:.55;margin-left:7px;letter-spacing:.02em">v76 · Planilha café: colunas de venda + fórmulas</span>
+    <b>✿ Atelier Nagori</b><span style="font-size:.62rem;opacity:.55;margin-left:7px;letter-spacing:.02em">v77 · Venda: canal loja/café + taxas e líquido</span>
     <button class="sair" id="btnSair">Sair</button>
   </header>
   <div class="wrap">
@@ -156,9 +158,17 @@
           </label>
           <label>Canal</label>
           <select id="vCanal">
+            <option value="loja">Loja física</option>
+            <option value="cafe">Café</option>
             <option value="site">Site</option>
             <option value="whatsapp">WhatsApp</option>
             <option value="direto">Direto / pessoalmente</option>
+          </select>
+          <label>Forma de pagamento</label>
+          <select id="vPgto">
+            <option value="dinheiro">Dinheiro</option>
+            <option value="pix">Pix</option>
+            <option value="cartao">Cartão (crédito/débito) · −2,75%</option>
           </select>
           <label>Observação (opcional)</label>
           <input type="text" id="vObs" placeholder="cliente, base junto, etc." />
@@ -1101,7 +1111,9 @@ el("vBusca").addEventListener("keydown",(e)=>{
   }
 });
 
-const PIX_DESC = 0.05; // 5% de desconto no Pix
+const PIX_DESC = 0.05;    // 5% de desconto dado ao cliente no Pix
+const TAXA_CARTAO = 0.0275; // 2,75% da maquininha (cartão)
+const CAFE_PCT = 0.20;      // 20% do café sobre o valor recebido
 
 // ---- Itens da venda (permite mais de uma peça na mesma venda) ----
 let itensVenda = []; // {id,nome,preco,custoUnit,qtd,valor}
@@ -1126,8 +1138,16 @@ function editarValorItem(i){
 }
 function totaisVenda(){
   const total=itensVenda.reduce((a,it)=>a+Number(it.valor||0),0);
-  const pix = el("vPix").checked ? total*(1-PIX_DESC) : null;
-  return {total, pix};
+  const pixOn = el("vPix").checked;
+  const valor = pixOn ? total*(1-PIX_DESC) : total;        // valor que o cliente paga
+  const pgto = el("vPgto") ? el("vPgto").value : "dinheiro";
+  const canal = el("vCanal") ? el("vCanal").value : "loja";
+  const taxaCartao = (pgto==="cartao") ? valor*TAXA_CARTAO : 0;
+  const recebido = valor - taxaCartao;                      // depois da maquininha
+  const cafe = (canal==="cafe") ? recebido*CAFE_PCT : 0;    // 20% do café
+  const liquido = recebido - cafe;                          // o que fica pra Nagori
+  const temDeducao = taxaCartao>0 || cafe>0;
+  return {total, pixOn, valor, pgto, canal, taxaCartao, recebido, cafe, liquido, temDeducao};
 }
 function renderItensVenda(){
   const cx=el("vItens");
@@ -1140,29 +1160,44 @@ function renderItensVenda(){
         <div class="small muted"><a href="#" onclick="editarValorItem(${i});return false">${BRL(it.valor)}</a></div></div>
       <button type="button" class="btn mini sec" onclick="removerItemVenda(${i})">remover</button>
     </div>`).join("");
-  const {total,pix}=totaisVenda();
-  el("vResumo").innerHTML =
-    `<div class="item" style="font-weight:600"><span>Total</span><span>${BRL(total)}</span></div>`
-    + (pix!=null?`<div class="item" style="color:var(--moss);font-weight:600"><span>💚 No Pix (−5%)</span><span>${BRL(pix)}</span></div>`:"");
+  const t=totaisVenda();
+  let h=`<div class="item" style="font-weight:600"><span>Total</span><span>${BRL(t.total)}</span></div>`;
+  if(t.pixOn) h+=`<div class="item" style="color:var(--moss);font-weight:600"><span>💚 No Pix (−5%)</span><span>${BRL(t.valor)}</span></div>`;
+  if(t.taxaCartao>0) h+=`<div class="item small muted"><span>Taxa cartão (−2,75%)</span><span>− ${BRL(t.taxaCartao)}</span></div>`;
+  if(t.cafe>0) h+=`<div class="item small muted"><span>Café (−20%)</span><span>− ${BRL(t.cafe)}</span></div>`;
+  if(t.temDeducao) h+=`<div class="item" style="font-weight:700;color:#1e7a44;border-top:1px solid var(--line);margin-top:2px;padding-top:6px"><span>Líquido Nagori</span><span>${BRL(t.liquido)}</span></div>`;
+  el("vResumo").innerHTML=h;
 }
 el("vAdd").addEventListener("click",addItemVenda);
 el("vPix").addEventListener("change",renderItensVenda);
+if(el("vCanal")) el("vCanal").addEventListener("change",renderItensVenda);
+if(el("vPgto")) el("vPgto").addEventListener("change",renderItensVenda);
 
 el("vendaForm").addEventListener("submit", async (e)=>{
   e.preventDefault(); el("vendaErr").classList.add("hidden");
   // se digitou uma peça e não clicou em "adicionar", adiciona automaticamente
   if(el("vProduto").value && !itensVenda.some(it=>it.id===el("vProduto").value)) addItemVenda();
   if(!itensVenda.length){ el("vendaErr").textContent="Adicione ao menos uma peça à venda."; el("vendaErr").classList.remove("hidden"); el("vBusca").focus(); return; }
-  const pix=el("vPix").checked, canal=el("vCanal").value, fator=pix?(1-PIX_DESC):1;
+  const pixOn=el("vPix").checked, canal=el("vCanal").value, pgto=el("vPgto").value;
+  const fator=pixOn?(1-PIX_DESC):1;
+  const cartaoFee = pgto==="cartao"?TAXA_CARTAO:0;
+  const cafePct = canal==="cafe"?CAFE_PCT:0;
   const obsBase=el("vObs").value.trim();
   const rows=itensVenda.map(it=>{
-    let obs=obsBase;
-    if(pix) obs = obs ? ("Pix −5% · "+obs) : "Pix −5%";
+    const valorItem=+(Number(it.valor||0)*fator).toFixed(2);           // valor pago pelo cliente
+    const recebidoItem=valorItem*(1-cartaoFee);                        // após maquininha
+    const liquidoItem=+(recebidoItem*(1-cafePct)).toFixed(2);          // líquido Nagori
+    const notas=[];
+    notas.push(pgto==="cartao"?"Cartão −2,75%":(pgto==="pix"?"Pix":"Dinheiro"));
+    if(pixOn) notas.push("desc. 5%");
+    if(cafePct) notas.push("Café −20%");
+    if(cartaoFee||cafePct) notas.push("líq "+BRL(liquidoItem));
+    if(obsBase) notas.push(obsBase);
     return {
       produto_id:it.id, produto_nome:it.nome, quantidade:it.qtd, canal,
-      valor:+(Number(it.valor||0)*fator).toFixed(2),
+      valor:valorItem,
       custo: it.custoUnit!=null ? +(it.custoUnit*it.qtd).toFixed(2) : null,
-      obs: obs||null
+      obs: notas.join(" · ")||null
     };
   });
   const {error}=await sb.from("vendas").insert(rows);
@@ -1175,6 +1210,7 @@ el("vendaForm").addEventListener("submit", async (e)=>{
   }));
   itensVenda=[];
   el("vObs").value=""; el("vQtd").value="1"; el("vPix").checked=false;
+  if(el("vPgto")) el("vPgto").value="dinheiro";
   el("vBusca").value=""; el("vProduto").value="";
   renderItensVenda();
   toast(rows.length>1?`Venda registrada (${rows.length} peças) ✓`:"Venda registrada ✓");
