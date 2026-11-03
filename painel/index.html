@@ -118,7 +118,7 @@
 <!-- App -->
 <div id="appView" class="hidden">
   <header class="top">
-    <b>✿ Atelier Nagori</b><span style="font-size:.62rem;opacity:.55;margin-left:7px;letter-spacing:.02em">v84 · Vendas do café com marca ☕</span>
+    <b>✿ Atelier Nagori</b><span style="font-size:.62rem;opacity:.55;margin-left:7px;letter-spacing:.02em">v85 · Planilha café: Excel mais robusto</span>
     <button class="sair" id="btnSair">Sair</button>
   </header>
   <div class="wrap">
@@ -1055,17 +1055,29 @@ function exportarCafeCSV(){
 }
 // ---- Exportar planilha de VENDAS do café em .xlsx (Excel) com fotos embutidas ----
 function loadExcelJS(){
+  if(window.ExcelJS) return Promise.resolve(window.ExcelJS);
+  const urls=[
+    "https://cdnjs.cloudflare.com/ajax/libs/exceljs/4.4.0/exceljs.min.js",
+    "https://cdn.jsdelivr.net/npm/exceljs@4.4.0/dist/exceljs.min.js",
+    "https://unpkg.com/exceljs@4.4.0/dist/exceljs.min.js",
+  ];
   return new Promise((res,rej)=>{
-    if(window.ExcelJS) return res(window.ExcelJS);
-    const s=document.createElement("script");
-    s.src="https://cdnjs.cloudflare.com/ajax/libs/exceljs/4.4.0/exceljs.min.js";
-    s.onload=()=>window.ExcelJS?res(window.ExcelJS):rej(new Error("exceljs"));
-    s.onerror=()=>rej(new Error("cdn"));
-    document.head.appendChild(s);
+    let i=0;
+    const tryNext=()=>{
+      if(window.ExcelJS) return res(window.ExcelJS);
+      if(i>=urls.length) return rej(new Error("cdn"));
+      const s=document.createElement("script"); s.src=urls[i++];
+      s.onload=()=>window.ExcelJS?res(window.ExcelJS):tryNext();
+      s.onerror=tryNext;
+      document.head.appendChild(s);
+    };
+    tryNext();
   });
 }
 async function cafeImgBuffer(id){
-  try{ const r=await fetch(cafeFotoURL(id),{cache:"force-cache"}); if(!r.ok) return null; return {buffer:await r.arrayBuffer(), ext:"jpeg"}; }
+  // cache-bust pra pegar fotos recém-publicadas (evita 404 em cache)
+  const url=cafeFotoURL(id)+"?t="+Date.now();
+  try{ const r=await fetch(url,{cache:"no-store"}); if(!r.ok) return null; return {buffer:await r.arrayBuffer(), ext:"jpeg"}; }
   catch(e){ return null; }
 }
 async function buildCafeWB(ExcelJS, items){
