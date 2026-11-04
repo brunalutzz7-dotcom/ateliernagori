@@ -118,7 +118,7 @@
 <!-- App -->
 <div id="appView" class="hidden">
   <header class="top">
-    <b>✿ Atelier Nagori</b><span style="font-size:.62rem;opacity:.55;margin-left:7px;letter-spacing:.02em">v88 · Financeiro: custo fixo mensal</span>
+    <b>✿ Atelier Nagori</b><span style="font-size:.62rem;opacity:.55;margin-left:7px;letter-spacing:.02em">v89 · Investido automático (plantas + suportes)</span>
     <button class="sair" id="btnSair">Sair</button>
   </header>
   <div class="wrap">
@@ -155,11 +155,11 @@
         <h2>Financeiro</h2>
         <div class="kpis">
           <div class="kpi"><div class="v" id="fInvestTotal">—</div><div class="l">Total investido</div></div>
-          <div class="kpi"><div class="v" id="fInvestMes">—</div><div class="l">Investido este mês</div></div>
+          <div class="kpi"><div class="v" id="fInvestMes">—</div><div class="l">Custo fixo / mês</div></div>
           <div class="kpi"><div class="v" id="fFatTotal">—</div><div class="l">Faturamento total</div></div>
           <div class="kpi"><div class="v lucro" id="fResultado">—</div><div class="l">Entrou − saiu</div></div>
         </div>
-        <p class="small muted" style="margin-top:4px">"Investido" = tudo que você registrou em Compras (insumos, plantas, patrocínios…). "Entrou − saiu" = faturamento total menos tudo que investiu.</p>
+        <p class="small muted" style="margin-top:4px">"Total investido" = suas Compras (insumos, patrocínios, contas…) + o custo das plantas e suportes (calculado automático do estoque + já vendidos: suporte pelo custo, kokedama só pelo valor da planta). "Entrou − saiu" = faturamento − total investido.</p>
       </div>
       <div class="card">
         <h2>Custo fixo mensal</h2>
@@ -176,7 +176,7 @@
       </div>
       <div class="card">
         <h2>Investido vs. faturado · 6 meses</h2>
-        <p class="small muted" style="margin-top:-4px"><b style="color:var(--moss)">■</b> faturou &nbsp; <b style="color:var(--terra)">■</b> investiu</p>
+        <p class="small muted" style="margin-top:-4px"><b style="color:var(--moss)">■</b> faturou &nbsp; <b style="color:var(--terra)">■</b> compras do mês</p>
         <div id="fPorMes"></div>
       </div>
       <div class="card">
@@ -1237,23 +1237,37 @@ function renderPainel(){
 function nomeMesAbrev(key){ const [y,m]=key.split("-"); return ["jan","fev","mar","abr","mai","jun","jul","ago","set","out","nov","dez"][(+m)-1]+"/"+y.slice(2); }
 function renderFinanceiro(){
   if(!el("fInvestTotal")) return;
-  loadCompras();
+  loadCompras(); loadFixas();
   const now=new Date(), ym=now.toISOString().slice(0,7);
   const compValor=c=>Number(c.valor||0);
-  const despTotal=COMPRAS.reduce((a,c)=>a+compValor(c),0);
-  const despMes=COMPRAS.filter(c=>(c.data||"").slice(0,7)===ym).reduce((a,c)=>a+compValor(c),0);
+  const despCompras=COMPRAS.reduce((a,c)=>a+compValor(c),0);
+  // investido automático em plantas/suportes = (estoque + já vendidos) × custo unitário
+  //  · suportes: o custo do suporte  · kokedamas: só o valor da planta (insumos já vêm de Compras)
+  const vendidasQty={}; VENDAS.forEach(v=>{ if(v.produto_id) vendidasQty[v.produto_id]=(vendidasQty[v.produto_id]||0)+Number(v.quantidade||1); });
+  let plantasInv=0, suportesInv=0;
+  PRODUTOS.forEach(p=>{
+    const qtyEver=Number(p.estoque||0)+(vendidasQty[p.id]||0);
+    if(qtyEver<=0) return;
+    if(p.categoria==="Suportes"){ suportesInv += qtyEver*Number(p.custo||0); }
+    else { const d=getDetalhe(p.id)||{}; suportesInv+=0; plantasInv += qtyEver*Number(d.planta||0); }
+  });
+  const totalInvest=despCompras+plantasInv+suportesInv;
   const fatTotal=VENDAS.reduce((a,v)=>a+Number(v.valor||0),0);
-  el("fInvestTotal").textContent=centBRL(despTotal);
-  el("fInvestMes").textContent=centBRL(despMes);
+  const fixoMes=CONTAS_FIXAS.reduce((a,c)=>a+Number(c.valor||0),0);
+  el("fInvestTotal").textContent=centBRL(totalInvest);
+  el("fInvestMes").textContent=centBRL(fixoMes);
   el("fFatTotal").textContent=centBRL(fatTotal);
-  const res=fatTotal-despTotal; const rEl=el("fResultado");
+  const res=fatTotal-totalInvest; const rEl=el("fResultado");
   rEl.textContent=centBRL(res); rEl.style.color = res<0 ? "var(--terra)" : "var(--moss)";
-  // por categoria
+  // por categoria (compras + plantas + suportes, calculados)
   const porCat={}; COMPRAS.forEach(c=>{ const k=c.categoria||"outro"; porCat[k]=(porCat[k]||0)+compValor(c); });
+  if(plantasInv>0) porCat["__plantas"]=plantasInv;
+  if(suportesInv>0) porCat["__suportes"]=suportesInv;
+  const LBL={...CAT_LABEL, __plantas:"🌿 Plantas (kokedamas)", __suportes:"🧷 Suportes"};
   const cats=Object.entries(porCat).sort((a,b)=>b[1]-a[1]);
   el("fPorCategoria").innerHTML = cats.length ? cats.map(([k,v])=>{
-    const pct=despTotal>0?Math.round(v/despTotal*100):0;
-    return `<div class="item"><span>${CAT_LABEL[k]||k}</span><span>${centBRL(v)} <span class="muted">· ${pct}%</span></span></div>`;
+    const pct=totalInvest>0?Math.round(v/totalInvest*100):0;
+    return `<div class="item"><span>${LBL[k]||k}</span><span>${centBRL(v)} <span class="muted">· ${pct}%</span></span></div>`;
   }).join("") : "Nenhuma despesa registrada ainda.";
   // por mês (últimos 6)
   const meses=[]; for(let i=5;i>=0;i--){ const d=new Date(now.getFullYear(),now.getMonth()-i,1); meses.push(d.toISOString().slice(0,7)); }
@@ -1263,7 +1277,7 @@ function renderFinanceiro(){
   const maxM=Math.max(1,...meses.map(k=>Math.max(invByM[k]||0,fatByM[k]||0)));
   el("fPorMes").innerHTML = meses.map(k=>{
     const inv=invByM[k]||0, fat=fatByM[k]||0;
-    return `<div style="margin:9px 0 11px"><div style="display:flex;justify-content:space-between;align-items:baseline"><b>${nomeMesAbrev(k)}</b><span class="small muted">faturou ${centBRL(fat)} · investiu ${centBRL(inv)}</span></div>
+    return `<div style="margin:9px 0 11px"><div style="display:flex;justify-content:space-between;align-items:baseline"><b>${nomeMesAbrev(k)}</b><span class="small muted">faturou ${centBRL(fat)} · compras ${centBRL(inv)}</span></div>
       <div style="height:8px;background:var(--sand);border-radius:6px;margin-top:4px;overflow:hidden"><div style="height:100%;width:${Math.round(fat/maxM*100)}%;background:var(--moss)"></div></div>
       <div style="height:8px;background:var(--sand);border-radius:6px;margin-top:3px;overflow:hidden"><div style="height:100%;width:${Math.round(inv/maxM*100)}%;background:var(--terra)"></div></div>
     </div>`;
