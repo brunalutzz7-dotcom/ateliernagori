@@ -118,7 +118,7 @@
 <!-- App -->
 <div id="appView" class="hidden">
   <header class="top">
-    <b>✿ Atelier Nagori</b><span style="font-size:.62rem;opacity:.55;margin-left:7px;letter-spacing:.02em">v87 · Despesas: displays, papelaria, banners…</span>
+    <b>✿ Atelier Nagori</b><span style="font-size:.62rem;opacity:.55;margin-left:7px;letter-spacing:.02em">v88 · Financeiro: custo fixo mensal</span>
     <button class="sair" id="btnSair">Sair</button>
   </header>
   <div class="wrap">
@@ -160,6 +160,19 @@
           <div class="kpi"><div class="v lucro" id="fResultado">—</div><div class="l">Entrou − saiu</div></div>
         </div>
         <p class="small muted" style="margin-top:4px">"Investido" = tudo que você registrou em Compras (insumos, plantas, patrocínios…). "Entrou − saiu" = faturamento total menos tudo que investiu.</p>
+      </div>
+      <div class="card">
+        <h2>Custo fixo mensal</h2>
+        <p class="small muted" style="margin-top:-4px">Contas que se repetem todo mês (telefone, internet, aluguel…). Cadastre uma vez e acompanhe o total por mês.</p>
+        <div id="fFixoTotal" style="font-weight:700;font-size:1.05rem;color:var(--moss-deep);margin:8px 0">—</div>
+        <div id="fFixasLista" class="small muted"></div>
+        <form id="fixaForm" style="margin-top:10px">
+          <div class="grid2">
+            <label>Conta<input id="fixaNome" placeholder="ex.: Telefone (41) 9xxxx-xxxx"></label>
+            <label>Valor mensal (R$)<input id="fixaValor" type="text" inputmode="decimal" placeholder="89,90"></label>
+          </div>
+          <button class="btn" type="submit" style="margin-top:8px">+ Adicionar conta fixa</button>
+        </form>
       </div>
       <div class="card">
         <h2>Investido vs. faturado · 6 meses</h2>
@@ -1262,7 +1275,29 @@ function renderFinanceiro(){
     ? `<div style="font-weight:600;margin-bottom:5px;color:var(--ink)">Total em patrocínios: ${centBRL(patroTotal)}</div>`
       + patros.map(c=>`<div class="item"><span>${gesc(c.item||"Patrocínio")}${c.obs?' · '+gesc(c.obs):''}</span><span>${centBRL(c.valor)} <span class="muted">· ${(c.data||"").split("-").reverse().join("/")}</span></span></div>`).join("")
     : "Nenhum patrocínio registrado ainda.";
+  renderFixas();
 }
+// ---- Contas fixas mensais ----
+let CONTAS_FIXAS=[];
+function loadFixas(){ try{ CONTAS_FIXAS=JSON.parse(localStorage.getItem("contasFixasAN")||"[]")||[]; }catch(e){ CONTAS_FIXAS=[]; } }
+function saveFixas(){ try{ localStorage.setItem("contasFixasAN", JSON.stringify(CONTAS_FIXAS)); }catch(e){} }
+function renderFixas(){
+  if(!el("fFixasLista")) return;
+  loadFixas();
+  const tot=CONTAS_FIXAS.reduce((a,c)=>a+Number(c.valor||0),0);
+  if(el("fFixoTotal")) el("fFixoTotal").textContent = CONTAS_FIXAS.length ? `Total: ${centBRL(tot)} / mês  ·  ${centBRL(tot*12)} / ano` : "Nenhuma conta fixa ainda.";
+  el("fFixasLista").innerHTML = CONTAS_FIXAS.length ? CONTAS_FIXAS.map(c=>
+    `<div class="item"><span>${gesc(c.nome)}</span><span>${centBRL(c.valor)}/mês <button class="btn mini sec" style="margin-left:6px" onclick="removerFixa('${c.id}')">remover</button></span></div>`
+  ).join("") : "Cadastre abaixo as contas que se repetem todo mês.";
+}
+function removerFixa(id){ if(!confirm("Remover esta conta fixa?")) return; loadFixas(); CONTAS_FIXAS=CONTAS_FIXAS.filter(c=>c.id!==id); saveFixas(); renderFixas(); toast("Removida"); }
+if(el("fixaForm")) el("fixaForm").addEventListener("submit",(e)=>{
+  e.preventDefault(); loadFixas();
+  const nome=el("fixaNome").value.trim(), valor=numBR(el("fixaValor").value);
+  if(!nome||valor==null){ toast("Preencha a conta e o valor mensal"); return; }
+  CONTAS_FIXAS.push({ id:Date.now().toString(36)+Math.random().toString(36).slice(2,6), nome, valor });
+  saveFixas(); el("fixaForm").reset(); renderFixas(); toast("Conta fixa adicionada ✓");
+});
 
 // ---------- GRÁFICOS ----------
 const BRLc = n => { n=Number(n||0); if(n>=1000){ const s=n/1000; return "R$"+(s>=10||s%1===0?Math.round(s):s.toFixed(1).replace(".",","))+"k"; } return "R$"+Math.round(n); };
