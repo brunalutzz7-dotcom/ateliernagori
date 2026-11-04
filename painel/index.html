@@ -118,7 +118,7 @@
 <!-- App -->
 <div id="appView" class="hidden">
   <header class="top">
-    <b>✿ Atelier Nagori</b><span style="font-size:.62rem;opacity:.55;margin-left:7px;letter-spacing:.02em">v89 · Investido automático (plantas + suportes)</span>
+    <b>✿ Atelier Nagori</b><span style="font-size:.62rem;opacity:.55;margin-left:7px;letter-spacing:.02em">v90 · Gráficos: período "Tudo" (mês a mês)</span>
     <button class="sair" id="btnSair">Sair</button>
   </header>
   <div class="wrap">
@@ -252,6 +252,7 @@
         <button data-per="7d" class="on">7 dias</button>
         <button data-per="mes">Este mês</button>
         <button data-per="ano">Este ano</button>
+        <button data-per="todos">Tudo</button>
       </div>
       <div class="card">
         <h2 id="gTit1">Vendas — últimos 7 dias</h2>
@@ -1353,10 +1354,21 @@ function renderGraficos(){
   if(!el("gVendas")) return;
   const now=new Date();
   let buckets, inPeriod, idxOf, titSuf, perNome;
-  if(gPeriodo==="ano"){
+  const MESN=["Jan","Fev","Mar","Abr","Mai","Jun","Jul","Ago","Set","Out","Nov","Dez"];
+  if(gPeriodo==="todos"){
+    // um mês por coluna, do primeiro mês com venda até agora
+    let first=null;
+    VENDAS.forEach(v=>{ const d=new Date(v.criado_em); if(!isNaN(d) && (!first||d<first)) first=d; });
+    if(!first) first=new Date(now);
+    const fy=first.getFullYear(), fm=first.getMonth();
+    const nMon=Math.max(1,(now.getFullYear()-fy)*12+(now.getMonth()-fm)+1);
+    buckets=[]; for(let k=0;k<nMon;k++){ const d=new Date(fy,fm+k,1); buckets.push({label:MESN[d.getMonth()], sub:"/"+String(d.getFullYear()).slice(2), valor:0,custo:0,qtd:0}); }
+    inPeriod=d=> true;
+    idxOf=d=> (d.getFullYear()-fy)*12+(d.getMonth()-fm);
+    titSuf="desde a abertura"; perNome="período";
+  }else if(gPeriodo==="ano"){
     const y=now.getFullYear();
-    const mn=["Jan","Fev","Mar","Abr","Mai","Jun","Jul","Ago","Set","Out","Nov","Dez"];
-    buckets=mn.map(m=>({label:m, sub:"", valor:0,custo:0,qtd:0}));
+    buckets=MESN.map(m=>({label:m, sub:"", valor:0,custo:0,qtd:0}));
     inPeriod=d=> d.getFullYear()===y;
     idxOf=d=> d.getMonth();
     titSuf="este ano"; perNome="ano";
