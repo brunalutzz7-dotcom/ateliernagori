@@ -38,7 +38,7 @@ function fotoEmBreve() {
 }
 
 /* Versão das fotos: incremente ao trocar qualquer imagem para o navegador buscar a nova (evita cache). */
-const ASSET_V = "228";
+const ASSET_V = "229";
 const IMG = (id) => `assets/produtos/${id}.jpg?v=${ASSET_V}`;
 
 /* Categorias (seções do catálogo) ------------------------------------- */
@@ -187,6 +187,8 @@ const PRODUCTS = [
     descricao: "Quatro anos de condução num tronco já curvado, de casca fina e folhagem escamosa verde-clara. O junípero clássico dos jardins japoneses, no ponto em que ainda se deixa moldar — para acompanhar a árvore ganhar forma.", significado: "O junípero simboliza proteção, purificação e vida longa — guardião dos jardins japoneses.", preco: 800, img: IMG("bonsai-shimpaku-5") },
   { id: "bonsai-sakura", nome: "Bonsai Sakura", especie: "Prunus serrulata · aprox. 20 cm", categoria: "bonsai", ambiente: "externo", pet: "toxic",
     descricao: "A cerejeira japonesa em vinte centímetros. Floresce antes de folhar, e a flor dura poucos dias — é a imagem exata de nagori.", significado: "A cerejeira simboliza a beleza efêmera da vida — viver intensamente o instante que passa.", preco: 990, img: IMG("bonsai-sakura") },
+  { id: "bonsai-caliandra-4", nome: "Bonsai Caliandra Rosa · 4 anos", especie: "Calliandra brevipes · aprox. 40 cm", categoria: "bonsai", ambiente: "externo", pet: "toxic",
+    descricao: "Folhagem fininha e rendada que se fecha ao toque, e flores em pompom rosa que surgem ao longo do ano. Tronco já com casca e movimento, ramificação aberta — quatro anos de condução numa árvore cheia de delicadeza.", significado: "A caliandra, de flor em pompom, simboliza afeto, delicadeza e alegria que se renova a cada floração.", preco: 700, imgs: [IMG("bonsai-caliandra-4"), IMG("bonsai-caliandra-4-2"), IMG("bonsai-caliandra-4-3")] },
   { id: "bonsai-caliandra-9", nome: "Bonsai Caliandra Rosa · 9 anos", especie: "Calliandra brevipes · aprox. 50 cm", categoria: "bonsai", ambiente: "externo", pet: "toxic",
     descricao: "Tronco engrossado, casca rugosa e ramificação já aberta. Flor em pompom rosado quase o ano inteiro.", significado: "A caliandra, de flor em pompom, simboliza afeto, delicadeza e alegria que se renova.", preco: 1100, img: IMG("bonsai-caliandra-9") },
   { id: "bonsai-jasmim-anao-6", nome: "Bonsai Jasmim Anão · 6 anos", especie: "Jasminum sp. · anão · aprox. 30 cm", categoria: "bonsai", ambiente: "externo", pet: "toxic",
