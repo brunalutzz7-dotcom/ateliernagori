@@ -38,7 +38,7 @@ function fotoEmBreve() {
 }
 
 /* Versão das fotos: incremente ao trocar qualquer imagem para o navegador buscar a nova (evita cache). */
-const ASSET_V = "229";
+const ASSET_V = "230";
 const IMG = (id) => `assets/produtos/${id}.jpg?v=${ASSET_V}`;
 
 /* Categorias (seções do catálogo) ------------------------------------- */
@@ -189,6 +189,8 @@ const PRODUCTS = [
     descricao: "A cerejeira japonesa em vinte centímetros. Floresce antes de folhar, e a flor dura poucos dias — é a imagem exata de nagori.", significado: "A cerejeira simboliza a beleza efêmera da vida — viver intensamente o instante que passa.", preco: 990, img: IMG("bonsai-sakura") },
   { id: "bonsai-caliandra-4", nome: "Bonsai Caliandra Rosa · 4 anos", especie: "Calliandra brevipes · aprox. 40 cm", categoria: "bonsai", ambiente: "externo", pet: "toxic",
     descricao: "Folhagem fininha e rendada que se fecha ao toque, e flores em pompom rosa que surgem ao longo do ano. Tronco já com casca e movimento, ramificação aberta — quatro anos de condução numa árvore cheia de delicadeza.", significado: "A caliandra, de flor em pompom, simboliza afeto, delicadeza e alegria que se renova a cada floração.", preco: 700, imgs: [IMG("bonsai-caliandra-4"), IMG("bonsai-caliandra-4-2"), IMG("bonsai-caliandra-4-3")] },
+  { id: "bonsai-crassula-hobbit", nome: "Bonsai Suculenta Crassula Hobbit · 3 anos", especie: "Crassula ovata 'Hobbit' · suculenta · aprox. 40 cm", categoria: "bonsai", ambiente: "ambos", pet: "toxic",
+    descricao: "Uma variedade rara da jade: folhas tubulares de pontas avermelhadas, como pequenos dedinhos verdes, sobre um tronco grosso e suculento já ramificado em formato de árvore. Três anos de condução numa peça única. Quase não pede água — só bastante luz.", significado: "A jade é a árvore da amizade e da prosperidade — símbolo de riqueza que cresce devagar e de laços que duram.", preco: 500, imgs: [IMG("bonsai-crassula-hobbit"), IMG("bonsai-crassula-hobbit-2")] },
   { id: "bonsai-caliandra-9", nome: "Bonsai Caliandra Rosa · 9 anos", especie: "Calliandra brevipes · aprox. 50 cm", categoria: "bonsai", ambiente: "externo", pet: "toxic",
     descricao: "Tronco engrossado, casca rugosa e ramificação já aberta. Flor em pompom rosado quase o ano inteiro.", significado: "A caliandra, de flor em pompom, simboliza afeto, delicadeza e alegria que se renova.", preco: 1100, img: IMG("bonsai-caliandra-9") },
   { id: "bonsai-jasmim-anao-6", nome: "Bonsai Jasmim Anão · 6 anos", especie: "Jasminum sp. · anão · aprox. 30 cm", categoria: "bonsai", ambiente: "externo", pet: "toxic",
