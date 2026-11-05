@@ -38,7 +38,7 @@ function fotoEmBreve() {
 }
 
 /* Versão das fotos: incremente ao trocar qualquer imagem para o navegador buscar a nova (evita cache). */
-const ASSET_V = "227";
+const ASSET_V = "228";
 const IMG = (id) => `assets/produtos/${id}.jpg?v=${ASSET_V}`;
 
 /* Categorias (seções do catálogo) ------------------------------------- */
@@ -178,7 +178,7 @@ const PRODUCTS = [
   { id: "bonsai-amora-7", oculto: true, nome: "Bonsai Amora · 7 anos", especie: "Morus nigra · aprox. 50 cm", categoria: "bonsai", ambiente: "externo", pet: "safe",
     descricao: "Mesma altura da irmã mais velha, dez anos a menos de tronco. Cresce rápido e responde bem à poda — boa para quem quer aprender a conduzir.", significado: "A amoreira simboliza sabedoria, fartura e a doçura da vida colhida com paciência.", preco: 800, img: IMG("bonsai-amora-7") },
   { id: "bonsai-oliveira-16", nome: "Bonsai Oliveira · 16 anos", especie: "Olea europaea · aprox. 40 cm", categoria: "bonsai", ambiente: "externo", pet: "safe",
-    descricao: "Dezesseis anos de condução em um tronco que já carrega casca rugosa e curva definida. Folha prateada que troca de tom conforme a luz atravessa o dia.", significado: "A oliveira é símbolo universal de paz, sabedoria e prosperidade — a árvore da longevidade.", preco: 2700, img: IMG("bonsai-oliveira-16") },
+    descricao: "Dezesseis anos de condução em um tronco que já carrega casca rugosa e curva definida. Folha prateada que troca de tom conforme a luz atravessa o dia.", significado: "A oliveira é símbolo universal de paz, sabedoria e prosperidade — a árvore da longevidade.", preco: 2700, imgs: [IMG("bonsai-oliveira-16"), IMG("bonsai-oliveira-16-2")] },
   { id: "bonsai-pinheiro-negro-14", nome: "Bonsai Pinheiro Negro · 14 anos", especie: "Pinus thunbergii · 40 a 60 cm", categoria: "bonsai", ambiente: "externo", pet: "toxic",
     descricao: "A espécie mais reverenciada da tradição japonesa. Agulha rígida, casca em placas, silhueta construída agulha por agulha ao longo de catorze anos.", significado: "O pinheiro simboliza longevidade, força e imortalidade — a árvore mais reverenciada da tradição japonesa.", preco: 3000, img: IMG("bonsai-pinheiro-negro-14") },
   { id: "bonsai-shimpaku-16", nome: "Bonsai Shimpaku · 16 anos", especie: "Juniperus chinensis 'Shimpaku' · 30 a 40 cm", categoria: "bonsai", ambiente: "externo", pet: "toxic",
