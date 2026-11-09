@@ -122,7 +122,7 @@
 <!-- App -->
 <div id="appView" class="hidden">
   <header class="top">
-    <b>✿ Atelier Nagori</b><span style="font-size:.62rem;opacity:.55;margin-left:7px;letter-spacing:.02em">v98 · Ajuste fino bonsais interior</span>
+    <b>✿ Atelier Nagori</b><span style="font-size:.62rem;opacity:.55;margin-left:7px;letter-spacing:.02em">v99 · Reposição estoque suportes (pedido Mobili)</span>
     <button class="sair" id="btnSair">Sair</button>
   </header>
   <div class="wrap">
@@ -908,6 +908,23 @@ async function carregar(){
       localStorage.setItem("estoqueSeed", JSON.stringify([...seeded]));
       await Promise.all(estNovos.map(p=>sb.from("produtos").update({estoque:p.estoque}).eq("id",p.id)));
     }
+  }catch(e){}
+  // Reposição de estoque (pedidos recebidos) — SOMA no estoque atual, uma vez por aparelho
+  try{
+    const RESTOCK=[
+      { id:"pedido-mobili-1312", itens:{ "suporte-madeira-aro":17, "suporte-madeira-aro-escura":14 } },
+    ];
+    const feitos=new Set(JSON.parse(localStorage.getItem("restockAN")||"[]"));
+    const ups=[];
+    for(const r of RESTOCK){
+      if(feitos.has(r.id)) continue;
+      for(const [pid,qtd] of Object.entries(r.itens)){
+        const p=PRODUTOS.find(x=>x.id===pid);
+        if(p){ p.estoque=Number(p.estoque||0)+Number(qtd); ups.push(sb.from("produtos").update({estoque:p.estoque}).eq("id",pid)); }
+      }
+      feitos.add(r.id);
+    }
+    if(ups.length){ await Promise.all(ups); localStorage.setItem("restockAN", JSON.stringify([...feitos])); }
   }catch(e){}
   loadCafe();
   renderProdutosSelect(); renderPainel(); renderVendas(); renderProdutos(); renderCustos(); renderGraficos();
