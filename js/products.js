@@ -38,7 +38,7 @@ function fotoEmBreve() {
 }
 
 /* Versão das fotos: incremente ao trocar qualquer imagem para o navegador buscar a nova (evita cache). */
-const ASSET_V = "230";
+const ASSET_V = "231";
 const IMG = (id) => `assets/produtos/${id}.jpg?v=${ASSET_V}`;
 
 /* Categorias (seções do catálogo) ------------------------------------- */
@@ -73,7 +73,10 @@ const PRODUCTS = [
   { id: "aglaonema-branca", nome: "Aglaonema Branca", especie: "Aglaonema sp.", categoria: "dentro", ambiente: "interno", pet: "toxic",
     descricao: "Folhas quase totalmente creme salpicadas de verde — delicada e luminosa. Cor o ano todo sem depender de flor, gosta de luz indireta.", significado: "Conhecida como planta da sorte: simboliza prosperidade e boas energias, atraindo fortuna para a casa.", preco: 240, img: IMG("aglaonema-branca") },
   { id: "aglaonema-creta", nome: "Aglaonema Creta", especie: "Aglaonema sp.", categoria: "dentro", ambiente: "interno", pet: "toxic",
-    descricao: "Folhas marmorizadas em verde, creme e rosado — colorida o ano todo sem depender de flor. Fácil de cuidar, gosta de luz indireta clara.", significado: "Conhecida como planta da sorte: simboliza prosperidade e boas energias, atraindo fortuna para a casa.", preco: 240, img: IMG("aglaonema-creta") },  { id: "maranta-triostar-grande", nome: "Maranta Triostar", especie: "Stromanthe sanguinea 'Triostar'", categoria: "dentro", ambiente: "interno", pet: "safe",
+    descricao: "Folhas marmorizadas em verde, creme e rosado — colorida o ano todo sem depender de flor. Fácil de cuidar, gosta de luz indireta clara.", significado: "Conhecida como planta da sorte: simboliza prosperidade e boas energias, atraindo fortuna para a casa.", preco: 240, img: IMG("aglaonema-creta") },
+  { id: "mini-aglaonema-rosa-verde", nome: "Mini Aglaonema · Rosa e Verde", especie: "Aglaonema sp. · porte mini", categoria: "dentro", ambiente: "interno", pet: "toxic",
+    descricao: "A aglaonema em versão mini: folhas verdes salpicadas de creme e haste rosada, coloridas o ano todo sem depender de flor. Fácil de cuidar, gosta de luz indireta. Uma pecinha perfeita pra um cantinho especial.", significado: "Conhecida como planta da sorte: simboliza prosperidade e boas energias, atraindo fortuna para a casa.", preco: 165, img: IMG("mini-aglaonema-rosa-verde") },
+  { id: "maranta-triostar-grande", nome: "Maranta Triostar", especie: "Stromanthe sanguinea 'Triostar'", categoria: "dentro", ambiente: "interno", pet: "safe",
     descricao: "A Triostar em tamanho cheio: folhas longas pintadas de verde, creme e rosa, com o verso magenta vibrante. Uma folhagem de presença, das mais desejadas.", significado: "Planta da oração — ergue e baixa as folhas como em prece. Símbolo de gratidão e proteção do lar.", preco: 220, img: IMG("maranta-triostar-grande") },
   { id: "maranta-triostar", nome: "Mini Maranta Triostar", especie: "Stromanthe sanguinea 'Triostar'", categoria: "dentro", ambiente: "interno", pet: "safe",
     descricao: "Verde, creme e rosa na mesma folha, com verso inteiramente magenta. Levanta as folhas à noite e as baixa pela manhã.", significado: "Planta da oração — ergue e baixa as folhas como em prece. Símbolo de gratidão e proteção do lar.", preco: 155, img: IMG("maranta-triostar") },
