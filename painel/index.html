@@ -122,7 +122,7 @@
 <!-- App -->
 <div id="appView" class="hidden">
   <header class="top">
-    <b>✿ Atelier Nagori</b><span style="font-size:.62rem;opacity:.55;margin-left:7px;letter-spacing:.02em">v101 · Planilha café: taxa de cartão (débito/crédito)</span>
+    <b>✿ Atelier Nagori</b><span style="font-size:.62rem;opacity:.55;margin-left:7px;letter-spacing:.02em">v102 · Café: taxa débito 0,74% e crédito 2,75%</span>
     <button class="sair" id="btnSair">Sair</button>
   </header>
   <div class="wrap">
@@ -1086,7 +1086,7 @@ function exportarCafeCSV(){
   // Colunas: A Foto · B Peça · C Categoria · D Qtd · E Preço · F Total(=D*E) ·
   //   G No café desde · H Forma de pagamento · I Taxa(2,75%) · J Recebido · K 20% loja · L Nagori
   // Fórmulas usam só números inteiros/células (sem vírgula decimal) p/ funcionar em qualquer idioma do Sheets/Excel.
-  const linhas=[["Foto","Peça","Categoria","Quantidade","Preço de venda (R$)","Total (R$)","No café desde","Forma de pagamento","Taxa (2,75%)","Recebido","20% loja","Nagori"]];
+  const linhas=[["Foto","Peça","Categoria","Quantidade","Preço de venda (R$)","Total (R$)","No café desde","Forma de pagamento","Taxa cartão","Recebido","20% loja","Nagori"]];
   let tq=0;
   ids.forEach((id,i)=>{ const r=i+2; const q=CAFE[id].qtd; tq+=q;
     linhas.push([ foto(id), cafeNome(id), cafeCat(id), q, dec(cafePreco(id)),
@@ -1135,7 +1135,7 @@ async function buildCafeWB(ExcelJS, items){
   const COLS=[
     {t:"No café desde",w:13},{t:"Foto",w:11},{t:"Peça",w:32},{t:"Categoria",w:14},
     {t:"Preço",w:11},{t:"Qtd no café",w:10},{t:"Qtd vendida",w:11},{t:"Data da venda",w:13},
-    {t:"Forma de pagamento",w:17},{t:"Valor da venda",w:14},{t:"Taxa 2,75%",w:12},
+    {t:"Forma de pagamento",w:17},{t:"Valor da venda",w:14},{t:"Taxa cartão",w:12},
     {t:"Recebido",w:12},{t:"20% café",w:11},{t:"Nagori",w:12},
     {t:"Pago à Nagori?",w:13},{t:"Data do pagamento",w:15},
   ];
@@ -1167,7 +1167,7 @@ async function buildCafeWB(ExcelJS, items){
     ws.getCell(`D${r}`).value=it.categoria||""; ws.getCell(`E${r}`).value=Number(it.preco||0);
     ws.getCell(`F${r}`).value=it.qtdCafe!=null?it.qtdCafe:"";
     ws.getCell(`J${r}`).value={formula:`G${r}*E${r}`};
-    ws.getCell(`K${r}`).value={formula:`IF(AND(I${r}<>"",I${r}<>"Dinheiro",I${r}<>"Pix"),J${r}*0.0275,0)`};
+    ws.getCell(`K${r}`).value={formula:`IF(OR(LEFT(I${r},3)="Déb",LEFT(I${r},3)="Deb"),J${r}*0.0074,IF(AND(I${r}<>"",I${r}<>"Dinheiro",I${r}<>"Pix"),J${r}*0.0275,0))`};
     ws.getCell(`L${r}`).value={formula:`J${r}-K${r}`};
     ws.getCell(`M${r}`).value={formula:`L${r}*0.2`};
     ws.getCell(`N${r}`).value={formula:`L${r}-M${r}`};
