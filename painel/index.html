@@ -122,7 +122,7 @@
 <!-- App -->
 <div id="appView" class="hidden">
   <header class="top">
-    <b>✿ Atelier Nagori</b><span style="font-size:.62rem;opacity:.55;margin-left:7px;letter-spacing:.02em">v100 · Colunas e aros: estoque + custo com frete</span>
+    <b>✿ Atelier Nagori</b><span style="font-size:.62rem;opacity:.55;margin-left:7px;letter-spacing:.02em">v101 · Planilha café: taxa de cartão (débito/crédito)</span>
     <button class="sair" id="btnSair">Sair</button>
   </header>
   <div class="wrap">
@@ -1167,7 +1167,7 @@ async function buildCafeWB(ExcelJS, items){
     ws.getCell(`D${r}`).value=it.categoria||""; ws.getCell(`E${r}`).value=Number(it.preco||0);
     ws.getCell(`F${r}`).value=it.qtdCafe!=null?it.qtdCafe:"";
     ws.getCell(`J${r}`).value={formula:`G${r}*E${r}`};
-    ws.getCell(`K${r}`).value={formula:`IF(I${r}="Cartão",J${r}*0.0275,0)`};
+    ws.getCell(`K${r}`).value={formula:`IF(AND(I${r}<>"",I${r}<>"Dinheiro",I${r}<>"Pix"),J${r}*0.0275,0)`};
     ws.getCell(`L${r}`).value={formula:`J${r}-K${r}`};
     ws.getCell(`M${r}`).value={formula:`L${r}*0.2`};
     ws.getCell(`N${r}`).value={formula:`L${r}-M${r}`};
@@ -1194,7 +1194,7 @@ async function buildCafeWB(ExcelJS, items){
   for(let i=DSTART;i<=last;i++){
     ws.getCell(`H${i}`).numFmt="dd/mm/yyyy"; ws.getCell(`P${i}`).numFmt="dd/mm/yyyy";
     ws.getCell(`G${i}`).dataValidation={type:"whole",operator:"between",allowBlank:true,formulae:[0,`F${i}`],showErrorMessage:true,errorTitle:"Qtd vendida",error:"Não pode vender mais do que tem no café."};
-    ws.getCell(`I${i}`).dataValidation={type:"list",allowBlank:true,formulae:['"Dinheiro,Pix,Cartão"']};
+    ws.getCell(`I${i}`).dataValidation={type:"list",allowBlank:true,formulae:['"Dinheiro,Pix,Débito,Crédito"']};
     ws.getCell(`O${i}`).dataValidation={type:"list",allowBlank:true,formulae:['"Sim,Não"']};
   }
   if(n) ws.addConditionalFormatting({ref:`A${DSTART}:P${last}`,rules:[
