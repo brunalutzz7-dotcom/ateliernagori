@@ -38,7 +38,7 @@ function fotoEmBreve() {
 }
 
 /* Versão das fotos: incremente ao trocar qualquer imagem para o navegador buscar a nova (evita cache). */
-const ASSET_V = "231";
+const ASSET_V = "232";
 const IMG = (id) => `assets/produtos/${id}.jpg?v=${ASSET_V}`;
 
 /* Categorias (seções do catálogo) ------------------------------------- */
@@ -135,6 +135,10 @@ const PRODUCTS = [
   /* ---------- 01b · FOLHAGENS NOVAS (foto em breve) ---------- */
   { id: "anturio-rosa", nome: "Antúrio Rosa", especie: "Anthurium andraeanum · tamanho médio", categoria: "dentro", ambiente: "interno", pet: "toxic",
     descricao: "Espata rosada e brilhante que dura semanas abertas, sobre folhagem verde-escura lustrosa. Floresce quase o ano todo em luz indireta.", significado: "O antúrio simboliza hospitalidade, abundância e um amor caloroso — de coração aberto para quem chega.", preco: 250, imgs: [IMG("anturio-rosa"), IMG("anturio-rosa-2")] },
+  { id: "anturio-vermelho", nome: "Antúrio Vermelho", especie: "Anthurium andraeanum · tamanho médio", categoria: "dentro", ambiente: "interno", pet: "toxic",
+    descricao: "Espata vermelha intensa e brilhante que dura semanas aberta, sobre folhagem verde lustrosa. Floresce quase o ano todo em luz indireta — pura hospitalidade em forma de flor.", significado: "O antúrio simboliza hospitalidade, abundância e um amor caloroso — de coração aberto para quem chega.", preco: 250, img: IMG("anturio-vermelho") },
+  { id: "anturio-branco", oculto: true, nome: "Antúrio Branco", especie: "Anthurium andraeanum · tamanho médio", categoria: "dentro", ambiente: "interno", pet: "toxic",
+    descricao: "Espata branca e elegante, brilhante, que dura semanas aberta sobre folhagem verde lustrosa. Floresce quase o ano todo em luz indireta.", significado: "O antúrio simboliza hospitalidade, abundância e um amor caloroso — de coração aberto para quem chega.", preco: 250, img: IMG("anturio-branco") },
   { id: "anturio-coracao", nome: "Antúrio Coração", especie: "Anthurium clarinervium", categoria: "dentro", ambiente: "interno", pet: "toxic",
     descricao: "Folhas grandes em forma de coração, aveludadas e verde-escuras, com nervuras brancas bem marcadas. Uma folhagem de colecionador — pede luz indireta e umidade.", significado: "Suas folhas em coração são símbolo de amor, hospitalidade e afeto cultivado com carinho.", preco: 270, img: IMG("anturio-coracao") },
   { id: "lirio-da-paz", nome: "Lírio da Paz", especie: "Spathiphyllum wallisii", categoria: "dentro", ambiente: "interno", pet: "toxic",
