@@ -193,7 +193,7 @@ files.forEach((f) => fs.writeFileSync(path.join(catDir, f.name + ".html"), f.htm
 console.log("HTML gerado:", files.map((f) => f.name).join(", "));
 
 (async () => {
-  const b = await chromium.launch({ executablePath: "/opt/pw-browsers/chromium-1194/chrome-linux/chrome" });
+  const b = await chromium.launch({ executablePath: "/opt/pw-browsers/chromium" });
   const pg = await b.newPage();
   for (const f of files) {
     await pg.goto(`http://localhost:8231/catalogo/${f.name}.html`, { waitUntil: "networkidle" });
