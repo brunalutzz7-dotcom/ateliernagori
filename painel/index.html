@@ -122,7 +122,7 @@
 <!-- App -->
 <div id="appView" class="hidden">
   <header class="top">
-    <b>✿ Atelier Nagori</b><span style="font-size:.62rem;opacity:.55;margin-left:7px;letter-spacing:.02em">v105 · Venda: taxa débito 0,74% separada do crédito</span>
+    <b>✿ Atelier Nagori</b><span style="font-size:.62rem;opacity:.55;margin-left:7px;letter-spacing:.02em">v106 · Financeiro: DRE (custo variável, margem, resultado, estoque)</span>
     <button class="sair" id="btnSair">Sair</button>
   </header>
   <div class="wrap">
@@ -164,6 +164,11 @@
           <div class="kpi"><div class="v lucro" id="fResultado">—</div><div class="l">Entrou − saiu</div></div>
         </div>
         <p class="small muted" style="margin-top:4px">"Total investido" = suas Compras (insumos, patrocínios, contas…) + o custo das plantas e suportes (calculado automático do estoque + já vendidos: suporte pelo custo, kokedama só pelo valor da planta). "Entrou − saiu" = faturamento − total investido.</p>
+      </div>
+      <div class="card">
+        <h2>📊 DRE · Resultado (acumulado)</h2>
+        <p class="small muted" style="margin-top:-4px">Desde a abertura: o que entrou, o custo variável, a margem e o que sobrou de verdade.</p>
+        <div id="fDre"></div>
       </div>
       <div class="card">
         <h2>Custo fixo mensal</h2>
@@ -1322,6 +1327,50 @@ function renderFinanceiro(){
     ? `<div style="font-weight:600;margin-bottom:5px;color:var(--ink)">Total em patrocínios: ${centBRL(patroTotal)}</div>`
       + patros.map(c=>`<div class="item"><span>${gesc(c.item||"Patrocínio")}${c.obs?' · '+gesc(c.obs):''}</span><span>${centBRL(c.valor)} <span class="muted">· ${(c.data||"").split("-").reverse().join("/")}</span></span></div>`).join("")
     : "Nenhum patrocínio registrado ainda.";
+  // ===== DRE (margem de contribuição, acumulado desde a abertura) =====
+  if(el("fDre")){
+    const DESP_OPER=new Set(["patrocinio","telefone","displays","papelaria","banners","porta-adubo","outro"]);
+    let receita=0, deducoes=0, cmv=0;
+    VENDAS.forEach(v=>{
+      const val=Number(v.valor||0); receita+=val;
+      const obs=v.obs||"";
+      const cardRate = /Débito/.test(obs)?TAXA_DEBITO : (/(Crédito|Cartão)/.test(obs)?TAXA_CARTAO : 0);
+      const cafePct = v.canal==="cafe"?CAFE_PCT:0;
+      deducoes += val - val*(1-cardRate)*(1-cafePct);
+      cmv += Number(v.custo||0);
+    });
+    const receitaLiq=receita-deducoes;
+    const margem=receitaLiq-cmv;
+    const margemPct=receita>0?Math.round(margem/receita*100):0;
+    // meses abertos (do 1º movimento até agora)
+    const ds=[...VENDAS.map(v=>(v.criado_em||"").slice(0,7)), ...COMPRAS.map(c=>(c.data||"").slice(0,7))].filter(Boolean).sort();
+    let nMeses=1;
+    if(ds.length){ const [y1,m1]=ds[0].split("-").map(Number); nMeses=Math.max(1,(now.getFullYear()-y1)*12+(now.getMonth()+1-m1)+1); }
+    const despFixas=fixoMes*nMeses;
+    const despGerais=COMPRAS.filter(c=>DESP_OPER.has(c.categoria||"outro")).reduce((a,c)=>a+compValor(c),0);
+    const despOper=despFixas+despGerais;
+    const resultado=margem-despOper;
+    const custoVar=cmv+deducoes;
+    const estoqueValor=PRODUTOS.reduce((a,p)=>a+Number(p.estoque||0)*Number(p.custo||0),0);
+    const row=(l,v,o={})=>{
+      const st=(o.top?"border-top:1px solid var(--line);margin-top:5px;padding-top:7px;":"")+(o.strong?"font-weight:700;":"");
+      const vc=o.color?`color:${o.color};`:"";
+      return `<div class="item" style="${st}"><span>${l}</span><span style="${vc}white-space:nowrap">${centBRL(v)}${o.extra||""}</span></div>`;
+    };
+    el("fDre").innerHTML =
+        row("Receita bruta (faturamento)", receita)
+      + row('<span style="color:var(--terra)">(−) Taxas cartão + comissão café</span>', deducoes, {color:"var(--terra)"})
+      + row("= Receita líquida", receitaLiq, {top:true, strong:true})
+      + row('<span style="color:var(--terra)">(−) Custo das peças vendidas (CMV)</span>', cmv, {color:"var(--terra)"})
+      + row("= Margem de contribuição", margem, {top:true, strong:true, color:"var(--moss-deep)", extra:` <span class="muted" style="font-weight:400">· ${margemPct}%</span>`})
+      + row(`<span style="color:var(--terra)">(−) Despesas operacionais</span> <span class="muted">(fixas ×${nMeses}m + overhead)</span>`, despOper, {color:"var(--terra)"})
+      + row("= Resultado líquido", resultado, {top:true, strong:true, color: resultado<0?"var(--terra)":"var(--moss)"})
+      + `<div style="border-top:2px solid var(--line);margin-top:10px;padding-top:9px">`
+      + row("Custo variável total (CMV + taxas)", custoVar)
+      + row("💰 Valor parado em estoque", estoqueValor, {strong:true, color:"#c0963f"})
+      + `</div>`
+      + `<p class="small muted" style="margin-top:9px">O CMV já inclui musgo, adubo, embalagem e mão de obra (custo cadastrado da peça) — por isso as Despesas aqui são só as operacionais (marketing, telefone, displays…), pra não contar duas vezes. "Valor parado em estoque" = suas peças ainda não vendidas, pelo custo. O gasto detalhado com insumos está em "Despesas por categoria".</p>`;
+  }
   renderFixas();
 }
 // ---- Contas fixas mensais ----
