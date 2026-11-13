@@ -122,7 +122,7 @@
 <!-- App -->
 <div id="appView" class="hidden">
   <header class="top">
-    <b>✿ Atelier Nagori</b><span style="font-size:.62rem;opacity:.55;margin-left:7px;letter-spacing:.02em">v107 · Reprecificação folhagens (benchmark de mercado)</span>
+    <b>✿ Atelier Nagori</b><span style="font-size:.62rem;opacity:.55;margin-left:7px;letter-spacing:.02em">v108 · Painel: mais vendidas e vendas por canal (por mês)</span>
     <button class="sair" id="btnSair">Sair</button>
   </header>
   <div class="wrap">
@@ -139,8 +139,21 @@
         </div>
       </div>
       <div class="card">
-        <h2>Mais vendidas (mês)</h2>
-        <div id="topVendas" class="small muted">—</div>
+        <h2 style="display:flex;justify-content:space-between;align-items:center;gap:8px">📊 Desempenho por mês
+          <span style="display:inline-flex;align-items:center;gap:8px">
+            <button class="btn sec mini" type="button" id="pMesPrev" style="width:auto">◀</button>
+            <span id="pMesLabel" class="small" style="min-width:86px;text-align:center;font-weight:600"></span>
+            <button class="btn sec mini" type="button" id="pMesNext" style="width:auto">▶</button>
+          </span>
+        </h2>
+        <div style="font-weight:600;margin:4px 0 2px;color:var(--moss-deep);font-size:.92rem">Mais vendidas</div>
+        <div id="pTopVendas" class="small muted">—</div>
+        <div style="font-weight:600;margin:12px 0 2px;color:var(--moss-deep);font-size:.92rem">Vendas por canal</div>
+        <div id="pCanalMes" class="small muted">—</div>
+      </div>
+      <div class="card">
+        <h2>🏆 Canais — total desde a abertura</h2>
+        <div id="pCanalTotal" class="small muted">—</div>
       </div>
       <div class="card">
         <h2>⚠️ Estoque baixo</h2>
@@ -1250,6 +1263,23 @@ if(el("btnExportCafe")) el("btnExportCafe").addEventListener("click", exportarCa
 if(el("cafeBusca")) el("cafeBusca").addEventListener("input", renderCafeSelect);
 
 // ---------- PAINEL ----------
+let pMesRef=new Date(); pMesRef.setDate(1);
+function renderPainelMes(){
+  if(!el("pTopVendas")) return;
+  const mn=["Jan","Fev","Mar","Abr","Mai","Jun","Jul","Ago","Set","Out","Nov","Dez"];
+  if(el("pMesLabel")) el("pMesLabel").textContent=mn[pMesRef.getMonth()]+" "+pMesRef.getFullYear();
+  const n=new Date(); if(el("pMesNext")) el("pMesNext").disabled=(pMesRef.getFullYear()===n.getFullYear()&&pMesRef.getMonth()===n.getMonth());
+  const y=pMesRef.getFullYear(), m=pMesRef.getMonth();
+  const doMes=VENDAS.filter(x=>{const d=new Date(x.criado_em); return d.getFullYear()===y&&d.getMonth()===m;});
+  const cont={}; doMes.forEach(x=>{const k=x.produto_nome||"—"; cont[k]=(cont[k]||0)+Number(x.quantidade||1);});
+  const top=Object.entries(cont).sort((a,b)=>b[1]-a[1]).slice(0,6);
+  el("pTopVendas").innerHTML= top.length? top.map(([nm,q])=>`<div class="item"><span>${gesc(nm)}</span><b>${q}</b></div>`).join("") : "Nenhuma venda neste mês.";
+  const cc={}; doMes.forEach(x=>{const k=x.canal||"—"; (cc[k]=cc[k]||{n:0,v:0}); cc[k].n+=Number(x.quantidade||1); cc[k].v+=Number(x.valor||0);});
+  const canais=Object.entries(cc).sort((a,b)=>b[1].v-a[1].v);
+  el("pCanalMes").innerHTML= canais.length? canais.map(([k,o])=>`<div class="item"><span>${CANAL_LABEL[k]||k}</span><span><b>${o.n}</b> <span class="muted">· ${BRL(o.v)}</span></span></div>`).join("") : "Nenhuma venda neste mês.";
+}
+if(el("pMesPrev")) el("pMesPrev").addEventListener("click",()=>{ pMesRef=new Date(pMesRef.getFullYear(),pMesRef.getMonth()-1,1); renderPainelMes(); });
+if(el("pMesNext")) el("pMesNext").addEventListener("click",()=>{ const n=new Date(); if(pMesRef.getFullYear()===n.getFullYear()&&pMesRef.getMonth()===n.getMonth()) return; pMesRef=new Date(pMesRef.getFullYear(),pMesRef.getMonth()+1,1); renderPainelMes(); });
 function renderPainel(){
   const now=new Date(), y=now.getFullYear(), m=now.getMonth();
   const doMes = VENDAS.filter(x=>{const d=new Date(x.criado_em); return d.getFullYear()===y && d.getMonth()===m;});
@@ -1260,11 +1290,13 @@ function renderPainel(){
   const lucro = totalV-totalC; el("kLucro").textContent = BRL(lucro);
   el("kLucro").classList.toggle("neg", lucro<0);
   el("kEstoque").textContent = PRODUTOS.reduce((a,x)=>a+Number(x.estoque||0),0);
-  // top vendas
-  const cont={};
-  doMes.forEach(x=>{cont[x.produto_nome]=(cont[x.produto_nome]||0)+Number(x.quantidade||1);});
-  const top=Object.entries(cont).sort((a,b)=>b[1]-a[1]).slice(0,5);
-  el("topVendas").innerHTML = top.length? top.map(([n,q])=>`<div class="item"><span>${n}</span><b>${q}</b></div>`).join("") : "Nenhuma venda este mês ainda.";
+  // desempenho por mês (navegável)
+  renderPainelMes();
+  // canais — total desde a abertura
+  const ccT={}; VENDAS.forEach(x=>{const k=x.canal||"—"; (ccT[k]=ccT[k]||{n:0,v:0}); ccT[k].n+=Number(x.quantidade||1); ccT[k].v+=Number(x.valor||0);});
+  const totC=Object.values(ccT).reduce((a,o)=>a+o.v,0);
+  const canaisT=Object.entries(ccT).sort((a,b)=>b[1].v-a[1].v);
+  if(el("pCanalTotal")) el("pCanalTotal").innerHTML = canaisT.length ? canaisT.map(([k,o])=>{const pct=totC>0?Math.round(o.v/totC*100):0; return `<div class="item"><span>${CANAL_LABEL[k]||k}</span><span><b>${o.n} vendas</b> <span class="muted">· ${BRL(o.v)} · ${pct}%</span></span></div>`;}).join("") : "Nenhuma venda registrada ainda.";
   // estoque baixo
   const baixo=PRODUTOS.filter(p=>Number(p.estoque||0)<=1).sort((a,b)=>(a.estoque||0)-(b.estoque||0));
   el("estBaixo").innerHTML = baixo.length? baixo.slice(0,20).map(p=>`<div class="item"><span>${p.nome}</span><b class="est" style="color:${(p.estoque||0)===0?'var(--terra)':'inherit'}">${p.estoque||0}</b></div>`).join("") : "Tudo com estoque ok. 🌿";
