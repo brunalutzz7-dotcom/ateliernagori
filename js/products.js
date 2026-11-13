@@ -38,7 +38,7 @@ function fotoEmBreve() {
 }
 
 /* Versão das fotos: incremente ao trocar qualquer imagem para o navegador buscar a nova (evita cache). */
-const ASSET_V = "236";
+const ASSET_V = "237";
 const IMG = (id) => `assets/produtos/${id}.jpg?v=${ASSET_V}`;
 
 /* Categorias (seções do catálogo) ------------------------------------- */
@@ -109,6 +109,8 @@ const PRODUCTS = [
     descricao: "Folha em ponta de flecha, verde quase preto com nervura branca em relevo. Desenho gráfico, quase artificial de tão marcado.", significado: "Símbolo de boas-vindas e proteção do lar — suas folhas em flecha representam caminhos que se abrem.", preco: 200, img: IMG("alocasia-polly") },
   { id: "alocasia-golden-bone", nome: "Alocásia Golden Bone", especie: "Alocasia sp. 'Golden Bone'", categoria: "dentro", ambiente: "interno", pet: "toxic",
     descricao: "Folhas verde-claras em ponta de flecha sobre caules dourados marcantes, que dão nome e personalidade à peça. Uma alocásia de presença, cheia de vigor.", significado: "As alocásias são símbolo de proteção e prosperidade — suas folhas em flecha representam caminhos que se abrem.", preco: 190, img: IMG("alocasia-golden-bone") },
+  { id: "alocasia-platinum", nome: "Alocásia Platinum (Bisma)", especie: "Alocasia 'Bisma'", categoria: "dentro", ambiente: "interno", pet: "toxic",
+    descricao: "Folhas grandes em coração, verde-escuras e lustrosas, com nervuras verde-claras bem marcadas em relevo. Um desenho gráfico e elegante, de presença rara.", significado: "As alocásias são símbolo de proteção e prosperidade — suas folhas representam caminhos que se abrem.", preco: 240, img: IMG("alocasia-platinum") },
   { id: "begonia", nome: "Begônia Maculata", especie: "Begonia maculata", categoria: "dentro", ambiente: "interno", pet: "toxic",
     descricao: "Folhas em asa de anjo, verde-escuras salpicadas de prata por cima e vinho por baixo. Uma folhagem de desenho único, cheia de charme.", significado: "A begônia simboliza delicadeza e gratidão sincera — um gesto de carinho e apreço por quem se recebe.", preco: 200, imgs: [IMG("begonia"), IMG("begonia-2")] },
   { id: "zamioculca-mini", nome: "Zamioculca Mini", especie: "Zamioculcas zamiifolia · mini", categoria: "dentro", ambiente: "ambos", pet: "toxic",
