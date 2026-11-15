@@ -38,7 +38,7 @@ function fotoEmBreve() {
 }
 
 /* Versão das fotos: incremente ao trocar qualquer imagem para o navegador buscar a nova (evita cache). */
-const ASSET_V = "238";
+const ASSET_V = "239";
 const IMG = (id) => `assets/produtos/${id}.jpg?v=${ASSET_V}`;
 
 /* Categorias (seções do catálogo) ------------------------------------- */
@@ -60,6 +60,8 @@ const PRODUCTS = [
   /* ---------- 01 · FOLHAGENS ---------- */
   { id: "arranjo-orquidea", nome: "Tamandama Orquídea", peso: 3, especie: "Phalaenopsis com folhagens · composição única", categoria: "dentro", ambiente: "interno", pet: "safe",
     descricao: "Uma orquídea de porte menor combinada com folhagens delicadas sobre a mesma esfera de musgo vivo. A raiz da orquídea e o musgo se entendem naturalmente, e cada arranjo é montado de forma única.", significado: "A orquídea simboliza beleza rara, elegância e um amor que floresce com paciência.", preco: 350, imgs: [IMG("arranjo-orquidea"), IMG("arranjo-orquidea-2"), IMG("arranjo-orquidea-3")] },
+  { id: "kokedama-orquidea", nome: "Kokedama Orquídea", especie: "Phalaenopsis sp. · porte médio", categoria: "dentro", ambiente: "interno", pet: "safe",
+    descricao: "Orquídea Phalaenopsis de flores malhadas em branco e vinho, sobre esfera de musgo vivo. Uma peça de presença, elegante e de longa floração — encanta por semanas.", significado: "A orquídea simboliza beleza rara, elegância e um amor que floresce com paciência.", preco: 300, img: IMG("kokedama-orquidea") },
   { id: "maxi-tamandama", nome: "Maxi Tamandama Orquídea", peso: 4, especie: "Phalaenopsis de grande porte com folhagens · composição única", categoria: "dentro", ambiente: "interno", pet: "safe",
     descricao: "A versão grande do nosso Tamandama: uma orquídea de maior porte — cerca de 30 cm mais alta — combinada com folhagens generosas sobre a mesma esfera de musgo vivo. Uma peça imponente, que leva mais tempo e mais cuidado para montar. Cada arranjo é único.", significado: "A orquídea simboliza beleza rara, elegância e um amor que floresce com paciência.", preco: 430, imgs: [IMG("maxi-tamandama"), IMG("maxi-tamandama-2"), IMG("maxi-tamandama-3"), IMG("maxi-tamandama-4"), IMG("maxi-tamandama-5")] },
   { id: "tamandama-diversos", nome: "Tamandama Diversos", peso: 3, especie: "Composição de folhagens diversas · peça única", categoria: "dentro", ambiente: "interno", pet: "toxic",
