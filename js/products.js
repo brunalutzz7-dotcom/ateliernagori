@@ -38,7 +38,7 @@ function fotoEmBreve() {
 }
 
 /* Versão das fotos: incremente ao trocar qualquer imagem para o navegador buscar a nova (evita cache). */
-const ASSET_V = "240";
+const ASSET_V = "241";
 const IMG = (id) => `assets/produtos/${id}.jpg?v=${ASSET_V}`;
 
 /* Categorias (seções do catálogo) ------------------------------------- */
@@ -157,7 +157,7 @@ const PRODUCTS = [
     descricao: "Frondes delicadas de folíolos miúdos, verde vivo. Adora umidade — ótima em banheiro claro ou pertinho de outras plantas.", significado: "A avenca simboliza delicadeza, sinceridade e a beleza discreta — presente de carinho verdadeiro.", preco: 190, img: IMG("avenca") },
   { id: "samambaia-estrela-azul", nome: "Samambaia Estrela Azul", especie: "Phlebodium aureum 'Blue Star'", categoria: "dentro", ambiente: "ambos", pet: "safe",
     descricao: "Frondes largas em tom verde-azulado, bem diferentes da samambaia comum. Adora umidade e luz filtrada.", significado: "A samambaia simboliza proteção, prosperidade e vínculos que se renovam — tradição de casa protegida.", preco: 220, img: IMG("samambaia-estrela-azul") },
-  { id: "renda-francesa", nome: "Renda Francesa · grande", especie: "Davallia · samambaia renda francesa · peça grande", categoria: "dentro", ambiente: "ambos", pet: "safe",
+  { id: "renda-francesa", oculto: true, nome: "Renda Francesa · grande", especie: "Davallia · samambaia renda francesa · peça grande", categoria: "dentro", ambiente: "ambos", pet: "safe",
     descricao: "Frondes finíssimas e muito recortadas, leves como renda, caindo em cascata — peça de grande porte, cheia de movimento. Adora umidade e luz indireta.", significado: "A samambaia simboliza proteção e prosperidade, e vínculos que se renovam ao longo do tempo.", preco: 270, img: IMG("renda-francesa") },
   { id: "bonsai-crassula-hobbit", nome: "Suculenta Crassula Hobbit · 3 anos", especie: "Crassula ovata 'Hobbit' · suculenta · aprox. 40 cm", categoria: "ambos", ambiente: "ambos", pet: "toxic",
     descricao: "Uma variedade rara da jade: folhas tubulares de pontas avermelhadas, como pequenos dedinhos verdes, sobre um tronco grosso e suculento já ramificado em formato de árvore. Três anos de condução numa peça única. Quase não pede água — só bastante luz.", significado: "A jade é a árvore da amizade e da prosperidade — símbolo de riqueza que cresce devagar e de laços que duram.", preco: 290, imgs: [IMG("bonsai-crassula-hobbit"), IMG("bonsai-crassula-hobbit-2")] },
@@ -242,7 +242,7 @@ const PRODUCTS = [
     descricao: "Torre vazada de ferro, alta e esguia, em acabamento dourado. Leva a kokedama à altura do olhar e vira peça de decoração por si só — ideal para canto de sala ou entrada. 80 cm de altura.", preco: 200, img: "assets/bases/coluna-dourada-80.jpg" },
   { id: "suporte-cubo-ferro-alto", nome: "Cubo de ferro · alto", especie: "Suporte especial · ferro preto · aro interno", categoria: "suporte", suporte: true,
     descricao: "Mesmo desenho, mais alto e mais estreito. Para peça de folhagem longa, que precisa de espaço para cair.", preco: 170, imgs: ["assets/bases/cubo-ferro-alto.jpg", "assets/bases/cubo-ferro-alto-uso.jpg"] },
-  { id: "suporte-tronco-natural", nome: "Tronco natural", especie: "Suporte especial · tronco 13 cm · altura 8,5 cm · aro 11 cm", categoria: "suporte", suporte: true,
+  { id: "suporte-tronco-natural", oculto: true, nome: "Tronco natural", especie: "Suporte especial · tronco 13 cm · altura 8,5 cm · aro 11 cm", categoria: "suporte", suporte: true,
     descricao: "Tronco com casca, cada um diferente do outro. Combina com bonsai de casca rugosa, e o peso sustenta maxi kokedama.", preco: 170, imgs: ["assets/bases/tronco-natural.jpg", "assets/bases/tronco-natural-uso.jpg"] },
   { id: "suporte-tripe-60", nome: "Tripé de ferro · 60 cm", especie: "Suporte de chão · ferro preto · aro 18 cm · altura 60 cm", categoria: "suporte", suporte: true,
     descricao: "O tripé mais alto, para as maxi kokedamas e peças de grande porte ganharem destaque de canto de sala.", preco: 120, imgs: ["assets/bases/tripe-60.jpg", "assets/bases/tripe-60-uso.jpg"] },
