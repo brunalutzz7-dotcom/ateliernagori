@@ -122,7 +122,7 @@
 <!-- App -->
 <div id="appView" class="hidden">
   <header class="top">
-    <b>✿ Atelier Nagori</b><span style="font-size:.62rem;opacity:.55;margin-left:7px;letter-spacing:.02em">v114 · Kokedama Orquídea adicionada</span>
+    <b>✿ Atelier Nagori</b><span style="font-size:.62rem;opacity:.55;margin-left:7px;letter-spacing:.02em">v115 · tempo real + modo café</span>
     <button class="sair" id="btnSair">Sair</button>
   </header>
   <div class="wrap">
@@ -508,6 +508,60 @@ function show(id){ ["painel","graficos","financeiro","vendas","cafe","compras","
   if(id==="cafe") renderCafe();
   if(id==="financeiro") renderFinanceiro(); }
 
+// ---------- Modo café (atendente) + atualização ao vivo ----------
+let CAFE_MODE=false;
+function computeMode(email){
+  let sticky=false;
+  try{
+    const u=new URLSearchParams(location.search);
+    if(u.has("cafe")) localStorage.setItem("anCafe","1");
+    if(u.has("admin")) localStorage.removeItem("anCafe");
+    sticky = localStorage.getItem("anCafe")==="1";
+  }catch(e){}
+  const em=(email||"").toLowerCase();
+  CAFE_MODE = sticky || em.indexOf("cafe")===0;
+}
+function applyMode(){
+  const ocultar = CAFE_MODE ? ["painel","graficos","financeiro","compras","custos"] : [];
+  document.querySelectorAll("nav.tabs button").forEach(b=>{ b.style.display = ocultar.includes(b.dataset.tab) ? "none" : ""; });
+  document.body.classList.toggle("cafe-mode", CAFE_MODE);
+  if(CAFE_MODE) show("cafe");
+}
+let rtBusy=false, rtTimer=null, rtStarted=false;
+async function refreshDados(){
+  if(rtBusy||!sb) return; rtBusy=true;
+  try{
+    const [p,v]=await Promise.all([
+      sb.from("produtos").select("*").order("nome"),
+      sb.from("vendas").select("*").order("criado_em",{ascending:false}).limit(300),
+    ]);
+    if(!p.error&&p.data) PRODUTOS=p.data;
+    if(!v.error&&v.data) VENDAS=v.data;
+    PRODUTOS.forEach(pp=>{ if(pp.custo_detalhe!=null){ try{ CUSTOS_OVERRIDE[pp.id]=(typeof pp.custo_detalhe==="string")?JSON.parse(pp.custo_detalhe):pp.custo_detalhe; }catch(e){} } });
+    renderProdutosSelect(); renderPainel(); renderVendas(); renderProdutos(); renderCustos(); renderGraficos(); renderCafe(); renderFinanceiro();
+  }catch(e){} finally{ rtBusy=false; }
+}
+function scheduleRefresh(){
+  clearTimeout(rtTimer);
+  rtTimer=setTimeout(function run(){
+    const ae=document.activeElement;
+    const digitando = ae && /^(INPUT|SELECT|TEXTAREA)$/.test(ae.tagName);
+    const modalAberto = el("cafeVendaModal") && !el("cafeVendaModal").classList.contains("hidden");
+    if(digitando || modalAberto){ rtTimer=setTimeout(run,2500); return; }
+    refreshDados();
+  }, 1200);
+}
+function setupRealtime(){
+  if(rtStarted||!sb) return; rtStarted=true;
+  try{
+    sb.channel("an-live")
+      .on("postgres_changes",{event:"*",schema:"public",table:"vendas"}, scheduleRefresh)
+      .on("postgres_changes",{event:"*",schema:"public",table:"produtos"}, scheduleRefresh)
+      .subscribe();
+  }catch(e){}
+  setInterval(scheduleRefresh, 15000);
+}
+
 // ---------- inicialização ----------
 if(!window.supabase || SUPABASE_URL.startsWith("COLE") || SUPABASE_ANON.startsWith("COLE")){
   el("cfgWarn").classList.remove("hidden");
@@ -846,7 +900,11 @@ if(el("gMesNext")) el("gMesNext").addEventListener("click", ()=>{ const n=new Da
 async function entrar(){
   el("loginView").classList.add("hidden");
   el("appView").classList.remove("hidden");
+  try{ const {data}=await sb.auth.getUser(); computeMode(data&&data.user?data.user.email:""); }catch(e){ computeMode(""); }
+  applyMode();
   await carregar();
+  applyMode();
+  setupRealtime();
 }
 
 async function carregar(){
@@ -1730,7 +1788,7 @@ function renderVendas(){
         <div class="small muted">${d} · <span class="pill ${v.canal}">${CANAL_LABEL[v.canal]||v.canal}</span>${v.obs?" · "+v.obs:""}</div></div>
       <div style="text-align:right">
         <div>${BRL(v.valor)}</div>
-        ${lucro!=null?`<div class="small lucro ${lucro<0?'neg':''}">lucro ${BRL(lucro)}</div>`:`<div class="small muted">sem custo</div>`}
+        ${CAFE_MODE?"":(lucro!=null?`<div class="small lucro ${lucro<0?'neg':''}">lucro ${BRL(lucro)}</div>`:`<div class="small muted">sem custo</div>`)}
         <button class="btn mini sec" style="margin-top:4px" onclick="excluirVenda(${v.id})">excluir</button>
       </div></div>`;
   }).join("");
@@ -1758,8 +1816,8 @@ function renderProdutos(){
       ${thumb(p)}
       <div style="flex:1">
         <div>${p.nome}</div>
-        <div class="small muted">${p.categoria||""} · venda ${BRL(p.preco)} · custo
-          <a href="#" onclick="editarCusto('${p.id}');return false">${p.custo!=null?BRL(p.custo):"definir"}</a></div>
+        <div class="small muted">${p.categoria||""} · venda ${BRL(p.preco)}${CAFE_MODE?"":` · custo
+          <a href="#" onclick="editarCusto('${p.id}');return false">${p.custo!=null?BRL(p.custo):"definir"}</a>`}</div>
       </div>
       <div class="row stepper">
         <button onclick="ajustaEstoque('${p.id}',-1)">−</button>
