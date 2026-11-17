@@ -122,7 +122,7 @@
 <!-- App -->
 <div id="appView" class="hidden">
   <header class="top">
-    <b>✿ Atelier Nagori</b><span style="font-size:.62rem;opacity:.55;margin-left:7px;letter-spacing:.02em">v115 · tempo real + modo café</span>
+    <b>✿ Atelier Nagori</b><span style="font-size:.62rem;opacity:.55;margin-left:7px;letter-spacing:.02em">v116 · café compartilhado na nuvem</span>
     <button class="sair" id="btnSair">Sair</button>
   </header>
   <div class="wrap">
@@ -538,6 +538,7 @@ async function refreshDados(){
     if(!p.error&&p.data) PRODUTOS=p.data;
     if(!v.error&&v.data) VENDAS=v.data;
     PRODUTOS.forEach(pp=>{ if(pp.custo_detalhe!=null){ try{ CUSTOS_OVERRIDE[pp.id]=(typeof pp.custo_detalhe==="string")?JSON.parse(pp.custo_detalhe):pp.custo_detalhe; }catch(e){} } });
+    const cc=await fetchCafeCloud(); if(cc){ cafeCloud=true; CAFE=cc.cafe; CAFE_LOG=cc.log; }
     renderProdutosSelect(); renderPainel(); renderVendas(); renderProdutos(); renderCustos(); renderGraficos(); renderCafe(); renderFinanceiro();
   }catch(e){} finally{ rtBusy=false; }
 }
@@ -557,6 +558,8 @@ function setupRealtime(){
     sb.channel("an-live")
       .on("postgres_changes",{event:"*",schema:"public",table:"vendas"}, scheduleRefresh)
       .on("postgres_changes",{event:"*",schema:"public",table:"produtos"}, scheduleRefresh)
+      .on("postgres_changes",{event:"*",schema:"public",table:"cafe"}, scheduleRefresh)
+      .on("postgres_changes",{event:"*",schema:"public",table:"cafe_log"}, scheduleRefresh)
       .subscribe();
   }catch(e){}
   setInterval(scheduleRefresh, 15000);
@@ -1005,7 +1008,7 @@ async function carregar(){
     }
     if(ups.length){ await Promise.all(ups); localStorage.setItem("restockAN", JSON.stringify([...feitos])); }
   }catch(e){}
-  loadCafe();
+  await loadCafe();
   renderProdutosSelect(); renderPainel(); renderVendas(); renderProdutos(); renderCustos(); renderGraficos();
   renderCafe(); renderFinanceiro();
 }
@@ -1013,10 +1016,44 @@ async function carregar(){
 // ---------- CAFÉ ----------
 // Controle das peças que estão no café. Salvo neste navegador (localStorage),
 // no mesmo esquema das compras e dos portes. CAFE = estado atual; CAFE_LOG = histórico.
-let CAFE={}, CAFE_LOG=[];
-function loadCafe(){
+let CAFE={}, CAFE_LOG=[], cafeCloud=false;
+async function fetchCafeCloud(){
+  if(!sb) return null;
+  try{
+    const [c,l]=await Promise.all([
+      sb.from("cafe").select("*"),
+      sb.from("cafe_log").select("*").order("data",{ascending:false}).limit(80),
+    ]);
+    if(c.error||l.error) return null;
+    const obj={}; (c.data||[]).forEach(r=>{ obj[r.produto_id]={qtd:Number(r.qtd||0), desde:r.desde}; });
+    const log=(l.data||[]).map(r=>({data:r.data,id:r.produto_id,nome:r.nome,acao:r.acao,qtd:Number(r.qtd||0)}));
+    return {cafe:obj, log};
+  }catch(e){ return null; }
+}
+async function migrarCafeParaNuvem(){
+  try{
+    const rows=Object.keys(CAFE).filter(id=>CAFE[id].qtd>0).map(id=>({produto_id:id, qtd:CAFE[id].qtd, desde:CAFE[id].desde||new Date().toISOString()}));
+    if(rows.length) await sb.from("cafe").upsert(rows);
+    const logs=(CAFE_LOG||[]).slice(0,80).reverse().map(l=>({data:l.data, produto_id:l.id, nome:l.nome, acao:l.acao, qtd:l.qtd}));
+    if(logs.length) await sb.from("cafe_log").insert(logs);
+  }catch(e){}
+}
+async function loadCafe(){
   try{ CAFE=JSON.parse(localStorage.getItem("cafeAN")||"{}")||{}; }catch(e){ CAFE={}; }
   try{ CAFE_LOG=JSON.parse(localStorage.getItem("cafeLogAN")||"[]")||[]; }catch(e){ CAFE_LOG=[]; }
+  const cloud=await fetchCafeCloud();
+  if(!cloud){ cafeCloud=false; return; }
+  cafeCloud=true;
+  const nuvemVazia = Object.keys(cloud.cafe).length===0 && cloud.log.length===0;
+  const temLocal = Object.keys(CAFE).length>0 || CAFE_LOG.length>0;
+  let migrou=false; try{ migrou = localStorage.getItem("cafeMigrado")==="1"; }catch(e){}
+  if(nuvemVazia && temLocal && !migrou){
+    await migrarCafeParaNuvem();
+    try{ localStorage.setItem("cafeMigrado","1"); }catch(e){}
+    const c2=await fetchCafeCloud(); if(c2){ CAFE=c2.cafe; CAFE_LOG=c2.log; }
+  }else{
+    CAFE=cloud.cafe; CAFE_LOG=cloud.log;
+  }
 }
 function saveCafe(){ try{ localStorage.setItem("cafeAN",JSON.stringify(CAFE)); localStorage.setItem("cafeLogAN",JSON.stringify(CAFE_LOG)); }catch(e){} }
 function cafeNome(id){ const p=PRODUTOS.find(x=>x.id===id); return p?p.nome:id; }
@@ -1028,21 +1065,33 @@ function cafeFotoURL(id){
   return id.indexOf("suporte-")===0 ? base+"bases/"+id.slice(8)+".jpg" : base+"produtos/"+id+".jpg";
 }
 function cafeDataBR(iso){ try{ return new Date(iso).toLocaleDateString("pt-BR",{day:"2-digit",month:"2-digit"}); }catch(e){ return ""; } }
-function cafeAdd(id,q){
+async function cafeAdd(id,q){
   if(!id||q<=0) return;
   if(!CAFE[id]) CAFE[id]={qtd:0,desde:new Date().toISOString()};
   if(!CAFE[id].desde) CAFE[id].desde=new Date().toISOString();
   CAFE[id].qtd+=q;
-  CAFE_LOG.unshift({data:new Date().toISOString(),id,nome:cafeNome(id),acao:"enviou",qtd:q});
+  const ent={data:new Date().toISOString(),id,nome:cafeNome(id),acao:"enviou",qtd:q};
+  CAFE_LOG.unshift(ent);
   saveCafe(); renderCafe();
+  if(cafeCloud){ try{
+    await sb.from("cafe").upsert({produto_id:id, qtd:CAFE[id].qtd, desde:CAFE[id].desde});
+    await sb.from("cafe_log").insert({data:ent.data, produto_id:id, nome:ent.nome, acao:"enviou", qtd:q});
+  }catch(e){} }
 }
-function cafeTira(id,q){
+async function cafeTira(id,q){
   if(!CAFE[id]) return;
   q=Math.min(q,CAFE[id].qtd); if(q<=0) return;
   CAFE[id].qtd-=q;
-  CAFE_LOG.unshift({data:new Date().toISOString(),id,nome:cafeNome(id),acao:"tirou",qtd:q});
-  if(CAFE[id].qtd<=0) delete CAFE[id];
+  const ent={data:new Date().toISOString(),id,nome:cafeNome(id),acao:"tirou",qtd:q};
+  CAFE_LOG.unshift(ent);
+  const zerou=CAFE[id].qtd<=0, novoQtd=CAFE[id].qtd;
+  if(zerou) delete CAFE[id];
   saveCafe(); renderCafe();
+  if(cafeCloud){ try{
+    if(zerou) await sb.from("cafe").delete().eq("produto_id",id);
+    else await sb.from("cafe").update({qtd:novoQtd}).eq("produto_id",id);
+    await sb.from("cafe_log").insert({data:ent.data, produto_id:id, nome:ent.nome, acao:"tirou", qtd:q});
+  }catch(e){} }
 }
 function enviarCafe(){
   const id=el("cafeProd").value; const q=Math.max(1,parseInt(el("cafeQtd").value,10)||1);
@@ -1123,7 +1172,7 @@ async function confirmarVendaCafe(){
   const {error}=await sb.from("vendas").insert([row]);
   if(error){ toast("Erro ao salvar venda: "+error.message); return; }
   if(p){ const novo=Math.max(0,Number(p.estoque||0)-t.q); await sb.from("produtos").update({estoque:novo}).eq("id",cvId); }
-  cafeTira(cvId,t.q);
+  await cafeTira(cvId,t.q);
   fecharCvModal();
   toast("Venda no café registrada ☕");
   await carregar();
