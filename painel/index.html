@@ -122,7 +122,7 @@
 <!-- App -->
 <div id="appView" class="hidden">
   <header class="top">
-    <b>✿ Atelier Nagori</b><span style="font-size:.62rem;opacity:.55;margin-left:7px;letter-spacing:.02em">v118 · recupera café da nuvem</span>
+    <b>✿ Atelier Nagori</b><span style="font-size:.62rem;opacity:.55;margin-left:7px;letter-spacing:.02em">v119 · aba café: central de vendas</span>
     <button class="sair" id="btnSair">Sair</button>
   </header>
   <div class="wrap">
@@ -432,26 +432,28 @@
       </div>
 
       <div class="card" id="cafePlanilhaCard">
-        <h2>📝 Vendas do café</h2>
-        <p class="small muted" style="margin-top:-4px">Preencha quanto vendeu de cada peça e a forma de pagamento. Ao clicar em registrar, o app lança as vendas e baixa o estoque automaticamente. ☕</p>
+        <h2>📝 Registrar venda <span id="cafeTotal" class="small muted"></span></h2>
+        <p class="small muted" style="margin-top:-4px">Preencha quanto vendeu de cada peça e a forma de pagamento. O app calcula a taxa do cartão, o café (20%) e quanto fica para a Nagori, registra a venda e baixa o estoque. ☕</p>
         <div id="cafePlanilha" style="margin-top:8px"></div>
-        <button class="btn" id="btnRegistrarCafe" type="button" style="margin-top:12px;width:auto">✓ Registrar vendas</button>
+        <div id="cafeResumo" class="small" style="margin-top:10px"></div>
+        <button class="btn" id="btnRegistrarCafe" type="button" style="margin-top:12px;width:auto">✓ Registrar venda</button>
       </div>
 
-      <div class="card">
+      <div class="card" id="cafeHistVendasCard">
         <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap">
-          <h2 style="margin:0">No café agora <span id="cafeTotal" class="small muted"></span></h2>
+          <h2 style="margin:0">📋 Histórico de vendas</h2>
           <div style="display:flex;gap:8px;flex-wrap:wrap">
-            <button class="btn mini" id="btnExportCafe" type="button" style="width:auto">📊 Exportar planilha</button>
-            <button class="btn sec mini" id="btnCopiarCafe" type="button">📋 Copiar texto</button>
+            <button class="btn mini" id="btnExportCafe" type="button" style="width:auto">📊 Exportar</button>
+            <button class="btn sec mini" id="btnCopiarCafe" type="button">📋 Copiar</button>
           </div>
         </div>
-        <div id="cafeLista" style="margin-top:10px"></div>
+        <div id="cafeTotais" style="margin-top:10px"></div>
+        <div id="cafeVendasLista" style="margin-top:12px"></div>
       </div>
 
-      <div class="card">
-        <h2>Histórico de movimentações</h2>
-        <p class="small muted" style="margin-top:-4px">Tudo que entrou e saiu do café, com data — pra conferência com as vendas.</p>
+      <div class="card" id="cafeMovCard">
+        <h2>Movimentações do café</h2>
+        <p class="small muted" style="margin-top:-4px">Peças que entraram e saíram do café (enviou/tirou), com data.</p>
         <div id="cafeHist" class="small"></div>
       </div>
     </section>
@@ -533,6 +535,7 @@ function applyMode(){
   document.querySelectorAll("nav.tabs button").forEach(b=>{ b.style.display = ocultar.includes(b.dataset.tab) ? "none" : ""; });
   document.body.classList.toggle("cafe-mode", CAFE_MODE);
   const ec=el("cafeEnviarCard"); if(ec) ec.style.display = CAFE_MODE ? "none" : "";
+  const mc=el("cafeMovCard"); if(mc) mc.style.display = CAFE_MODE ? "none" : "";
   if(CAFE_MODE) show("cafe");
 }
 let rtBusy=false, rtTimer=null, rtStarted=false;
@@ -1132,29 +1135,66 @@ function renderCafeSelect(){
   if(cur && [...sel.options].some(o=>o.value===cur)) sel.value=cur;
 }
 function renderCafe(){
-  if(!el("cafeLista")) return;
+  if(!el("cafePlanilha")) return;
   renderCafeSelect();
-  const ids=Object.keys(CAFE).filter(id=>CAFE[id].qtd>0).sort((a,b)=>(ORDEM_SITE[a]??9999)-(ORDEM_SITE[b]??9999));
+  const ids=cafeIdsOrdenados();
   const total=ids.reduce((a,id)=>a+CAFE[id].qtd,0);
   const totVal=ids.reduce((a,id)=>a+CAFE[id].qtd*cafePreco(id),0);
-  if(el("cafeTotal")) el("cafeTotal").textContent = total ? `· ${total} peça(s) · ${BRL(totVal)}` : "";
-  el("cafeLista").innerHTML = ids.length ? ids.map(id=>`
-    <div class="item">
-      ${thumb(PRODUTOS.find(p=>p.id===id)||{id})}
-      <div style="flex:1"><div>${gesc(cafeNome(id))}</div>
-        <div class="small muted">${BRL(cafePreco(id))} · no café desde ${cafeDataBR(CAFE[id].desde)}</div></div>
-      <div class="row stepper">
-        <button onclick="cafeTira('${id}',1)">−</button>
-        <span class="est">${CAFE[id].qtd}</span>
-        <button onclick="cafeAdd('${id}',1)">+</button>
-      </div>
-      <button class="btn mini" style="margin-left:6px" onclick="venderNoCafe('${id}')">Vendeu</button>
-      <button class="btn sec mini" style="margin-left:4px" onclick="cafeTirarConfirm('${id}')">Tirar</button>
-    </div>`).join("") : `<p class="small muted">Nenhuma peça no café agora. Use o campo acima para enviar. ☕</p>`;
+  if(el("cafeTotal")) el("cafeTotal").textContent = total ? `· ${total} peça(s) no café · ${BRL(totVal)}` : "";
+  renderCafePlanilha();
   if(el("cafeHist")) el("cafeHist").innerHTML = CAFE_LOG.length ? CAFE_LOG.slice(0,60).map(l=>
     `<div class="item"><div style="flex:1"><span>${l.acao==="enviou"?"☕ Enviou":"↩️ Tirou"} ${l.qtd}× ${gesc(l.nome)}</span></div><span class="small muted">${cafeDataBR(l.data)}</span></div>`
   ).join("") : `<p class="small muted">Sem movimentações ainda.</p>`;
-  renderCafePainel(); renderCafePlanilha();
+  renderCafeHistoricoVendas();
+  renderCafePainel();
+}
+function cafeBreakdown(v){
+  const obs=(v.obs||"");
+  let forma="dinheiro";
+  if(/Cr[ée]dito|Cart[ãa]o/i.test(obs)) forma="credito";
+  else if(/D[ée]bito/i.test(obs)) forma="debito";
+  else if(/Pix/i.test(obs)) forma="pix";
+  const valor=Number(v.valor||0);
+  const taxa=valor*taxaForma(forma);
+  const receb=valor-taxa, cafe=receb*CAFE_PCT, liq=receb-cafe;
+  return {forma,valor,taxa,cafe,liq};
+}
+function renderCafeHistoricoVendas(){
+  const box=el("cafeVendasLista"); if(!box) return;
+  const vendas=(VENDAS||[]).filter(v=>v.canal==="cafe");
+  const now=new Date(), mA=now.getMonth(), aA=now.getFullYear();
+  let T={q:0,v:0,t:0,c:0,l:0}, M={q:0,v:0,t:0,c:0,l:0};
+  vendas.forEach(v=>{ const b=cafeBreakdown(v), q=Number(v.quantidade||1);
+    T.q+=q;T.v+=b.valor;T.t+=b.taxa;T.c+=b.cafe;T.l+=b.liq;
+    const d=new Date(v.criado_em);
+    if(d.getMonth()===mA && d.getFullYear()===aA){ M.q+=q;M.v+=b.valor;M.t+=b.taxa;M.c+=b.cafe;M.l+=b.liq; }
+  });
+  const bloco=(tit,o)=>`<div style="background:var(--paper-dk,#f3efe6);border-radius:8px;padding:8px 10px;margin-bottom:8px">
+    <div style="font-weight:600;margin-bottom:2px">${tit}</div>
+    <div class="item"><span>Peças vendidas</span><span><b>${o.q}</b></span></div>
+    <div class="item"><span>Total vendido</span><span>${BRL(o.v)}</span></div>
+    ${o.t>0?`<div class="item"><span>Taxa de cartão</span><span>− ${BRL(o.t)}</span></div>`:""}
+    <div class="item"><span>Café (20%)</span><span>− ${BRL(o.c)}</span></div>
+    <div class="item" style="font-weight:700;color:#1e7a44;border-top:1px solid var(--line);margin-top:2px;padding-top:6px"><span>A pagar à Nagori</span><span>${BRL(o.l)}</span></div>
+  </div>`;
+  if(el("cafeTotais")) el("cafeTotais").innerHTML = bloco("📅 Este mês", M) + bloco("Σ Desde o início", T);
+  box.innerHTML = vendas.length ? vendas.slice(0,80).map(v=>{
+    const b=cafeBreakdown(v), d=new Date(v.criado_em).toLocaleDateString("pt-BR");
+    const p=PRODUTOS.find(x=>x.id===v.produto_id)||{id:v.produto_id};
+    return `<div class="item">
+      ${thumb(p)}
+      <div style="flex:1">
+        <div>${v.quantidade>1?v.quantidade+"× ":""}${gesc(v.produto_nome||"")}</div>
+        <div class="small muted">${d} · ${labelForma(b.forma)}</div>
+        <div class="small muted">Venda ${BRL(b.valor)}${b.taxa>0?" · taxa −"+BRL(b.taxa):""} · café −${BRL(b.cafe)}</div>
+      </div>
+      <div style="text-align:right;min-width:92px">
+        <div style="font-weight:700;color:#1e7a44">${BRL(b.liq)}</div>
+        <div class="small muted">à Nagori</div>
+        ${CAFE_MODE?"":`<button class="btn mini sec" style="margin-top:4px" onclick="excluirVenda(${v.id})">excluir</button>`}
+      </div>
+    </div>`;
+  }).join("") : `<p class="small muted">Nenhuma venda do café registrada ainda.</p>`;
 }
 function cafeTirarConfirm(id){ if(!CAFE[id]) return; if(confirm(`Tirar ${CAFE[id].qtd}× ${cafeNome(id)} do café?`)) cafeTira(id, CAFE[id].qtd); }
 // ---- Vendeu no café: registra a venda (canal café, com taxas) e tira do café ----
@@ -1215,18 +1255,41 @@ function renderCafePlanilha(){
   const btn=el("btnRegistrarCafe");
   const ids=cafeIdsOrdenados();
   if(!ids.length){
-    box.innerHTML=`<p class="small muted">Nenhuma peça no café agora.</p>`;
-    if(btn) btn.style.display="none"; return;
+    box.innerHTML=`<p class="small muted">Nenhuma peça no café agora.${CAFE_MODE?"":" Use o campo acima para enviar."} ☕</p>`;
+    if(btn) btn.style.display="none";
+    if(el("cafeResumo")) el("cafeResumo").innerHTML="";
+    return;
   }
   if(btn) btn.style.display="";
   const opts=`<option value="dinheiro">Dinheiro</option><option value="pix">Pix</option><option value="credito">Crédito</option><option value="debito">Débito</option>`;
-  const head=`<div class="cprow cphead" style="display:grid;grid-template-columns:1fr 64px 108px;gap:8px;align-items:center;font-weight:600;font-size:.72rem;color:var(--muted);padding:2px 0 6px;border-bottom:1px solid var(--line)"><span>Produto</span><span style="text-align:center">Vend.</span><span>Pagamento</span></div>`;
-  const linhas=ids.map(id=>`<div class="cprow" style="display:grid;grid-template-columns:1fr 64px 108px;gap:8px;align-items:center;padding:7px 0;border-bottom:1px solid var(--line)">
-    <div><div>${gesc(cafeNome(id))}</div><div class="small muted">${BRL(cafePreco(id))} · ${CAFE[id].qtd} no café</div></div>
-    <input type="number" min="0" max="${CAFE[id].qtd}" class="cpv" data-id="${id}" placeholder="0" style="width:100%;text-align:center">
-    <select class="cpf" data-id="${id}" style="width:100%">${opts}</select>
-  </div>`).join("");
-  box.innerHTML=head+linhas;
+  box.innerHTML = ids.map(id=>{
+    const p=PRODUTOS.find(x=>x.id===id)||{id};
+    return `<div class="cprow" style="display:grid;grid-template-columns:auto 1fr 56px 104px;gap:8px;align-items:center;padding:7px 0;border-bottom:1px solid var(--line)">
+      ${thumb(p)}
+      <div><div>${gesc(cafeNome(id))}</div><div class="small muted">${BRL(cafePreco(id))} · ${CAFE[id].qtd} no café${CAFE_MODE?"":` · <a href="#" onclick="cafeTirarConfirm('${id}');return false">tirar</a>`}</div></div>
+      <input type="number" min="0" max="${CAFE[id].qtd}" class="cpv" data-id="${id}" placeholder="0" oninput="atualizaCafeResumo()" style="width:100%;text-align:center">
+      <select class="cpf" data-id="${id}" onchange="atualizaCafeResumo()" style="width:100%">${opts}</select>
+    </div>`;
+  }).join("");
+  atualizaCafeResumo();
+}
+function atualizaCafeResumo(){
+  const box=el("cafeResumo"); if(!box) return;
+  let valor=0,taxa=0,cafe=0,liq=0,n=0;
+  document.querySelectorAll("#cafePlanilha input.cpv").forEach(inp=>{
+    const id=inp.dataset.id; const q=Math.floor(Number(inp.value||0)); if(q<=0) return;
+    const sel=document.querySelector('#cafePlanilha select.cpf[data-id="'+id+'"]'); const forma=sel?sel.value:"dinheiro";
+    const v=cafePreco(id)*q, t=v*taxaForma(forma), rec=v-t, c=rec*CAFE_PCT, l=rec-c;
+    valor+=v;taxa+=t;cafe+=c;liq+=l;n+=q;
+  });
+  if(n===0){ box.innerHTML=`<span class="muted">Preencha as quantidades vendidas para ver o resumo da venda.</span>`; return; }
+  box.innerHTML = `<div style="background:var(--paper-dk,#f3efe6);border-radius:8px;padding:8px 10px">
+    <div class="item"><span>Peças</span><span><b>${n}</b></span></div>
+    <div class="item"><span>Valor da venda</span><span>${BRL(valor)}</span></div>
+    ${taxa>0?`<div class="item"><span>Taxa de cartão</span><span>− ${BRL(taxa)}</span></div>`:""}
+    <div class="item"><span>Café (20%)</span><span>− ${BRL(cafe)}</span></div>
+    <div class="item" style="font-weight:700;color:#1e7a44;border-top:1px solid var(--line);margin-top:2px;padding-top:6px"><span>A pagar à Nagori</span><span>${BRL(liq)}</span></div>
+  </div>`;
 }
 async function registrarVendasCafe(){
   const linhas=[];
