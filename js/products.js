@@ -38,7 +38,7 @@ function fotoEmBreve() {
 }
 
 /* Versão das fotos: incremente ao trocar qualquer imagem para o navegador buscar a nova (evita cache). */
-const ASSET_V = "241";
+const ASSET_V = "242";
 const IMG = (id) => `assets/produtos/${id}.jpg?v=${ASSET_V}`;
 
 /* Categorias (seções do catálogo) ------------------------------------- */
@@ -98,7 +98,7 @@ const PRODUCTS = [
   { id: "mini-jiboia", nome: "Mini Jiboia", especie: "Epipremnum aureum · mini", categoria: "dentro", ambiente: "ambos", pet: "toxic",
     descricao: "A jiboia em versão pequena, de folhas coração. Resistente e fácil de cuidar — cresce em cascata conforme se acostuma com o cantinho. Escolha a variedade abaixo (sujeito à disponibilidade do momento).", significado: "Conhecida como planta do dinheiro — símbolo de prosperidade e purificação, boa sorte fácil de cuidar.", preco: 135, variantes: [{ label: "Jade", preco: 135 }, { label: "Filodendro Brasil", preco: 135 }, { label: "Marmorizada", preco: 135 }, { label: "Prateada", preco: 135 }, { label: "Pérola", preco: 135 }], imgs: [IMG("mini-jiboia-3"), IMG("filodendro-brasil"), IMG("mini-jiboia-2"), IMG("mini-jiboia-4"), IMG("mini-jiboia-5")] },
   { id: "hera-estrelada", nome: "Hera Pendente", especie: "Hedera helix", categoria: "ambos", ambiente: "ambos", pet: "toxic",
-    descricao: "Folhas recortadas em estrela que descem em cascata. Linda em suporte alto ou pendente, deixando as pontas caírem.", significado: "A hera simboliza laços eternos, fidelidade e amizade que perdura — presente de quem fica junto.", preco: 150, img: IMG("hera-estrelada") },
+    descricao: "Folhas recortadas em estrela que descem em cascata. Linda em suporte alto ou pendente, deixando as pontas caírem.", significado: "A hera simboliza laços eternos, fidelidade e amizade que perdura — presente de quem fica junto.", preco: 150, imgs: [IMG("hera-estrelada"), IMG("hera-estrelada-2"), IMG("hera-estrelada-3"), IMG("hera-estrelada-4")] },
   { id: "monstera-adansonii", nome: "Monstera Adansonii", especie: "Monstera adansonii", categoria: "dentro", ambiente: "interno", pet: "toxic",
     descricao: "Folha vazada de furos irregulares. Trepa ou pende, conforme você deixar.", significado: "Símbolo de longevidade e respeito — no oriente representa vida longa e prosperidade duradoura.", preco: 185, img: IMG("monstera-adansonii") },
   { id: "costela-adao", nome: "Costela de Adão", peso: 3, especie: "Monstera deliciosa", categoria: "ambos", ambiente: "ambos", pet: "toxic",
