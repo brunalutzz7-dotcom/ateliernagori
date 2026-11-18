@@ -1,0 +1,135 @@
+<!doctype html><html lang="pt-BR"><head><meta charset="utf-8">
+<link rel="stylesheet" href="gf.css">
+<style>
+  :root{
+    --green:#2a3820; --green-d:#223018; --green-soft:#45503a;
+    --badge:#223019; --cream:#f3ead4; --gold:#c0963f; --gold-d:#a9833c; --olive:#8d8f66;
+    --paper:#e7dcc3; --paper-lt:#f3ead5; --paper-dk:#d7cbac; --line:#cdc3a7;
+    --serif:"Cormorant Garamond","EB Garamond",Georgia,serif;
+    --sans:"Helvetica Neue",Arial,sans-serif;
+  }
+  @page { size: A4; margin: 13mm 13mm 16mm; }
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: var(--serif); color: var(--green);
+    background: radial-gradient(120% 70% at 50% 0%, var(--paper-lt) 0%, var(--paper) 52%, var(--paper-dk) 110%);
+    -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  /* Capa */
+  .cover { position: relative; height: 263mm; page-break-after: always;
+    display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+  .cframe { position: absolute; inset: 7mm; border: 1.6pt solid var(--green); }
+  .cframe::after { content:""; position:absolute; inset: 2.6mm; border: .5pt solid var(--green); }
+  .cdia { position: absolute; width: 11px; height: 11px; background: var(--gold); transform: rotate(45deg); }
+  .cdia.tl{ left:7mm; top:7mm; margin:-5px 0 0 -5px } .cdia.tr{ right:7mm; top:7mm; margin:-5px -5px 0 0 }
+  .cdia.bl{ left:7mm; bottom:7mm; margin:0 0 -5px -5px } .cdia.br{ right:7mm; bottom:7mm; margin:0 -5px -5px 0 }
+  .badge { width: 40mm; height: 40mm; border-radius: 50%; background: var(--badge);
+    display: flex; flex-direction: column; align-items: center; justify-content: center; margin-bottom: 7mm; }
+  .badge .mk { font-size: 19pt; color: var(--gold); line-height: 1; }
+  .badge .nm { font-size: 14pt; color: var(--cream); margin-top: 1mm; white-space: nowrap; }
+  .badge .sb { font-style: italic; font-size: 8.5pt; color: var(--gold); margin-top: .5mm; }
+  .cover h1 { font-weight: 600; font-size: 34pt; margin: 2mm 0 0; color: var(--green-d); letter-spacing: .01em; line-height:1.05; }
+  .cover .tsub { font-family: var(--sans); font-size: 8.5pt; letter-spacing: .3em; text-transform: uppercase; color: var(--gold-d); margin-top: 3mm; }
+  .cline { display: flex; align-items: center; gap: 4mm; margin: 6mm 0; }
+  .cline i { height: .6pt; width: 24mm; background: var(--gold); opacity: .7; }
+  .cline b { width: 7px; height: 7px; background: var(--gold); transform: rotate(45deg); }
+  .cover .cimg { width: 150mm; height: 78mm; object-fit: cover; border: .8pt solid var(--line); border-radius: 2mm; }
+  .cover .contato { margin-top: 8mm; font-family: var(--sans); font-size: 9pt; color: var(--green); line-height: 1.8; letter-spacing: .02em; }
+  .cover .contato b { color: var(--gold-d); letter-spacing: .06em; }
+  /* Conteúdo */
+  .page-head { display: flex; justify-content: space-between; align-items: center;
+    border-bottom: .8pt solid var(--line); padding-bottom: 3mm; margin-bottom: 6mm; }
+  .ph-left { display: flex; align-items: center; gap: 3.5mm; }
+  .ph-seal { width: 11mm; height: 11mm; border-radius: 50%; background: var(--badge); color: var(--gold);
+    display: inline-flex; align-items: center; justify-content: center; font-size: 10pt; flex: none; }
+  .page-head .t { font-weight: 600; font-size: 17pt; color: var(--green-d); }
+  .page-head .n { font-family: var(--sans); font-size: 8pt; letter-spacing: .2em; text-transform: uppercase; color: var(--gold-d); }
+  h2.sec { display:flex; align-items:center; gap:4mm; margin: 8mm 0 3mm; break-after: avoid; }
+  h2.sec::before { content:""; width:6px; height:6px; background:var(--gold); transform:rotate(45deg); flex:none; }
+  h2.sec span { font-family: var(--sans); font-size: 9pt; letter-spacing: .2em; text-transform: uppercase; color: var(--green-soft); font-weight:700; }
+  p { font-size: 11.5pt; line-height: 1.55; color: var(--green-soft); margin: 0 0 3mm; }
+  .lead { font-size: 12.5pt; color: var(--green-d); }
+  ul.inc { list-style:none; padding:0; margin: 0 0 3mm; }
+  ul.inc li { font-size: 11.5pt; line-height: 1.5; color: var(--green-d); padding: 1.5mm 0 1.5mm 7mm; position: relative; border-bottom: .5pt solid var(--line); }
+  ul.inc li::before { content:"✿"; position:absolute; left:0; color: var(--gold-d); }
+  .dims { display:flex; gap:4mm; margin: 2mm 0 4mm; }
+  .dim { flex:1; border:.8pt solid var(--line); border-radius:2mm; padding:3mm; text-align:center; background: rgba(255,253,247,.5); }
+  .dim b { display:block; font-size:16pt; color: var(--green-d); font-weight:600; }
+  .dim span { font-family: var(--sans); font-size:7.5pt; letter-spacing:.08em; text-transform:uppercase; color: var(--gold-d); }
+  .price { margin: 4mm 0; border: 1.2pt solid var(--gold-d); border-radius: 3mm; padding: 6mm; text-align:center; background: rgba(192,150,63,.08); break-inside: avoid; }
+  .price .lab { font-family: var(--sans); font-size: 8.5pt; letter-spacing:.2em; text-transform:uppercase; color: var(--gold-d); font-weight:700; }
+  .price .val { font-size: 34pt; font-weight: 600; color: var(--green-d); line-height:1.1; margin: 1mm 0; }
+  .price .desc { font-size: 11pt; color: var(--green-soft); font-style: italic; }
+  .box { border:.8pt solid var(--line); border-radius:3mm; padding:4mm 5mm; margin: 3mm 0; background: var(--paper-lt); break-inside: avoid; }
+  .box b { color: var(--gold-d); }
+  .imgrow { display:flex; gap:4mm; margin: 3mm 0; }
+  .imgrow img { flex:1; width:0; height: 55mm; object-fit: cover; border:.8pt solid var(--line); border-radius:2mm; }
+  .foot { margin-top: 9mm; border-top: .8pt solid var(--line); padding-top: 4mm; text-align:center;
+    font-family: var(--sans); font-size: 8.5pt; color: var(--green-soft); line-height: 1.6; }
+  .foot b { color: var(--gold-d); }
+</style></head><body>
+  <section class="cover">
+    <div class="cframe"></div>
+    <span class="cdia tl"></span><span class="cdia tr"></span><span class="cdia bl"></span><span class="cdia br"></span>
+    <div class="badge"><div class="mk">名残</div><div class="nm">Atelier Nagori</div><div class="sb">o que permanece</div></div>
+    <h1>Proposta de Paisagismo</h1>
+    <div class="tsub">Jardim de recepção · Clínica</div>
+    <div class="cline"><i></i><b></b><i></i></div>
+    <img class="cimg" src="/assets/orcamento/terrario-capa.jpg">
+    <div class="contato">
+      <b>WhatsApp</b> (41) 98707-4284 &nbsp;·&nbsp; <b>Instagram</b> @ateliernagori<br>
+      Curitiba · PR — feito à mão
+    </div>
+  </section>
+
+  <div class="page-head"><span class="ph-left"><span class="ph-seal">名残</span><span class="t">Proposta de Paisagismo</span></span><span class="n">Atelier Nagori · 名残</span></div>
+
+  <p class="lead">Uma proposta de <b>paisagismo personalizado</b> para o balcão de recepção da clínica — um jardim vivo, baixo e delicado, composto dentro da estrutura de vidro existente. Mais do que um terrário pronto, é uma composição artística pensada para o seu espaço, unindo plantas, pedras naturais e musgos em equilíbrio.</p>
+
+  <h2 class="sec"><span>O balcão</span></h2>
+  <div class="dims">
+    <div class="dim"><b>3,58 m</b><span>Comprimento</span></div>
+    <div class="dim"><b>0,50 m</b><span>Profundidade</span></div>
+    <div class="dim"><b>1,00 m</b><span>Altura</span></div>
+    <div class="dim"><b>1,79 m²</b><span>Área de base</span></div>
+  </div>
+  <p>A proposta não preenche toda a altura da estrutura: trabalhamos com uma <b>camada baixa de plantio</b> e um jardim delicado, como nas simulações — bastante pedrisco e pedras naturais, pequenas porções de musgo, fitônias e samambaias miúdas, com áreas livres entre os grupos. A elegância está justamente no equilíbrio entre vegetação, pedras e espaços.</p>
+
+  <div class="imgrow">
+    <img src="/assets/orcamento/terrario-2.jpg">
+    <img src="/assets/orcamento/terrario-3.jpg">
+  </div>
+  <p style="font-family:var(--sans);font-size:8pt;color:var(--olive);text-align:center;margin-top:-1mm">Simulações do projeto — a composição final é feita à mão, peça única.</p>
+
+  <h2 class="sec"><span>O que está incluído</span></h2>
+  <ul class="inc">
+    <li>Projeto paisagístico personalizado e composição artística</li>
+    <li>Planejamento e seleção das espécies ideais para o ambiente</li>
+    <li>Fornecimento de todas as plantas, musgos e pedras</li>
+    <li>Fornecimento dos insumos (substrato, drenagem, camadas de proteção)</li>
+    <li>Visita técnica, execução e instalação completa no balcão existente</li>
+  </ul>
+
+  <div class="price">
+    <div class="lab">Investimento do projeto</div>
+    <div class="val">R$ 6.900</div>
+    <div class="desc">Projeto, fornecimento de plantas e insumos e instalação completa.</div>
+  </div>
+
+  <div class="box"><b>💳 Formas de pagamento:</b> Pix com <b>5% de desconto</b> · cartão em até <b>6× sem juros</b>.</div>
+
+  <p style="font-size:10.5pt"><b style="color:var(--green-d)">Não incluso:</b> fabricação ou adaptação do balcão de vidro/acrílico, iluminação artificial, sistema de ventilação e manutenção posterior (disponível como serviço à parte — veja abaixo).</p>
+
+  <h2 class="sec"><span>Para garantir a execução perfeita</span></h2>
+  <p>Antes da montagem, confirmamos juntos alguns detalhes do balcão, para que tudo fique impecável e seguro:</p>
+  <ul class="inc">
+    <li>Como a estrutura abre para a manutenção do jardim</li>
+    <li>A capacidade de carga do balcão (a montagem pode somar peso com pedras e substrato)</li>
+    <li>A iluminação do espaço — o jardim pede boa luz indireta, sem sol direto sobre o vidro</li>
+  </ul>
+
+  <h2 class="sec"><span>Manutenção · opcional</span></h2>
+  <p>Para manter o jardim sempre bonito, o Atelier Nagori oferece um <b>acompanhamento periódico</b> — controle de umidade, podas, limpeza interna e substituição eventual de plantas. Valor a partir de <b>R$ 350 por visita</b>, ajustado conforme a necessidade real do jardim.</p>
+
+  <div class="box"><b>Uma informação importante antes de fecharmos:</b> o balcão de vidro/acrílico <b>já está fabricado e instalado</b> na clínica, ou ainda será construído? Isso nos ajuda a confirmar os detalhes finais da montagem. 🌿</div>
+
+  <div class="foot">Proposta preliminar, válida por 15 dias e sujeita a confirmação após visita técnica. Para seguir, é só chamar no <b>WhatsApp (41) 98707-4284</b>.<br>Atelier Nagori · Curitiba/PR · @ateliernagori — você também pode conhecer nossas peças na loja física do Jardim do Bosque Gastronomia.</div>
+</body></html>
