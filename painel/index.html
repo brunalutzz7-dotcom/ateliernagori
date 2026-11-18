@@ -1055,11 +1055,16 @@ async function loadCafe(){
   cafeCloud=true;
   const nuvemVazia = Object.keys(cloud.cafe).length===0 && cloud.log.length===0;
   const temLocal = Object.keys(CAFE).length>0 || CAFE_LOG.length>0;
-  let migrou=false; try{ migrou = localStorage.getItem("cafeMigrado")==="1"; }catch(e){}
+  let migrou=false; try{ migrou = localStorage.getItem("cafeMigrado2")==="1"; }catch(e){}
   if(nuvemVazia && temLocal && !migrou){
     await migrarCafeParaNuvem();
-    try{ localStorage.setItem("cafeMigrado","1"); }catch(e){}
-    const c2=await fetchCafeCloud(); if(c2){ CAFE=c2.cafe; CAFE_LOG=c2.log; }
+    const c2=await fetchCafeCloud();
+    if(c2 && (Object.keys(c2.cafe).length>0 || c2.log.length>0)){
+      // gravou com sucesso na nuvem
+      try{ localStorage.setItem("cafeMigrado2","1"); }catch(e){}
+      CAFE=c2.cafe; CAFE_LOG=c2.log;
+    }
+    // se não gravou (ex: permissão), mantém a lista local e tenta de novo na próxima
   }else{
     CAFE=cloud.cafe; CAFE_LOG=cloud.log;
   }
