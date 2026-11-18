@@ -556,7 +556,8 @@ function scheduleRefresh(){
     const ae=document.activeElement;
     const digitando = ae && /^(INPUT|SELECT|TEXTAREA)$/.test(ae.tagName);
     const modalAberto = el("cafeVendaModal") && !el("cafeVendaModal").classList.contains("hidden");
-    if(digitando || modalAberto){ rtTimer=setTimeout(run,2500); return; }
+    const planilhaPreenchida = [...document.querySelectorAll("#cafePlanilha input.cpv")].some(i=>Number(i.value||0)>0);
+    if(digitando || modalAberto || planilhaPreenchida){ rtTimer=setTimeout(run,2500); return; }
     refreshDados();
   }, 1200);
 }
