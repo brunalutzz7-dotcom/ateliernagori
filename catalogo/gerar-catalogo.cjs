@@ -173,7 +173,7 @@ const visivel = (p) => !p.oculto;
 const folhagens = PRODUCTS.filter((p) => visivel(p) && ["dentro", "ambos", "arlivre"].includes(p.categoria));
 const grande = PRODUCTS.filter((p) => visivel(p) && p.categoria === "grande");
 const bonsais = PRODUCTS.filter((p) => visivel(p) && p.categoria === "bonsai");
-const suportes = PRODUCTS.filter((p) => visivel(p) && p.categoria === "suporte");
+const suportes = PRODUCTS.filter((p) => visivel(p) && p.categoria === "suporte").sort((a, b) => menor(a) - menor(b));
 
 const catDir = path.join(ROOT, "catalogo");
 fs.mkdirSync(catDir, { recursive: true });
