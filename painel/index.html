@@ -122,7 +122,7 @@
 <!-- App -->
 <div id="appView" class="hidden">
   <header class="top">
-    <b>✿ Atelier Nagori</b><span style="font-size:.62rem;opacity:.55;margin-left:7px;letter-spacing:.02em">v120 · venda café pela aba Vendas baixa do café</span>
+    <b>✿ Atelier Nagori</b><span style="font-size:.62rem;opacity:.55;margin-left:7px;letter-spacing:.02em">v121 · acerto pago + filtro de período</span>
     <button class="sair" id="btnSair">Sair</button>
   </header>
   <div class="wrap">
@@ -439,6 +439,11 @@
         <button class="btn" id="btnRegistrarCafe" type="button" style="margin-top:12px;width:auto">✓ Registrar venda</button>
       </div>
 
+      <div class="card" id="cafeAcertoCard">
+        <div id="cafeAcertoBox"></div>
+        <div id="cafeAcertosHist" class="small" style="margin-top:12px"></div>
+      </div>
+
       <div class="card" id="cafeHistVendasCard">
         <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap">
           <h2 style="margin:0">📋 Histórico de vendas</h2>
@@ -446,6 +451,11 @@
             <button class="btn mini" id="btnExportCafe" type="button" style="width:auto">📊 Exportar</button>
             <button class="btn sec mini" id="btnCopiarCafe" type="button">📋 Copiar</button>
           </div>
+        </div>
+        <div class="gper" id="cafePeriodoSel" style="margin-top:10px">
+          <button type="button" data-per="mes" class="on">Este mês</button>
+          <button type="button" data-per="mesant">Mês passado</button>
+          <button type="button" data-per="tudo">Tudo</button>
         </div>
         <div id="cafeTotais" style="margin-top:10px"></div>
         <div id="cafeVendasLista" style="margin-top:12px"></div>
@@ -550,6 +560,7 @@ async function refreshDados(){
     if(!v.error&&v.data) VENDAS=v.data;
     PRODUTOS.forEach(pp=>{ if(pp.custo_detalhe!=null){ try{ CUSTOS_OVERRIDE[pp.id]=(typeof pp.custo_detalhe==="string")?JSON.parse(pp.custo_detalhe):pp.custo_detalhe; }catch(e){} } });
     const cc=await fetchCafeCloud(); if(cc){ cafeCloud=true; CAFE=cc.cafe; CAFE_LOG=cc.log; }
+    await loadAcertos();
     renderProdutosSelect(); renderPainel(); renderVendas(); renderProdutos(); renderCustos(); renderGraficos(); renderCafe(); renderFinanceiro();
   }catch(e){} finally{ rtBusy=false; }
 }
@@ -1021,6 +1032,7 @@ async function carregar(){
     if(ups.length){ await Promise.all(ups); localStorage.setItem("restockAN", JSON.stringify([...feitos])); }
   }catch(e){}
   await loadCafe();
+  await loadAcertos();
   renderProdutosSelect(); renderPainel(); renderVendas(); renderProdutos(); renderCustos(); renderGraficos();
   renderCafe(); renderFinanceiro();
 }
@@ -1029,6 +1041,18 @@ async function carregar(){
 // Controle das peças que estão no café. Salvo neste navegador (localStorage),
 // no mesmo esquema das compras e dos portes. CAFE = estado atual; CAFE_LOG = histórico.
 let CAFE={}, CAFE_LOG=[], cafeCloud=false, cafeMigErr="";
+let ACERTOS=[], acertosCloud=false, cafePeriodo="mes";
+async function fetchAcertos(){
+  if(!sb) return null;
+  try{ const r=await sb.from("cafe_acertos").select("*").order("data",{ascending:false}); if(r.error) return null;
+    return (r.data||[]).map(a=>({id:a.id, data:a.data, valor:Number(a.valor||0), obs:a.obs||""})); }
+  catch(e){ return null; }
+}
+async function loadAcertos(){
+  const c=await fetchAcertos();
+  if(c){ acertosCloud=true; ACERTOS=c; }
+  else{ acertosCloud=false; try{ ACERTOS=JSON.parse(localStorage.getItem("cafeAcertosAN")||"[]")||[]; }catch(e){ ACERTOS=[]; } }
+}
 async function fetchCafeCloud(){
   if(!sb) return null;
   try{
@@ -1159,26 +1183,64 @@ function cafeBreakdown(v){
   const receb=valor-taxa, cafe=receb*CAFE_PCT, liq=receb-cafe;
   return {forma,valor,taxa,cafe,liq};
 }
-function renderCafeHistoricoVendas(){
-  const box=el("cafeVendasLista"); if(!box) return;
+function somaVendas(vendas){ let o={q:0,v:0,t:0,c:0,l:0}; vendas.forEach(v=>{ const b=cafeBreakdown(v), q=Number(v.quantidade||1); o.q+=q;o.v+=b.valor;o.t+=b.taxa;o.c+=b.cafe;o.l+=b.liq; }); return o; }
+function lastAcertoTime(){ let t=0; (ACERTOS||[]).forEach(a=>{ const x=new Date(a.data).getTime(); if(x>t) t=x; }); return t; }
+function emAbertoVendas(){ const lt=lastAcertoTime(); return (VENDAS||[]).filter(v=>v.canal==="cafe" && new Date(v.criado_em).getTime()>lt); }
+function vendasCafeFiltradas(){
   const vendas=(VENDAS||[]).filter(v=>v.canal==="cafe");
   const now=new Date(), mA=now.getMonth(), aA=now.getFullYear();
-  let T={q:0,v:0,t:0,c:0,l:0}, M={q:0,v:0,t:0,c:0,l:0};
-  vendas.forEach(v=>{ const b=cafeBreakdown(v), q=Number(v.quantidade||1);
-    T.q+=q;T.v+=b.valor;T.t+=b.taxa;T.c+=b.cafe;T.l+=b.liq;
-    const d=new Date(v.criado_em);
-    if(d.getMonth()===mA && d.getFullYear()===aA){ M.q+=q;M.v+=b.valor;M.t+=b.taxa;M.c+=b.cafe;M.l+=b.liq; }
-  });
-  const bloco=(tit,o)=>`<div style="background:var(--paper-dk,#f3efe6);border-radius:8px;padding:8px 10px;margin-bottom:8px">
+  if(cafePeriodo==="mes") return vendas.filter(v=>{const d=new Date(v.criado_em);return d.getMonth()===mA&&d.getFullYear()===aA;});
+  if(cafePeriodo==="mesant"){ const dp=new Date(aA,mA-1,1); return vendas.filter(v=>{const d=new Date(v.criado_em);return d.getMonth()===dp.getMonth()&&d.getFullYear()===dp.getFullYear();}); }
+  return vendas;
+}
+function blocoTotais(tit,o){ return `<div style="background:var(--paper-dk,#f3efe6);border-radius:8px;padding:8px 10px">
     <div style="font-weight:600;margin-bottom:2px">${tit}</div>
     <div class="item"><span>Peças vendidas</span><span><b>${o.q}</b></span></div>
     <div class="item"><span>Total vendido</span><span>${BRL(o.v)}</span></div>
     ${o.t>0?`<div class="item"><span>Taxa de cartão</span><span>− ${BRL(o.t)}</span></div>`:""}
     <div class="item"><span>Café (20%)</span><span>− ${BRL(o.c)}</span></div>
     <div class="item" style="font-weight:700;color:#1e7a44;border-top:1px solid var(--line);margin-top:2px;padding-top:6px"><span>A pagar à Nagori</span><span>${BRL(o.l)}</span></div>
-  </div>`;
-  if(el("cafeTotais")) el("cafeTotais").innerHTML = bloco("📅 Este mês", M) + bloco("Σ Desde o início", T);
-  box.innerHTML = vendas.length ? vendas.slice(0,80).map(v=>{
+  </div>`; }
+function renderCafeAcertoBox(){
+  const box=el("cafeAcertoBox"); if(!box) return;
+  const o=somaVendas(emAbertoVendas());
+  box.innerHTML = `<div style="font-weight:700;margin-bottom:6px">💰 A acertar com a Nagori</div>`
+    + blocoTotais("Em aberto (desde o último acerto)", o)
+    + (CAFE_MODE?"":`<button class="btn" id="btnAcerto" type="button" style="margin-top:10px;width:auto"${o.l<=0?" disabled":""}>✓ Marcar acerto como pago</button>`);
+  const ba=el("btnAcerto"); if(ba) ba.addEventListener("click", registrarAcerto);
+}
+async function registrarAcerto(){
+  const o=somaVendas(emAbertoVendas());
+  if(o.l<=0){ toast("Nada em aberto para acertar"); return; }
+  if(!confirm(`Marcar como PAGO o acerto de ${BRL(o.l)} à Nagori?\n(${o.q} peça(s) · vendido ${BRL(o.v)})`)) return;
+  const reg={data:new Date().toISOString(), valor:+o.l.toFixed(2), obs:`${o.q} peças · vendido ${BRL(o.v)}`};
+  if(acertosCloud){
+    try{ const r=await sb.from("cafe_acertos").insert({data:reg.data, valor:reg.valor, obs:reg.obs}); if(r&&r.error){ toast("Erro ao salvar acerto: "+r.error.message); return; } }
+    catch(e){ toast("Erro ao salvar acerto"); return; }
+  }else{
+    ACERTOS.unshift(reg); try{ localStorage.setItem("cafeAcertosAN", JSON.stringify(ACERTOS)); }catch(e){}
+  }
+  toast("Acerto marcado como pago ✓");
+  await loadAcertos();
+  renderCafeHistoricoVendas();
+}
+function renderCafeAcertosHist(){
+  const box=el("cafeAcertosHist"); if(!box) return;
+  if(!ACERTOS.length){ box.innerHTML=`<div class="small muted">Nenhum acerto pago ainda.</div>`; return; }
+  box.innerHTML = `<div style="font-weight:600;margin-bottom:4px">Acertos pagos</div>` + ACERTOS.slice(0,40).map(a=>{
+    const d=new Date(a.data).toLocaleDateString("pt-BR");
+    return `<div class="item"><div style="flex:1"><span>✅ ${BRL(a.valor)}</span> <span class="small muted">${gesc(a.obs||"")}</span></div><span class="small muted">${d}</span></div>`;
+  }).join("");
+}
+function renderCafeHistoricoVendas(){
+  renderCafeAcertoBox();
+  renderCafeAcertosHist();
+  const box=el("cafeVendasLista"); if(!box) return;
+  const vendas=vendasCafeFiltradas();
+  const o=somaVendas(vendas);
+  const lbl = cafePeriodo==="mes"?"📅 Este mês":(cafePeriodo==="mesant"?"📅 Mês passado":"Σ Desde o início");
+  if(el("cafeTotais")) el("cafeTotais").innerHTML = blocoTotais(lbl, o);
+  box.innerHTML = vendas.length ? vendas.slice(0,120).map(v=>{
     const b=cafeBreakdown(v), d=new Date(v.criado_em).toLocaleDateString("pt-BR");
     const p=PRODUTOS.find(x=>x.id===v.produto_id)||{id:v.produto_id};
     return `<div class="item">
@@ -1194,7 +1256,7 @@ function renderCafeHistoricoVendas(){
         ${CAFE_MODE?"":`<button class="btn mini sec" style="margin-top:4px" onclick="excluirVenda(${v.id})">excluir</button>`}
       </div>
     </div>`;
-  }).join("") : `<p class="small muted">Nenhuma venda do café registrada ainda.</p>`;
+  }).join("") : `<p class="small muted">Nenhuma venda do café no período.</p>`;
 }
 function cafeTirarConfirm(id){ if(!CAFE[id]) return; if(confirm(`Tirar ${CAFE[id].qtd}× ${cafeNome(id)} do café?`)) cafeTira(id, CAFE[id].qtd); }
 // ---- Vendeu no café: registra a venda (canal café, com taxas) e tira do café ----
@@ -1324,6 +1386,7 @@ async function registrarVendasCafe(){
   }finally{ if(btn){ btn.disabled=false; btn.textContent="✓ Registrar vendas"; } }
 }
 if(el("btnRegistrarCafe")) el("btnRegistrarCafe").addEventListener("click", registrarVendasCafe);
+document.querySelectorAll("#cafePeriodoSel button").forEach(b=> b.addEventListener("click", ()=>{ cafePeriodo=b.dataset.per; document.querySelectorAll("#cafePeriodoSel button").forEach(x=>x.classList.toggle("on",x===b)); renderCafeHistoricoVendas(); }));
 function cafeIdsOrdenados(){ return Object.keys(CAFE).filter(id=>CAFE[id].qtd>0).sort((a,b)=>(ORDEM_SITE[a]??9999)-(ORDEM_SITE[b]??9999)); }
 function copiarCafe(){
   const ids=cafeIdsOrdenados();
