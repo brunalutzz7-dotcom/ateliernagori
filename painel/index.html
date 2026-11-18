@@ -122,7 +122,7 @@
 <!-- App -->
 <div id="appView" class="hidden">
   <header class="top">
-    <b>✿ Atelier Nagori</b><span style="font-size:.62rem;opacity:.55;margin-left:7px;letter-spacing:.02em">v121 · acerto pago + filtro de período</span>
+    <b>✿ Atelier Nagori</b><span style="font-size:.62rem;opacity:.55;margin-left:7px;letter-spacing:.02em">v122 · reconcilia café (vendas antigas)</span>
     <button class="sair" id="btnSair">Sair</button>
   </header>
   <div class="wrap">
@@ -1033,6 +1033,7 @@ async function carregar(){
   }catch(e){}
   await loadCafe();
   await loadAcertos();
+  await reconciliarCafe();
   renderProdutosSelect(); renderPainel(); renderVendas(); renderProdutos(); renderCustos(); renderGraficos();
   renderCafe(); renderFinanceiro();
 }
@@ -1053,6 +1054,33 @@ async function loadAcertos(){
   if(c){ acertosCloud=true; ACERTOS=c; }
   else{ acertosCloud=false; try{ ACERTOS=JSON.parse(localStorage.getItem("cafeAcertosAN")||"[]")||[]; }catch(e){ ACERTOS=[]; } }
 }
+// Reconciliação única: tira da lista do café as vendas feitas pela aba Vendas
+// ANTES da correção (baixaram estoque, mas não a lista do café). Guardado na nuvem.
+async function reconciliarCafe(){
+  if(!cafeCloud) return;
+  try{
+    const chk=await sb.from("cafe_log").select("id").eq("acao","reconc-v1").limit(1);
+    if(chk.error) return;
+    if(chk.data && chk.data.length) return; // já reconciliado
+    await sb.from("cafe_log").insert({data:new Date().toISOString(), produto_id:"-", nome:"Reconciliação", acao:"reconc-v1", qtd:0});
+    const RECON_CUT=new Date("2026-11-18T01:43:10Z").getTime();
+    const alvo={};
+    (VENDAS||[]).forEach(v=>{
+      if(v.canal!=="cafe") return;
+      if(!/Café\s*[−-]\s*20%/.test(v.obs||"")) return;        // só as da aba Vendas
+      if(new Date(v.criado_em).getTime()>=RECON_CUT) return;  // só antes da correção
+      if(v.produto_id) alvo[v.produto_id]=(alvo[v.produto_id]||0)+Number(v.quantidade||1);
+    });
+    for(const [id,qtd] of Object.entries(alvo)){
+      if(!CAFE[id]) continue;
+      const tira=Math.min(qtd, CAFE[id].qtd); if(tira<=0) continue;
+      CAFE[id].qtd-=tira; const zerou=CAFE[id].qtd<=0, novo=CAFE[id].qtd; if(zerou) delete CAFE[id];
+      if(zerou) await sb.from("cafe").delete().eq("produto_id",id);
+      else await sb.from("cafe").update({qtd:novo}).eq("produto_id",id);
+      await sb.from("cafe_log").insert({data:new Date().toISOString(), produto_id:id, nome:cafeNome(id), acao:"tirou", qtd:tira});
+    }
+  }catch(e){}
+}
 async function fetchCafeCloud(){
   if(!sb) return null;
   try{
@@ -1062,7 +1090,7 @@ async function fetchCafeCloud(){
     ]);
     if(c.error||l.error) return null;
     const obj={}; (c.data||[]).forEach(r=>{ obj[r.produto_id]={qtd:Number(r.qtd||0), desde:r.desde}; });
-    const log=(l.data||[]).map(r=>({data:r.data,id:r.produto_id,nome:r.nome,acao:r.acao,qtd:Number(r.qtd||0)}));
+    const log=(l.data||[]).filter(r=>r.acao==="enviou"||r.acao==="tirou").map(r=>({data:r.data,id:r.produto_id,nome:r.nome,acao:r.acao,qtd:Number(r.qtd||0)}));
     return {cafe:obj, log};
   }catch(e){ return null; }
 }
