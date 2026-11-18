@@ -122,7 +122,7 @@
 <!-- App -->
 <div id="appView" class="hidden">
   <header class="top">
-    <b>✿ Atelier Nagori</b><span style="font-size:.62rem;opacity:.55;margin-left:7px;letter-spacing:.02em">v116 · café compartilhado na nuvem</span>
+    <b>✿ Atelier Nagori</b><span style="font-size:.62rem;opacity:.55;margin-left:7px;letter-spacing:.02em">v117 · planilha de vendas do café</span>
     <button class="sair" id="btnSair">Sair</button>
   </header>
   <div class="wrap">
@@ -418,7 +418,7 @@
 
     <!-- CAFÉ -->
     <section id="tab-cafe" class="hidden">
-      <div class="card">
+      <div class="card" id="cafeEnviarCard">
         <h2>☕ Enviar peça para o café</h2>
         <p class="small muted" style="margin-top:-4px">Marque aqui as peças que você levou para o café. Depois é só conferir esta lista com as vendas.</p>
         <input class="search" id="cafeBusca" placeholder="🔎 digite para procurar a peça..." style="margin-top:10px" />
@@ -429,6 +429,13 @@
           <label style="max-width:84px">Qtd<input id="cafeQtd" type="text" inputmode="numeric" value="1"></label>
           <button class="btn" id="btnEnviarCafe" type="button" style="width:auto">☕ Enviar para o café</button>
         </div>
+      </div>
+
+      <div class="card" id="cafePlanilhaCard">
+        <h2>📝 Vendas do café</h2>
+        <p class="small muted" style="margin-top:-4px">Preencha quanto vendeu de cada peça e a forma de pagamento. Ao clicar em registrar, o app lança as vendas e baixa o estoque automaticamente. ☕</p>
+        <div id="cafePlanilha" style="margin-top:8px"></div>
+        <button class="btn" id="btnRegistrarCafe" type="button" style="margin-top:12px;width:auto">✓ Registrar vendas</button>
       </div>
 
       <div class="card">
@@ -525,6 +532,7 @@ function applyMode(){
   const ocultar = CAFE_MODE ? ["painel","graficos","financeiro","compras","custos"] : [];
   document.querySelectorAll("nav.tabs button").forEach(b=>{ b.style.display = ocultar.includes(b.dataset.tab) ? "none" : ""; });
   document.body.classList.toggle("cafe-mode", CAFE_MODE);
+  const ec=el("cafeEnviarCard"); if(ec) ec.style.display = CAFE_MODE ? "none" : "";
   if(CAFE_MODE) show("cafe");
 }
 let rtBusy=false, rtTimer=null, rtStarted=false;
@@ -1137,7 +1145,7 @@ function renderCafe(){
   if(el("cafeHist")) el("cafeHist").innerHTML = CAFE_LOG.length ? CAFE_LOG.slice(0,60).map(l=>
     `<div class="item"><div style="flex:1"><span>${l.acao==="enviou"?"☕ Enviou":"↩️ Tirou"} ${l.qtd}× ${gesc(l.nome)}</span></div><span class="small muted">${cafeDataBR(l.data)}</span></div>`
   ).join("") : `<p class="small muted">Sem movimentações ainda.</p>`;
-  renderCafePainel();
+  renderCafePainel(); renderCafePlanilha();
 }
 function cafeTirarConfirm(id){ if(!CAFE[id]) return; if(confirm(`Tirar ${CAFE[id].qtd}× ${cafeNome(id)} do café?`)) cafeTira(id, CAFE[id].qtd); }
 // ---- Vendeu no café: registra a venda (canal café, com taxas) e tira do café ----
@@ -1192,6 +1200,58 @@ function renderCafePainel(){
   const mais = ids.length>6 ? `<div class="small muted" style="padding-top:2px">+ ${ids.length-6} peça(s)…</div>` : "";
   box.innerHTML = `<div style="font-weight:600;margin-bottom:4px">${total} peça(s) · ${BRL(totVal)}</div>${linhas}${mais}`;
 }
+// ---- Planilha de vendas do café (preencher vendidos → registra automático) ----
+function renderCafePlanilha(){
+  const box=el("cafePlanilha"); if(!box) return;
+  const btn=el("btnRegistrarCafe");
+  const ids=cafeIdsOrdenados();
+  if(!ids.length){
+    box.innerHTML=`<p class="small muted">Nenhuma peça no café agora.</p>`;
+    if(btn) btn.style.display="none"; return;
+  }
+  if(btn) btn.style.display="";
+  const opts=`<option value="dinheiro">Dinheiro</option><option value="pix">Pix</option><option value="credito">Crédito</option><option value="debito">Débito</option>`;
+  const head=`<div class="cprow cphead" style="display:grid;grid-template-columns:1fr 64px 108px;gap:8px;align-items:center;font-weight:600;font-size:.72rem;color:var(--muted);padding:2px 0 6px;border-bottom:1px solid var(--line)"><span>Produto</span><span style="text-align:center">Vend.</span><span>Pagamento</span></div>`;
+  const linhas=ids.map(id=>`<div class="cprow" style="display:grid;grid-template-columns:1fr 64px 108px;gap:8px;align-items:center;padding:7px 0;border-bottom:1px solid var(--line)">
+    <div><div>${gesc(cafeNome(id))}</div><div class="small muted">${BRL(cafePreco(id))} · ${CAFE[id].qtd} no café</div></div>
+    <input type="number" min="0" max="${CAFE[id].qtd}" class="cpv" data-id="${id}" placeholder="0" style="width:100%;text-align:center">
+    <select class="cpf" data-id="${id}" style="width:100%">${opts}</select>
+  </div>`).join("");
+  box.innerHTML=head+linhas;
+}
+async function registrarVendasCafe(){
+  const linhas=[];
+  document.querySelectorAll("#cafePlanilha input.cpv").forEach(inp=>{
+    const id=inp.dataset.id; const q=Math.floor(Number(inp.value||0));
+    if(q>0){
+      const sel=document.querySelector('#cafePlanilha select.cpf[data-id="'+id+'"]');
+      const forma=sel?sel.value:"dinheiro";
+      const emCafe=CAFE[id]?CAFE[id].qtd:0;
+      if(emCafe>0) linhas.push({id, q:Math.min(q,emCafe), forma});
+    }
+  });
+  if(!linhas.length){ toast("Preencha a quantidade vendida"); return; }
+  const resumo=linhas.map(l=>`• ${l.q}× ${cafeNome(l.id)} (${labelForma(l.forma)})`).join("\n");
+  if(!confirm("Registrar estas vendas do café?\n\n"+resumo)) return;
+  const btn=el("btnRegistrarCafe"); if(btn){ btn.disabled=true; btn.textContent="Registrando…"; }
+  try{
+    for(const l of linhas){
+      const p=PRODUTOS.find(x=>x.id===l.id);
+      const pr=cafePreco(l.id), valor=pr*l.q, taxa=valor*taxaForma(l.forma);
+      const receb=valor-taxa, liq=receb-receb*CAFE_PCT;
+      const notas=["Café", labelForma(l.forma), "café 20%", "líq "+BRL(liq)];
+      const row={ produto_id:l.id, produto_nome:cafeNome(l.id), quantidade:l.q, canal:"cafe",
+        valor:+valor.toFixed(2), custo:(p&&p.custo!=null)?+(Number(p.custo)*l.q).toFixed(2):null, obs:notas.join(" · ") };
+      const {error}=await sb.from("vendas").insert([row]);
+      if(error){ toast("Erro ao salvar venda: "+error.message); break; }
+      if(p){ const novo=Math.max(0,Number(p.estoque||0)-l.q); await sb.from("produtos").update({estoque:novo}).eq("id",l.id); p.estoque=novo; }
+      await cafeTira(l.id, l.q);
+    }
+    toast("Vendas do café registradas ☕");
+    await carregar();
+  }finally{ if(btn){ btn.disabled=false; btn.textContent="✓ Registrar vendas"; } }
+}
+if(el("btnRegistrarCafe")) el("btnRegistrarCafe").addEventListener("click", registrarVendasCafe);
 function cafeIdsOrdenados(){ return Object.keys(CAFE).filter(id=>CAFE[id].qtd>0).sort((a,b)=>(ORDEM_SITE[a]??9999)-(ORDEM_SITE[b]??9999)); }
 function copiarCafe(){
   const ids=cafeIdsOrdenados();
