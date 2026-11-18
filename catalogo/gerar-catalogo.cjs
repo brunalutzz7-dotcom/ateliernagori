@@ -61,6 +61,7 @@ function card(p) {
     <div class="c-b">
       <h3>${esc(p.nome)}</h3>
       ${p.especie ? `<p class="c-esp">${esc(p.especie)}</p>` : ""}
+      ${p.altura ? `<p class="c-alt">📏 ${esc(p.altura)}</p>` : ""}
       ${p.descricao ? `<p class="c-desc">${esc(p.descricao)}</p>` : ""}
       ${varLine}
       <div class="c-price">${precoTxt(p)}</div>
@@ -137,6 +138,7 @@ function pagina({ titulo, sub, itens, secoes }) {
   .c-b { flex: 1; padding: .5mm 1mm .5mm 0; display: flex; flex-direction: column; }
   .c-b h3 { font-family: var(--serif); font-weight: 600; font-size: 16pt; margin: 0 0 1mm; color: var(--green-d); line-height: 1.05; }
   .c-esp { font-family: var(--serif); font-style: italic; font-size: 10.5pt; color: var(--gold-d); margin: 0 0 2mm; }
+  .c-alt { font-family: var(--sans); font-size: 8.5pt; color: var(--green-soft); margin: 0 0 2mm; letter-spacing: .02em; font-weight: 600; }
   .c-desc { font-family: var(--serif); font-size: 11pt; line-height: 1.4; color: var(--green-soft); margin: 0 0 2mm; }
   .c-var { font-family: var(--sans); font-size: 7.5pt; color: var(--olive); margin: 0 0 2mm; letter-spacing: .02em; }
   .c-price { font-family: var(--serif); font-weight: 600; font-size: 17pt; color: var(--green-d); margin-top: auto; }
