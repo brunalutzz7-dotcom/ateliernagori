@@ -122,7 +122,7 @@
 <!-- App -->
 <div id="appView" class="hidden">
   <header class="top">
-    <b>✿ Atelier Nagori</b><span style="font-size:.62rem;opacity:.55;margin-left:7px;letter-spacing:.02em">v117 · planilha de vendas do café</span>
+    <b>✿ Atelier Nagori</b><span style="font-size:.62rem;opacity:.55;margin-left:7px;letter-spacing:.02em">v118 · recupera café da nuvem</span>
     <button class="sair" id="btnSair">Sair</button>
   </header>
   <div class="wrap">
@@ -1025,7 +1025,7 @@ async function carregar(){
 // ---------- CAFÉ ----------
 // Controle das peças que estão no café. Salvo neste navegador (localStorage),
 // no mesmo esquema das compras e dos portes. CAFE = estado atual; CAFE_LOG = histórico.
-let CAFE={}, CAFE_LOG=[], cafeCloud=false;
+let CAFE={}, CAFE_LOG=[], cafeCloud=false, cafeMigErr="";
 async function fetchCafeCloud(){
   if(!sb) return null;
   try{
@@ -1040,12 +1040,13 @@ async function fetchCafeCloud(){
   }catch(e){ return null; }
 }
 async function migrarCafeParaNuvem(){
+  cafeMigErr="";
   try{
     const rows=Object.keys(CAFE).filter(id=>CAFE[id].qtd>0).map(id=>({produto_id:id, qtd:CAFE[id].qtd, desde:CAFE[id].desde||new Date().toISOString()}));
-    if(rows.length) await sb.from("cafe").upsert(rows);
+    if(rows.length){ const r=await sb.from("cafe").upsert(rows); if(r&&r.error) cafeMigErr=r.error.message; }
     const logs=(CAFE_LOG||[]).slice(0,80).reverse().map(l=>({data:l.data, produto_id:l.id, nome:l.nome, acao:l.acao, qtd:l.qtd}));
-    if(logs.length) await sb.from("cafe_log").insert(logs);
-  }catch(e){}
+    if(logs.length){ const r2=await sb.from("cafe_log").insert(logs); if(r2&&r2.error&&!cafeMigErr) cafeMigErr=r2.error.message; }
+  }catch(e){ cafeMigErr=String((e&&e.message)||e); }
 }
 async function loadCafe(){
   try{ CAFE=JSON.parse(localStorage.getItem("cafeAN")||"{}")||{}; }catch(e){ CAFE={}; }
@@ -1063,6 +1064,8 @@ async function loadCafe(){
       // gravou com sucesso na nuvem
       try{ localStorage.setItem("cafeMigrado2","1"); }catch(e){}
       CAFE=c2.cafe; CAFE_LOG=c2.log;
+    }else if(cafeMigErr){
+      setTimeout(()=>toast("Café nuvem: "+cafeMigErr), 900);
     }
     // se não gravou (ex: permissão), mantém a lista local e tenta de novo na próxima
   }else{
