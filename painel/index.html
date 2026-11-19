@@ -122,7 +122,7 @@
 <!-- App -->
 <div id="appView" class="hidden">
   <header class="top">
-    <b>✿ Atelier Nagori</b><span style="font-size:.62rem;opacity:.55;margin-left:7px;letter-spacing:.02em">v125 · excluir venda do café devolve à lista do café</span>
+    <b>✿ Atelier Nagori</b><span style="font-size:.62rem;opacity:.55;margin-left:7px;letter-spacing:.02em">v126 · busca na planilha do café</span>
     <button class="sair" id="btnSair">Sair</button>
   </header>
   <div class="wrap">
@@ -434,6 +434,7 @@
       <div class="card" id="cafePlanilhaCard">
         <h2>📝 Registrar venda <span id="cafeTotal" class="small muted"></span></h2>
         <p class="small muted" style="margin-top:-4px">Preencha quanto vendeu de cada peça e a forma de pagamento. O app calcula a taxa do cartão, o café (20%) e quanto fica para a Nagori, registra a venda e baixa o estoque. ☕</p>
+        <input class="search" id="cafePlanilhaBusca" placeholder="🔎 procurar peça do café..." style="margin-top:8px" />
         <div id="cafePlanilha" style="margin-top:8px"></div>
         <div id="cafeResumo" class="small" style="margin-top:10px"></div>
         <button class="btn" id="btnRegistrarCafe" type="button" style="margin-top:12px;width:auto">✓ Registrar venda</button>
@@ -571,7 +572,7 @@ function scheduleRefresh(){
     const ae=document.activeElement;
     const digitando = ae && /^(INPUT|SELECT|TEXTAREA)$/.test(ae.tagName);
     const modalAberto = el("cafeVendaModal") && !el("cafeVendaModal").classList.contains("hidden");
-    const planilhaPreenchida = [...document.querySelectorAll("#cafePlanilha input.cpv")].some(i=>Number(i.value||0)>0);
+    const planilhaPreenchida = Object.values((typeof cafeVend!=="undefined"&&cafeVend)||{}).some(o=>o&&o.q>0);
     if(digitando || modalAberto || planilhaPreenchida){ rtTimer=setTimeout(run,2500); return; }
     refreshDados();
   }, 1200);
@@ -1341,35 +1342,44 @@ function renderCafePainel(){
   box.innerHTML = `<div style="font-weight:600;margin-bottom:4px">${total} peça(s) · ${BRL(totVal)}</div>${linhas}${mais}`;
 }
 // ---- Planilha de vendas do café (preencher vendidos → registra automático) ----
+let cafeVend = {}; // id -> {q, forma} — guarda o que foi digitado (persiste ao filtrar/atualizar)
+function cafeVendInput(id,val){ if(!cafeVend[id]) cafeVend[id]={forma:"dinheiro"}; const q=Math.floor(Number(val||0)); cafeVend[id].q=q>0?q:0; atualizaCafeResumo(); }
+function cafeVendForma(id,val){ if(!cafeVend[id]) cafeVend[id]={q:0}; cafeVend[id].forma=val; atualizaCafeResumo(); }
 function renderCafePlanilha(){
   const box=el("cafePlanilha"); if(!box) return;
-  const btn=el("btnRegistrarCafe");
+  const btn=el("btnRegistrarCafe"); const busca=el("cafePlanilhaBusca");
   const ids=cafeIdsOrdenados();
   if(!ids.length){
     box.innerHTML=`<p class="small muted">Nenhuma peça no café agora.${CAFE_MODE?"":" Use o campo acima para enviar."} ☕</p>`;
     if(btn) btn.style.display="none";
+    if(busca) busca.style.display="none";
     if(el("cafeResumo")) el("cafeResumo").innerHTML="";
     return;
   }
   if(btn) btn.style.display="";
-  const opts=`<option value="dinheiro">Dinheiro</option><option value="pix">Pix</option><option value="credito">Crédito</option><option value="debito">Débito</option>`;
-  box.innerHTML = ids.map(id=>{
+  if(busca) busca.style.display="";
+  const q=((busca&&busca.value)||"").toLowerCase().trim();
+  const vis = q ? ids.filter(id=>(cafeNome(id)||"").toLowerCase().includes(q)) : ids;
+  const op=(id,val,lab)=>`<option value="${val}"${((cafeVend[id]&&cafeVend[id].forma)||"dinheiro")===val?" selected":""}>${lab}</option>`;
+  box.innerHTML = vis.length ? vis.map(id=>{
     const p=PRODUTOS.find(x=>x.id===id)||{id};
+    const qv=(cafeVend[id]&&cafeVend[id].q>0)?cafeVend[id].q:"";
     return `<div class="cprow" style="display:grid;grid-template-columns:auto 1fr 56px 104px;gap:8px;align-items:center;padding:7px 0;border-bottom:1px solid var(--line)">
       ${thumb(p)}
       <div><div>${gesc(cafeNome(id))}</div><div class="small muted">${BRL(cafePreco(id))} · ${CAFE[id].qtd} no café${CAFE_MODE?"":` · <a href="#" onclick="cafeTirarConfirm('${id}');return false">tirar</a>`}</div></div>
-      <input type="number" min="0" max="${CAFE[id].qtd}" class="cpv" data-id="${id}" placeholder="0" oninput="atualizaCafeResumo()" style="width:100%;text-align:center">
-      <select class="cpf" data-id="${id}" onchange="atualizaCafeResumo()" style="width:100%">${opts}</select>
+      <input type="number" min="0" max="${CAFE[id].qtd}" class="cpv" data-id="${id}" value="${qv}" placeholder="0" oninput="cafeVendInput('${id}',this.value)" style="width:100%;text-align:center">
+      <select class="cpf" data-id="${id}" onchange="cafeVendForma('${id}',this.value)" style="width:100%">${op(id,"dinheiro","Dinheiro")+op(id,"pix","Pix")+op(id,"credito","Crédito")+op(id,"debito","Débito")}</select>
     </div>`;
-  }).join("");
+  }).join("") : `<p class="small muted">Nenhuma peça encontrada.</p>`;
   atualizaCafeResumo();
 }
 function atualizaCafeResumo(){
   const box=el("cafeResumo"); if(!box) return;
   let valor=0,taxa=0,cafe=0,liq=0,n=0;
-  document.querySelectorAll("#cafePlanilha input.cpv").forEach(inp=>{
-    const id=inp.dataset.id; const q=Math.floor(Number(inp.value||0)); if(q<=0) return;
-    const sel=document.querySelector('#cafePlanilha select.cpf[data-id="'+id+'"]'); const forma=sel?sel.value:"dinheiro";
+  cafeIdsOrdenados().forEach(id=>{
+    const cur=cafeVend[id]; if(!cur||!(cur.q>0)) return;
+    const emCafe=CAFE[id]?CAFE[id].qtd:0; const q=Math.min(cur.q,emCafe); if(q<=0) return;
+    const forma=cur.forma||"dinheiro";
     const v=cafePreco(id)*q, t=v*taxaForma(forma), rec=v-t, c=rec*CAFE_PCT, l=rec-c;
     valor+=v;taxa+=t;cafe+=c;liq+=l;n+=q;
   });
@@ -1384,14 +1394,10 @@ function atualizaCafeResumo(){
 }
 async function registrarVendasCafe(){
   const linhas=[];
-  document.querySelectorAll("#cafePlanilha input.cpv").forEach(inp=>{
-    const id=inp.dataset.id; const q=Math.floor(Number(inp.value||0));
-    if(q>0){
-      const sel=document.querySelector('#cafePlanilha select.cpf[data-id="'+id+'"]');
-      const forma=sel?sel.value:"dinheiro";
-      const emCafe=CAFE[id]?CAFE[id].qtd:0;
-      if(emCafe>0) linhas.push({id, q:Math.min(q,emCafe), forma});
-    }
+  cafeIdsOrdenados().forEach(id=>{
+    const cur=cafeVend[id]; if(!cur||!(cur.q>0)) return;
+    const emCafe=CAFE[id]?CAFE[id].qtd:0; const q=Math.min(cur.q,emCafe); if(q<=0) return;
+    linhas.push({id, q, forma:cur.forma||"dinheiro"});
   });
   if(!linhas.length){ toast("Preencha a quantidade vendida"); return; }
   const resumo=linhas.map(l=>`• ${l.q}× ${cafeNome(l.id)} (${labelForma(l.forma)})`).join("\n");
@@ -1410,11 +1416,13 @@ async function registrarVendasCafe(){
       if(p){ const novo=Math.max(0,Number(p.estoque||0)-l.q); await sb.from("produtos").update({estoque:novo}).eq("id",l.id); p.estoque=novo; }
       await cafeTira(l.id, l.q);
     }
+    cafeVend={}; if(el("cafePlanilhaBusca")) el("cafePlanilhaBusca").value="";
     toast("Vendas do café registradas ☕");
     await carregar();
   }finally{ if(btn){ btn.disabled=false; btn.textContent="✓ Registrar vendas"; } }
 }
 if(el("btnRegistrarCafe")) el("btnRegistrarCafe").addEventListener("click", registrarVendasCafe);
+if(el("cafePlanilhaBusca")) el("cafePlanilhaBusca").addEventListener("input", renderCafePlanilha);
 document.querySelectorAll("#cafePeriodoSel button").forEach(b=> b.addEventListener("click", ()=>{ cafePeriodo=b.dataset.per; document.querySelectorAll("#cafePeriodoSel button").forEach(x=>x.classList.toggle("on",x===b)); renderCafeHistoricoVendas(); }));
 function cafeIdsOrdenados(){ return Object.keys(CAFE).filter(id=>CAFE[id].qtd>0).sort((a,b)=>(ORDEM_SITE[a]??9999)-(ORDEM_SITE[b]??9999)); }
 function copiarCafe(){
