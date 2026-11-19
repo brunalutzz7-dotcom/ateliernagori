@@ -122,7 +122,7 @@
 <!-- App -->
 <div id="appView" class="hidden">
   <header class="top">
-    <b>✿ Atelier Nagori</b><span style="font-size:.62rem;opacity:.55;margin-left:7px;letter-spacing:.02em">v123 · modo café sem aba Vendas</span>
+    <b>✿ Atelier Nagori</b><span style="font-size:.62rem;opacity:.55;margin-left:7px;letter-spacing:.02em">v124 · café: aba Vendas só com vendas do café</span>
     <button class="sair" id="btnSair">Sair</button>
   </header>
   <div class="wrap">
@@ -214,7 +214,7 @@
 
     <!-- VENDAS -->
     <section id="tab-vendas" class="hidden">
-      <div class="card">
+      <div class="card" id="vendaFormCard">
         <h2>Registrar venda</h2>
         <form id="vendaForm">
           <label>Peça</label>
@@ -541,11 +541,12 @@ function computeMode(email){
   CAFE_MODE = sticky || em.indexOf("cafe")===0;
 }
 function applyMode(){
-  const ocultar = CAFE_MODE ? ["painel","graficos","financeiro","compras","custos","vendas"] : [];
+  const ocultar = CAFE_MODE ? ["painel","graficos","financeiro","compras","custos"] : [];
   document.querySelectorAll("nav.tabs button").forEach(b=>{ b.style.display = ocultar.includes(b.dataset.tab) ? "none" : ""; });
   document.body.classList.toggle("cafe-mode", CAFE_MODE);
   const ec=el("cafeEnviarCard"); if(ec) ec.style.display = CAFE_MODE ? "none" : "";
   const mc=el("cafeMovCard"); if(mc) mc.style.display = CAFE_MODE ? "none" : "";
+  const vf=el("vendaFormCard"); if(vf) vf.style.display = CAFE_MODE ? "none" : "";
   if(CAFE_MODE) show("cafe");
 }
 let rtBusy=false, rtTimer=null, rtStarted=false;
@@ -2054,8 +2055,9 @@ el("vendaForm").addEventListener("submit", async (e)=>{
 
 const CANAL_LABEL={loja:"🏪 Loja",cafe:"☕ Café",site:"🌐 Site",whatsapp:"💬 WhatsApp",direto:"🤝 Direto"};
 function renderVendas(){
-  if(!VENDAS.length){ el("listaVendas").textContent="Nenhuma venda registrada ainda."; return; }
-  el("listaVendas").innerHTML = VENDAS.slice(0,40).map(v=>{
+  const lista = CAFE_MODE ? (VENDAS||[]).filter(v=>v.canal==="cafe") : (VENDAS||[]);
+  if(!lista.length){ el("listaVendas").textContent = CAFE_MODE ? "Nenhuma venda do café ainda." : "Nenhuma venda registrada ainda."; return; }
+  el("listaVendas").innerHTML = lista.slice(0,40).map(v=>{
     const d=new Date(v.criado_em).toLocaleDateString("pt-BR");
     const lucro=(v.custo!=null)? Number(v.valor||0)-Number(v.custo||0) : null;
     const ehCafe=v.canal==="cafe";
