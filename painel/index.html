@@ -122,7 +122,7 @@
 <!-- App -->
 <div id="appView" class="hidden">
   <header class="top">
-    <b>✿ Atelier Nagori</b><span style="font-size:.62rem;opacity:.55;margin-left:7px;letter-spacing:.02em">v126 · busca na planilha do café</span>
+    <b>✿ Atelier Nagori</b><span style="font-size:.62rem;opacity:.55;margin-left:7px;letter-spacing:.02em">v127 · resumo do café: já pago vs a acertar</span>
     <button class="sair" id="btnSair">Sair</button>
   </header>
   <div class="wrap">
@@ -1223,14 +1223,20 @@ function vendasCafeFiltradas(){
   if(cafePeriodo==="mesant"){ const dp=new Date(aA,mA-1,1); return vendas.filter(v=>{const d=new Date(v.criado_em);return d.getMonth()===dp.getMonth()&&d.getFullYear()===dp.getFullYear();}); }
   return vendas;
 }
-function blocoTotais(tit,o){ return `<div style="background:var(--paper-dk,#f3efe6);border-radius:8px;padding:8px 10px">
+function blocoTotais(tit,o,split){
+  const liqLinhas = split
+    ? `<div class="item" style="border-top:1px solid var(--line);margin-top:2px;padding-top:6px"><span>✅ Já pago à Nagori</span><span>${BRL(split.pago)}</span></div>
+       <div class="item" style="font-weight:700;color:#1e7a44"><span>A pagar à Nagori (a acertar)</span><span>${BRL(split.aberto)}</span></div>`
+    : `<div class="item" style="font-weight:700;color:#1e7a44;border-top:1px solid var(--line);margin-top:2px;padding-top:6px"><span>A pagar à Nagori</span><span>${BRL(o.l)}</span></div>`;
+  return `<div style="background:var(--paper-dk,#f3efe6);border-radius:8px;padding:8px 10px">
     <div style="font-weight:600;margin-bottom:2px">${tit}</div>
     <div class="item"><span>Peças vendidas</span><span><b>${o.q}</b></span></div>
     <div class="item"><span>Total vendido</span><span>${BRL(o.v)}</span></div>
     ${o.t>0?`<div class="item"><span>Taxa de cartão</span><span>− ${BRL(o.t)}</span></div>`:""}
     <div class="item"><span>Café (20%)</span><span>− ${BRL(o.c)}</span></div>
-    <div class="item" style="font-weight:700;color:#1e7a44;border-top:1px solid var(--line);margin-top:2px;padding-top:6px"><span>A pagar à Nagori</span><span>${BRL(o.l)}</span></div>
-  </div>`; }
+    ${liqLinhas}
+  </div>`;
+}
 function renderCafeAcertoBox(){
   const box=el("cafeAcertoBox"); if(!box) return;
   const o=somaVendas(emAbertoVendas());
@@ -1268,8 +1274,11 @@ function renderCafeHistoricoVendas(){
   const box=el("cafeVendasLista"); if(!box) return;
   const vendas=vendasCafeFiltradas();
   const o=somaVendas(vendas);
+  const lt=lastAcertoTime();
+  let pago=0, aberto=0;
+  vendas.forEach(v=>{ const b=cafeBreakdown(v); if(new Date(v.criado_em).getTime()>lt) aberto+=b.liq; else pago+=b.liq; });
   const lbl = cafePeriodo==="mes"?"📅 Este mês":(cafePeriodo==="mesant"?"📅 Mês passado":"Σ Desde o início");
-  if(el("cafeTotais")) el("cafeTotais").innerHTML = blocoTotais(lbl, o);
+  if(el("cafeTotais")) el("cafeTotais").innerHTML = blocoTotais(lbl, o, {pago, aberto});
   box.innerHTML = vendas.length ? vendas.slice(0,120).map(v=>{
     const b=cafeBreakdown(v), d=new Date(v.criado_em).toLocaleDateString("pt-BR");
     const p=PRODUTOS.find(x=>x.id===v.produto_id)||{id:v.produto_id};
