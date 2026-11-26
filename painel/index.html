@@ -122,7 +122,7 @@
 <!-- App -->
 <div id="appView" class="hidden">
   <header class="top">
-    <b>✿ Atelier Nagori</b><span style="font-size:.62rem;opacity:.55;margin-left:7px;letter-spacing:.02em">v137 · nova aba Conteúdo (roteiros de reels e legendas)</span>
+    <b>✿ Atelier Nagori</b><span style="font-size:.62rem;opacity:.55;margin-left:7px;letter-spacing:.02em">v138 · Conteúdo: receita semanal (3 reels + fotos) e roteiro Venda/Educativo</span>
     <button class="sair" id="btnSair">Sair</button>
   </header>
   <div class="wrap">
@@ -546,7 +546,7 @@
 
       <div class="card">
         <h2>📅 Plano da semana (sugestão)</h2>
-        <div class="small muted" style="margin-top:-4px">Alinhado à sua rotina: grave na sexta e deixe agendado. 4 posts por semana já mantêm o perfil vivo.</div>
+        <div class="small muted" style="margin-top:-4px">Sua receita: <b>3 Reels</b> (2 de venda — 1 patrocinado 7 dias + 1 orgânico — e 1 educativo/entretenimento) + <b>2 a 3 fotos</b>. Meta: postar quase todo dia. Grave tudo na sexta e deixe agendado.</div>
         <div id="ctPlanoFixo" style="margin-top:8px"></div>
       </div>
 
@@ -561,7 +561,8 @@
         <h2>🎬 Roteiro de reel pronto</h2>
         <div class="small muted">Escolha uma peça e gere um roteiro cena a cena + legenda + hashtags, prontos pra copiar.</div>
         <div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;align-items:flex-end">
-          <label style="flex:1;min-width:180px">Peça<select id="ctProd"></select></label>
+          <label style="flex:1;min-width:160px">Peça<select id="ctProd"></select></label>
+          <label style="min-width:150px">Objetivo<select id="ctTipo"><option value="venda">Venda (conversão)</option><option value="educativo">Educativo / entretenimento</option></select></label>
           <button class="btn" type="button" id="ctGerar" style="width:auto">Gerar roteiro</button>
         </div>
         <div id="ctRoteiro" style="margin-top:12px"></div>
@@ -2612,10 +2613,13 @@ const CT_GANCHOS=["Sabia que isso não precisa de vaso?","A planta que vira pres
 const CT_DICAS=["regue por imersão 1x na semana","luz indireta, sem sol direto na folha","borrife água nos dias quentes","deixe secar entre uma rega e outra","gire a peça de vez em quando pra crescer parelho"];
 const CT_FRASES=["名残 — o que permanece. Um pedacinho de natureza feito à mão pra sua casa.","Cada kokedama é única, montada à mão sobre musgo vivo.","Leveza japonesa e muito verde pra deixar sua casa mais viva."];
 const CT_PLANO=[
-  ["Segunda","Reel bastidor","Montagem/bastidor de uma peça — o processo encanta e segura o público."],
-  ["Quarta","Carrossel · dica","Dica de cuidado (rega, luz, adubo) com uma peça em foco."],
-  ["Sexta","Reel destaque","Peça da semana ou novidade (agora: clima de Natal 🎄)."],
-  ["Domingo","Story + enquete","Bastidor do ateliê + enquete, com CTA pra loja física e o café."],
+  ["Segunda","🎬 Reel VENDA · patrocinar 7 dias","Peça destaque da semana, focada em venda. Sobe como anúncio hoje (objetivo Mensagens/Vendas) e roda 7 dias."],
+  ["Terça","📷 Foto","Close caprichado de uma peça — musgo, folha, suporte. Beleza que dá vontade."],
+  ["Quarta","🎬 Reel EDUCATIVO / entretenimento","Dica de cuidado, montando uma kokedama, ou respondendo perguntas. Engaja e cria autoridade."],
+  ["Quinta","📷 Foto","Bastidor do ateliê, a loja física ou o cantinho no café."],
+  ["Sexta","🎬 Reel VENDA · orgânico","Outra peça, também pra vender — sem patrocínio. (Dia de gravar tudo!)"],
+  ["Sábado","📷 Foto (opcional)","Peça num ambiente real, presente de Natal 🎄 ou depoimento de cliente."],
+  ["Domingo","📱 Story + enquete","Interação leve: enquete ou caixinha de perguntas pra aquecer o público."],
 ];
 function ctNatalAtivo(){ const m=new Date().getMonth(); return m===10||m===11; } // nov/dez
 function ctPick(arr,i){ return arr.length? arr[((i%arr.length)+arr.length)%arr.length] : ""; }
@@ -2630,22 +2634,40 @@ function ctHashtags(p){
   if(n.includes("cupula")||n.includes("cúpula")||n.includes("terrario")||n.includes("terrário")) extra.push("#terrario");
   return [...new Set([...extra, ...CT_HTAGS_BASE])].slice(0,13).join(" ");
 }
+const CT_PERGUNTAS=["Kokedama pode ficar dentro de casa?","De quanto em quanto tempo eu rego?","Precisa de sol direto?","Quanto tempo dura uma kokedama?","Dá pra ter com pet em casa?","Como sei que está na hora de regar?"];
+const CT_EDU_GANCHOS=["3 erros que matam a sua kokedama 🌿","Sabia que kokedama não precisa de vaso?","Como eu rego minhas kokedamas","Montando uma kokedama do zero ✨","Respondendo a pergunta que mais recebo"];
 function ctGancho(p){ return ctEhNatal(p&&p.nome) ? "O presente de Natal que fica vivo o ano todo 🎄" : ctRand(CT_GANCHOS); }
-function ctRoteiro(p){
+function ctRoteiroVenda(p){
   const nome=p?p.nome:"sua kokedama";
   const preco=(p&&p.preco)?BRL(p.preco):null;
   const natal=ctEhNatal(nome);
   const cenas=[
     `0–3s · GANCHO — close bem de perto da ${nome}, girando devagar. Texto na tela: "${ctGancho(p)}"`,
-    `3–7s — mostre a peça inteira, num ângulo que valorize o musgo e a folhagem.`,
-    `7–12s — um detalhe do processo: mãos ajeitando o musgo, pendurando, ou a plaquinha 名残.`,
-    `12–18s · DICA — mostre o cuidado: "${ctRand(CT_DICAS)}".`,
-    `18–22s · CTA — peça na mão + texto "${natal?'Encomende o seu 🎄':'Chama no direct 💬'}". Fale: "Feito à mão em Curitiba — chama na gente!"`,
+    `3–8s — a peça inteira, num ângulo que valorize o musgo e a folhagem. Mostre o porte/tamanho.`,
+    `8–14s · DESEJO — coloque num cantinho real (mesa, estante, recepção). Texto: "imagina isso na sua casa".`,
+    `14–19s · CONFIANÇA — detalhe à mão: ajeitando o musgo ou a plaquinha 名残. "Feita à mão, peça única."`,
+    `19–24s · CTA FORTE — peça na mão + texto "${natal?'Encomende até dia 20 🎄':'Chama no WhatsApp 💬'}". Fale: "${preco?`${nome} por ${preco}. `:''}Me chama que eu te ajudo a escolher!"`,
   ];
-  const legenda = `${ctRand(CT_FRASES)}${preco?`\n\n${nome} — ${preco}.`:``}\n\n🌿 Feito à mão no Atelier Nagori · Curitiba/PR\n📍 Também na loja física do Jardim do Bosque Gastronomia\n💬 Faça seu pedido no direct ou WhatsApp\n\n${ctHashtags(p)}`;
-  const audio = natal ? "Áudio em alta de Natal / acústico aconchegante." : "Áudio em alta (trending) calmo/aesthetic do momento.";
+  const legenda = `${ctRand(CT_FRASES)}${preco?`\n\n✨ ${nome} — ${preco}.`:``}\n${natal?'🎄 Presente de Natal que fica vivo o ano todo.\n':''}\n📩 Faça seu pedido agora no direct ou WhatsApp — cada peça é única e sai rápido!\n🌿 Feito à mão no Atelier Nagori · Curitiba/PR\n📍 Loja física no Jardim do Bosque Gastronomia\n\n${ctHashtags(p)}`;
+  const audio = natal ? "Áudio em alta de Natal / acústico aconchegante." : "Áudio em alta (trending) aesthetic/calmo do momento.";
   return {cenas, legenda, audio};
 }
+function ctRoteiroEdu(p){
+  const nome=p?p.nome:"uma kokedama";
+  const gancho=ctRand(CT_EDU_GANCHOS), dica=ctRand(CT_DICAS), perg=ctRand(CT_PERGUNTAS);
+  const montar=/montando|do zero/i.test(gancho);
+  const cenas=[
+    `0–3s · GANCHO — você olhando pra câmera ou close na ${nome}. Texto na tela: "${gancho}"`,
+    `3–9s — entregue o conteúdo: ${montar?`passo a passo montando a ${nome} (acelerado).`:`responda "${perg}" de forma simples e direta.`}`,
+    `9–15s · VALOR — a dica principal: "${dica}". Mostre fazendo, não só falando.`,
+    `15–20s — resultado bonito da ${nome} + assinatura visual (plaquinha 名残).`,
+    `20–24s · CTA LEVE — texto "Salva pra não esquecer 💚 e me segue pra mais dicas". Diga: "faço à mão aqui em Curitiba".`,
+  ];
+  const legenda = `${gancho}\n\n${dica.charAt(0).toUpperCase()+dica.slice(1)} — esse é o segredo pra sua kokedama durar bonita. 🌿\n\nFicou com dúvida sobre kokedama ou bonsai? Pergunta aqui nos comentários que eu respondo! 👇\n💚 Atelier Nagori · Curitiba/PR · feito à mão\n\n${ctHashtags(p)}`;
+  const audio = "Áudio calmo/educativo (ou trending leve). Narre você mesma por cima — dá autoridade e segura o público.";
+  return {cenas, legenda, audio};
+}
+function ctRoteiro(p, tipo){ return tipo==="educativo" ? ctRoteiroEdu(p) : ctRoteiroVenda(p); }
 function ctProdutosPool(){
   return (PRODUTOS||[]).filter(p=>p.categoria!=="Suportes" && p.categoria!=="Serviços").sort((a,b)=>(ORDEM_SITE[a.id]??9999)-(ORDEM_SITE[b.id]??9999));
 }
@@ -2654,16 +2676,19 @@ function ctIdeiasSemana(){
   const nm=i=> sh.length? (sh[i%sh.length].nome) : "uma kokedama";
   const natal=ctNatalAtivo();
   return [
-    {dia:"Segunda", fmt:"Reel bastidor", ideia:`Montagem de uma <b>${gesc(nm(0))}</b> (mãos + musgo). Bastidor engaja muito.`},
-    {dia:"Quarta", fmt:"Carrossel · dica", ideia:`Como cuidar da <b>${gesc(nm(1))}</b>: rega por imersão, luz indireta, adubo.`},
-    {dia:"Sexta", fmt:"Reel destaque", ideia:`Peça da semana: <b>${gesc(nm(2))}</b>${natal?" + clima de Natal 🎄":""}.`},
-    {dia:"Domingo", fmt:"Story + enquete", ideia:`Enquete "qual sua favorita?" com a <b>${gesc(nm(3))}</b> + convite pra loja física/café.`},
+    {dia:"Seg · 🎬 Reel VENDA (patrocinar 7d)", ideia:`<b>${gesc(nm(0))}</b> em destaque${natal?" (ângulo presente de Natal 🎄)":""}. Sobe como anúncio hoje.`},
+    {dia:"Ter · 📷 Foto", ideia:`Close caprichado da <b>${gesc(nm(1))}</b> (musgo, folha, suporte).`},
+    {dia:"Qua · 🎬 Reel EDUCATIVO", ideia:`Dica de cuidado, montando a <b>${gesc(nm(2))}</b>, ou respondendo perguntas.`},
+    {dia:"Qui · 📷 Foto", ideia:`Bastidor do ateliê / loja física / cantinho no café.`},
+    {dia:"Sex · 🎬 Reel VENDA (orgânico)", ideia:`<b>${gesc(nm(3))}</b> — outra peça, também pra vender.`},
+    {dia:"Sáb · 📷 Foto (opcional)", ideia:`Peça num ambiente real / depoimento de cliente${natal?" / vitrine de Natal 🎄":""}.`},
+    {dia:"Dom · 📱 Story", ideia:`Enquete ou caixinha de perguntas pra engajar.`},
   ];
 }
 function renderCtIdeias(){
   if(!el("ctIdeias")) return;
   el("ctIdeias").innerHTML = ctIdeiasSemana().map(x=>`<div class="item"><div style="flex:1">
-    <div style="font-weight:600">${x.dia} <span class="small muted">· ${x.fmt}</span></div>
+    <div style="font-weight:600">${x.dia}</div>
     <div class="small muted">${x.ideia}</div></div></div>`).join("");
 }
 function renderConteudo(){
@@ -2678,10 +2703,13 @@ function renderConteudo(){
 function ctGerarRoteiro(){
   const sel=el("ctProd"); if(!sel||!sel.value){ toast("Escolha uma peça"); return; }
   const p=(PRODUTOS||[]).find(x=>x.id===sel.value); if(!p){ toast("Peça não encontrada"); return; }
-  const r=ctRoteiro(p);
-  const txt=`🎬 ROTEIRO DE REEL — ${p.nome}\n\n`+r.cenas.map(c=>"• "+c).join("\n")+`\n\n🎵 ${r.audio}\n\n— LEGENDA —\n${r.legenda}`;
+  const tipo=(el("ctTipo")&&el("ctTipo").value)||"venda";
+  const r=ctRoteiro(p, tipo);
+  const titulo = tipo==="educativo" ? `🎬 REEL EDUCATIVO — ${p.nome}` : `🎬 REEL DE VENDA — ${p.nome}`;
+  const txt=`${titulo}\n\n`+r.cenas.map(c=>"• "+c).join("\n")+`\n\n🎵 ${r.audio}\n\n— LEGENDA —\n${r.legenda}`;
   el("ctRoteiro").innerHTML =
-    `<div style="font-weight:600;margin-bottom:4px">Cenas</div>`
+    `<div style="font-weight:700;margin-bottom:6px;color:var(--moss-deep)">${titulo}</div>`
+    + `<div style="font-weight:600;margin-bottom:4px">Cenas</div>`
     + `<div class="small" style="background:var(--paper-dk,#f3efe6);border-radius:8px;padding:10px">${r.cenas.map(c=>`<div style="padding:3px 0">• ${gesc(c)}</div>`).join("")}<div style="padding:6px 0 0;color:var(--moss-deep)">🎵 ${gesc(r.audio)}</div></div>`
     + `<div style="font-weight:600;margin:12px 0 4px">Legenda pronta</div>`
     + `<pre style="white-space:pre-wrap;font-family:inherit;margin:0;background:var(--paper-dk,#f3efe6);border-radius:8px;padding:10px;font-size:.9rem">${gesc(r.legenda)}</pre>`
