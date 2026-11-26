@@ -122,7 +122,7 @@
 <!-- App -->
 <div id="appView" class="hidden">
   <header class="top">
-    <b>✿ Atelier Nagori</b><span style="font-size:.62rem;opacity:.55;margin-left:7px;letter-spacing:.02em">v133 · Tuia Stricta com foto, publicada no site e catálogo</span>
+    <b>✿ Atelier Nagori</b><span style="font-size:.62rem;opacity:.55;margin-left:7px;letter-spacing:.02em">v134 · busca ignora acentos (procurar peças sem acento)</span>
     <button class="sair" id="btnSair">Sair</button>
   </header>
   <div class="wrap">
@@ -745,8 +745,8 @@ function renderCompras(){
   h+=`<div class="small" style="padding:4px 0;color:#8a6d3b"><b>🎄 Enfeites de Natal:</b> total ${centBRL(cc.natal)}${cc.custoEnfeite!=null?` · ${centBRL(cc.custoEnfeite)} por enfeite (${cc.natalQ} un.)`:' <span class="muted">(informe o nº de enfeites)</span>'}</div>`;
   h+=`<div class="small muted" style="padding-top:8px">Cada linha é por rendimento (1 rolo rende X peças). As de folhagem/bonsai (musgo, adubo, substrato) são por grama × porte.</div>`;
   el("comprasCalc").innerHTML=h;
-  const q=(el("buscaCompra").value||"").toLowerCase();
-  const lst=COMPRAS.filter(c=>(c.item||"").toLowerCase().includes(q)||(CAT_LABEL[c.categoria]||"").toLowerCase().includes(q)).sort((a,b)=>String(b.data||"").localeCompare(String(a.data||"")));
+  const q=norm(el("buscaCompra").value);
+  const lst=COMPRAS.filter(c=>norm(c.item).includes(q)||norm(CAT_LABEL[c.categoria]).includes(q)).sort((a,b)=>String(b.data||"").localeCompare(String(a.data||"")));
   if(!lst.length){ el("listaCompras").innerHTML='<p class="small muted">Nenhuma compra registrada ainda.</p>'; return; }
   el("listaCompras").innerHTML=lst.map(c=>{
     let extra = c.rende?` · rende ${c.rende}`:(c.gramas?` · ${c.gramas}g`:"");
@@ -802,8 +802,8 @@ function renderPortes(){
   el("portesTabela").querySelectorAll("input[data-pk]").forEach(inp=>{
     inp.addEventListener("change",()=>{ const k=inp.dataset.pk,f=inp.dataset.f,v=numBR(inp.value); if(!portesCfg[k])portesCfg[k]={}; if(v==null)delete portesCfg[k][f]; else portesCfg[k][f]=v; savePortesCfg(); renderPortes(); });
   });
-  const q=(el("buscaPorte").value||"").toLowerCase();
-  const lst=PRODUTOS.filter(p=>p.categoria!=="Suportes" && (p.nome||"").toLowerCase().includes(q)).sort((a,b)=>(ORDEM_SITE[a.id]??9999)-(ORDEM_SITE[b.id]??9999));
+  const q=norm(el("buscaPorte").value);
+  const lst=PRODUTOS.filter(p=>p.categoria!=="Suportes" && norm(p.nome).includes(q)).sort((a,b)=>(ORDEM_SITE[a.id]??9999)-(ORDEM_SITE[b.id]??9999));
   el("portesProdutos").innerHTML = lst.map(p=>{
     const sel=porteProd[p.id]||""; const ck=selProd.has(p.id)?"checked":"";
     const temEnf = getDetalhe(p.id) && Number(getDetalhe(p.id).enfeite||0)>0;
@@ -826,8 +826,8 @@ function renderPortes(){
 function atualizaSelInfo(){ if(el("selInfo")) el("selInfo").textContent = selProd.size ? `${selProd.size} peça(s) selecionada(s)` : "nenhuma selecionada"; }
 if(el("buscaPorte")) el("buscaPorte").addEventListener("input", renderPortes);
 if(el("btnSelTodas")) el("btnSelTodas").addEventListener("click", ()=>{
-  const q=(el("buscaPorte").value||"").toLowerCase();
-  PRODUTOS.filter(p=>p.categoria!=="Suportes" && (p.nome||"").toLowerCase().includes(q)).forEach(p=>selProd.add(p.id));
+  const q=norm(el("buscaPorte").value);
+  PRODUTOS.filter(p=>p.categoria!=="Suportes" && norm(p.nome).includes(q)).forEach(p=>selProd.add(p.id));
   renderPortes();
 });
 if(el("btnSelNenhuma")) el("btnSelNenhuma").addEventListener("click", ()=>{ selProd.clear(); renderPortes(); });
@@ -1176,8 +1176,8 @@ function enviarCafe(){
 function renderCafeSelect(){
   const sel=el("cafeProd"); if(!sel) return;
   const cur=sel.value;
-  const q=((el("cafeBusca")&&el("cafeBusca").value)||"").toLowerCase().trim();
-  const match=p=>!q || (p.nome||"").toLowerCase().includes(q) || (p.categoria||"").toLowerCase().includes(q);
+  const q=norm(((el("cafeBusca")&&el("cafeBusca").value)||"")).trim();
+  const match=p=>!q || norm(p.nome).includes(q) || norm(p.categoria).includes(q);
   const ord=(a,b)=>(ORDEM_SITE[a.id]??9999)-(ORDEM_SITE[b.id]??9999);
   const pecas=PRODUTOS.filter(p=>p.categoria!=="Suportes" && match(p)).sort(ord);
   const sups=PRODUTOS.filter(p=>p.categoria==="Suportes" && match(p)).sort(ord);
@@ -1368,8 +1368,8 @@ function renderCafePlanilha(){
   }
   if(btn) btn.style.display="";
   if(busca) busca.style.display="";
-  const q=((busca&&busca.value)||"").toLowerCase().trim();
-  const vis = q ? ids.filter(id=>(cafeNome(id)||"").toLowerCase().includes(q)) : ids;
+  const q=norm(((busca&&busca.value)||"")).trim();
+  const vis = q ? ids.filter(id=>norm(cafeNome(id)).includes(q)) : ids;
   const op=(id,val,lab)=>`<option value="${val}"${((cafeVend[id]&&cafeVend[id].forma)||"dinheiro")===val?" selected":""}>${lab}</option>`;
   box.innerHTML = vis.length ? vis.map(id=>{
     const p=PRODUTOS.find(x=>x.id===id)||{id};
@@ -1919,7 +1919,7 @@ function renderGraficos(){
 function renderProdutosSelect(){ if(typeof renderItensVenda==="function") renderItensVenda(); }
 
 // ---- Busca com autocompletar da peça ----
-const norm = (s)=> (s||"").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"");
+function norm(s){ return (s||"").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,""); }
 let sugHi = -1; // índice destacado na lista de sugestões
 function sugestoesAtuais(){
   const q = norm(el("vBusca").value.trim());
@@ -2113,8 +2113,8 @@ const THUMB_PH="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' vie
 function fotoDe(id){ return (id&&id.indexOf('suporte-')===0) ? '../assets/bases/'+id.slice(8)+'.jpg' : '../assets/produtos/'+id+'.jpg'; }
 function thumb(p){ return `<img class="thumb" loading="lazy" src="${fotoDe(p.id)}" alt="" onerror="this.onerror=null;this.src=THUMB_PH">`; }
 function renderProdutos(){
-  const q=(el("buscaProd").value||"").toLowerCase();
-  const lista=PRODUTOS.filter(p=>p.nome.toLowerCase().includes(q)).sort((a,b)=>(ORDEM_SITE[a.id]??9999)-(ORDEM_SITE[b.id]??9999));
+  const q=norm(el("buscaProd").value);
+  const lista=PRODUTOS.filter(p=>norm(p.nome).includes(q)).sort((a,b)=>(ORDEM_SITE[a.id]??9999)-(ORDEM_SITE[b.id]??9999));
   el("listaProdutos").innerHTML = lista.map(p=>`
     <div class="item">
       ${thumb(p)}
@@ -2199,8 +2199,8 @@ async function salvarDetalhe(id, detalhe){
 }
 function corMargem(pct){ if(pct==null) return 'var(--muted)'; if(pct<0.4) return 'var(--terra)'; if(pct<0.6) return '#c79a3a'; return 'var(--moss)'; }
 function renderCustos(){
-  const q=(document.getElementById("buscaCusto").value||"").toLowerCase();
-  const lista=PRODUTOS.filter(p=>p.nome.toLowerCase().includes(q)).sort((a,b)=>(ORDEM_SITE[a.id]??9999)-(ORDEM_SITE[b.id]??9999));
+  const q=norm(document.getElementById("buscaCusto").value);
+  const lista=PRODUTOS.filter(p=>norm(p.nome).includes(q)).sort((a,b)=>(ORDEM_SITE[a.id]??9999)-(ORDEM_SITE[b.id]??9999));
   document.getElementById("listaCustos").innerHTML = lista.map(p=>{
     const preco=Number(p.preco||0);
     const d=getDetalhe(p.id);
