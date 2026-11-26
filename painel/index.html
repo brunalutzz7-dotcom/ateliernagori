@@ -122,7 +122,7 @@
 <!-- App -->
 <div id="appView" class="hidden">
   <header class="top">
-    <b>✿ Atelier Nagori</b><span style="font-size:.62rem;opacity:.55;margin-left:7px;letter-spacing:.02em">v136 · Finanças: veredito "O Nagori compensa?"</span>
+    <b>✿ Atelier Nagori</b><span style="font-size:.62rem;opacity:.55;margin-left:7px;letter-spacing:.02em">v137 · nova aba Conteúdo (roteiros de reels e legendas)</span>
     <button class="sair" id="btnSair">Sair</button>
   </header>
   <div class="wrap">
@@ -537,6 +537,37 @@
       </div>
     </section>
 
+    <!-- CONTEÚDO / POSTS -->
+    <section id="tab-conteudo" class="hidden">
+      <div class="card" style="border-left:4px solid #c0963f">
+        <h2>✨ Conteúdo &amp; Posts</h2>
+        <div class="small muted">Ideias, roteiros de reels e legendas prontos pra copiar — pensados pras suas peças. Você grava 1x por semana e já tem o que postar. (Pra algo bem específico, é só me pedir no chat que eu escrevo sob medida. 🌿)</div>
+      </div>
+
+      <div class="card">
+        <h2>📅 Plano da semana (sugestão)</h2>
+        <div class="small muted" style="margin-top:-4px">Alinhado à sua rotina: grave na sexta e deixe agendado. 4 posts por semana já mantêm o perfil vivo.</div>
+        <div id="ctPlanoFixo" style="margin-top:8px"></div>
+      </div>
+
+      <div class="card">
+        <h2 style="display:flex;justify-content:space-between;align-items:center;gap:8px">💡 Ideias desta semana
+          <button class="btn sec mini" type="button" id="ctSortear" style="width:auto">🎲 Sortear</button>
+        </h2>
+        <div id="ctIdeias" class="small" style="margin-top:6px"></div>
+      </div>
+
+      <div class="card">
+        <h2>🎬 Roteiro de reel pronto</h2>
+        <div class="small muted">Escolha uma peça e gere um roteiro cena a cena + legenda + hashtags, prontos pra copiar.</div>
+        <div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;align-items:flex-end">
+          <label style="flex:1;min-width:180px">Peça<select id="ctProd"></select></label>
+          <button class="btn" type="button" id="ctGerar" style="width:auto">Gerar roteiro</button>
+        </div>
+        <div id="ctRoteiro" style="margin-top:12px"></div>
+      </div>
+    </section>
+
   </div>
 
   <div id="cafeVendaModal" class="cvmodal hidden">
@@ -569,6 +600,7 @@
     <button data-tab="estoque"><i>📦</i>Estoque</button>
     <button data-tab="custos"><i>💰</i>Custos</button>
     <button data-tab="marketing"><i>📣</i>Mkt</button>
+    <button data-tab="conteudo"><i>✨</i>Posts</button>
   </nav>
 </div>
 
@@ -590,12 +622,13 @@ const el = (id)=>document.getElementById(id);
 let sb=null, PRODUTOS=[], VENDAS=[];
 
 function toast(m){const t=el("toast");t.textContent=m;t.classList.add("show");setTimeout(()=>t.classList.remove("show"),2200);}
-function show(id){ ["painel","graficos","financeiro","vendas","cafe","compras","estoque","custos","marketing"].forEach(t=>el("tab-"+t).classList.toggle("hidden",t!==id));
+function show(id){ ["painel","graficos","financeiro","vendas","cafe","compras","estoque","custos","marketing","conteudo"].forEach(t=>el("tab-"+t).classList.toggle("hidden",t!==id));
   document.querySelectorAll("nav.tabs button").forEach(b=>b.classList.toggle("on",b.dataset.tab===id));
   if(id==="graficos") renderGraficos();
   if(id==="compras") renderCompras();
   if(id==="cafe") renderCafe();
   if(id==="marketing") renderMarketing();
+  if(id==="conteudo") renderConteudo();
   if(id==="financeiro") renderFinanceiro(); }
 
 // ---------- Modo café (atendente) + atualização ao vivo ----------
@@ -612,7 +645,7 @@ function computeMode(email){
   CAFE_MODE = sticky || em.indexOf("cafe")===0;
 }
 function applyMode(){
-  const ocultar = CAFE_MODE ? ["painel","graficos","financeiro","compras","custos","marketing"] : [];
+  const ocultar = CAFE_MODE ? ["painel","graficos","financeiro","compras","custos","marketing","conteudo"] : [];
   document.querySelectorAll("nav.tabs button").forEach(b=>{ b.style.display = ocultar.includes(b.dataset.tab) ? "none" : ""; });
   document.body.classList.toggle("cafe-mode", CAFE_MODE);
   const ec=el("cafeEnviarCard"); if(ec) ec.style.display = CAFE_MODE ? "none" : "";
@@ -1108,7 +1141,7 @@ async function carregar(){
   await reconciliarCafe();
   await loadMkt();
   renderProdutosSelect(); renderPainel(); renderVendas(); renderProdutos(); renderCustos(); renderGraficos();
-  renderCafe(); renderFinanceiro(); renderMarketing();
+  renderCafe(); renderFinanceiro(); renderMarketing(); renderConteudo();
 }
 
 // ---------- CAFÉ ----------
@@ -2572,6 +2605,93 @@ if(el("mktGerarRel")) el("mktGerarRel").addEventListener("click", ()=>{
   el("mktRelatorio").innerHTML="<pre style='white-space:pre-wrap;font-family:inherit;margin:0'>"+gesc(t)+"</pre>";
   const cb=el("mktCopiarRel"); if(cb){ cb.style.display=""; cb.onclick=()=>{ try{ navigator.clipboard.writeText(t); toast("Relatório copiado 📋"); }catch(e){ toast("Copie manualmente"); } }; }
 });
+
+/* ===================== CONTEÚDO / POSTS ===================== */
+const CT_HTAGS_BASE=["#kokedama","#kokedamas","#plantas","#decoracaocomplantas","#curitiba","#curitibagram","#presentecriativo","#plantlovers","#ateliernagori","#jardimjapones","#plantasdeinterior","#feitoamao"];
+const CT_GANCHOS=["Sabia que isso não precisa de vaso?","A planta que vira presente e não morre 🌿","POV: sua casa pediu mais verde","Isso aqui é musgo VIVO","O presente que todo mundo pergunta onde comprou","Kokedama: arte japonesa viva na sua casa","Olha o que saiu do ateliê hoje ✨"];
+const CT_DICAS=["regue por imersão 1x na semana","luz indireta, sem sol direto na folha","borrife água nos dias quentes","deixe secar entre uma rega e outra","gire a peça de vez em quando pra crescer parelho"];
+const CT_FRASES=["名残 — o que permanece. Um pedacinho de natureza feito à mão pra sua casa.","Cada kokedama é única, montada à mão sobre musgo vivo.","Leveza japonesa e muito verde pra deixar sua casa mais viva."];
+const CT_PLANO=[
+  ["Segunda","Reel bastidor","Montagem/bastidor de uma peça — o processo encanta e segura o público."],
+  ["Quarta","Carrossel · dica","Dica de cuidado (rega, luz, adubo) com uma peça em foco."],
+  ["Sexta","Reel destaque","Peça da semana ou novidade (agora: clima de Natal 🎄)."],
+  ["Domingo","Story + enquete","Bastidor do ateliê + enquete, com CTA pra loja física e o café."],
+];
+function ctNatalAtivo(){ const m=new Date().getMonth(); return m===10||m===11; } // nov/dez
+function ctPick(arr,i){ return arr.length? arr[((i%arr.length)+arr.length)%arr.length] : ""; }
+function ctRand(arr){ return arr.length? arr[Math.floor(Math.random()*arr.length)] : ""; }
+function ctEhNatal(nome){ return /natal|tuia/i.test(nome||""); }
+function ctHashtags(p){
+  const n=(p&&p.nome||"").toLowerCase(); const extra=[];
+  if(n.includes("bonsai")) extra.push("#bonsai","#bonsaibrasil");
+  if(n.includes("orqu")) extra.push("#orquidea");
+  if(ctEhNatal(n)) extra.push("#natal","#decoracaodenatal","#presentedenatal");
+  if(n.includes("suporte")) extra.push("#suporteparaplantas");
+  if(n.includes("cupula")||n.includes("cúpula")||n.includes("terrario")||n.includes("terrário")) extra.push("#terrario");
+  return [...new Set([...extra, ...CT_HTAGS_BASE])].slice(0,13).join(" ");
+}
+function ctGancho(p){ return ctEhNatal(p&&p.nome) ? "O presente de Natal que fica vivo o ano todo 🎄" : ctRand(CT_GANCHOS); }
+function ctRoteiro(p){
+  const nome=p?p.nome:"sua kokedama";
+  const preco=(p&&p.preco)?BRL(p.preco):null;
+  const natal=ctEhNatal(nome);
+  const cenas=[
+    `0–3s · GANCHO — close bem de perto da ${nome}, girando devagar. Texto na tela: "${ctGancho(p)}"`,
+    `3–7s — mostre a peça inteira, num ângulo que valorize o musgo e a folhagem.`,
+    `7–12s — um detalhe do processo: mãos ajeitando o musgo, pendurando, ou a plaquinha 名残.`,
+    `12–18s · DICA — mostre o cuidado: "${ctRand(CT_DICAS)}".`,
+    `18–22s · CTA — peça na mão + texto "${natal?'Encomende o seu 🎄':'Chama no direct 💬'}". Fale: "Feito à mão em Curitiba — chama na gente!"`,
+  ];
+  const legenda = `${ctRand(CT_FRASES)}${preco?`\n\n${nome} — ${preco}.`:``}\n\n🌿 Feito à mão no Atelier Nagori · Curitiba/PR\n📍 Também na loja física do Jardim do Bosque Gastronomia\n💬 Faça seu pedido no direct ou WhatsApp\n\n${ctHashtags(p)}`;
+  const audio = natal ? "Áudio em alta de Natal / acústico aconchegante." : "Áudio em alta (trending) calmo/aesthetic do momento.";
+  return {cenas, legenda, audio};
+}
+function ctProdutosPool(){
+  return (PRODUTOS||[]).filter(p=>p.categoria!=="Suportes" && p.categoria!=="Serviços").sort((a,b)=>(ORDEM_SITE[a.id]??9999)-(ORDEM_SITE[b.id]??9999));
+}
+function ctIdeiasSemana(){
+  const pool=ctProdutosPool(); const sh=pool.slice().sort(()=>Math.random()-0.5);
+  const nm=i=> sh.length? (sh[i%sh.length].nome) : "uma kokedama";
+  const natal=ctNatalAtivo();
+  return [
+    {dia:"Segunda", fmt:"Reel bastidor", ideia:`Montagem de uma <b>${gesc(nm(0))}</b> (mãos + musgo). Bastidor engaja muito.`},
+    {dia:"Quarta", fmt:"Carrossel · dica", ideia:`Como cuidar da <b>${gesc(nm(1))}</b>: rega por imersão, luz indireta, adubo.`},
+    {dia:"Sexta", fmt:"Reel destaque", ideia:`Peça da semana: <b>${gesc(nm(2))}</b>${natal?" + clima de Natal 🎄":""}.`},
+    {dia:"Domingo", fmt:"Story + enquete", ideia:`Enquete "qual sua favorita?" com a <b>${gesc(nm(3))}</b> + convite pra loja física/café.`},
+  ];
+}
+function renderCtIdeias(){
+  if(!el("ctIdeias")) return;
+  el("ctIdeias").innerHTML = ctIdeiasSemana().map(x=>`<div class="item"><div style="flex:1">
+    <div style="font-weight:600">${x.dia} <span class="small muted">· ${x.fmt}</span></div>
+    <div class="small muted">${x.ideia}</div></div></div>`).join("");
+}
+function renderConteudo(){
+  if(!el("tab-conteudo")) return;
+  el("ctPlanoFixo").innerHTML = CT_PLANO.map(([dia,fmt,ideia])=>`<div class="item"><div style="flex:1">
+    <div style="font-weight:600">${dia} <span class="small muted">· ${fmt}</span></div>
+    <div class="small muted">${ideia}</div></div></div>`).join("");
+  renderCtIdeias();
+  const sel=el("ctProd");
+  if(sel){ const cur=sel.value; sel.innerHTML=ctProdutosPool().map(p=>`<option value="${p.id}">${gesc(p.nome)}</option>`).join(""); if(cur) sel.value=cur; }
+}
+function ctGerarRoteiro(){
+  const sel=el("ctProd"); if(!sel||!sel.value){ toast("Escolha uma peça"); return; }
+  const p=(PRODUTOS||[]).find(x=>x.id===sel.value); if(!p){ toast("Peça não encontrada"); return; }
+  const r=ctRoteiro(p);
+  const txt=`🎬 ROTEIRO DE REEL — ${p.nome}\n\n`+r.cenas.map(c=>"• "+c).join("\n")+`\n\n🎵 ${r.audio}\n\n— LEGENDA —\n${r.legenda}`;
+  el("ctRoteiro").innerHTML =
+    `<div style="font-weight:600;margin-bottom:4px">Cenas</div>`
+    + `<div class="small" style="background:var(--paper-dk,#f3efe6);border-radius:8px;padding:10px">${r.cenas.map(c=>`<div style="padding:3px 0">• ${gesc(c)}</div>`).join("")}<div style="padding:6px 0 0;color:var(--moss-deep)">🎵 ${gesc(r.audio)}</div></div>`
+    + `<div style="font-weight:600;margin:12px 0 4px">Legenda pronta</div>`
+    + `<pre style="white-space:pre-wrap;font-family:inherit;margin:0;background:var(--paper-dk,#f3efe6);border-radius:8px;padding:10px;font-size:.9rem">${gesc(r.legenda)}</pre>`
+    + `<div style="display:flex;gap:8px;margin-top:10px"><button class="btn sec mini" type="button" id="ctCopLeg" style="width:auto">📋 Copiar legenda</button><button class="btn sec mini" type="button" id="ctCopTudo" style="width:auto">📋 Copiar tudo</button></div>`;
+  const cop=(s)=>{ try{ navigator.clipboard.writeText(s); toast("Copiado 📋"); }catch(e){ toast("Copie manualmente"); } };
+  if(el("ctCopLeg")) el("ctCopLeg").onclick=()=>cop(r.legenda);
+  if(el("ctCopTudo")) el("ctCopTudo").onclick=()=>cop(txt);
+}
+if(el("ctSortear")) el("ctSortear").addEventListener("click", renderCtIdeias);
+if(el("ctGerar")) el("ctGerar").addEventListener("click", ctGerarRoteiro);
 </script>
 </body>
 </html>
