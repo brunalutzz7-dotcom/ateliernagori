@@ -122,7 +122,7 @@
 <!-- App -->
 <div id="appView" class="hidden">
   <header class="top">
-    <b>✿ Atelier Nagori</b><span style="font-size:.62rem;opacity:.55;margin-left:7px;letter-spacing:.02em">v138 · Conteúdo: receita semanal (3 reels + fotos) e roteiro Venda/Educativo</span>
+    <b>✿ Atelier Nagori</b><span style="font-size:.62rem;opacity:.55;margin-left:7px;letter-spacing:.02em">v139 · nova aba Minha Semana (agenda da rotina)</span>
     <button class="sair" id="btnSair">Sair</button>
   </header>
   <div class="wrap">
@@ -569,6 +569,27 @@
       </div>
     </section>
 
+    <!-- MINHA SEMANA -->
+    <section id="tab-semana" class="hidden">
+      <div class="card" style="border-left:4px solid #c0963f">
+        <h2>🗓️ Minha Semana</h2>
+        <div class="small muted">Sua rotina com o ateliê encaixado no tempo que sobra — e o seu tempo, o do Caetano e o da casa protegidos. É só me avisar pra ajustar qualquer coisa. 🌿</div>
+      </div>
+      <div class="card">
+        <h2>Ritmo da semana</h2>
+        <div class="kpis" id="semRitmo"></div>
+      </div>
+      <div class="card">
+        <h2>📣 Melhor dia pro Reel pago</h2>
+        <div id="semReelPago" class="small"></div>
+      </div>
+      <div class="card">
+        <h2>A semana, dia a dia</h2>
+        <div id="semGrade"></div>
+        <div id="semCaetano" class="small muted" style="margin-top:12px"></div>
+      </div>
+    </section>
+
   </div>
 
   <div id="cafeVendaModal" class="cvmodal hidden">
@@ -602,6 +623,7 @@
     <button data-tab="custos"><i>💰</i>Custos</button>
     <button data-tab="marketing"><i>📣</i>Mkt</button>
     <button data-tab="conteudo"><i>✨</i>Posts</button>
+    <button data-tab="semana"><i>🗓️</i>Semana</button>
   </nav>
 </div>
 
@@ -623,13 +645,14 @@ const el = (id)=>document.getElementById(id);
 let sb=null, PRODUTOS=[], VENDAS=[];
 
 function toast(m){const t=el("toast");t.textContent=m;t.classList.add("show");setTimeout(()=>t.classList.remove("show"),2200);}
-function show(id){ ["painel","graficos","financeiro","vendas","cafe","compras","estoque","custos","marketing","conteudo"].forEach(t=>el("tab-"+t).classList.toggle("hidden",t!==id));
+function show(id){ ["painel","graficos","financeiro","vendas","cafe","compras","estoque","custos","marketing","conteudo","semana"].forEach(t=>el("tab-"+t).classList.toggle("hidden",t!==id));
   document.querySelectorAll("nav.tabs button").forEach(b=>b.classList.toggle("on",b.dataset.tab===id));
   if(id==="graficos") renderGraficos();
   if(id==="compras") renderCompras();
   if(id==="cafe") renderCafe();
   if(id==="marketing") renderMarketing();
   if(id==="conteudo") renderConteudo();
+  if(id==="semana") renderSemana();
   if(id==="financeiro") renderFinanceiro(); }
 
 // ---------- Modo café (atendente) + atualização ao vivo ----------
@@ -646,7 +669,7 @@ function computeMode(email){
   CAFE_MODE = sticky || em.indexOf("cafe")===0;
 }
 function applyMode(){
-  const ocultar = CAFE_MODE ? ["painel","graficos","financeiro","compras","custos","marketing","conteudo"] : [];
+  const ocultar = CAFE_MODE ? ["painel","graficos","financeiro","compras","custos","marketing","conteudo","semana"] : [];
   document.querySelectorAll("nav.tabs button").forEach(b=>{ b.style.display = ocultar.includes(b.dataset.tab) ? "none" : ""; });
   document.body.classList.toggle("cafe-mode", CAFE_MODE);
   const ec=el("cafeEnviarCard"); if(ec) ec.style.display = CAFE_MODE ? "none" : "";
@@ -1142,7 +1165,7 @@ async function carregar(){
   await reconciliarCafe();
   await loadMkt();
   renderProdutosSelect(); renderPainel(); renderVendas(); renderProdutos(); renderCustos(); renderGraficos();
-  renderCafe(); renderFinanceiro(); renderMarketing(); renderConteudo();
+  renderCafe(); renderFinanceiro(); renderMarketing(); renderConteudo(); renderSemana();
 }
 
 // ---------- CAFÉ ----------
@@ -2720,6 +2743,34 @@ function ctGerarRoteiro(){
 }
 if(el("ctSortear")) el("ctSortear").addEventListener("click", renderCtIdeias);
 if(el("ctGerar")) el("ctGerar").addEventListener("click", ctGerarRoteiro);
+
+/* ===================== MINHA SEMANA (agenda) ===================== */
+const SEM_AGENDA=[
+  {dia:"Segunda", manha:"Você, Caetano e casa", tarde:"🪴 Produção de peças · 13h–16h", post:"🎬 Publica + PATROCINA o Reel de venda (roda 7 dias)"},
+  {dia:"Terça", manha:"Você, Caetano e casa", tarde:"🪴 Produção de peças · 13h–16h", post:"📷 Publica 1 foto"},
+  {dia:"Quarta", manha:"Você, Caetano e casa", tarde:"🪴 Produção de peças · 13h–16h", post:"🎬 Publica o Reel educativo"},
+  {dia:"Quinta", manha:"☕ Café — sai 9h30, manutenção das plantas + treino ao meio-dia", tarde:"🏠 Livre: adiantar produção, compras ou resolver a casa", post:"📷 Publica 1 foto (bastidor / café)"},
+  {dia:"Sexta", manha:"Você, Caetano e casa", tarde:"🎬 Gravar + editar conteúdo (~2h) e agendar a semana toda", post:"🎬 Publica o Reel de venda (orgânico)"},
+  {dia:"Sábado", manha:"💚 Família e descanso", tarde:"💚 Família e descanso", post:"📷 Foto opcional (já agendada)"},
+  {dia:"Domingo", manha:"💚 Família e descanso", tarde:"💚 Família e descanso", post:"📱 Story / enquete (opcional)"},
+];
+function renderSemana(){
+  if(!el("tab-semana")) return;
+  el("semRitmo").innerHTML=[
+    `<div class="kpi"><div class="v">9h</div><div class="l">Produção / semana</div></div>`,
+    `<div class="kpi"><div class="v">~2h</div><div class="l">Conteúdo / semana</div></div>`,
+    `<div class="kpi"><div class="v">1</div><div class="l">Dia no café (qui)</div></div>`,
+    `<div class="kpi"><div class="v" style="color:var(--moss);font-size:.95rem">manhãs + fins de semana</div><div class="l">Seu tempo protegido</div></div>`,
+  ].join("");
+  el("semReelPago").innerHTML=`<div style="padding:10px 12px;border-radius:10px;background:var(--paper-dk,#f3efe6);border-left:4px solid #c0963f"><b>Segunda é o melhor dia pra subir o Reel pago.</b> 📣<br>Você posta de manhã (gravado na sexta), sobe o anúncio e deixa rodando <b>7 dias</b>. Assim ele entra cedo na semana, a Meta tem tempo de "aprender" e ele ainda pega o <b>fim de semana</b> — quando mais gente navega e compra. Objetivo do anúncio: <b>Mensagens (WhatsApp)</b> ou <b>Vendas</b>, nunca "impulsionar publicação". Rode assim por 2–3 semanas; depois, se quiser, a gente testa começar na quinta e compara no painel 📣 Mkt.</div>`;
+  el("semGrade").innerHTML=SEM_AGENDA.map(d=>`<div style="padding:9px 0;border-bottom:1px solid var(--line)">
+    <div style="font-weight:700;color:var(--moss-deep)">${d.dia}</div>
+    <div class="small"><span class="muted">Manhã:</span> ${d.manha}</div>
+    <div class="small"><span class="muted">Tarde:</span> ${d.tarde}</div>
+    <div class="small" style="color:var(--moss)">${d.post}</div>
+  </div>`).join("");
+  el("semCaetano").innerHTML=`⏰ <b>Atividades do Caetano:</b> a definir (devem começar em dezembro). Quando você fechar os 2 horários, me passa que eu encaixo e protejo esses blocos — sem comer o seu tempo de produção nem o seu descanso. 💚`;
+}
 </script>
 </body>
 </html>
