@@ -122,7 +122,7 @@
 <!-- App -->
 <div id="appView" class="hidden">
   <header class="top">
-    <b>✿ Atelier Nagori</b><span style="font-size:.62rem;opacity:.55;margin-left:7px;letter-spacing:.02em">v135 · nova aba Marketing & Tráfego Pago</span>
+    <b>✿ Atelier Nagori</b><span style="font-size:.62rem;opacity:.55;margin-left:7px;letter-spacing:.02em">v136 · Finanças: veredito "O Nagori compensa?"</span>
     <button class="sair" id="btnSair">Sair</button>
   </header>
   <div class="wrap">
@@ -168,6 +168,10 @@
 
     <!-- FINANCEIRO -->
     <section id="tab-financeiro" class="hidden">
+      <div class="card" style="border-left:4px solid #c0963f">
+        <h2>💹 O Nagori compensa?</h2>
+        <div id="finVale">—</div>
+      </div>
       <div class="card">
         <h2>Financeiro</h2>
         <div class="kpis">
@@ -1823,6 +1827,32 @@ function renderFinanceiro(){
       + row("💰 Valor parado em estoque", estoqueValor, {strong:true, color:"#c0963f"})
       + `</div>`
       + `<p class="small muted" style="margin-top:9px">O CMV já inclui musgo, adubo, embalagem e mão de obra (custo cadastrado da peça) — por isso as Despesas aqui são só as operacionais (marketing, telefone, displays…), pra não contar duas vezes. "Valor parado em estoque" = suas peças ainda não vendidas, pelo custo. O gasto detalhado com insumos está em "Despesas por categoria".</p>`;
+    // ===== Veredito: "O Nagori compensa?" (usa os mesmos números do DRE) =====
+    if(el("finVale")){
+      const mes = nMeses>0?nMeses:1;
+      const fatMes=receita/mes, varMes=custoVar/mes, mktMes=patroTotal/mes, lucroMes=resultado/mes;
+      const margLiq = receita>0 ? resultado/receita*100 : 0;
+      if(receita===0 && custoVar===0 && despOper===0){
+        el("finVale").innerHTML = `<div class="small muted">Ainda não há dados suficientes. Conforme você registra vendas, compras e as contas fixas, este veredito se preenche sozinho. 🌱</div>`;
+      } else {
+        let verdito, vcor, vemoji;
+        if(resultado>0 && lucroMes>0){ vemoji="✅"; vcor="var(--moss)"; verdito=`<b>Sim, o Nagori compensa.</b> Depois de <b>todos</b> os custos, sobra em média <b>${centBRL(lucroMes)}/mês</b> (margem líquida ${margLiq.toFixed(0)}%).`; }
+        else if(Math.abs(lucroMes) < fatMes*0.03){ vemoji="⚖️"; vcor="#b8860b"; verdito=`<b>Está no ponto de equilíbrio</b> — praticamente empatando (${centBRL(lucroMes)}/mês). Pequenos ajustes já te colocam no azul.`; }
+        else { vemoji="🔴"; vcor="var(--terra)"; verdito=`<b>No acumulado ainda não fecha no positivo</b>: faltam <b>${centBRL(Math.abs(lucroMes))}/mês</b>. Veja abaixo onde dá pra apertar.`; }
+        const kc=(v,l,color)=>`<div class="kpi"><div class="v" style="${color?`color:${color}`:''}">${centBRL(v)}</div><div class="l">${l}</div></div>`;
+        el("finVale").innerHTML =
+          `<div style="font-size:1rem;line-height:1.5;padding:10px 12px;border-radius:10px;background:var(--paper-dk,#f3efe6);border-left:4px solid ${vcor}">${vemoji} ${verdito}</div>`
+          + `<div class="kpis" style="margin-top:12px">`
+          + kc(fatMes,"Faturamento / mês")
+          + kc(varMes,"Custos variáveis / mês","var(--terra)")
+          + kc(fixoMes,"Custos fixos / mês","var(--terra)")
+          + kc(mktMes,"Marketing / mês","var(--terra)")
+          + kc(lucroMes,"Lucro líquido / mês", lucroMes<0?"var(--terra)":"var(--moss)")
+          + kc(estoqueValor,"💰 Estoque imobilizado","#c0963f")
+          + `</div>`
+          + `<p class="small muted" style="margin-top:8px">Médias desde a abertura (${mes} ${mes>1?'meses':'mês'}). Faturamento, custos variáveis (plantas, materiais, embalagem, taxas) e estoque saem sozinhos das vendas e peças. Custos fixos vêm de “Custo fixo mensal” e marketing dos Patrocínios (aba Compras). O detalhamento completo está no DRE abaixo. 👇</p>`;
+      }
+    }
   }
   renderFixas();
 }
