@@ -122,7 +122,7 @@
 <!-- App -->
 <div id="appView" class="hidden">
   <header class="top">
-    <b>✿ Atelier Nagori</b><span style="font-size:.62rem;opacity:.55;margin-left:7px;letter-spacing:.02em">v134 · busca ignora acentos (procurar peças sem acento)</span>
+    <b>✿ Atelier Nagori</b><span style="font-size:.62rem;opacity:.55;margin-left:7px;letter-spacing:.02em">v135 · nova aba Marketing & Tráfego Pago</span>
     <button class="sair" id="btnSair">Sair</button>
   </header>
   <div class="wrap">
@@ -470,6 +470,69 @@
       </div>
     </section>
 
+    <!-- MARKETING -->
+    <section id="tab-marketing" class="hidden">
+      <div class="card" style="border-left:4px solid #c0963f">
+        <h2>📣 Marketing &amp; Tráfego Pago</h2>
+        <div class="small muted">Análise dos anúncios do Instagram/Meta cruzada com as vendas online (Site + WhatsApp). Este painel só analisa — <b>não cria campanha, não mexe em orçamento e não gasta nada</b>.</div>
+        <div id="mktFonte" class="small" style="margin-top:6px"></div>
+      </div>
+
+      <div class="card">
+        <h2 style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap">Resumo
+          <span id="mktPeriodoBtns" style="display:inline-flex;gap:6px;flex-wrap:wrap"></span>
+        </h2>
+        <div class="kpis" id="mktKpis"></div>
+        <div style="font-weight:600;margin:12px 0 4px;color:var(--moss-deep)">Funil</div>
+        <div id="mktFunil"></div>
+      </div>
+
+      <div class="card">
+        <h2>📉 Últimos 3 meses — comparativo</h2>
+        <div id="mktComparativo" style="overflow-x:auto"></div>
+        <div style="font-weight:600;margin:14px 0 4px;color:var(--moss-deep)">🔎 Possíveis motivos da variação</div>
+        <div id="mktMotivos" class="small"></div>
+      </div>
+
+      <div class="card">
+        <h2>🏅 Conteúdos / campanhas</h2>
+        <div class="small muted">Comparando o que a Meta mede por anúncio (alcance, CTR, custo por conversa). Melhores no topo.</div>
+        <div id="mktCampanhas" class="small" style="margin-top:6px"></div>
+      </div>
+
+      <div class="card">
+        <h2 style="display:flex;justify-content:space-between;align-items:center;gap:8px">🗒️ Relatório da semana
+          <span style="display:inline-flex;gap:6px">
+            <button class="btn sec mini" type="button" id="mktGerarRel" style="width:auto">Gerar</button>
+            <button class="btn sec mini" type="button" id="mktCopiarRel" style="width:auto;display:none">📋 Copiar</button>
+          </span>
+        </h2>
+        <div id="mktRelatorio" class="small muted" style="margin-top:6px">Clique em “Gerar” para o relatório da semana com o que manter, ajustar ou pausar.</div>
+      </div>
+
+      <div class="card">
+        <h2>➕ Lançar dados do anúncio</h2>
+        <div class="small muted">Enquanto a sincronização automática da Meta não está ligada, lance aqui os números do Gerenciador de Anúncios (1x por semana). O faturamento e as vendas saem sozinhos das vendas do app.</div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;margin-top:10px">
+          <label>Data<input type="date" id="mInData"></label>
+          <label>Campanha / conteúdo<input type="text" id="mInCamp" placeholder="ex: Reel Cúpula"></label>
+          <label>Tipo<select id="mInTipo"><option value="reel">Reel</option><option value="post">Post</option><option value="story">Story</option><option value="trafego">Tráfego/Anúncio</option><option value="outro">Outro</option></select></label>
+          <label>Investido (R$)<input type="number" step="0.01" id="mInInvest" placeholder="0,00"></label>
+          <label>Alcance<input type="number" id="mInAlcance" placeholder="pessoas"></label>
+          <label>Impressões<input type="number" id="mInImpr" placeholder="opcional"></label>
+          <label>Frequência<input type="number" step="0.1" id="mInFreq" placeholder="opcional"></label>
+          <label>Cliques no link<input type="number" id="mInCliques"></label>
+          <label>Conversas (WhatsApp)<input type="number" id="mInConversas"></label>
+          <label>Clientes interessados<input type="number" id="mInInteress" placeholder="opcional"></label>
+          <label>Obs<input type="text" id="mInObs" placeholder="opcional"></label>
+        </div>
+        <button class="btn" type="button" id="mktAdd" style="margin-top:10px;width:auto">Salvar lançamento</button>
+        <div style="font-weight:600;margin:14px 0 4px;color:var(--moss-deep)">Últimos lançamentos</div>
+        <input class="search" id="mktBusca" placeholder="🔎 buscar campanha..." style="margin-bottom:6px">
+        <div id="mktLista" class="small muted"></div>
+      </div>
+    </section>
+
   </div>
 
   <div id="cafeVendaModal" class="cvmodal hidden">
@@ -501,6 +564,7 @@
     <button data-tab="compras"><i>🛒</i>Compras</button>
     <button data-tab="estoque"><i>📦</i>Estoque</button>
     <button data-tab="custos"><i>💰</i>Custos</button>
+    <button data-tab="marketing"><i>📣</i>Mkt</button>
   </nav>
 </div>
 
@@ -522,11 +586,12 @@ const el = (id)=>document.getElementById(id);
 let sb=null, PRODUTOS=[], VENDAS=[];
 
 function toast(m){const t=el("toast");t.textContent=m;t.classList.add("show");setTimeout(()=>t.classList.remove("show"),2200);}
-function show(id){ ["painel","graficos","financeiro","vendas","cafe","compras","estoque","custos"].forEach(t=>el("tab-"+t).classList.toggle("hidden",t!==id));
+function show(id){ ["painel","graficos","financeiro","vendas","cafe","compras","estoque","custos","marketing"].forEach(t=>el("tab-"+t).classList.toggle("hidden",t!==id));
   document.querySelectorAll("nav.tabs button").forEach(b=>b.classList.toggle("on",b.dataset.tab===id));
   if(id==="graficos") renderGraficos();
   if(id==="compras") renderCompras();
   if(id==="cafe") renderCafe();
+  if(id==="marketing") renderMarketing();
   if(id==="financeiro") renderFinanceiro(); }
 
 // ---------- Modo café (atendente) + atualização ao vivo ----------
@@ -543,7 +608,7 @@ function computeMode(email){
   CAFE_MODE = sticky || em.indexOf("cafe")===0;
 }
 function applyMode(){
-  const ocultar = CAFE_MODE ? ["painel","graficos","financeiro","compras","custos"] : [];
+  const ocultar = CAFE_MODE ? ["painel","graficos","financeiro","compras","custos","marketing"] : [];
   document.querySelectorAll("nav.tabs button").forEach(b=>{ b.style.display = ocultar.includes(b.dataset.tab) ? "none" : ""; });
   document.body.classList.toggle("cafe-mode", CAFE_MODE);
   const ec=el("cafeEnviarCard"); if(ec) ec.style.display = CAFE_MODE ? "none" : "";
@@ -564,7 +629,7 @@ async function refreshDados(){
     PRODUTOS.forEach(pp=>{ if(pp.custo_detalhe!=null){ try{ CUSTOS_OVERRIDE[pp.id]=(typeof pp.custo_detalhe==="string")?JSON.parse(pp.custo_detalhe):pp.custo_detalhe; }catch(e){} } });
     const cc=await fetchCafeCloud(); if(cc){ cafeCloud=true; CAFE=cc.cafe; CAFE_LOG=cc.log; }
     await loadAcertos();
-    renderProdutosSelect(); renderPainel(); renderVendas(); renderProdutos(); renderCustos(); renderGraficos(); renderCafe(); renderFinanceiro();
+    renderProdutosSelect(); renderPainel(); renderVendas(); renderProdutos(); renderCustos(); renderGraficos(); renderCafe(); renderFinanceiro(); renderMarketing();
   }catch(e){} finally{ rtBusy=false; }
 }
 function scheduleRefresh(){
@@ -1037,8 +1102,9 @@ async function carregar(){
   await loadCafe();
   await loadAcertos();
   await reconciliarCafe();
+  await loadMkt();
   renderProdutosSelect(); renderPainel(); renderVendas(); renderProdutos(); renderCustos(); renderGraficos();
-  renderCafe(); renderFinanceiro();
+  renderCafe(); renderFinanceiro(); renderMarketing();
 }
 
 // ---------- CAFÉ ----------
@@ -2260,6 +2326,222 @@ async function editarPreco(id){
   toast(error?"Erro ao salvar":"Preço salvo ✓");
 }
 
+/* ===================== MARKETING & TRÁFEGO PAGO ===================== */
+let MKT=[], mktCloud=false, mktPeriodo="mes";
+const MKT_ONLINE=["site","whatsapp"]; // canais tratados como vindos do Instagram/anúncio
+const MKT_MESES=["jan","fev","mar","abr","mai","jun","jul","ago","set","out","nov","dez"];
+const GREEN_OK="#2e7d32", RED_BAD="#b3261e", AMBER="#b8860b";
+function mktNum(v){ const n=Number(String(v==null?"":v).replace(",",".")); return isNaN(n)?0:n; }
+function mktParseDate(d){ return /^\d{4}-\d{2}-\d{2}$/.test(d) ? new Date(d+"T12:00:00") : new Date(d); }
+function mktMesNome(y,m){ return MKT_MESES[((m%12)+12)%12]+"/"+String(y).slice(2); }
+function mktMesRange(y,m){ return [new Date(y,m,1,0,0,0,0), new Date(y,m+1,1,0,0,0,0)]; }
+function mktProdCusto(id){ if(CUSTOS_TOTAIS[id]!=null) return Number(CUSTOS_TOTAIS[id]); const p=(PRODUTOS||[]).find(x=>x.id===id); return (p&&p.custo!=null)?Number(p.custo):0; }
+function saveMktLocal(){ try{ localStorage.setItem("mktAN",JSON.stringify(MKT)); }catch(e){} }
+async function loadMkt(){
+  try{ MKT=JSON.parse(localStorage.getItem("mktAN")||"[]")||[]; }catch(e){ MKT=[]; }
+  if(!sb){ mktCloud=false; return; }
+  try{
+    const r=await sb.from("mkt_metricas").select("*").order("data",{ascending:false});
+    if(!r.error && Array.isArray(r.data)){ mktCloud=true; MKT=r.data; saveMktLocal(); }
+    else { mktCloud=false; }
+  }catch(e){ mktCloud=false; }
+}
+function mktAgg(d0,d1){
+  const M=(MKT||[]).filter(m=>{ const x=mktParseDate(m.data); return x>=d0 && x<d1; });
+  const a={invest:0,alcance:0,impr:0,cliques:0,conversas:0,interess:0,nRows:M.length};
+  let fs=0,fw=0,simples=0,nf=0;
+  M.forEach(m=>{ a.invest+=mktNum(m.investido); a.alcance+=mktNum(m.alcance); a.impr+=mktNum(m.impressoes); a.cliques+=mktNum(m.cliques); a.conversas+=mktNum(m.conversas); a.interess+=mktNum(m.interessados);
+    const f=mktNum(m.frequencia), al=mktNum(m.alcance); if(f>0){ if(al>0){fs+=f*al;fw+=al;} simples+=f; nf++; } });
+  a.freq = fw>0 ? fs/fw : (a.alcance>0&&a.impr>0 ? a.impr/a.alcance : (nf>0?simples/nf:0));
+  const V=(VENDAS||[]).filter(v=>MKT_ONLINE.includes(v.canal) && (function(){const x=new Date(v.criado_em);return x>=d0&&x<d1;})());
+  a.fat=0;a.qtd=0;a.custoProd=0;
+  V.forEach(v=>{ const q=mktNum(v.quantidade)||1; a.fat+=mktNum(v.valor); a.qtd+=q; a.custoProd+=mktProdCusto(v.produto_id)*q; });
+  a.ctr = a.impr>0 ? a.cliques/a.impr*100 : (a.alcance>0 ? a.cliques/a.alcance*100 : 0);
+  a.cpc = a.cliques>0 ? a.invest/a.cliques : 0;
+  a.custoConversa = a.conversas>0 ? a.invest/a.conversas : 0;
+  a.cac = a.qtd>0 ? a.invest/a.qtd : 0;
+  a.roas = a.invest>0 ? a.fat/a.invest : 0;
+  a.ticket = a.qtd>0 ? a.fat/a.qtd : 0;
+  a.lucro = a.fat - a.custoProd - a.invest;
+  return a;
+}
+function mktPeriodoRange(){
+  const now=new Date(), y=now.getFullYear(), m=now.getMonth();
+  if(mktPeriodo==="mes") return mktMesRange(y,m);
+  if(mktPeriodo==="mesant") return mktMesRange(y,m-1);
+  if(mktPeriodo==="3m") return [new Date(y,m-2,1), new Date(y,m+1,1)];
+  return [new Date(2000,0,1), new Date(3000,0,1)];
+}
+function mktKpi(v,l,color){ return `<div class="kpi"><div class="v" style="${color?`color:${color}`:''}">${v}</div><div class="l">${l}</div></div>`; }
+function mktInt(n){ return (n||n===0)&&!isNaN(n) ? Math.round(n).toLocaleString("pt-BR") : "—"; }
+function mktFunilHTML(a){
+  const step=(lbl,val,prev)=>{ const pct=(prev&&prev>0)?(val/prev*100):null; return `<div style="flex:1;text-align:center;min-width:64px"><div style="font-weight:700">${mktInt(val)}</div><div class="small muted">${lbl}</div>${pct!=null?`<div class="small" style="color:var(--moss-deep)">${pct.toFixed(1)}%</div>`:""}</div>`; };
+  const arrow=`<div style="align-self:center;color:#aaa">→</div>`;
+  return `<div style="display:flex;gap:4px;align-items:flex-start;background:var(--paper-dk,#f3efe6);border-radius:8px;padding:8px">${step("Alcance",a.alcance,null)}${arrow}${step("Cliques",a.cliques,a.alcance)}${arrow}${step("Conversas",a.conversas,a.cliques)}${arrow}${step("Vendas",a.qtd,a.conversas)}</div>`;
+}
+function mktMotivos(cur,prev){
+  const out=[]; const pct=(a,b)=> b>0?(a-b)/b*100 : (a>0?999:0);
+  const hasCur=(cur.invest>0||cur.fat>0||cur.alcance>0), hasPrev=(prev.invest>0||prev.fat>0||prev.alcance>0);
+  if(!hasCur && !hasPrev) return ["Ainda não há dados de anúncios/vendas lançados nesses meses. Lance os números do Gerenciador de Anúncios pra eu analisar a fundo."];
+  const dFat=pct(cur.fat,prev.fat);
+  if(prev.fat>0){ if(dFat<=-5) out.push(`📉 Faturamento online caiu <b>${Math.abs(dFat).toFixed(0)}%</b> vs o mês anterior.`); else if(dFat>=5) out.push(`📈 Faturamento online subiu <b>${dFat.toFixed(0)}%</b> vs o mês anterior. 🎉`); else out.push("Faturamento online praticamente estável vs o mês anterior."); }
+  if(prev.invest>0 && pct(cur.invest,prev.invest)<=-15) out.push(`Você investiu <b>${Math.abs(pct(cur.invest,prev.invest)).toFixed(0)}% menos</b> em anúncios — menos alcance e conversas tendem a vir junto.`);
+  if(prev.invest>0 && pct(cur.invest,prev.invest)>=20 && dFat<5) out.push(`Investiu <b>${pct(cur.invest,prev.invest).toFixed(0)}% mais</b>, mas o faturamento não acompanhou — a eficiência caiu.`);
+  if(prev.alcance>0 && pct(cur.alcance,prev.alcance)<=-15) out.push(`Alcance caiu <b>${Math.abs(pct(cur.alcance,prev.alcance)).toFixed(0)}%</b> — menos gente vendo os conteúdos.`);
+  if(cur.freq>=3.2) out.push(`Frequência alta (<b>${cur.freq.toFixed(1)}x</b>): as mesmas pessoas vendo o anúncio muitas vezes (fadiga do criativo). Vale trocar o criativo.`);
+  if(prev.ctr>0 && cur.ctr>0 && cur.ctr < prev.ctr*0.8) out.push(`CTR caiu (<b>${cur.ctr.toFixed(1)}%</b> vs ${prev.ctr.toFixed(1)}%) — o criativo está chamando menos atenção.`);
+  const c2c=x=> x.cliques>0 ? x.conversas/x.cliques*100 : null;
+  if(c2c(cur)!=null && c2c(prev)!=null && c2c(prev)>0 && c2c(cur) < c2c(prev)*0.8) out.push(`Menos cliques viram conversa (<b>${c2c(cur).toFixed(0)}%</b> vs ${c2c(prev).toFixed(0)}%) — revise o convite pra chamar no WhatsApp/Direct.`);
+  const v2c=x=> x.conversas>0 ? x.qtd/x.conversas*100 : null;
+  if(v2c(cur)!=null && v2c(prev)!=null && v2c(prev)>0 && v2c(cur) < v2c(prev)*0.8) out.push(`Chegam conversas mas fecham menos (<b>${v2c(cur).toFixed(0)}%</b> vs ${v2c(prev).toFixed(0)}%) — olhe atendimento, preço e disponibilidade.`);
+  if(cur.invest>0 && cur.roas<1) out.push(`ROAS abaixo de 1 (<b>${cur.roas.toFixed(2)}x</b>): no mês, os anúncios trouxeram menos faturamento do que custaram.`);
+  if(out.length<=1) out.push("Sem outras variações fortes nos números lançados. Se faltou lançar algum mês, complete pra deixar a análise mais precisa.");
+  return out;
+}
+function renderMktComparativo(){
+  const now=new Date(); const aggs=[];
+  for(let i=2;i>=0;i--){ const dt=new Date(now.getFullYear(), now.getMonth()-i, 1); const r=mktMesRange(dt.getFullYear(),dt.getMonth()); aggs.push({dt, a:mktAgg(r[0],r[1])}); }
+  const head=`<tr><th style="text-align:left;padding:3px 6px">Métrica</th>${aggs.map(x=>`<th style="text-align:right;padding:3px 6px">${mktMesNome(x.dt.getFullYear(),x.dt.getMonth())}</th>`).join("")}</tr>`;
+  const money=v=>BRL(v), x1=v=>v?v.toFixed(1)+"x":"—", pctf=v=>v?v.toFixed(1)+"%":"—";
+  const row=(label,fn,fmt)=>`<tr><td style="text-align:left;padding:3px 6px;color:var(--moss-deep)">${label}</td>${aggs.map(x=>`<td style="text-align:right;padding:3px 6px">${fmt(fn(x.a))}</td>`).join("")}</tr>`;
+  el("mktComparativo").innerHTML=`<table style="width:100%;border-collapse:collapse;font-size:.85rem;min-width:320px">${head}
+    ${row("Investido",a=>a.invest,money)}
+    ${row("Alcance",a=>a.alcance,mktInt)}
+    ${row("Frequência",a=>a.freq,x1)}
+    ${row("Cliques",a=>a.cliques,mktInt)}
+    ${row("CTR",a=>a.ctr,pctf)}
+    ${row("Conversas",a=>a.conversas,mktInt)}
+    ${row("Vendas online",a=>a.qtd,mktInt)}
+    ${row("Faturamento",a=>a.fat,money)}
+    ${row("ROAS",a=>a.roas,x1)}
+    ${row("Lucro",a=>a.lucro,money)}
+  </table>`;
+  el("mktMotivos").innerHTML=mktMotivos(aggs[2].a, aggs[1].a).map(m=>`<div style="padding:3px 0">• ${m}</div>`).join("");
+}
+function renderMktCampanhas(d0,d1){
+  const M=(MKT||[]).filter(m=>{const x=mktParseDate(m.data);return x>=d0&&x<d1;});
+  if(!M.length){ el("mktCampanhas").innerHTML="Sem campanhas lançadas no período."; return; }
+  const by={};
+  M.forEach(m=>{ const k=((m.campanha||"—").trim())||"—"; if(!by[k]) by[k]={nome:k,tipo:m.tipo||"",invest:0,alcance:0,impr:0,cliques:0,conversas:0}; const o=by[k]; o.invest+=mktNum(m.investido);o.alcance+=mktNum(m.alcance);o.impr+=mktNum(m.impressoes);o.cliques+=mktNum(m.cliques);o.conversas+=mktNum(m.conversas); });
+  const arr=Object.values(by).map(o=>{ o.ctr=o.impr>0?o.cliques/o.impr*100:(o.alcance>0?o.cliques/o.alcance*100:0); o.freq=(o.alcance>0&&o.impr>0)?o.impr/o.alcance:0; o.cc=o.conversas>0?o.invest/o.conversas:null; return o; });
+  const ccs=arr.filter(o=>o.cc!=null).map(o=>o.cc).sort((a,b)=>a-b);
+  const med=ccs.length?ccs[Math.floor(ccs.length/2)]:null;
+  arr.sort((a,b)=>{ if(a.cc==null&&b.cc==null) return b.ctr-a.ctr; if(a.cc==null) return 1; if(b.cc==null) return -1; return a.cc-b.cc; });
+  const badge=o=>{
+    if(o.invest>=20 && o.conversas===0) return `<span style="color:${RED_BAD};font-weight:700">⏸ Pausar</span>`;
+    if(med!=null && o.cc!=null && o.cc>med*1.8) return `<span style="color:${RED_BAD};font-weight:700">⏸ Pausar</span>`;
+    if(o.freq>=3.5 || (med!=null && o.cc!=null && o.cc>med*1.2)) return `<span style="color:${AMBER};font-weight:700">✏️ Ajustar</span>`;
+    return `<span style="color:${GREEN_OK};font-weight:700">✅ Manter</span>`;
+  };
+  el("mktCampanhas").innerHTML=arr.map(o=>`<div class="item"><div style="flex:1">
+    <div style="font-weight:600">${gesc(o.nome)} <span class="small muted">· ${gesc(o.tipo||"")}</span></div>
+    <div class="small muted">Inv ${BRL(o.invest)} · Alcance ${mktInt(o.alcance)} · CTR ${o.ctr?o.ctr.toFixed(1)+"%":"—"} · ${o.conversas} conversas${o.cc!=null?` · ${BRL(o.cc)}/conversa`:""}</div>
+  </div><div style="text-align:right;min-width:78px">${badge(o)}</div></div>`).join("");
+}
+function renderMktLista(){
+  const q=norm((el("mktBusca")&&el("mktBusca").value)||"");
+  let arr=(MKT||[]).slice();
+  if(q) arr=arr.filter(m=>norm(m.campanha).includes(q));
+  arr=arr.slice(0,40);
+  if(!arr.length){ el("mktLista").innerHTML="Nenhum lançamento ainda."; return; }
+  el("mktLista").innerHTML=arr.map(m=>`<div class="item"><div style="flex:1">
+    <div style="font-weight:600">${gesc(m.campanha||"—")} <span class="small muted">· ${mktParseDate(m.data).toLocaleDateString("pt-BR")} · ${gesc(m.tipo||"")}</span></div>
+    <div class="small muted">Inv ${BRL(mktNum(m.investido))} · Alc ${mktInt(mktNum(m.alcance))} · ${mktInt(mktNum(m.cliques))} cliques · ${mktInt(mktNum(m.conversas))} conversas</div>
+  </div><button class="btn sec mini" type="button" style="width:auto" onclick="mktDel('${m.id}')">🗑️</button></div>`).join("");
+}
+function mktIdeias(){
+  const nomes=(PRODUTOS||[]).filter(p=>["Dentro de casa","Dentro ou fora"].includes(p.categoria)).map(p=>p.nome);
+  const pick=()=> nomes.length? nomes[Math.floor(Math.random()*nomes.length)] : "uma kokedama";
+  return [
+    `Close montando uma peça (mãos + musgo) — bastidor engaja muito.`,
+    `Antes/depois de uma ${pick()} ganhando o suporte.`,
+    `Reel "como cuidar" com a ${pick()} (regar, luz, adubo).`,
+    `A ${pick()} na luz da manhã, girando devagar.`,
+  ];
+}
+function mktRelatorioTxt(){
+  const now=new Date(); const d1=new Date(now.getFullYear(),now.getMonth(),now.getDate()+1); const d0=new Date(d1); d0.setDate(d0.getDate()-7);
+  const a=mktAgg(d0,d1); const fmtD=d=>d.toLocaleDateString("pt-BR");
+  let t=`📣 RELATÓRIO DE MARKETING — Atelier Nagori\nSemana ${fmtD(d0)} a ${fmtD(new Date(d1.getTime()-86400000))}\n\n`;
+  t+=`• Investido: ${BRL(a.invest)}\n`;
+  t+=`• Alcance: ${mktInt(a.alcance)} · Frequência: ${a.freq?a.freq.toFixed(1)+"x":"—"}\n`;
+  t+=`• Cliques: ${mktInt(a.cliques)} (CTR ${a.ctr?a.ctr.toFixed(1)+"%":"—"})\n`;
+  t+=`• Conversas no WhatsApp: ${mktInt(a.conversas)}${a.custoConversa?` (${BRL(a.custoConversa)}/conversa)`:""}\n`;
+  t+=`• Vendas online: ${mktInt(a.qtd)} · Faturamento: ${BRL(a.fat)}\n`;
+  t+=`• CAC: ${a.cac?BRL(a.cac):"—"} · ROAS: ${a.invest>0?a.roas.toFixed(2)+"x":"—"} · Lucro: ${BRL(a.lucro)}\n\n`;
+  t+=`✅ MANTER · ✏️ AJUSTAR · ⏸ PAUSAR\n`;
+  const recs=[];
+  if(a.invest===0){ recs.push("Sem investimento lançado nesta semana — lance os números pra eu avaliar."); }
+  else{
+    if(a.roas>=2) recs.push(`✅ MANTER o ritmo: cada R$1 trouxe R$${a.roas.toFixed(2)} em vendas online. Saudável.`);
+    else if(a.roas>=1) recs.push(`✅ MANTER com atenção: ROAS ${a.roas.toFixed(2)}x (positivo, mas dá pra melhorar criativo/segmentação).`);
+    else recs.push(`⏸ REVER: ROAS ${a.roas.toFixed(2)}x — os anúncios custaram mais do que trouxeram em vendas online esta semana.`);
+    if(a.freq>=3.2) recs.push(`✏️ AJUSTAR criativo: frequência ${a.freq.toFixed(1)}x (fadiga). Suba um reel/foto novo.`);
+    if(a.ctr>0 && a.ctr<1) recs.push(`✏️ AJUSTAR criativo/legenda: CTR ${a.ctr.toFixed(1)}% baixo — os primeiros 3s precisam prender mais.`);
+    if(a.cliques>0 && a.conversas===0) recs.push(`✏️ AJUSTAR a chamada: teve clique mas nenhuma conversa — reforce o "chama no WhatsApp" e facilite o link.`);
+    if(a.conversas>0 && a.qtd===0) recs.push(`✏️ Atenção ao fechamento: chegaram conversas mas nenhuma virou venda — revise atendimento/preço/estoque.`);
+  }
+  t+=recs.map(r=>"• "+r).join("\n")+"\n";
+  t+=`\n💡 Pra gravar esta semana (enquanto faz as peças):\n${mktIdeias().map(i=>"• "+i).join("\n")}\n`;
+  t+=`\n(Este relatório é só análise — não cria campanha nem mexe em orçamento.)`;
+  return t;
+}
+function renderMarketing(){
+  if(!el("tab-marketing")) return;
+  el("mktFonte").innerHTML = mktCloud
+    ? "☁️ Dados na nuvem · sincroniza entre seus aparelhos. Integração automática da Meta: a configurar (próximo passo)."
+    : "📱 Modo local (os dados ficam só neste aparelho). Rode o SQL que o Claude te passou pra ligar a nuvem.";
+  const pers=[["mes","Este mês"],["mesant","Mês passado"],["3m","3 meses"],["tudo","Tudo"]];
+  el("mktPeriodoBtns").innerHTML=pers.map(([k,l])=>`<button class="btn sec mini" type="button" data-mper="${k}" style="width:auto;${mktPeriodo===k?'background:var(--moss,#5a7d4f);color:#fff':''}">${l}</button>`).join("");
+  el("mktPeriodoBtns").querySelectorAll("button").forEach(b=>b.onclick=()=>{ mktPeriodo=b.dataset.mper; renderMarketing(); });
+  const r=mktPeriodoRange(), a=mktAgg(r[0],r[1]);
+  const roasColor=a.invest>0?(a.roas>=1?GREEN_OK:RED_BAD):"";
+  const lucroColor=a.lucro>0?GREEN_OK:(a.lucro<0?RED_BAD:"");
+  el("mktKpis").innerHTML=[
+    mktKpi(BRL(a.invest),"Investido"),
+    mktKpi(mktInt(a.alcance),"Alcance"),
+    mktKpi(a.freq?a.freq.toFixed(1)+"x":"—","Frequência"),
+    mktKpi(mktInt(a.cliques),"Cliques · CTR "+(a.ctr?a.ctr.toFixed(1)+"%":"—")),
+    mktKpi(mktInt(a.conversas),"Conversas · "+(a.custoConversa?BRL(a.custoConversa):"—")+"/conv"),
+    mktKpi(mktInt(a.qtd),"Vendas online"),
+    mktKpi(BRL(a.fat),"Faturamento"),
+    mktKpi(a.cac?BRL(a.cac):"—","Custo/cliente (CAC)"),
+    mktKpi(a.invest>0?a.roas.toFixed(2)+"x":"—","ROAS (retorno)",roasColor),
+    mktKpi(BRL(a.lucro),"Lucro",lucroColor),
+  ].join("");
+  el("mktFunil").innerHTML=mktFunilHTML(a);
+  renderMktComparativo();
+  renderMktCampanhas(r[0],r[1]);
+  renderMktLista();
+}
+async function mktAddRow(){
+  const data=(el("mInData").value)|| new Date().toISOString().slice(0,10);
+  const campanha=(el("mInCamp").value||"").trim();
+  if(!campanha){ toast("Dê um nome à campanha/conteúdo"); return; }
+  const row={ id:(window.crypto&&crypto.randomUUID?crypto.randomUUID():("m"+Date.now()+Math.random().toString(36).slice(2,7))),
+    data, campanha, tipo:el("mInTipo").value,
+    investido:mktNum(el("mInInvest").value), alcance:mktNum(el("mInAlcance").value), impressoes:mktNum(el("mInImpr").value),
+    frequencia:mktNum(el("mInFreq").value), cliques:mktNum(el("mInCliques").value), conversas:mktNum(el("mInConversas").value),
+    interessados:mktNum(el("mInInteress").value), obs:(el("mInObs").value||"").trim(), origem:"manual" };
+  MKT.unshift(row); saveMktLocal();
+  ["mInCamp","mInInvest","mInAlcance","mInImpr","mInFreq","mInCliques","mInConversas","mInInteress","mInObs"].forEach(id=>{ if(el(id)) el(id).value=""; });
+  renderMarketing();
+  if(mktCloud){ try{ const rr=await sb.from("mkt_metricas").insert(row); if(rr&&rr.error){ mktCloud=false; renderMarketing(); toast("Salvo neste aparelho; nuvem: "+rr.error.message); } else toast("Lançamento salvo ✓"); }catch(e){ toast("Salvo neste aparelho"); } }
+  else toast("Lançamento salvo (local) ✓");
+}
+async function mktDel(id){
+  if(!confirm("Apagar este lançamento?")) return;
+  MKT=(MKT||[]).filter(m=>m.id!==id); saveMktLocal(); renderMarketing();
+  if(mktCloud){ try{ await sb.from("mkt_metricas").delete().eq("id",id); }catch(e){} }
+}
+if(el("mktAdd")) el("mktAdd").addEventListener("click", mktAddRow);
+if(el("mktBusca")) el("mktBusca").addEventListener("input", renderMktLista);
+if(el("mInData")) el("mInData").value=new Date().toISOString().slice(0,10);
+if(el("mktGerarRel")) el("mktGerarRel").addEventListener("click", ()=>{
+  const t=mktRelatorioTxt();
+  el("mktRelatorio").innerHTML="<pre style='white-space:pre-wrap;font-family:inherit;margin:0'>"+gesc(t)+"</pre>";
+  const cb=el("mktCopiarRel"); if(cb){ cb.style.display=""; cb.onclick=()=>{ try{ navigator.clipboard.writeText(t); toast("Relatório copiado 📋"); }catch(e){ toast("Copie manualmente"); } }; }
+});
 </script>
 </body>
 </html>
