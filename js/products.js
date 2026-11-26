@@ -38,7 +38,7 @@ function fotoEmBreve() {
 }
 
 /* Versão das fotos: incremente ao trocar qualquer imagem para o navegador buscar a nova (evita cache). */
-const ASSET_V = "245";
+const ASSET_V = "246";
 const IMG = (id) => `assets/produtos/${id}.jpg?v=${ASSET_V}`;
 
 /* Categorias (seções do catálogo) ------------------------------------- */
@@ -55,6 +55,8 @@ const PRODUCTS = [
   /* ---------- 00 · COLEÇÃO DE NATAL ---------- */
   { id: "tuia", nome: "Tuia Holandesa · Coleção de Natal", peso: 3, especie: "Cupressus macrocarpa 'Goldcrest' · edição de Natal", categoria: "ambos", ambiente: "ambos", pet: "safe", natal: true,
     descricao: "Nossa tuia holandesa montada em kokedama e decorada à mão para o Natal — enfeites, laço de veludo vinho e luzinhas. Folhagem densa, perfumada e de um verde-limão luminoso. Depois das festas continua linda o ano todo: é só retirar os enfeites.", significado: "A árvore de Natal que não se joga fora — símbolo de renovação, esperança e de um Natal que permanece vivo ano após ano.", preco: 350, img: IMG("tuia") },
+  { id: "pinheirinho", nome: "Tuia Stricta · Coleção de Natal", peso: 3, especie: "Tuia Stricta (Thuja sp.) · porte colunar · edição de Natal", categoria: "ambos", ambiente: "ambos", pet: "safe", natal: true,
+    descricao: "Uma tuia stricta de porte colunar, montada em kokedama sobre base de madeira e decorada à mão para o Natal — bolas vinho e douradas, estrelas, guizo, luzinhas e laço de veludo vinho. Folhagem densa e perfumada, num verde profundo. Passadas as festas, continua linda o ano todo: é só retirar os enfeites.", significado: "A árvore de Natal que não se joga fora — símbolo de renovação, esperança e de um Natal que permanece vivo ano após ano.", preco: 350, img: IMG("pinheirinho") },
   { id: "mini-tuia-natal", nome: "Mini Tuia · Especial de Natal", especie: "Conífera em miniatura · edição de Natal", categoria: "ambos", ambiente: "ambos", pet: "safe", natal: true,
     descricao: "A versão mini da nossa tuia de Natal — uma coníferazinha de folhagem macia e dourada, montada em kokedama e decorada à mão com laço e enfeite de Natal. Já vem com enfeite incluso. Perfeita como presente ou pra dar um toque natalino a qualquer cantinho.", significado: "Sempre verde, a tuia simboliza vida longa, união e proteção. Em miniatura, leva a esperança do Natal em formato de presente.", preco: 200, img: IMG("mini-tuia-natal") },
   /* ---------- 01 · FOLHAGENS ---------- */
