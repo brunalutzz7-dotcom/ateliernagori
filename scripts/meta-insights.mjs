@@ -19,7 +19,9 @@
  */
 
 const TOKEN = process.env.META_ACCESS_TOKEN;
-const ACCOUNT = (process.env.META_AD_ACCOUNT_ID || "").replace(/^act_/, "");
+// Aceita uma ou várias contas, separadas por vírgula (ex.: "187...,153..."):
+const ACCOUNTS = (process.env.META_AD_ACCOUNT_ID || "")
+  .split(",").map(s => s.trim().replace(/^act_/, "")).filter(Boolean);
 const SB_URL = (process.env.SUPABASE_URL || "").replace(/\/+$/, "");
 const SB_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
 const DIAS = parseInt(process.env.DIAS || "7", 10);
@@ -27,7 +29,7 @@ const VER = process.env.META_API_VERSION || "v21.0";
 
 function die(msg) { console.error("ERRO:", msg); process.exit(1); }
 if (!TOKEN) die("falta META_ACCESS_TOKEN");
-if (!ACCOUNT) die("falta META_AD_ACCOUNT_ID");
+if (!ACCOUNTS.length) die("falta META_AD_ACCOUNT_ID");
 if (!SB_URL || !SB_KEY) die("faltam SUPABASE_URL / SUPABASE_SERVICE_ROLE_KEY");
 
 // janela de datas: dos últimos N dias até ontem (dia fechado)
@@ -58,12 +60,12 @@ function conversasDe(actions) {
   return total;
 }
 
-async function fetchInsights() {
+async function fetchInsights(account) {
   const fields = [
     "ad_id", "ad_name", "spend", "reach", "impressions",
     "frequency", "clicks", "inline_link_clicks", "actions",
   ].join(",");
-  const base = `https://graph.facebook.com/${VER}/act_${ACCOUNT}/insights`;
+  const base = `https://graph.facebook.com/${VER}/act_${account}/insights`;
   const rows = [];
   let url = `${base}?level=ad&time_increment=1&time_range=${encodeURIComponent(timeRange)}`
     + `&fields=${encodeURIComponent(fields)}&limit=200&access_token=${encodeURIComponent(TOKEN)}`;
@@ -71,7 +73,7 @@ async function fetchInsights() {
   while (url && guard++ < 50) {
     const r = await fetch(url);
     const j = await r.json();
-    if (j.error) die("Meta API: " + (j.error.message || JSON.stringify(j.error)));
+    if (j.error) throw new Error("Meta API: " + (j.error.message || JSON.stringify(j.error)));
     for (const d of (j.data || [])) rows.push(d);
     url = j.paging && j.paging.next ? j.paging.next : null;
   }
@@ -121,8 +123,17 @@ async function upsert(rows) {
 }
 
 (async () => {
-  console.log(`Puxando anúncios da Meta de ${ymd(desde)} a ${ymd(ate)} (conta act_${ACCOUNT})...`);
-  const raw = await fetchInsights();
+  console.log(`Puxando anúncios da Meta de ${ymd(desde)} a ${ymd(ate)} (contas: ${ACCOUNTS.join(", ")})...`);
+  let raw = [];
+  for (const acc of ACCOUNTS) {
+    try {
+      const r = await fetchInsights(acc);
+      console.log(`  act_${acc}: ${r.length} linhas`);
+      raw = raw.concat(r);
+    } catch (e) {
+      console.error(`  act_${acc}: falhou (${e.message || e}) — seguindo com as outras contas`);
+    }
+  }
   const rows = raw.map(toMkt).filter(x => x.investido > 0 || x.alcance > 0 || x.cliques > 0);
   const n = await upsert(rows);
   console.log(`OK: ${raw.length} linhas da Meta, ${n} gravadas em mkt_metricas.`);
