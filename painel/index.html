@@ -125,7 +125,7 @@
 <!-- App -->
 <div id="appView" class="hidden">
   <header class="top">
-    <b>✿ Atelier Nagori</b><span style="font-size:.62rem;opacity:.55;margin-left:7px;letter-spacing:.02em">v142 · barra de abas deslizável (setinha indica mais)</span>
+    <b>✿ Atelier Nagori</b><span style="font-size:.62rem;opacity:.55;margin-left:7px;letter-spacing:.02em">v143 · Mkt: Resumo e 3 meses usam os números reais dos anúncios</span>
     <button class="sair" id="btnSair">Sair</button>
   </header>
   <div class="wrap">
@@ -2483,6 +2483,8 @@ function mktAgg(d0,d1){
   let fs=0,fw=0,simples=0,nf=0;
   M.forEach(m=>{ a.invest+=mktNum(m.investido); a.alcance+=mktNum(m.alcance); a.impr+=mktNum(m.impressoes); a.cliques+=mktNum(m.cliques); a.conversas+=mktNum(m.conversas); a.interess+=mktNum(m.interessados);
     const f=mktNum(m.frequencia), al=mktNum(m.alcance); if(f>0){ if(al>0){fs+=f*al;fw+=al;} simples+=f; nf++; } });
+  // Soma também os anúncios já rodados (histórico fixo), pelos quais a data de início cai no período:
+  ADS_HIST.forEach(ad=>{ const x=new Date(ad.ini+"T12:00:00"); if(x>=d0&&x<d1){ a.invest+=mktNum(ad.gasto); a.alcance+=mktNum(ad.alc); a.impr+=mktNum(ad.impr); a.cliques+=mktNum(ad.clk); } });
   a.freq = fw>0 ? fs/fw : (a.alcance>0&&a.impr>0 ? a.impr/a.alcance : (nf>0?simples/nf:0));
   const V=(VENDAS||[]).filter(v=>MKT_ONLINE.includes(v.canal) && (function(){const x=new Date(v.criado_em);return x>=d0&&x<d1;})());
   a.fat=0;a.qtd=0;a.custoProd=0;
@@ -2551,7 +2553,7 @@ function renderMktComparativo(){
 }
 function renderMktCampanhas(d0,d1){
   const M=(MKT||[]).filter(m=>{const x=mktParseDate(m.data);return x>=d0&&x<d1;});
-  if(!M.length){ el("mktCampanhas").innerHTML="Sem campanhas lançadas no período."; return; }
+  if(!M.length){ el("mktCampanhas").innerHTML="Ainda sem campanhas lançadas manualmente neste período. Veja o desempenho real dos seus anúncios no card <b>“📆 Resultado por anúncio”</b> acima. ☝️"; return; }
   const by={};
   M.forEach(m=>{ const k=((m.campanha||"—").trim())||"—"; if(!by[k]) by[k]={nome:k,tipo:m.tipo||"",invest:0,alcance:0,impr:0,cliques:0,conversas:0}; const o=by[k]; o.invest+=mktNum(m.investido);o.alcance+=mktNum(m.alcance);o.impr+=mktNum(m.impressoes);o.cliques+=mktNum(m.cliques);o.conversas+=mktNum(m.conversas); });
   const arr=Object.values(by).map(o=>{ o.ctr=o.impr>0?o.cliques/o.impr*100:(o.alcance>0?o.cliques/o.alcance*100:0); o.freq=(o.alcance>0&&o.impr>0)?o.impr/o.alcance:0; o.cc=o.conversas>0?o.invest/o.conversas:null; return o; });
@@ -2619,15 +2621,15 @@ function mktRelatorioTxt(){
 }
 // Histórico dos anúncios já rodados (set–nov/2026), pra cruzar com as vendas reais do app
 const ADS_HIST=[
-  {n:"1 · Você sabe o que é uma kokedama", ini:"2026-09-04", fim:"2026-09-09", gasto:129.83, pub:"Curitiba (amplo)"},
-  {n:"2 · Você já conhecia o Tamandama?", ini:"2026-09-04", fim:"2026-09-09", gasto:99.63, pub:"Curitiba (amplo)"},
-  {n:"3 · Um presente que não acaba", ini:"2026-09-11", fim:"2026-09-16", gasto:99.79, pub:"Curitiba (amplo)"},
-  {n:"4 · Que tal surpreender…", ini:"2026-09-28", fim:"2026-10-05", gasto:125.71, pub:"Brasil 18+"},
-  {n:"8 · Que tal surpreender (diário)", ini:"2026-10-25", fim:"2026-11-01", gasto:152.73, pub:"Brasil 18+"},
-  {n:"5 · Presentes vivos", ini:"2026-11-01", fim:"2026-11-08", gasto:125.98, pub:"Curitiba +13km"},
-  {n:"9 · Que tal surpreender — Cópia", ini:"2026-11-08", fim:"2026-11-15", gasto:153.21, pub:"Brasil, mulheres"},
-  {n:"7 · Presentear com natureza", ini:"2026-11-11", fim:"2026-11-20", gasto:179.90, pub:"Curitiba +13km"},
-  {n:"6 · Existem presentes que encantam", ini:"2026-11-23", fim:"2026-11-25", gasto:26.41, pub:"Curitiba (pausado)"},
+  {n:"1 · Você sabe o que é uma kokedama", ini:"2026-09-04", fim:"2026-09-09", gasto:129.83, alc:6256, impr:7179, clk:347, pub:"Curitiba (amplo)"},
+  {n:"2 · Você já conhecia o Tamandama?", ini:"2026-09-04", fim:"2026-09-09", gasto:99.63, alc:4462, impr:5024, clk:253, pub:"Curitiba (amplo)"},
+  {n:"3 · Um presente que não acaba", ini:"2026-09-11", fim:"2026-09-16", gasto:99.79, alc:9053, impr:10986, clk:716, pub:"Curitiba (amplo)"},
+  {n:"4 · Que tal surpreender…", ini:"2026-09-28", fim:"2026-10-05", gasto:125.71, alc:7365, impr:8545, clk:541, pub:"Brasil 18+"},
+  {n:"8 · Que tal surpreender (diário)", ini:"2026-10-25", fim:"2026-11-01", gasto:152.73, alc:12769, impr:15056, clk:624, pub:"Brasil 18+"},
+  {n:"5 · Presentes vivos", ini:"2026-11-01", fim:"2026-11-08", gasto:125.98, alc:15818, impr:20783, clk:612, pub:"Curitiba +13km"},
+  {n:"9 · Que tal surpreender — Cópia", ini:"2026-11-08", fim:"2026-11-15", gasto:153.21, alc:19068, impr:22685, clk:1456, pub:"Brasil, mulheres"},
+  {n:"7 · Presentear com natureza", ini:"2026-11-11", fim:"2026-11-20", gasto:179.90, alc:20733, impr:27274, clk:1127, pub:"Curitiba +13km"},
+  {n:"6 · Existem presentes que encantam", ini:"2026-11-23", fim:"2026-11-25", gasto:26.41, alc:3780, impr:4175, clk:153, pub:"Curitiba (pausado)"},
 ];
 function mktVendasNoPeriodo(ini,fim){
   const d0=new Date(ini+"T00:00:00"), d1=new Date(fim+"T23:59:59");
