@@ -125,7 +125,7 @@
 <!-- App -->
 <div id="appView" class="hidden">
   <header class="top">
-    <b>✿ Atelier Nagori</b><span style="font-size:.62rem;opacity:.55;margin-left:7px;letter-spacing:.02em">v144 · café: campo de desconto (%) na venda</span>
+    <b>✿ Atelier Nagori</b><span style="font-size:.62rem;opacity:.55;margin-left:7px;letter-spacing:.02em">v145 · café: histórico por dia + resumo hoje/semana/a acertar</span>
     <button class="sair" id="btnSair">Sair</button>
   </header>
   <div class="wrap">
@@ -1452,23 +1452,42 @@ function renderCafeHistoricoVendas(){
   vendas.forEach(v=>{ const b=cafeBreakdown(v); if(new Date(v.criado_em).getTime()>lt) aberto+=b.liq; else pago+=b.liq; });
   const lbl = cafePeriodo==="mes"?"📅 Este mês":(cafePeriodo==="mesant"?"📅 Mês passado":"Σ Desde o início");
   if(el("cafeTotais")) el("cafeTotais").innerHTML = blocoTotais(lbl, o, {pago, aberto});
-  box.innerHTML = vendas.length ? vendas.slice(0,120).map(v=>{
-    const b=cafeBreakdown(v), d=new Date(v.criado_em).toLocaleDateString("pt-BR");
-    const p=PRODUTOS.find(x=>x.id===v.produto_id)||{id:v.produto_id};
-    return `<div class="item">
-      ${thumb(p)}
-      <div style="flex:1">
-        <div>${v.quantidade>1?v.quantidade+"× ":""}${gesc(v.produto_nome||"")}</div>
-        <div class="small muted">${d} · ${labelForma(b.forma)}</div>
-        <div class="small muted">Venda ${BRL(b.valor)}${b.taxa>0?" · taxa −"+BRL(b.taxa):""} · café −${BRL(b.cafe)}</div>
-      </div>
-      <div style="text-align:right;min-width:92px">
-        <div style="font-weight:700;color:#1e7a44">${BRL(b.liq)}</div>
-        <div class="small muted">à Nagori</div>
-        ${CAFE_MODE?"":`<button class="btn mini sec" style="margin-top:4px" onclick="excluirVenda(${v.id})">excluir</button>`}
-      </div>
-    </div>`;
-  }).join("") : `<p class="small muted">Nenhuma venda do café no período.</p>`;
+  // ---- resumo rápido (hoje / esta semana / a acertar) — independente do filtro de período ----
+  const now=new Date();
+  const startToday=new Date(now.getFullYear(),now.getMonth(),now.getDate()).getTime();
+  const dow=(now.getDay()+6)%7; // segunda = 0
+  const startWeek=new Date(now.getFullYear(),now.getMonth(),now.getDate()-dow).getTime();
+  const allCafe=(VENDAS||[]).filter(v=>v.canal==="cafe");
+  const sumQ=arr=>arr.reduce((a,v)=>a+Number(v.quantidade||1),0);
+  const hojeQ=sumQ(allCafe.filter(v=>new Date(v.criado_em).getTime()>=startToday));
+  const semanaQ=sumQ(allCafe.filter(v=>new Date(v.criado_em).getTime()>=startWeek));
+  const ab=emAbertoVendas(); const abertoQ=sumQ(ab); const abertoLiq=somaVendas(ab).l;
+  const mini=`<div class="kpis" style="margin-bottom:10px">
+    <div class="kpi"><div class="v">${hojeQ}</div><div class="l">Vendidas hoje</div></div>
+    <div class="kpi"><div class="v">${semanaQ}</div><div class="l">Esta semana</div></div>
+    <div class="kpi"><div class="v" style="color:#1e7a44">${abertoQ}</div><div class="l">A acertar · ${BRL(abertoLiq)}</div></div>
+  </div>`;
+  if(!vendas.length){ box.innerHTML = mini + `<p class="small muted">Nenhuma venda do café no período.</p>`; return; }
+  // ---- lista agrupada por dia (datinha em cima) ----
+  const td=now.toLocaleDateString("pt-BR");
+  const yd=new Date(now.getFullYear(),now.getMonth(),now.getDate()-1).toLocaleDateString("pt-BR");
+  const dLabel=k=> k===td?("📅 Hoje · "+k.slice(0,5)):(k===yd?("Ontem · "+k.slice(0,5)):("📅 "+k));
+  const byDay={}, order=[];
+  vendas.slice(0,200).forEach(v=>{ const k=new Date(v.criado_em).toLocaleDateString("pt-BR"); if(!byDay[k]){byDay[k]=[];order.push(k);} byDay[k].push(v); });
+  const itemHTML=v=>{ const b=cafeBreakdown(v); const p=PRODUTOS.find(x=>x.id===v.produto_id)||{id:v.produto_id};
+    return `<div class="item">${thumb(p)}<div style="flex:1">
+      <div>${v.quantidade>1?v.quantidade+"× ":""}${gesc(v.produto_nome||"")}</div>
+      <div class="small muted">${labelForma(b.forma)}</div>
+      <div class="small muted">Venda ${BRL(b.valor)}${b.taxa>0?" · taxa −"+BRL(b.taxa):""} · café −${BRL(b.cafe)}</div>
+    </div><div style="text-align:right;min-width:92px">
+      <div style="font-weight:700;color:#1e7a44">${BRL(b.liq)}</div>
+      <div class="small muted">à Nagori</div>
+      ${CAFE_MODE?"":`<button class="btn mini sec" style="margin-top:4px" onclick="excluirVenda(${v.id})">excluir</button>`}
+    </div></div>`; };
+  const html=order.map(k=>{ const arr=byDay[k]; const qd=arr.reduce((a,v)=>a+Number(v.quantidade||1),0); const ql=arr.reduce((a,v)=>a+cafeBreakdown(v).liq,0);
+    return `<div style="font-weight:700;color:var(--moss-deep);margin:14px 0 4px;border-bottom:1px solid var(--line);padding-bottom:3px">${dLabel(k)} <span class="small muted" style="font-weight:400">· ${qd} peça${qd>1?"s":""} · ${BRL(ql)} à Nagori</span></div>`
+      + arr.map(itemHTML).join(""); }).join("");
+  box.innerHTML = mini + html;
 }
 function cafeTirarConfirm(id){ if(!CAFE[id]) return; if(confirm(`Tirar ${CAFE[id].qtd}× ${cafeNome(id)} do café?`)) cafeTira(id, CAFE[id].qtd); }
 // ---- Vendeu no café: registra a venda (canal café, com taxas) e tira do café ----
