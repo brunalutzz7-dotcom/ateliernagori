@@ -122,7 +122,7 @@
 <!-- App -->
 <div id="appView" class="hidden">
   <header class="top">
-    <b>✿ Atelier Nagori</b><span style="font-size:.62rem;opacity:.55;margin-left:7px;letter-spacing:.02em">v140 · Mkt: guia "como anunciar certo" + diagnóstico das campanhas</span>
+    <b>✿ Atelier Nagori</b><span style="font-size:.62rem;opacity:.55;margin-left:7px;letter-spacing:.02em">v141 · Mkt: resultado de vendas por anúncio (cruza datas)</span>
     <button class="sair" id="btnSair">Sair</button>
   </header>
   <div class="wrap">
@@ -499,8 +499,8 @@
       <div class="card">
         <h2>📊 O que aprendemos (set–nov)</h2>
         <div class="small" style="margin-top:4px">
-          <div style="padding:4px 0"><b>~R$ 1.093</b> investidos em <b>9 anúncios</b> · <b>todos</b> com objetivo “Tráfego” · ~99 mil alcançados · ~5.800 cliques/visitas · <b style="color:#b3261e">~0 vendas</b>.</div>
-          <div style="font-weight:700;margin:10px 0 2px;color:#b3261e">Por que não vendeu:</div>
+          <div style="padding:4px 0"><b>~R$ 1.093</b> investidos em <b>9 anúncios</b> · <b>todos</b> com objetivo “Tráfego” · ~99 mil alcançados · ~5.800 cliques/visitas. <b>Vendas: veja o detalhe por anúncio abaixo 👇</b> (teve, sim — umas renderam mais que outras).</div>
+          <div style="font-weight:700;margin:10px 0 2px;color:#b3261e">Por que vendeu abaixo do potencial:</div>
           <div style="padding:3px 0">• <b>Objetivo “Tráfego”</b> em todos → trouxe curioso, não comprador (clique barato é armadilha de vaidade).</div>
           <div style="padding:3px 0">• <b>Público amplo/errado</b> → 3 foram pro Brasil inteiro; interesses genéricos; muita gente 55–65+.</div>
           <div style="padding:3px 0">• <b>Sem caminho pra venda</b> → nenhum pedia conversa no WhatsApp; o clique morria no perfil.</div>
@@ -509,6 +509,13 @@
           <div style="padding:3px 0">• Quando mirou <b>local</b> (Curitiba + 13&nbsp;km), o alcance disparou barato.</div>
           <div class="small muted" style="margin-top:10px">Conclusão: seu produto e seu conteúdo são bons — só a configuração pedia a coisa errada. Com o objetivo e o público certos, <b>o mesmo dinheiro vira venda</b>. 🌿</div>
         </div>
+      </div>
+
+      <div class="card">
+        <h2>📆 Resultado por anúncio (vendas no período)</h2>
+        <div class="small muted">Para cada anúncio, as vendas online (Site + WhatsApp) que caíram <b>dentro das datas</b> em que ele rodou — tiradas dos dados reais do seu app.</div>
+        <div id="mktPorAnuncio" class="small" style="margin-top:8px"></div>
+        <div class="small muted" style="margin-top:8px">⚠️ É por <b>data</b>, então é uma aproximação: quando dois anúncios rodaram juntos (ex.: nº 1 e 2, nas mesmas datas), a mesma venda aparece nos dois — não dá pra saber qual trouxe. Serve pra enxergar <b>quais períodos renderam mais</b>.</div>
       </div>
 
       <div class="card">
@@ -2602,6 +2609,44 @@ function mktRelatorioTxt(){
   t+=`\n(Este relatório é só análise — não cria campanha nem mexe em orçamento.)`;
   return t;
 }
+// Histórico dos anúncios já rodados (set–nov/2026), pra cruzar com as vendas reais do app
+const ADS_HIST=[
+  {n:"1 · Você sabe o que é uma kokedama", ini:"2026-09-04", fim:"2026-09-09", gasto:129.83, pub:"Curitiba (amplo)"},
+  {n:"2 · Você já conhecia o Tamandama?", ini:"2026-09-04", fim:"2026-09-09", gasto:99.63, pub:"Curitiba (amplo)"},
+  {n:"3 · Um presente que não acaba", ini:"2026-09-11", fim:"2026-09-16", gasto:99.79, pub:"Curitiba (amplo)"},
+  {n:"4 · Que tal surpreender…", ini:"2026-09-28", fim:"2026-10-05", gasto:125.71, pub:"Brasil 18+"},
+  {n:"8 · Que tal surpreender (diário)", ini:"2026-10-25", fim:"2026-11-01", gasto:152.73, pub:"Brasil 18+"},
+  {n:"5 · Presentes vivos", ini:"2026-11-01", fim:"2026-11-08", gasto:125.98, pub:"Curitiba +13km"},
+  {n:"9 · Que tal surpreender — Cópia", ini:"2026-11-08", fim:"2026-11-15", gasto:153.21, pub:"Brasil, mulheres"},
+  {n:"7 · Presentear com natureza", ini:"2026-11-11", fim:"2026-11-20", gasto:179.90, pub:"Curitiba +13km"},
+  {n:"6 · Existem presentes que encantam", ini:"2026-11-23", fim:"2026-11-25", gasto:26.41, pub:"Curitiba (pausado)"},
+];
+function mktVendasNoPeriodo(ini,fim){
+  const d0=new Date(ini+"T00:00:00"), d1=new Date(fim+"T23:59:59");
+  let q=0,val=0;
+  (VENDAS||[]).forEach(v=>{ if(!MKT_ONLINE.includes(v.canal)) return; const x=new Date(v.criado_em); if(x>=d0&&x<=d1){ q+=mktNum(v.quantidade)||1; val+=mktNum(v.valor); } });
+  return {q,val};
+}
+function renderMktPorAnuncio(){
+  if(!el("mktPorAnuncio")) return;
+  const dBR=iso=>{ const p=iso.split("-"); return p[2]+"/"+p[1]; };
+  let totV=0,totQ=0,totG=0;
+  const html=ADS_HIST.map(a=>{
+    const s=mktVendasNoPeriodo(a.ini,a.fim); const roas=a.gasto>0?s.val/a.gasto:0;
+    totV+=s.val; totQ+=s.q; totG+=a.gasto;
+    const cor = s.val>0 ? (roas>=1?"#2e7d32":"#b8860b") : "#b3261e";
+    return `<div class="item"><div style="flex:1">
+      <div style="font-weight:600">${gesc(a.n)}</div>
+      <div class="small muted">${dBR(a.ini)}–${dBR(a.fim)} · investiu ${BRL(a.gasto)} · ${gesc(a.pub)}</div>
+    </div><div style="text-align:right;min-width:96px">
+      <div style="font-weight:700;color:${cor}">${s.q>0?(s.q+" venda"+(s.q>1?"s":"")):"sem venda"}</div>
+      <div class="small muted">${s.val>0?BRL(s.val)+" · ROAS "+roas.toFixed(1)+"x":""}</div>
+    </div></div>`;
+  }).join("");
+  const roasT=totG>0?totV/totG:0;
+  const foot=`<div class="item" style="border-top:2px solid var(--line);margin-top:4px;font-weight:700"><div style="flex:1">TOTAL (vendas online no período dos anúncios)</div><div style="text-align:right;min-width:96px"><div style="color:${totV>=totG?'#2e7d32':'#b8860b'}">${totQ} venda(s)</div><div class="small muted">${BRL(totV)} · ROAS ${roasT.toFixed(1)}x</div></div></div>`;
+  el("mktPorAnuncio").innerHTML = html + foot;
+}
 function renderMarketing(){
   if(!el("tab-marketing")) return;
   el("mktFonte").innerHTML = mktCloud
@@ -2626,6 +2671,7 @@ function renderMarketing(){
     mktKpi(BRL(a.lucro),"Lucro",lucroColor),
   ].join("");
   el("mktFunil").innerHTML=mktFunilHTML(a);
+  renderMktPorAnuncio();
   renderMktComparativo();
   renderMktCampanhas(r[0],r[1]);
   renderMktLista();
