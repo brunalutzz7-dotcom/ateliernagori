@@ -125,7 +125,7 @@
 <!-- App -->
 <div id="appView" class="hidden">
   <header class="top">
-    <b>✿ Atelier Nagori</b><span style="font-size:.62rem;opacity:.55;margin-left:7px;letter-spacing:.02em">v143 · Mkt: Resumo e 3 meses usam os números reais dos anúncios</span>
+    <b>✿ Atelier Nagori</b><span style="font-size:.62rem;opacity:.55;margin-left:7px;letter-spacing:.02em">v144 · café: campo de desconto (%) na venda</span>
     <button class="sair" id="btnSair">Sair</button>
   </header>
   <div class="wrap">
@@ -642,6 +642,7 @@
           <option value="credito">Crédito · −2,75%</option>
           <option value="debito">Débito · −0,74%</option>
         </select></label>
+        <label>Desconto (%)<input id="cvDesc" type="number" min="0" max="100" step="1" value="0" inputmode="decimal" placeholder="0"></label>
       </div>
       <div id="cvResumo" class="small" style="margin-top:8px"></div>
       <div style="display:flex;gap:8px;margin-top:12px">
@@ -1475,20 +1476,26 @@ let cvId=null;
 function venderNoCafe(id){ if(!CAFE[id]) return; cvId=id;
   el("cvTitulo").textContent="Vendeu no café — "+cafeNome(id);
   el("cvQtd").value=1; el("cvQtd").max=CAFE[id].qtd; el("cvForma").value="dinheiro";
+  if(el("cvDesc")) el("cvDesc").value=0;
   el("cafeVendaModal").classList.remove("hidden"); renderCvResumo();
 }
 function cvCalc(){
   const maxq=CAFE[cvId]?CAFE[cvId].qtd:1;
   const q=Math.max(1,Math.min(Number(el("cvQtd").value||1),maxq));
-  const pr=cafePreco(cvId), valor=pr*q, forma=el("cvForma").value;
+  const pr=cafePreco(cvId), bruto=pr*q, forma=el("cvForma").value;
+  let desc=Number((el("cvDesc")&&el("cvDesc").value)||0); if(isNaN(desc)||desc<0) desc=0; if(desc>100) desc=100;
+  const descR=+(bruto*desc/100).toFixed(2);
+  const valor=+(bruto-descR).toFixed(2);
   const taxa=valor*taxaForma(forma);
   const receb=valor-taxa, cafe=receb*CAFE_PCT, liq=receb-cafe;
-  return {q,pr,valor,forma,taxa,receb,cafe,liq};
+  return {q,pr,bruto,desc,descR,valor,forma,taxa,receb,cafe,liq};
 }
 function renderCvResumo(){ if(!cvId) return; const t=cvCalc();
   el("cvResumo").innerHTML =
-    `<div class="item"><span>Valor da venda</span><span>${BRL(t.valor)}</span></div>`
-    + (t.taxa>0?`<div class="item"><span>Taxa cartão (−2,75%)</span><span>− ${BRL(t.taxa)}</span></div>`:"")
+    (t.desc>0?`<div class="item"><span>Preço (${t.q}×)</span><span>${BRL(t.bruto)}</span></div>`:"")
+    + (t.desc>0?`<div class="item" style="color:#9c2b2b"><span>Desconto (−${t.desc}%)</span><span>− ${BRL(t.descR)}</span></div>`:"")
+    + `<div class="item"><span>Valor da venda</span><span>${BRL(t.valor)}</span></div>`
+    + (t.taxa>0?`<div class="item"><span>Taxa cartão</span><span>− ${BRL(t.taxa)}</span></div>`:"")
     + `<div class="item"><span>Café (−20%)</span><span>− ${BRL(t.cafe)}</span></div>`
     + `<div class="item" style="font-weight:700;color:#1e7a44;border-top:1px solid var(--line);margin-top:2px;padding-top:6px"><span>Líquido Nagori</span><span>${BRL(t.liq)}</span></div>`;
 }
@@ -1496,7 +1503,7 @@ function fecharCvModal(){ el("cafeVendaModal").classList.add("hidden"); cvId=nul
 async function confirmarVendaCafe(){
   if(!cvId||!CAFE[cvId]) return fecharCvModal();
   const t=cvCalc(), p=PRODUTOS.find(x=>x.id===cvId);
-  const notas=["Café", labelForma(t.forma), "café 20%", "líq "+BRL(t.liq)];
+  const notas=["Café", labelForma(t.forma)]; if(t.desc>0) notas.push("desc "+t.desc+"%"); notas.push("café 20%","líq "+BRL(t.liq));
   const row={ produto_id:cvId, produto_nome:cafeNome(cvId), quantidade:t.q, canal:"cafe",
     valor:+t.valor.toFixed(2), custo:(p&&p.custo!=null)?+(Number(p.custo)*t.q).toFixed(2):null, obs:notas.join(" · ") };
   const {error}=await sb.from("vendas").insert([row]);
@@ -1509,6 +1516,7 @@ async function confirmarVendaCafe(){
 }
 if(el("cvQtd")) el("cvQtd").addEventListener("input", renderCvResumo);
 if(el("cvForma")) el("cvForma").addEventListener("change", renderCvResumo);
+if(el("cvDesc")) el("cvDesc").addEventListener("input", renderCvResumo);
 if(el("cvConfirmar")) el("cvConfirmar").addEventListener("click", confirmarVendaCafe);
 if(el("cvCancelar")) el("cvCancelar").addEventListener("click", fecharCvModal);
 if(el("cafeVendaModal")) el("cafeVendaModal").addEventListener("click", (e)=>{ if(e.target.id==="cafeVendaModal") fecharCvModal(); });
